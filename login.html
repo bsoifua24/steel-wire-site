@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -430,6 +431,22 @@
   </div>
 </div>
 
+<!-- ══════ REVISION NOTE MODAL ══════ -->
+<div class="modal-back" id="modal-revision">
+  <div class="modal" style="max-width:480px">
+    <h3>Request revision</h3>
+    <p class="m-sub">Tell the borrower what needs to be fixed — they will see this note on their checklist.</p>
+    <div class="form-field full" style="margin-top:18px">
+      <label for="revision-note">Note for borrower (optional)</label>
+      <textarea id="revision-note" rows="3" placeholder="e.g. PFS is missing your signature on page 2 — please resubmit a signed copy"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-quiet" onclick="cancelRevision()">Cancel</button>
+      <button class="btn-primary" id="revision-confirm-btn" onclick="confirmRevision()">Request Revision</button>
+    </div>
+  </div>
+</div>
+
 <!-- ══════ PREVIEW MODAL ══════ -->
 <div class="modal-back" id="modal-preview">
   <div class="modal" style="max-width:780px;max-height:82vh;overflow-y:auto">
@@ -456,6 +473,19 @@
 const SUPABASE_URL      = 'https://plihqeruhlwclqloagjn.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_g8isUhYtzSYZhXHpKSU0Kg_qL4e_XuG';
 /* ════════════════════════════════════════════════════════════════════════════════════ */
+
+/* ═══════════════ EMAILJS CONFIG — free account at emailjs.com ═══════════════
+   1. Sign up at emailjs.com → Add a service (Gmail works fine)
+   2. Create two email templates (see comments below for variables each template can use)
+   3. Paste your Public Key, Service ID, and both Template IDs below
+   Leave values as-is to disable email — the portal works fine without it.
+   ══════════════════════════════════════════════════════════════════════════ */
+const EMAILJS_PUBLIC_KEY = '';        // Your EmailJS public key
+const EMAILJS_SERVICE_ID = '';        // e.g. 'service_abc123'
+const EMAILJS_UPLOAD_TID = '';        // Upload alert template — vars: {{admin_email}}, {{borrower_name}}, {{deal_name}}, {{doc_name}}, {{portal_url}}
+const EMAILJS_STATUS_TID = '';        // Status change template — vars: {{to_email}}, {{borrower_name}}, {{deal_name}}, {{doc_name}}, {{new_status}}, {{revision_note}}, {{portal_url}}
+const ADMIN_EMAIL        = 'admin@mpeakp.com';
+/* ══════════════════════════════════════════════════════════════════════════ */
 
 const PHASES = ['Intake','Soft Quote','Term Sheet','Underwriting','Closing'];
 const STATUSES = ['needed','uploaded','review','approved'];
@@ -640,6 +670,8 @@ async function boot(user){
     if(!p.data){ await new Promise(r=>setTimeout(r,1200));
       p = await withTimeout(supa.from('profiles').select('*').eq('id', user.id).maybeSingle(), 6000); }
     profile = p.data || {id:user.id, role:'borrower', full_name:''};
+    if(profile && !profile.email && me.email) await supa.from('profiles').update({email:me.email}).eq('id',me.id);
+    if(EMAILJS_PUBLIC_KEY) emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});
     renderNav();
     await withTimeout(refresh(false), 6000);
   }catch(e){
@@ -700,7 +732,7 @@ document.getElementById('a-pass').addEventListener('keydown', e=>{ if(e.key==='E
 /* ───────── DATA ───────── */
 async function refresh(toastIt = true){
   const q = await supa.from('deals')
-    .select('*, checklist_items(*), documents(*), borrower:profiles(full_name, company)')
+    .select('*, checklist_items(*), documents(*), borrower:profiles(full_name, company, email)')
     .order('created_at', {ascending:false});
   if(q.error){ err(q.error); return; }
   deals = q.data || [];
@@ -916,6 +948,7 @@ function renderChecklist(d){
           <div>
             <div class="d-name">${esc(it.doc_name)}</div>
             <div class="d-sub">${esc(it.doc_sub||'')}</div>
+            ${it.revision_note&&it.status==='needed'?`<div style="margin-top:5px;font-size:0.72rem;color:var(--red)">&#9888; ${esc(it.revision_note)}</div>`:''}
             ${files.map(f=>`<span class="file-chip">📎 <a href="#" onclick="downloadFile('${f.id}');return false">${esc(f.file_name)}</a> (${fmtSize(f.file_size)}) <span class="by">— ${esc((f.created_at||'').slice(0,10))}</span></span>`).join('')}
           </div>
           <span class="pill phase">Phase ${it.phase+1}+</span>
@@ -932,14 +965,45 @@ function renderChecklist(d){
   }).join('');
 }
 
+let pendingRevision = null;
+
 async function cycleStatus(itemId){
   if(!isAdmin()) return;
   const d = deal(currentDealId); if(!d) return;
   const it = d.checklist_items.find(x=>x.id===itemId); if(!it) return;
   const next = STATUSES[(STATUSES.indexOf(it.status)+1)%STATUSES.length];
-  const {error} = await supa.from('checklist_items').update({status:next}).eq('id', itemId);
+  if(next === 'needed'){
+    pendingRevision = itemId;
+    document.getElementById('revision-note').value = '';
+    document.getElementById('modal-revision').classList.add('open');
+    return;
+  }
+  await applyStatus(itemId, next, null);
+}
+
+function cancelRevision(){
+  pendingRevision = null;
+  document.getElementById('modal-revision').classList.remove('open');
+}
+
+async function confirmRevision(){
+  if(!pendingRevision) return;
+  const note = document.getElementById('revision-note').value.trim() || null;
+  const btn = document.getElementById('revision-confirm-btn'); btn.disabled = true;
+  await applyStatus(pendingRevision, 'needed', note);
+  btn.disabled = false;
+  cancelRevision();
+}
+
+async function applyStatus(itemId, next, note){
+  const d = deal(currentDealId); if(!d) return;
+  const it = d.checklist_items.find(x=>x.id===itemId); if(!it) return;
+  const {error} = await supa.from('checklist_items').update({status:next, revision_note:note}).eq('id', itemId);
   if(error){ err(error); return; }
-  it.status = next; renderDetail();
+  it.status = next; it.revision_note = note;
+  renderDetail();
+  if(d.borrower && d.borrower.email) sendStatusEmail(d, it.doc_name, next, note, d.borrower.email);
+  toast('Status updated.');
 }
 
 async function saveNotes(){
@@ -970,6 +1034,8 @@ document.getElementById('file-input').addEventListener('change', async (e)=>{
       });
       if(ins.error) throw ins.error;
     }
+    const uploadedItem = (d.checklist_items||[]).find(x=>x.id===itemId);
+    sendUploadEmail(d, uploadedItem ? uploadedItem.doc_name : 'a document');
     toast('Document uploaded.');
     await refresh(false);
   }catch(ex){ err(ex); }
@@ -1020,6 +1086,7 @@ function exportPacket(){
 
 document.getElementById('modal-new').addEventListener('click', e=>{ if(e.target.id==='modal-new') closeModal(); });
 document.getElementById('modal-preview').addEventListener('click', e=>{ if(e.target.id==='modal-preview') closePreview(); });
+document.getElementById('modal-revision').addEventListener('click', e=>{ if(e.target.id==='modal-revision') cancelRevision(); });
 
 /* ───────── ONBOARDING ───────── */
 function toggleProjType(btn){ btn.classList.toggle('selected'); }
@@ -1343,6 +1410,31 @@ const DOCUMENT_PREVIEWS = {
 },
 
 };
+
+/* ───────── EMAIL NOTIFICATIONS ───────── */
+function sendUploadEmail(d, docName){
+  if(!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID || !EMAILJS_UPLOAD_TID) return;
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_UPLOAD_TID, {
+    admin_email: ADMIN_EMAIL,
+    borrower_name: profile ? (profile.full_name || me.email) : me.email,
+    deal_name: d.name,
+    doc_name: docName,
+    portal_url: window.location.href,
+  }).catch(e=>console.warn('Upload email not sent:', e));
+}
+
+function sendStatusEmail(d, docName, newStatus, note, borrowerEmail){
+  if(!EMAILJS_PUBLIC_KEY || !EMAILJS_SERVICE_ID || !EMAILJS_STATUS_TID || !borrowerEmail) return;
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_STATUS_TID, {
+    to_email: borrowerEmail,
+    borrower_name: d.borrower ? (d.borrower.full_name || borrowerEmail) : borrowerEmail,
+    deal_name: d.name,
+    doc_name: docName,
+    new_status: STATUS_LABEL[newStatus] || newStatus,
+    revision_note: note || '',
+    portal_url: window.location.href,
+  }).catch(e=>console.warn('Status email not sent:', e));
+}
 
 function showPreview(docName){
   const p = DOCUMENT_PREVIEWS[docName];

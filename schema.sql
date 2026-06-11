@@ -20,14 +20,17 @@ create table if not exists profiles (
 alter table profiles add column if not exists phone             text;
 alter table profiles add column if not exists position          text;
 alter table profiles add column if not exists project_interests text;
+alter table profiles add column if not exists email             text;
+
+alter table checklist_items add column if not exists revision_note text;
 
 -- Auto-create a profile row whenever someone signs up
 create or replace function handle_new_user()
 returns trigger language plpgsql security definer as $$
 begin
-  insert into profiles (id, full_name)
-  values (new.id, new.raw_user_meta_data->>'full_name')
-  on conflict (id) do nothing;
+  insert into profiles (id, full_name, email)
+  values (new.id, new.raw_user_meta_data->>'full_name', new.email)
+  on conflict (id) do update set email = excluded.email;
   return new;
 end;
 $$;
