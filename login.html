@@ -219,6 +219,46 @@
     .preview-content .note{background:rgba(26,61,181,0.06);border-left:3px solid var(--blue);padding:11px 14px;font-size:0.78rem;color:var(--blue-dark);margin:10px 0}
     .preview-content .warn{background:rgba(196,69,69,0.06);border-left:3px solid var(--red);padding:11px 14px;font-size:0.78rem;color:#8b3030;margin:10px 0}
     .preview-content .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    /* ── NEXT ACTION BANNER ── */
+    .next-action-banner{display:flex;gap:14px;align-items:flex-start;padding:16px 20px;margin-bottom:28px;font-size:0.85rem;line-height:1.6;border-radius:0}
+    .next-action-banner.warning{background:rgba(196,69,69,0.07);border-left:3px solid var(--red);color:#5a2020}
+    .next-action-banner.info{background:rgba(201,138,27,0.07);border-left:3px solid var(--amber);color:#5a3e10}
+    .next-action-banner.success{background:rgba(31,157,107,0.07);border-left:3px solid var(--green);color:#0f3d28}
+    .banner-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+
+    /* ── MESSAGES ── */
+    .msg-section h4{font-family:'Cormorant Garant',serif;font-size:1.3rem;font-weight:600;color:var(--black);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--light-grey)}
+    .msg-thread{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;max-height:360px;overflow-y:auto}
+    .msg-item{padding:12px 16px;background:var(--offwhite);border-left:3px solid var(--light-grey)}
+    .msg-item.msg-mine{background:rgba(26,61,181,0.05);border-left-color:var(--blue)}
+    .msg-meta{font-size:0.63rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid-grey);margin-bottom:4px}
+    .msg-body{font-size:0.86rem;color:var(--black);line-height:1.6}
+    .msg-empty{font-size:0.82rem;color:var(--mid-grey);font-style:italic;padding:16px 0}
+    .msg-compose{display:flex;gap:8px}
+    .msg-compose input{flex:1;font-family:'Inter',sans-serif;font-size:0.88rem;padding:11px 14px;border:1px solid var(--light-grey);background:var(--white);color:var(--black);outline:none;transition:border-color 0.2s}
+    .msg-compose input:focus{border-color:var(--blue)}
+
+    /* ── ACTIVITY LOG ── */
+    .activity-list{display:flex;flex-direction:column}
+    .activity-item{display:flex;gap:14px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--light-grey)}
+    .activity-item:last-child{border-bottom:none}
+    .activity-dot{width:7px;height:7px;border-radius:50%;background:var(--blue-light);flex-shrink:0;margin-top:6px}
+    .activity-text{font-size:0.82rem;color:var(--black);line-height:1.5}
+    .activity-time{font-size:0.67rem;color:var(--mid-grey);margin-top:2px}
+
+    /* ── VIDEOS ── */
+    .video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:40px}
+    .video-card{background:var(--white);border:1px solid var(--light-grey);overflow:hidden;transition:box-shadow 0.2s}
+    .video-card:hover{box-shadow:0 4px 20px rgba(26,61,181,0.09)}
+    .video-thumb{position:relative;padding-bottom:56.25%;background:var(--black-soft);overflow:hidden}
+    .video-thumb iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+    .video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,255,255,0.3);font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase}
+    .video-play-icon{width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.35);font-size:1.2rem}
+    .video-info{padding:18px 20px}
+    .video-info h4{font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--black);margin-bottom:6px}
+    .video-info p{font-size:0.8rem;color:var(--mid-grey);line-height:1.6}
+    .video-tag{font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;display:block}
+
     .preview-content p.eg{background:var(--offwhite);padding:12px 14px;font-style:italic;color:var(--mid-grey);font-size:0.8rem;margin:8px 0;line-height:1.65}
   </style>
 </head>
@@ -371,6 +411,83 @@
   </div>
 </div>
 
+<!-- ══════ VIDEOS ══════ -->
+<div id="page-videos" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">Getting Started</div>
+    <h1>Know before you <em>submit.</em></h1>
+    <p class="hero-sub">Watch these short videos before uploading your documents — they cover the full raise process, what lenders look for, and how to use your deal room.</p>
+  </div>
+  <div class="tab-section">
+    <span class="section-tag">Intro Series</span>
+    <h2>Start <em>here.</em></h2>
+    <div class="video-grid">
+      <div class="video-card">
+        <div class="video-thumb">
+          <!-- To embed a real video: replace the div below with <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe> -->
+          <div class="video-placeholder"><div class="video-play-icon">▶</div>Coming Soon</div>
+        </div>
+        <div class="video-info">
+          <span class="video-tag">Overview · ~8 min</span>
+          <h4>The Capital Raise Process — Start to Close</h4>
+          <p>A full walkthrough of our 5-phase process — from Intake to Closing — so you know exactly what happens at each stage and what's expected of you.</p>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-placeholder"><div class="video-play-icon">▶</div>Coming Soon</div>
+        </div>
+        <div class="video-info">
+          <span class="video-tag">Documents · ~6 min</span>
+          <h4>How to Complete Your Personal Financial Statement</h4>
+          <p>Step-by-step guidance on filling out your PFS correctly — the single most common document that gets sent back to borrowers because of errors.</p>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-placeholder"><div class="video-play-icon">▶</div>Coming Soon</div>
+        </div>
+        <div class="video-info">
+          <span class="video-tag">Underwriting · ~10 min</span>
+          <h4>What Lenders Look For in Your Deal Package</h4>
+          <p>Inside the mind of an institutional lender — the specific numbers, ratios, and documents that move a deal from "interesting" to "approved."</p>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-placeholder"><div class="video-play-icon">▶</div>Coming Soon</div>
+        </div>
+        <div class="video-info">
+          <span class="video-tag">Portal · ~4 min</span>
+          <h4>Navigating Your Deal Room</h4>
+          <p>A quick tour of your borrower portal — how to upload documents, read status updates, message the Steel &amp; Aire team, and track your raise progress.</p>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-placeholder"><div class="video-play-icon">▶</div>Coming Soon</div>
+        </div>
+        <div class="video-info">
+          <span class="video-tag">Pro Forma · ~7 min</span>
+          <h4>Building a Pro Forma That Lenders Believe</h4>
+          <p>How to build income and expense projections that are grounded in market data — and how to defend your assumptions when a lender pushes back.</p>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-placeholder"><div class="video-play-icon">▶</div>Coming Soon</div>
+        </div>
+        <div class="video-info">
+          <span class="video-tag">Sources &amp; Uses · ~5 min</span>
+          <h4>Sources &amp; Uses — The One Page Every Lender Checks First</h4>
+          <p>Why your Sources must equal your Uses to the dollar, what goes in each column, and the mistakes that immediately flag an unprepared borrower.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══════ DEAL DETAIL (shared; renders per role) ══════ -->
 <div id="page-detail" class="page">
   <div class="tab-page-hero">
@@ -391,12 +508,28 @@
         <button class="btn-quiet btn-danger" id="dd-delete" onclick="deleteDeal()" style="display:none">Delete Deal</button>
       </div>
     </div>
+    <div id="dd-banner"></div>
     <div id="dd-checklist"></div>
     <div class="notes-box" id="dd-notes" style="display:none">
       <h4>Internal notes <span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey)">&middot; admin only</span></h4>
       <textarea id="notes-text" rows="3" placeholder="Lender targets, timing, sticking points — borrowers can never see this."></textarea>
       <div style="margin-top:12px"><button class="btn-quiet" onclick="saveNotes()">Save Notes</button></div>
       <div class="n-hint">Stored in an admin-only table; the database refuses these rows to any non-admin account.</div>
+    </div>
+    <div id="dd-activity-section" style="margin-top:40px;display:none">
+      <span class="section-tag">Activity</span>
+      <h2 style="margin-bottom:0;font-size:1.6rem">What's <em>happened.</em></h2>
+      <div class="activity-list" id="dd-activity-list" style="margin-top:20px"></div>
+    </div>
+  </div>
+  <div class="tab-section" style="background:var(--offwhite);border-top:2px solid var(--light-grey)">
+    <div class="msg-section">
+      <h4>Messages <span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--mid-grey);font-weight:400">&middot; Deal thread</span></h4>
+      <div class="msg-thread" id="dd-msg-thread"></div>
+      <div class="msg-compose">
+        <input id="msg-input" placeholder="Ask a question or leave an update&hellip;" onkeydown="if(event.key==='Enter')sendMessage()"/>
+        <button class="btn-primary" onclick="sendMessage()">Send</button>
+      </div>
     </div>
   </div>
 </div>
@@ -528,6 +661,7 @@ const CHECKLIST_TEMPLATE = [
 let supa = null, me = null, profile = null;
 let deals = [], borrowers = [];
 let currentDealId = null, filterCurrentPhase = true;
+let currentMessages = [], currentActivity = [];
 let authMode = 'signin', pendingUpload = null, booted = false, recovering = false;
 const isAdmin = () => profile && profile.role === 'admin';
 
@@ -763,6 +897,7 @@ function route(where){
   if(!profile){ showOnly(configured?'page-auth':'page-config'); return; }
   if(where==='home') showOnly(isAdmin() ? 'page-dash' : 'page-borrower');
   if(where==='detail') showOnly('page-detail');
+  if(where==='videos') showOnly('page-videos');
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.r===where || (where!=='detail'&&b.dataset.r==='home')));
   rerenderCurrent();
 }
@@ -773,7 +908,7 @@ function renderNav(){
   if(!profile){ bar.innerHTML=''; userEl.style.display='none'; btn.style.display='none'; return; }
   bar.innerHTML = isAdmin()
     ? '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Dashboard</button>'
-    : '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Your Deals</button>';
+    : '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Your Deals</button><button class="tab-btn" data-r="videos" onclick="route(\'videos\')">Intro Videos</button>';
   userEl.innerHTML = esc(profile.full_name || me.email) +
     '<span class="role-badge">' + esc(profile.role) + '</span>';
   userEl.style.display = 'block';
@@ -892,8 +1027,10 @@ async function deleteDeal(){
 /* ───────── DEAL DETAIL ───────── */
 async function openDeal(id){
   currentDealId = id;
+  currentMessages = []; currentActivity = [];
   renderDetail();
   route('detail');
+  loadMessagesAndActivity(id);
   if(isAdmin()){
     const n = await supa.from('deal_private').select('notes').eq('deal_id', id).maybeSingle();
     document.getElementById('notes-text').value = (n.data && n.data.notes) || '';
@@ -919,6 +1056,16 @@ function renderDetail(){
   document.getElementById('dd-delete').style.display = admin? 'inline-block':'none';
   document.getElementById('dd-packet').style.display = admin? 'inline-block':'none';
   document.getElementById('dd-notes').style.display = admin? 'block':'none';
+  if(!admin){
+    const phase = d.phase;
+    const attention = (d.checklist_items||[]).filter(it=>it.phase<=phase&&it.status==='needed').length;
+    const inReview  = (d.checklist_items||[]).filter(it=>it.phase<=phase&&(it.status==='uploaded'||it.status==='review')).length;
+    let banner = '';
+    if(attention>0) banner=`<div class="next-action-banner warning"><div class="banner-icon">⚠</div><div><strong>${attention} document${attention>1?'s':''} need your attention in Phase ${phase+1} — ${PHASES[phase]}.</strong> Upload the missing items below to move your raise forward.</div></div>`;
+    else if(inReview>0) banner=`<div class="next-action-banner info"><div class="banner-icon">⏳</div><div><strong>${inReview} document${inReview>1?'s are':' is'} under review.</strong> Your Steel &amp; Aire team is reviewing your submissions — we'll update the status when done.</div></div>`;
+    else banner=`<div class="next-action-banner success"><div class="banner-icon">✓</div><div><strong>Phase ${phase+1} documents are complete.</strong> Your team is advancing your raise to the next stage.</div></div>`;
+    document.getElementById('dd-banner').innerHTML = banner;
+  } else { document.getElementById('dd-banner').innerHTML = ''; }
   renderChecklist(d);
 }
 
@@ -928,6 +1075,7 @@ async function setPhase(i){
   const {error} = await supa.from('deals').update({phase:i}).eq('id', d.id);
   if(error){ err(error); return; }
   d.phase = i; renderDetail();
+  logActivity(d.id, `Phase advanced to Phase ${i+1} — ${PHASES[i]}`);
   toast('Phase set to '+PHASES[i]+'.');
 }
 function toggleFilter(){ filterCurrentPhase=!filterCurrentPhase; renderDetail(); }
@@ -1002,6 +1150,8 @@ async function applyStatus(itemId, next, note){
   if(error){ err(error); return; }
   it.status = next; it.revision_note = note;
   renderDetail();
+  const statusLabel = {needed:'Needs Revision',uploaded:'Uploaded',review:'Under Review',approved:'Approved'}[next]||next;
+  logActivity(d.id, `${it.doc_name} → ${statusLabel}${note?' — '+note:''}`);
   if(d.borrower && d.borrower.email) sendStatusEmail(d, it.doc_name, next, note, d.borrower.email);
   toast('Status updated.');
 }
@@ -1012,6 +1162,74 @@ async function saveNotes(){
     .upsert({deal_id: currentDealId, notes: document.getElementById('notes-text').value, updated_at: new Date().toISOString()});
   if(error){ err(error); return; }
   toast('Notes saved.');
+}
+
+/* ───────── MESSAGES & ACTIVITY ───────── */
+async function loadMessagesAndActivity(dealId){
+  const section = document.getElementById('dd-activity-section');
+  if(section) section.style.display = 'block';
+
+  const [msgRes, actRes] = await Promise.all([
+    supa.from('deal_messages').select('*').eq('deal_id', dealId).order('created_at', {ascending:true}),
+    supa.from('deal_activity').select('*').eq('deal_id', dealId).order('created_at', {ascending:false}).limit(30),
+  ]);
+  currentMessages = msgRes.data || [];
+  currentActivity = actRes.data || [];
+  renderMessages();
+  renderActivity();
+}
+
+function renderMessages(){
+  const el = document.getElementById('dd-msg-thread'); if(!el) return;
+  if(!currentMessages.length){
+    el.innerHTML = '<div style="color:var(--muted);font-size:0.82rem;padding:8px 0">No messages yet. Send a message to start the conversation.</div>';
+    return;
+  }
+  el.innerHTML = currentMessages.map(m=>{
+    const mine = me && m.user_id === me.id;
+    const ts = new Date(m.created_at).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    return `<div class="msg-item ${mine?'msg-mine':''}">
+      <div class="msg-meta">${esc(m.sender_name)} · ${ts}</div>
+      <div class="msg-body">${esc(m.body)}</div>
+    </div>`;
+  }).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+function renderActivity(){
+  const el = document.getElementById('dd-activity-list'); if(!el) return;
+  if(!currentActivity.length){
+    el.innerHTML = '<div style="color:var(--muted);font-size:0.82rem">No activity recorded yet.</div>';
+    return;
+  }
+  el.innerHTML = currentActivity.map(a=>{
+    const ts = new Date(a.created_at).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    return `<div class="activity-item"><span class="activity-dot"></span><div><div class="activity-text">${esc(a.description)}</div><div class="activity-time">${ts}</div></div></div>`;
+  }).join('');
+}
+
+async function sendMessage(){
+  const input = document.getElementById('msg-input'); if(!input) return;
+  const body = input.value.trim(); if(!body) return;
+  const d = deal(currentDealId); if(!d) return;
+  const senderName = me ? (profile && profile.full_name ? profile.full_name : me.email) : 'Unknown';
+  const {data, error} = await supa.from('deal_messages').insert({
+    deal_id: d.id, user_id: me.id, sender_name: senderName, body
+  }).select().single();
+  if(error){ err(error); return; }
+  currentMessages.push(data);
+  input.value = '';
+  renderMessages();
+}
+
+async function logActivity(dealId, description){
+  const userId = me ? me.id : null;
+  await supa.from('deal_activity').insert({deal_id: dealId, user_id: userId, description});
+  if(currentDealId === dealId){
+    currentActivity.unshift({deal_id: dealId, user_id: userId, description, created_at: new Date().toISOString()});
+    if(currentActivity.length > 30) currentActivity.pop();
+    renderActivity();
+  }
 }
 
 /* ───────── FILES ───────── */
@@ -1035,7 +1253,9 @@ document.getElementById('file-input').addEventListener('change', async (e)=>{
       if(ins.error) throw ins.error;
     }
     const uploadedItem = (d.checklist_items||[]).find(x=>x.id===itemId);
-    sendUploadEmail(d, uploadedItem ? uploadedItem.doc_name : 'a document');
+    const docLabel = uploadedItem ? uploadedItem.doc_name : 'a document';
+    sendUploadEmail(d, docLabel);
+    logActivity(d.id, `Document uploaded: ${docLabel}`);
     toast('Document uploaded.');
     await refresh(false);
   }catch(ex){ err(ex); }
