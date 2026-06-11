@@ -191,11 +191,39 @@
       footer p{text-align:center}
     }
     @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+    /* ── ONBOARDING ── */
+    .ob-label{font-size:0.62rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:8px}
+    .ob-progress{display:flex;gap:6px;margin-bottom:28px}
+    .ob-step{flex:1;height:3px;background:rgba(255,255,255,0.12);border-radius:2px;transition:background 0.3s}
+    .ob-step.done{background:var(--blue)}
+    .ob-step.active{background:var(--blue-light)}
+    .proj-select{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 28px}
+    .proj-type-btn{background:var(--charcoal);border:1px solid rgba(90,138,255,0.18);color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;font-size:0.76rem;font-weight:500;padding:14px 12px;cursor:pointer;transition:all 0.2s;text-align:left;line-height:1.4}
+    .proj-type-btn:hover{border-color:rgba(90,138,255,0.5);color:var(--white)}
+    .proj-type-btn.selected{border-color:var(--blue-light);background:rgba(26,61,181,0.28);color:var(--white)}
+
+    /* ── DOCUMENT PREVIEW ── */
+    .preview-content{font-size:0.82rem;line-height:1.7;color:var(--black)}
+    .preview-content h4{font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;color:var(--black);margin:18px 0 8px;padding-top:18px;border-top:1px solid var(--light-grey)}
+    .preview-content h4:first-child{margin-top:0;padding-top:0;border-top:none}
+    .preview-content table{width:100%;border-collapse:collapse;margin:8px 0;font-size:0.78rem}
+    .preview-content th{background:var(--black-soft);color:rgba(255,255,255,0.7);padding:8px 10px;text-align:left;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;font-weight:600}
+    .preview-content td{padding:8px 10px;border-bottom:1px solid var(--light-grey);color:#3a4560;vertical-align:top}
+    .preview-content .total-row td{background:var(--black-soft);color:var(--white);font-weight:600}
+    .preview-content .field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+    .preview-content .field{background:var(--offwhite);padding:10px 12px;border-left:2px solid var(--blue-pale)}
+    .preview-content .field label{display:block;font-size:0.59rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey);margin-bottom:3px}
+    .preview-content .field span{color:#aaa;font-style:italic}
+    .preview-content .note{background:rgba(26,61,181,0.06);border-left:3px solid var(--blue);padding:11px 14px;font-size:0.78rem;color:var(--blue-dark);margin:10px 0}
+    .preview-content .warn{background:rgba(196,69,69,0.06);border-left:3px solid var(--red);padding:11px 14px;font-size:0.78rem;color:#8b3030;margin:10px 0}
+    .preview-content .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .preview-content p.eg{background:var(--offwhite);padding:12px 14px;font-style:italic;color:var(--mid-grey);font-size:0.8rem;margin:8px 0;line-height:1.65}
   </style>
 </head>
 <body>
 
-<div class="loading-veil" id="veil">Connecting&hellip;</div>
+<div class="loading-veil" id="veil" style="display:none">Connecting&hellip;</div>
 
 <!-- NAV -->
 <nav>
@@ -231,7 +259,7 @@
 </div>
 
 <!-- ══════ AUTH ══════ -->
-<div id="page-auth" class="page">
+<div id="page-auth" class="page active">
   <div class="auth-page">
     <div class="hero-glow"></div>
     <div class="auth-card">
@@ -255,6 +283,57 @@
         New here? <button onclick="setAuthMode('signup')">Create an account</button>
         &nbsp;&middot;&nbsp; <button onclick="forgotPassword()">Forgot password?</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ ONBOARD STEP 2 ══════ -->
+<div id="page-onboard2" class="page">
+  <div class="auth-page">
+    <div class="hero-glow"></div>
+    <div class="auth-card">
+      <div class="ob-label">Step 2 of 3</div>
+      <div class="ob-progress"><div class="ob-step done"></div><div class="ob-step active"></div><div class="ob-step"></div></div>
+      <h2>About <em>you.</em></h2>
+      <p class="a-sub">A few more details to set up your deal room.</p>
+      <div class="auth-msg" id="ob2-msg"></div>
+      <div class="auth-field">
+        <label for="ob-phone">Phone Number</label>
+        <input id="ob-phone" type="tel" placeholder="+1 (555) 000-0000"/>
+      </div>
+      <div class="auth-field">
+        <label for="ob-position">Your Title / Position</label>
+        <input id="ob-position" placeholder="e.g. Managing Partner, CEO, Principal"/>
+      </div>
+      <div class="auth-field">
+        <label for="ob-company">Company Name</label>
+        <input id="ob-company" placeholder="e.g. Riverside Capital Group"/>
+      </div>
+      <button class="btn-primary wide" id="ob2-btn" onclick="submitOnboard2()">Continue &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ ONBOARD STEP 3 ══════ -->
+<div id="page-onboard3" class="page">
+  <div class="auth-page">
+    <div class="hero-glow"></div>
+    <div class="auth-card" style="max-width:520px">
+      <div class="ob-label">Step 3 of 3</div>
+      <div class="ob-progress"><div class="ob-step done"></div><div class="ob-step done"></div><div class="ob-step active"></div></div>
+      <h2>What are you <em>building?</em></h2>
+      <p class="a-sub">Select all project types that apply. You can update this later.</p>
+      <div class="proj-select">
+        <button class="proj-type-btn" data-type="Multifamily" onclick="toggleProjType(this)">🏢 Multifamily</button>
+        <button class="proj-type-btn" data-type="Data Center" onclick="toggleProjType(this)">💻 Data Center</button>
+        <button class="proj-type-btn" data-type="Nuclear / Energy" onclick="toggleProjType(this)">⚡ Nuclear / Energy</button>
+        <button class="proj-type-btn" data-type="Industrial" onclick="toggleProjType(this)">🏭 Industrial</button>
+        <button class="proj-type-btn" data-type="Mixed-Use" onclick="toggleProjType(this)">🏙️ Mixed-Use</button>
+        <button class="proj-type-btn" data-type="Hospitality" onclick="toggleProjType(this)">🏨 Hospitality</button>
+        <button class="proj-type-btn" data-type="Land / Development" onclick="toggleProjType(this)">🌱 Land / Development</button>
+        <button class="proj-type-btn" data-type="Other" onclick="toggleProjType(this)">📋 Other</button>
+      </div>
+      <button class="btn-primary wide" id="ob3-btn" onclick="submitOnboard3()">Enter My Portal &rarr;</button>
     </div>
   </div>
 </div>
@@ -347,6 +426,19 @@
     <div class="modal-actions">
       <button class="btn-quiet" onclick="closeModal()">Cancel</button>
       <button class="btn-primary" id="create-btn" onclick="createDeal()">Create Deal Room</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ PREVIEW MODAL ══════ -->
+<div class="modal-back" id="modal-preview">
+  <div class="modal" style="max-width:780px;max-height:82vh;overflow-y:auto">
+    <h3 id="preview-title">Document Preview</h3>
+    <p class="m-sub" id="preview-sub"></p>
+    <hr style="margin:16px 0;border:none;border-top:1px solid var(--light-grey)"/>
+    <div id="preview-body" class="preview-content"></div>
+    <div class="modal-actions">
+      <button class="btn-quiet" onclick="closePreview()">Close</button>
     </div>
   </div>
 </div>
@@ -536,24 +628,31 @@ function ensureLibrary(){
   });
 }
 
+function withTimeout(promise, ms){
+  return Promise.race([promise, new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')),ms))]);
+}
+
 async function boot(user){
   me = user;
   veil(true, 'Loading your portal\u2026');
   try{
-    /* profile row is created by a DB trigger at signup; retry once if it races us */
-    let p = await supa.from('profiles').select('*').eq('id', user.id).maybeSingle();
+    let p = await withTimeout(supa.from('profiles').select('*').eq('id', user.id).maybeSingle(), 6000);
     if(!p.data){ await new Promise(r=>setTimeout(r,1200));
-      p = await supa.from('profiles').select('*').eq('id', user.id).maybeSingle(); }
+      p = await withTimeout(supa.from('profiles').select('*').eq('id', user.id).maybeSingle(), 6000); }
     profile = p.data || {id:user.id, role:'borrower', full_name:''};
     renderNav();
-    await refresh(false);
+    await withTimeout(refresh(false), 6000);
   }catch(e){
     profile = {id:user.id, role:'borrower', full_name:me.email||''};
     renderNav();
-    toast('Could not load portal data: '+(e.message||'connection error')+'. Try refreshing.', true);
+    if(e.message !== 'timeout') toast('Could not load portal data: '+(e.message||'connection error')+'. Try refreshing.', true);
   }finally{
     veil(false);
-    route('home');
+    if(!isAdmin() && profile && !profile.phone && !profile.position){
+      showOnly('page-onboard2');
+    } else {
+      route('home');
+    }
   }
 }
 
@@ -824,6 +923,7 @@ function renderChecklist(d){
             ? `<button class="pill ${it.status}" style="border:none;cursor:pointer;font-family:'Inter',sans-serif" onclick="cycleStatus('${it.id}')" title="Click to advance status">${STATUS_LABEL[it.status]}</button>`
             : `<span class="pill ${it.status}">${STATUS_LABEL[it.status]}</span>`}
           <div class="doc-actions">
+            ${DOCUMENT_PREVIEWS[it.doc_name]?`<button class="btn-quiet" onclick="showPreview(${JSON.stringify(it.doc_name)})">View Template</button>`:''}
             <button class="btn-quiet" onclick="pickFile('${it.id}')">Upload</button>
           </div>
         </div>`;
@@ -919,6 +1019,340 @@ function exportPacket(){
 }
 
 document.getElementById('modal-new').addEventListener('click', e=>{ if(e.target.id==='modal-new') closeModal(); });
+document.getElementById('modal-preview').addEventListener('click', e=>{ if(e.target.id==='modal-preview') closePreview(); });
+
+/* ───────── ONBOARDING ───────── */
+function toggleProjType(btn){ btn.classList.toggle('selected'); }
+
+async function submitOnboard2(){
+  const phone    = document.getElementById('ob-phone').value.trim();
+  const position = document.getElementById('ob-position').value.trim();
+  const company  = document.getElementById('ob-company').value.trim();
+  const btn = document.getElementById('ob2-btn'); btn.disabled = true;
+  const {error} = await supa.from('profiles').update({phone, position, company}).eq('id', me.id);
+  btn.disabled = false;
+  if(error){ const m=document.getElementById('ob2-msg'); m.textContent=error.message; m.className='auth-msg err'; return; }
+  if(profile){ profile.phone=phone; profile.position=position; profile.company=company; }
+  showOnly('page-onboard3');
+}
+
+async function submitOnboard3(){
+  const selected = [...document.querySelectorAll('.proj-type-btn.selected')].map(b=>b.dataset.type);
+  const btn = document.getElementById('ob3-btn'); btn.disabled = true;
+  if(selected.length) await supa.from('profiles').update({project_interests: selected.join(', ')}).eq('id', me.id);
+  btn.disabled = false;
+  route('home');
+}
+
+/* ───────── DOCUMENT PREVIEWS ───────── */
+const DOCUMENT_PREVIEWS = {
+
+'Personal Financial Statement (PFS)':{
+  sub:'A complete snapshot of your personal assets, liabilities, and net worth. Required by virtually every lender.',
+  html:`<div class="note">Must be current within 90 days of submission. Sign and date. All amounts in USD.</div>
+<div class="field-row"><div class="field"><label>Statement Date</label><span>[Current Date]</span></div><div class="field"><label>Borrower Full Legal Name</label><span>[Your Name]</span></div></div>
+<h4>Assets</h4>
+<table><tr><th>Category</th><th>Estimated Value</th></tr>
+<tr><td>Cash &amp; Checking Accounts</td><td>$_______</td></tr>
+<tr><td>Savings / Money Market</td><td>$_______</td></tr>
+<tr><td>Stocks, Bonds &amp; Mutual Funds</td><td>$_______</td></tr>
+<tr><td>Real Estate (Market Value, all properties)</td><td>$_______</td></tr>
+<tr><td>Business Interests / Equity</td><td>$_______</td></tr>
+<tr><td>Retirement Accounts (IRA, 401k, etc.)</td><td>$_______</td></tr>
+<tr><td>Vehicles &amp; Personal Property</td><td>$_______</td></tr>
+<tr><td>Other Assets</td><td>$_______</td></tr>
+<tr class="total-row"><td>TOTAL ASSETS</td><td>$_______</td></tr></table>
+<h4>Liabilities</h4>
+<table><tr><th>Category</th><th>Balance Owed</th><th>Monthly Payment</th></tr>
+<tr><td>Primary Residence Mortgage</td><td>$_______</td><td>$_______/mo</td></tr>
+<tr><td>Investment Property Mortgages</td><td>$_______</td><td>$_______/mo</td></tr>
+<tr><td>Auto Loans</td><td>$_______</td><td>$_______/mo</td></tr>
+<tr><td>Credit Card Balances</td><td>$_______</td><td>$_______/mo</td></tr>
+<tr><td>Student Loans</td><td>$_______</td><td>$_______</td></tr>
+<tr><td>Business Loans / Lines of Credit</td><td>$_______</td><td>$_______/mo</td></tr>
+<tr><td>Other Liabilities</td><td>$_______</td><td>$_______/mo</td></tr>
+<tr class="total-row"><td>TOTAL LIABILITIES</td><td>$_______</td><td>$_______/mo</td></tr></table>
+<h4>Net Worth</h4>
+<table><tr class="total-row"><td>NET WORTH (Total Assets − Total Liabilities)</td><td colspan="2">$_______</td></tr></table>
+<div class="field-row" style="margin-top:16px"><div class="field"><label>Signature</label><span>______________________</span></div><div class="field"><label>Date</label><span>______________________</span></div></div>`
+},
+
+'Schedule of Real Estate Owned (REO)':{
+  sub:'A complete list of every real property you own or have an ownership interest in — including primary residence.',
+  html:`<div class="note">List every property, including those held by an entity you control. Leave blank rows for properties not owned.</div>
+<table><tr><th>Property Address</th><th>Type</th><th>Market Value</th><th>Mortgage Balance</th><th>Monthly Rent</th><th>Payment/mo</th><th>Equity</th></tr>
+<tr><td>123 Main St, Austin TX</td><td>SFR</td><td>$450,000</td><td>$280,000</td><td>$2,400</td><td>$1,850</td><td>$170,000</td></tr>
+<tr><td>456 Oak Ave, Dallas TX</td><td>Multifamily 4u</td><td>$620,000</td><td>$390,000</td><td>$5,200</td><td>$2,800</td><td>$230,000</td></tr>
+<tr><td>[Address]</td><td>[Type]</td><td>$_____</td><td>$_____</td><td>$_____</td><td>$_____</td><td>$_____</td></tr>
+<tr class="total-row"><td colspan="2">TOTALS</td><td>$_____</td><td>$_____</td><td>$_____</td><td>$_____</td><td>$_____</td></tr></table>
+<div class="warn">Common mistake: listing market value without subtracting the mortgage. Equity = Market Value − Mortgage Balance.</div>`
+},
+
+'Current Rent Roll':{
+  sub:'Unit-by-unit breakdown of all tenants, rents, and lease dates — must reflect the current month.',
+  html:`<div class="note">Export from property management software (AppFolio, Yardi, Buildium) or create in Excel. Include all units — occupied and vacant.</div>
+<table><tr><th>Unit</th><th>Tenant</th><th>Lease Start</th><th>Lease End</th><th>Contracted Rent</th><th>Collected</th><th>Status</th></tr>
+<tr><td>101</td><td>John Smith</td><td>01/01/2025</td><td>12/31/2025</td><td>$1,450</td><td>$1,450</td><td>Current</td></tr>
+<tr><td>102</td><td>Maria Garcia</td><td>03/01/2025</td><td>02/28/2026</td><td>$1,500</td><td>$1,500</td><td>Current</td></tr>
+<tr><td>103</td><td>VACANT</td><td>—</td><td>—</td><td>$1,475 (market)</td><td>$0</td><td>Vacant</td></tr>
+<tr><td>104</td><td>David Lee</td><td>06/01/2024</td><td>05/31/2025</td><td>$1,425</td><td>$1,425</td><td>MTM</td></tr>
+<tr class="total-row"><td colspan="4">TOTALS</td><td>$5,850 GPR</td><td>$4,375</td><td>75% Occ.</td></tr></table>
+<div class="field-row"><div class="field"><label>Total Units</label><span>[e.g. 24]</span></div><div class="field"><label>Gross Potential Rent</label><span>$_______/mo</span></div><div class="field"><label>Occupied Units</label><span>[e.g. 21]</span></div><div class="field"><label>Physical Occupancy</label><span>[e.g. 87.5%]</span></div></div>`
+},
+
+'T-12 Operating Statement':{
+  sub:'Trailing 12 months of actual income and operating expenses — the most important document for NOI analysis.',
+  html:`<div class="note">Export from QuickBooks, AppFolio, or Yardi. Must show month-by-month columns plus a total. Use actual figures — not estimates.</div>
+<table><tr><th>Line Item</th><th>Jan</th><th>Feb</th><th>Mar</th><th>...</th><th>12-Mo Total</th></tr>
+<tr><td colspan="6" style="font-weight:600;background:var(--offwhite)">INCOME</td></tr>
+<tr><td>Gross Potential Rent</td><td>$12,000</td><td>$12,000</td><td>$12,000</td><td>...</td><td>$144,000</td></tr>
+<tr><td>Vacancy Loss</td><td>($600)</td><td>($900)</td><td>($600)</td><td>...</td><td>($8,400)</td></tr>
+<tr><td>Other Income</td><td>$180</td><td>$180</td><td>$200</td><td>...</td><td>$2,160</td></tr>
+<tr><td><strong>Effective Gross Income</strong></td><td>$11,580</td><td>$11,280</td><td>$11,600</td><td>...</td><td>$137,760</td></tr>
+<tr><td colspan="6" style="font-weight:600;background:var(--offwhite)">OPERATING EXPENSES</td></tr>
+<tr><td>Property Taxes</td><td>$980</td><td>$980</td><td>$980</td><td>...</td><td>$11,760</td></tr>
+<tr><td>Insurance</td><td>$320</td><td>$320</td><td>$320</td><td>...</td><td>$3,840</td></tr>
+<tr><td>Utilities</td><td>$450</td><td>$510</td><td>$420</td><td>...</td><td>$5,400</td></tr>
+<tr><td>Property Management (8%)</td><td>$926</td><td>$902</td><td>$928</td><td>...</td><td>$11,021</td></tr>
+<tr><td>Maintenance &amp; Repairs</td><td>$380</td><td>$640</td><td>$290</td><td>...</td><td>$5,100</td></tr>
+<tr><td>Total Operating Expenses</td><td>$3,056</td><td>$3,352</td><td>$2,938</td><td>...</td><td>$37,121</td></tr>
+<tr class="total-row"><td>NET OPERATING INCOME (NOI)</td><td>$8,524</td><td>$7,928</td><td>$8,662</td><td>...</td><td>$100,639</td></tr></table>`
+},
+
+'Pro Forma':{
+  sub:'Stabilized income and expense projections — your vision of what the property produces at full performance.',
+  html:`<div class="note">Pro Forma is forward-looking. State your assumptions clearly — lenders will compare this to the T-12 and ask about every difference.</div>
+<div class="field-row"><div class="field"><label>Property Address</label><span>[Address]</span></div><div class="field"><label>Stabilized Date</label><span>[e.g. Q3 2026]</span></div><div class="field"><label>Total Units</label><span>[e.g. 24]</span></div><div class="field"><label>Target Occupancy</label><span>[e.g. 93%]</span></div></div>
+<h4>Stabilized Income (Annual)</h4>
+<table><tr><th>Income Line</th><th>Monthly</th><th>Annual</th><th>Assumption</th></tr>
+<tr><td>Gross Potential Rent</td><td>$14,400</td><td>$172,800</td><td>$600/unit avg after reno</td></tr>
+<tr><td>Vacancy &amp; Credit Loss (7%)</td><td>($1,008)</td><td>($12,096)</td><td>Market vacancy assumption</td></tr>
+<tr><td>Other Income</td><td>$240</td><td>$2,880</td><td>Laundry, pet fees</td></tr>
+<tr class="total-row"><td>Effective Gross Income</td><td>$13,632</td><td>$163,584</td><td></td></tr></table>
+<h4>Stabilized Expenses (Annual)</h4>
+<table><tr><th>Expense Line</th><th>Monthly</th><th>Annual</th><th>% of EGI</th></tr>
+<tr><td>Property Taxes</td><td>$1,050</td><td>$12,600</td><td>7.7%</td></tr>
+<tr><td>Insurance</td><td>$380</td><td>$4,560</td><td>2.8%</td></tr>
+<tr><td>Utilities</td><td>$480</td><td>$5,760</td><td>3.5%</td></tr>
+<tr><td>Property Management (8%)</td><td>$1,091</td><td>$13,087</td><td>8.0%</td></tr>
+<tr><td>Maintenance &amp; Repairs</td><td>$480</td><td>$5,760</td><td>3.5%</td></tr>
+<tr><td>Capital Reserves ($100/unit)</td><td>$200</td><td>$2,400</td><td>1.5%</td></tr>
+<tr class="total-row"><td>Total Operating Expenses</td><td>$3,681</td><td>$44,167</td><td>27%</td></tr></table>
+<table style="margin-top:4px"><tr class="total-row"><td>NET OPERATING INCOME (NOI)</td><td>$9,951/mo</td><td>$119,417/yr</td><td>73% margin</td></tr></table>
+<div class="field-row" style="margin-top:12px"><div class="field"><label>Cap Rate at Ask Price</label><span>NOI ÷ Purchase Price</span></div><div class="field"><label>Projected DSCR</label><span>NOI ÷ Annual Debt Service</span></div></div>`
+},
+
+'CapEx / Renovation Budget':{
+  sub:'Detailed scope and cost estimate for all planned improvements — line by line, with contingency.',
+  html:`<div class="note">Get contractor bids where possible. Include a 10% contingency. Lenders want to see that you have thought through the full scope — not just a rough guess.</div>
+<div class="field-row"><div class="field"><label>Property Address</label><span>[Address]</span></div><div class="field"><label>Total Units</label><span>[e.g. 24]</span></div><div class="field"><label>Start Date</label><span>[Expected]</span></div><div class="field"><label>Duration</label><span>[e.g. 8 months]</span></div></div>
+<h4>Scope of Work</h4>
+<table><tr><th>Category</th><th>Description</th><th>Unit Cost</th><th>Qty</th><th>Total</th></tr>
+<tr><td>Kitchen Remodel</td><td>Cabinets, counters, appliances</td><td>$4,500</td><td>24 units</td><td>$108,000</td></tr>
+<tr><td>Bathroom Remodel</td><td>Vanity, tile, fixtures</td><td>$2,800</td><td>24 units</td><td>$67,200</td></tr>
+<tr><td>Flooring</td><td>LVP throughout (~800 sf avg)</td><td>$3.50/sf</td><td>19,200 sf</td><td>$67,200</td></tr>
+<tr><td>Interior Paint</td><td>Full repaint, all units</td><td>$1,200</td><td>24 units</td><td>$28,800</td></tr>
+<tr><td>Exterior</td><td>Roof repair, siding, parking lot</td><td>—</td><td>—</td><td>$45,000</td></tr>
+<tr><td>Common Areas</td><td>Lobby, laundry, landscaping</td><td>—</td><td>—</td><td>$22,000</td></tr>
+<tr><td>HVAC / Mechanical</td><td>Unit replacements as needed</td><td>—</td><td>—</td><td>$18,000</td></tr>
+<tr><td>Contingency (10%)</td><td></td><td></td><td></td><td>$35,620</td></tr>
+<tr class="total-row"><td colspan="4">TOTAL CAPEX</td><td>$391,820</td></tr></table>
+<div class="field-row"><div class="field"><label>Cost Per Unit</label><span>$[Total ÷ Units]</span></div><div class="field"><label>Projected Rent Bump</label><span>+$[Delta]/unit/mo</span></div></div>`
+},
+
+'Sources & Uses':{
+  sub:'The complete capital stack — where every dollar comes from and exactly where it goes. Sources must equal Uses.',
+  html:`<div class="warn">Sources must equal Uses exactly — to the dollar. This is the first thing most lenders check. A mismatch signals an unprepared borrower.</div>
+<div class="field-row"><div class="field"><label>Deal Name</label><span>[Property / Project Name]</span></div><div class="field"><label>Date Prepared</label><span>[Date]</span></div><div class="field"><label>Prepared By</label><span>[Your Name / Company]</span></div><div class="field"><label>Total Capitalization</label><span>$[Must match both tables]</span></div></div>
+<div class="two-col">
+<div><h4>Sources</h4>
+<table><tr><th>Source</th><th>Amount</th><th>%</th></tr>
+<tr><td>Senior Debt (1st Lien)</td><td>$7,800,000</td><td>65%</td></tr>
+<tr><td>Mezzanine / Pref. Equity</td><td>$1,200,000</td><td>10%</td></tr>
+<tr><td>Sponsor Equity</td><td>$2,400,000</td><td>20%</td></tr>
+<tr><td>Other (grants, seller carry)</td><td>$600,000</td><td>5%</td></tr>
+<tr class="total-row"><td>TOTAL SOURCES</td><td>$12,000,000</td><td>100%</td></tr></table></div>
+<div><h4>Uses</h4>
+<table><tr><th>Use</th><th>Amount</th><th>%</th></tr>
+<tr><td>Purchase Price</td><td>$9,200,000</td><td>77%</td></tr>
+<tr><td>Closing Costs &amp; Fees</td><td>$380,000</td><td>3%</td></tr>
+<tr><td>Renovation / CapEx</td><td>$1,600,000</td><td>13%</td></tr>
+<tr><td>Interest Reserves</td><td>$480,000</td><td>4%</td></tr>
+<tr><td>Working Capital Reserve</td><td>$340,000</td><td>3%</td></tr>
+<tr class="total-row"><td>TOTAL USES</td><td>$12,000,000</td><td>100%</td></tr></table></div>
+</div>`
+},
+
+'Executive Summary / OM':{
+  sub:'A one-to-two page narrative that gives lenders the full picture before they read anything else.',
+  html:`<div class="note">This is the first thing a lender reads. Answer: What is this? Where is it? What are you raising? Why will it work?</div>
+<div class="field-row"><div class="field"><label>Deal Name</label><span>[Project / Property Name]</span></div><div class="field"><label>Asset Type</label><span>[e.g. 24-Unit Multifamily]</span></div><div class="field"><label>Location</label><span>[City, State]</span></div><div class="field"><label>Capital Raise</label><span>$[Amount]</span></div></div>
+<h4>The Opportunity (2–4 sentences)</h4>
+<p class="eg">Example: "We are acquiring a 24-unit value-add multifamily property in Austin, TX at a 5.8% going-in cap rate. The property is 79% occupied with below-market rents averaging $220/unit below current market. Through a $391,000 interior renovation completed over 8 months, we project $1,595/unit average rents, 93% occupancy, a stabilized NOI of $119,417, and a 5-year IRR of 18.3%."</p>
+<h4>Deal Highlights</h4>
+<table><tr><th>Metric</th><th>Value</th></tr>
+<tr><td>Purchase Price</td><td>$[Price]</td></tr>
+<tr><td>Price Per Unit</td><td>$[Price ÷ Units]</td></tr>
+<tr><td>Going-In Cap Rate</td><td>[X]%</td></tr>
+<tr><td>Stabilized Cap Rate</td><td>[X]%</td></tr>
+<tr><td>Loan-to-Cost (LTC)</td><td>[X]%</td></tr>
+<tr><td>Projected DSCR (stabilized)</td><td>[X.Xx]</td></tr>
+<tr><td>Projected 5-Year IRR</td><td>[X]%</td></tr>
+<tr><td>Hold Period</td><td>[X] years</td></tr></table>
+<h4>Sponsor Background (2–3 sentences)</h4>
+<div class="field" style="margin:0"><label>Include</label><span>Years of experience · total deal volume · most relevant exits · key team members</span></div>`
+},
+
+'Broker Price Opinion (BPO)':{
+  sub:'A licensed real estate professional\'s written opinion of the property\'s current market value, with comparable sales.',
+  html:`<div class="warn">A BPO must be prepared by a licensed real estate agent or broker — not the borrower. This shows what the document should contain when you receive it.</div>
+<div class="field-row"><div class="field"><label>Property Address</label><span>[Subject Property]</span></div><div class="field"><label>BPO Date</label><span>[Within 90 days]</span></div><div class="field"><label>Prepared By</label><span>[Licensed Agent + License #]</span></div><div class="field"><label>Brokerage</label><span>[Brokerage Name]</span></div></div>
+<h4>Subject Property Details</h4>
+<table><tr><th>Detail</th><th>Value</th></tr>
+<tr><td>Property Type</td><td>[SFR / Multifamily / Commercial]</td></tr>
+<tr><td>Year Built</td><td>[Year]</td></tr>
+<tr><td>Square Footage</td><td>[Total SF]</td></tr>
+<tr><td>Lot Size</td><td>[Acres / SF]</td></tr>
+<tr><td>Current Condition</td><td>[Good / Fair / Poor]</td></tr>
+<tr><td>Current Occupancy</td><td>[X]%</td></tr></table>
+<h4>Comparable Sales (3 minimum)</h4>
+<table><tr><th>Address</th><th>Sold</th><th>Sale Price</th><th>SF</th><th>Price/SF</th><th>Adjustment</th></tr>
+<tr><td>[Comp 1]</td><td>[Date]</td><td>$[Price]</td><td>[SF]</td><td>$[$/SF]</td><td>$[+/-]</td></tr>
+<tr><td>[Comp 2]</td><td>[Date]</td><td>$[Price]</td><td>[SF]</td><td>$[$/SF]</td><td>$[+/-]</td></tr>
+<tr><td>[Comp 3]</td><td>[Date]</td><td>$[Price]</td><td>[SF]</td><td>$[$/SF]</td><td>$[+/-]</td></tr></table>
+<h4>Opinion of Value</h4>
+<table><tr class="total-row"><td>As-Is Market Value</td><td>$_______</td></tr><tr class="total-row"><td>After-Repair Value (ARV)</td><td>$_______</td></tr></table>`
+},
+
+'Market Comps / Survey':{
+  sub:'Comparable rental and sales data proving your projected rents are achievable in this market.',
+  html:`<div class="note">Use CoStar, Apartments.com, Zillow, or LoopNet. Show the lender that comparable properties are actually charging what you're projecting.</div>
+<h4>Rent Comparables</h4>
+<table><tr><th>Property / Address</th><th>Units</th><th>Unit Type</th><th>SF</th><th>Asking Rent</th><th>Occupancy</th><th>Distance</th></tr>
+<tr><td>[Comp 1]</td><td>32</td><td>1BD/1BA</td><td>650</td><td>$1,550/mo</td><td>96%</td><td>0.4 mi</td></tr>
+<tr><td>[Comp 2]</td><td>18</td><td>1BD/1BA</td><td>680</td><td>$1,595/mo</td><td>94%</td><td>0.8 mi</td></tr>
+<tr><td>[Comp 3]</td><td>48</td><td>2BD/1BA</td><td>890</td><td>$1,850/mo</td><td>91%</td><td>1.2 mi</td></tr>
+<tr class="total-row"><td colspan="4">Market Average</td><td>$1,650/mo</td><td>93.7%</td><td></td></tr></table>
+<h4>Subject Property Positioning</h4>
+<div class="field-row"><div class="field"><label>Current Avg Rent</label><span>$[Current]/mo</span></div><div class="field"><label>Projected Avg Rent</label><span>$[Projected]/mo</span></div><div class="field"><label>Market Average</label><span>$[Market]/mo</span></div><div class="field"><label>Upside to Market</label><span>+$[Delta]/unit/mo</span></div></div>`
+},
+
+'Credit Authorization':{
+  sub:'A signed form authorizing the lender to pull your personal credit report.',
+  html:`<div class="note">Most lenders have their own version of this form. This is the minimum information required. Your lender may provide their specific form to sign instead.</div>
+<div style="border:1px solid var(--light-grey);padding:24px;font-size:0.83rem;line-height:1.9;color:var(--black)">
+<p style="text-align:center;font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;margin-bottom:16px">CREDIT REPORT AUTHORIZATION</p>
+<p>I/We, the undersigned, authorize <strong>[Lender Name]</strong> and its agents to conduct a comprehensive review of my/our personal credit profile and obtain a credit report for the purpose of evaluating a loan application. This authorization is valid for 90 days from the date of signature.</p>
+<div class="field-row" style="margin-top:16px">
+<div class="field"><label>Full Legal Name</label><span>[Print Name]</span></div>
+<div class="field"><label>Social Security Number</label><span>XXX-XX-[Last 4]</span></div>
+<div class="field"><label>Date of Birth</label><span>__/__/____</span></div>
+<div class="field"><label>Current Address</label><span>[Address]</span></div>
+</div>
+<div class="field-row" style="margin-top:16px">
+<div class="field"><label>Signature</label><span>______________________</span></div>
+<div class="field"><label>Date</label><span>______________________</span></div>
+</div></div>`
+},
+
+'Sponsor Bio / Track Record':{
+  sub:'Your professional summary and history of past deals — tells the lender who they are actually lending to.',
+  html:`<div class="note">Write in third person. Be specific — include dollar amounts, unit counts, exit timelines. "Extensive experience" means nothing without numbers.</div>
+<div class="field-row"><div class="field"><label>Sponsor Name</label><span>[Full Name]</span></div><div class="field"><label>Title</label><span>[Managing Partner / Principal / CEO]</span></div><div class="field"><label>Company</label><span>[Company Name]</span></div><div class="field"><label>Years in Real Estate</label><span>[X] years</span></div></div>
+<h4>Professional Summary (2–3 paragraphs)</h4>
+<p class="eg">Example: "[Name] is the Managing Partner of [Company], a vertically integrated real estate firm based in Austin, TX. Over 12 years, [Name] has acquired, renovated, and stabilized over $48M in multifamily assets across Texas and Colorado, comprising 340+ units. The firm specializes in workforce housing value-add plays in high-growth secondary markets."</p>
+<h4>Track Record — Prior Transactions</h4>
+<table><tr><th>Property / City</th><th>Type</th><th>Units</th><th>Acquired</th><th>Exited</th><th>Return</th></tr>
+<tr><td>[Deal Name, City]</td><td>Multifamily</td><td>32</td><td>2021</td><td>2024</td><td>22% IRR</td></tr>
+<tr><td>[Deal Name, City]</td><td>Multifamily</td><td>18</td><td>2020</td><td>2023</td><td>$2.1M profit</td></tr>
+<tr><td>[Deal Name, City]</td><td>Commercial</td><td>—</td><td>2019</td><td>2022</td><td>1.8x equity</td></tr></table>
+<h4>Key Team Members</h4>
+<table><tr><th>Name</th><th>Role</th><th>Background</th></tr>
+<tr><td>[Name]</td><td>Asset Manager</td><td>[Brief background]</td></tr>
+<tr><td>[Name]</td><td>Construction Manager</td><td>[Brief background]</td></tr></table>`
+},
+
+'Personal Tax Returns':{
+  sub:'Most recent 2–3 years of complete personal federal tax returns with all schedules.',
+  html:`<div class="warn">Tax returns are IRS documents — there is no template. Submit your actual filed returns. This guide explains what the lender reviews.</div>
+<div class="note">Submit Form 1040 with ALL schedules. Do not remove pages. Most critical schedules for real estate investors: Schedule E (rental income) and Schedule C (business income).</div>
+<h4>What Lenders Examine</h4>
+<table><tr><th>Document</th><th>Why Lenders Review It</th></tr>
+<tr><td>Form 1040 (Page 1 &amp; 2)</td><td>AGI, total tax liability, filing status</td></tr>
+<tr><td>Schedule E</td><td>Rental income / losses across all properties</td></tr>
+<tr><td>Schedule C</td><td>Business income / loss — if self-employed</td></tr>
+<tr><td>Schedule B</td><td>Interest and dividend income — investment assets</td></tr>
+<tr><td>K-1 Forms</td><td>Partnership / S-Corp income distributions</td></tr>
+<tr><td>W-2s</td><td>Employment income verification</td></tr></table>
+<div class="field-row"><div class="field"><label>Years Required</label><span>Most recent 2–3 tax years</span></div><div class="field"><label>Extension Filed?</label><span>Submit extension + prior year</span></div></div>`
+},
+
+'Entity Documents':{
+  sub:'Legal formation documents for the LLC, LP, or corporation taking title or guaranteeing the loan.',
+  html:`<div class="warn">These are legal documents from your attorney or state filing office — not something you create yourself. This guide tells you what to gather.</div>
+<div class="note">Required when the borrowing entity differs from the personal guarantor. Make sure your entity is in Good Standing before applying.</div>
+<h4>Documents to Gather</h4>
+<table><tr><th>Document</th><th>Where to Get It</th><th>Required</th></tr>
+<tr><td>Articles of Organization (LLC) or Incorporation (Corp)</td><td>State Secretary of State</td><td>Always</td></tr>
+<tr><td>Operating Agreement (LLC) or Bylaws (Corp)</td><td>Your attorney / formation records</td><td>Always</td></tr>
+<tr><td>EIN Letter (IRS Form CP-575 or 147C)</td><td>IRS.gov or your CPA</td><td>Always</td></tr>
+<tr><td>Certificate of Good Standing</td><td>State Secretary of State (order online)</td><td>Usually</td></tr>
+<tr><td>Certificate of Formation</td><td>State where entity was formed</td><td>Sometimes</td></tr></table>
+<div class="warn">Lapsed entity status is a common cause of loan delays. Verify Good Standing before you submit your package.</div>`
+},
+
+'Bank / Liquidity Statements':{
+  sub:'Most recent 2–3 months of all bank and brokerage account statements showing your available reserves.',
+  html:`<div class="warn">Do not alter, redact, or screenshot statements. Submit complete PDFs downloaded directly from your bank — all pages, even blank ones. Lenders verify authenticity.</div>
+<h4>What Lenders Are Verifying</h4>
+<table><tr><th>What They Check</th><th>Why It Matters</th></tr>
+<tr><td>Available cash balance</td><td>Enough for down payment + reserves + closing costs?</td></tr>
+<tr><td>Large deposits (last 60 days)</td><td>Unexplained large deposits trigger seasoning questions — be ready to document the source</td></tr>
+<tr><td>Consistency with PFS</td><td>Bank balances must match what you listed on your PFS</td></tr>
+<tr><td>No overdrafts / NSFs</td><td>Indicates financial stability and cash management</td></tr>
+<tr><td>Recurring transfers</td><td>May indicate undisclosed monthly debt obligations</td></tr></table>
+<div class="field-row"><div class="field"><label>Months Required</label><span>Most recent 2–3 months</span></div><div class="field"><label>Accounts to Include</label><span>All accounts shown on your PFS</span></div></div>`
+},
+
+'Leases & Estoppels':{
+  sub:'Executed lease agreements confirming tenant terms — and estoppel certificates signed by commercial tenants.',
+  html:`<div class="note">For residential multifamily: submit a sample lease plus any signed leases for current tenants if available. For commercial: estoppel certificates are required from each commercial tenant.</div>
+<h4>What an Estoppel Certificate Confirms</h4>
+<table><tr><th>Item</th><th>Tenant Certifies</th></tr>
+<tr><td>Lease start / end date</td><td>Confirms the term is as stated</td></tr>
+<tr><td>Monthly rent amount</td><td>Confirms no side agreements on rent</td></tr>
+<tr><td>Security deposit amount</td><td>Confirms deposit held and amount</td></tr>
+<tr><td>No landlord defaults</td><td>Confirms landlord is not in breach</td></tr>
+<tr><td>No pending disputes</td><td>Confirms no rent abatements or litigation</td></tr>
+<tr><td>Tenant signature + date</td><td>Makes document legally binding</td></tr></table>
+<div class="note">For residential properties under 5 units, lenders typically just need the executed leases, not estoppels.</div>`
+},
+
+'Environmental Report (Phase I)':{
+  sub:'Third-party environmental assessment — required by most institutional lenders for commercial and multifamily loans.',
+  html:`<div class="warn">Phase I ESAs must be prepared by a licensed environmental professional (EP) — not the borrower or broker. This guide explains what to expect.</div>
+<div class="note">A Phase I ESA follows ASTM Standard E1527-21. The report identifies Recognized Environmental Conditions (RECs) — signs of contamination that may require a Phase II (soil/groundwater testing).</div>
+<h4>What the Report Covers</h4>
+<table><tr><th>Section</th><th>Description</th></tr>
+<tr><td>Site History Review</td><td>Aerial photos, Sanborn maps, historical records of prior uses</td></tr>
+<tr><td>Government Database Search</td><td>EPA, state DEQ, underground storage tank (UST) records</td></tr>
+<tr><td>Site Inspection</td><td>Physical walkthrough by the environmental professional</td></tr>
+<tr><td>Interviews</td><td>Conversations with current occupants and local officials</td></tr>
+<tr><td>REC Opinion</td><td>Final finding: No RECs / RECs Identified / Controlled RECs</td></tr></table>
+<div class="field-row"><div class="field"><label>Typical Timeline</label><span>2–4 weeks after order</span></div><div class="field"><label>Typical Cost</label><span>$1,500 – $3,500</span></div></div>`
+},
+
+};
+
+function showPreview(docName){
+  const p = DOCUMENT_PREVIEWS[docName];
+  if(!p){ toast('No template available for this document type.'); return; }
+  document.getElementById('preview-title').textContent = docName;
+  document.getElementById('preview-sub').textContent = p.sub;
+  document.getElementById('preview-body').innerHTML = p.html;
+  document.getElementById('modal-preview').classList.add('open');
+}
+function closePreview(){ document.getElementById('modal-preview').classList.remove('open'); }
 </script>
 </body>
 </html>

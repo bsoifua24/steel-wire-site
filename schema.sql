@@ -6,12 +6,20 @@
 
 -- ── PROFILES ──
 create table if not exists profiles (
-  id          uuid references auth.users(id) on delete cascade primary key,
-  role        text not null default 'borrower' check (role in ('admin','borrower')),
-  full_name   text,
-  company     text,
-  created_at  timestamptz default now()
+  id                  uuid references auth.users(id) on delete cascade primary key,
+  role                text not null default 'borrower' check (role in ('admin','borrower')),
+  full_name           text,
+  company             text,
+  phone               text,
+  position            text,
+  project_interests   text,
+  created_at          timestamptz default now()
 );
+
+-- Add new columns if table already exists (safe to run multiple times)
+alter table profiles add column if not exists phone             text;
+alter table profiles add column if not exists position          text;
+alter table profiles add column if not exists project_interests text;
 
 -- Auto-create a profile row whenever someone signs up
 create or replace function handle_new_user()
