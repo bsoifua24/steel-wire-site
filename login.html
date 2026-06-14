@@ -460,6 +460,38 @@
     .team-member-group{margin-bottom:20px;padding:20px}
     .task-modal{max-width:90vw}
   }
+
+  /* ── DEAL REVIEW (CRM sub-tab) ── */
+  .dr-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:24px}
+  .dr-stat{background:var(--charcoal);padding:20px 24px;border-top:2px solid transparent}
+  .dr-stat.pending{border-top-color:#d97706}
+  .dr-stat.approved{border-top-color:var(--green)}
+  .dr-stat.revision{border-top-color:var(--red)}
+  .dr-stat.total{border-top-color:var(--blue-light)}
+  .dr-stat .dr-num{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:600;color:var(--white);line-height:1;margin-bottom:4px}
+  .dr-stat .dr-lbl{font-size:0.62rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+  .dr-table-wrap{background:var(--white);overflow-x:auto}
+  .dr-table{width:100%;border-collapse:collapse}
+  .dr-table thead th{font-size:0.62rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey);padding:12px 18px;text-align:left;border-bottom:2px solid var(--light-grey);white-space:nowrap}
+  .dr-table tbody tr{border-bottom:1px solid var(--light-grey);cursor:pointer;transition:background 0.15s}
+  .dr-table tbody tr:hover{background:var(--offwhite)}
+  .dr-table tbody td{padding:14px 18px;font-size:0.82rem;vertical-align:middle}
+  .dr-deal-name{font-weight:600;color:var(--black)}
+  .dr-borrower{font-size:0.76rem;color:var(--mid-grey)}
+  .dr-phase-badge{display:inline-block;font-size:0.62rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:4px 9px;background:var(--blue-pale);color:var(--blue)}
+  .dr-pending-badge{display:inline-block;font-size:0.7rem;font-weight:600;padding:3px 8px;background:#fef3c7;color:#d97706;min-width:24px;text-align:center}
+  .dr-pending-badge.zero{background:#f0fdf4;color:var(--green)}
+  .dr-pending-badge.has-revision{background:#fee2e2;color:var(--red)}
+  .dr-prog-wrap{display:flex;align-items:center;gap:8px;min-width:110px}
+  .dr-prog-outer{flex:1;height:4px;background:var(--light-grey);border-radius:2px;overflow:hidden}
+  .dr-prog-inner{height:100%;border-radius:2px;background:var(--blue)}
+  /* explicit approve/revision buttons in doc row */
+  .btn-approve{background:#16a34a;color:#fff;border:none;font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:6px 12px;cursor:pointer;transition:background 0.2s;white-space:nowrap}
+  .btn-approve:hover{background:#15803d}
+  .btn-revise{background:none;color:var(--red);border:1px solid rgba(196,69,69,0.35);font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:5px 11px;cursor:pointer;transition:border-color 0.2s,background 0.2s;white-space:nowrap}
+  .btn-revise:hover{border-color:var(--red);background:#fee2e2}
+  .doc-row-approved .d-name{color:var(--mid-grey)}
+  @media(max-width:900px){.dr-summary{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
@@ -1136,6 +1168,7 @@
             <button class="ob-view-tab active" onclick="obSwitchView('board')">Board View</button>
             <button class="ob-view-tab" onclick="obSwitchView('team')">Team View</button>
             <button class="ob-view-tab" onclick="obSwitchView('prospects')">Prospects</button>
+            <button class="ob-view-tab" onclick="obSwitchView('deals')" id="ob-deals-tab">Deal Review</button>
           </div>
         </div>
         <button class="btn-primary" onclick="obOpenCreateTask()">+ New Task</button>
@@ -1166,6 +1199,23 @@
       <!-- TEAM VIEW -->
       <div id="ob-team-view" class="team-view" style="display:none">
         <div id="team-members-list"></div>
+      </div>
+
+      <!-- DEAL REVIEW VIEW -->
+      <div id="ob-deals-view" style="display:none">
+        <div class="dr-summary" id="dr-summary"></div>
+        <div class="dr-table-wrap">
+          <table class="dr-table">
+            <thead><tr>
+              <th>Deal</th><th>Borrower</th><th>Phase</th>
+              <th>Awaiting Review</th><th>Progress</th><th></th>
+            </tr></thead>
+            <tbody id="dr-tbody"></tbody>
+          </table>
+          <div id="dr-empty" style="display:none;padding:40px;text-align:center;color:var(--mid-grey);font-size:0.88rem">
+            No deals yet — create one from the Dashboard.
+          </div>
+        </div>
       </div>
 
       <!-- PROSPECTS VIEW -->
@@ -1862,11 +1912,13 @@ function renderDetail(){
 async function setPhase(i){
   if(!isAdmin()) return;
   const d = deal(currentDealId); if(!d) return;
+  const prevPhase = d.phase;
   const {error} = await supa.from('deals').update({phase:i}).eq('id', d.id);
   if(error){ err(error); return; }
   d.phase = i; renderDetail();
   logActivity(d.id, `Phase advanced to Phase ${i+1} — ${PHASES[i]}`);
   toast('Phase set to '+PHASES[i]+'.');
+  if(i > prevPhase && d.borrower && d.borrower.email) sendPhaseEmail(d, i);
 }
 function toggleFilter(){ filterCurrentPhase=!filterCurrentPhase; renderDetail(); }
 
@@ -1882,20 +1934,23 @@ function renderChecklist(d){
       <div class="doc-group-head"><h3>${esc(gname)}</h3><span>${done}/${visible.length} approved</span></div>
       ${visible.map(it=>{
         const files = docsForItem(d, it.id);
-        return `<div class="doc-row">
+        const canAct = admin && (it.status==='uploaded'||it.status==='review');
+        const isApproved = it.status==='approved';
+        return `<div class="doc-row${isApproved?' doc-row-approved':''}">
           <div>
             <div class="d-name">${esc(it.doc_name)}</div>
             <div class="d-sub">${esc(it.doc_sub||'')}</div>
-            ${it.revision_note&&it.status==='needed'?`<div style="margin-top:5px;font-size:0.72rem;color:var(--red)">&#9888; ${esc(it.revision_note)}</div>`:''}
-            ${files.map(f=>`<span class="file-chip">📎 <a href="#" onclick="downloadFile('${f.id}');return false">${esc(f.file_name)}</a> (${fmtSize(f.file_size)}) <span class="by">— ${esc((f.created_at||'').slice(0,10))}</span></span>`).join('')}
+            ${it.revision_note&&it.status==='needed'?`<div style="margin-top:5px;font-size:0.72rem;color:var(--red)">&#9888; Revision requested: ${esc(it.revision_note)}</div>`:''}
+            ${files.length?`<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px">${files.map(f=>`<span class="file-chip">📎 <a href="#" onclick="downloadFile('${f.id}');return false">${esc(f.file_name)}</a> <span class="by">(${fmtSize(f.file_size)}) ${esc((f.created_at||'').slice(0,10))}</span></span>`).join('')}</div>`:''}
           </div>
           <span class="pill phase">Phase ${it.phase+1}+</span>
-          ${admin
-            ? `<button class="pill ${it.status}" style="border:none;cursor:pointer;font-family:'Inter',sans-serif" onclick="cycleStatus('${it.id}')" title="Click to advance status">${STATUS_LABEL[it.status]}</button>`
-            : `<span class="pill ${it.status}">${STATUS_LABEL[it.status]}</span>`}
+          <span class="pill ${it.status}">${STATUS_LABEL[it.status]}</span>
           <div class="doc-actions">
             ${DOCUMENT_PREVIEWS[it.doc_name]?`<button class="btn-quiet" onclick="showPreview(${JSON.stringify(it.doc_name)})">View Template</button>`:''}
-            <button class="btn-quiet" onclick="pickFile('${it.id}')">Upload</button>
+            ${admin&&!isApproved?`<button class="btn-quiet" onclick="pickFile('${it.id}')">Upload</button>`:`<button class="btn-quiet" onclick="pickFile('${it.id}')">Upload</button>`}
+            ${canAct?`<button class="btn-approve" onclick="approveDoc('${it.id}')">✓ Approve</button>`:''}
+            ${isApproved&&admin?`<button class="btn-revise" onclick="openRevision('${it.id}')">↩ Revision</button>`:''}
+            ${canAct?`<button class="btn-revise" onclick="openRevision('${it.id}')">↩ Revision</button>`:''}
           </div>
         </div>`;
       }).join('')}
@@ -2572,12 +2627,14 @@ async function obRefreshBoard(){
 function obSwitchView(view){
   document.querySelectorAll('.ob-view-tab').forEach(t=>t.classList.remove('active'));
   event.target.classList.add('active');
-  document.getElementById('ob-board-view').style.display = view==='board' ? 'block' : 'none';
-  document.getElementById('ob-team-view').style.display = view==='team' ? 'block' : 'none';
+  document.getElementById('ob-board-view').style.display     = view==='board'     ? 'block' : 'none';
+  document.getElementById('ob-team-view').style.display      = view==='team'      ? 'block' : 'none';
   document.getElementById('ob-prospects-view').style.display = view==='prospects' ? 'block' : 'none';
-  if(view==='board') obRenderBoard();
+  document.getElementById('ob-deals-view').style.display     = view==='deals'     ? 'block' : 'none';
+  if(view==='board')     obRenderBoard();
   else if(view==='team') obRenderTeamView();
   else if(view==='prospects') obRenderProspectsView();
+  else if(view==='deals')     obRenderDealsView();
 }
 
 function obRenderBoard(){
@@ -2843,6 +2900,99 @@ async function obOpenCreateProspect(){
 
 async function obOpenProspect(clientId){
   alert('Prospect detail view coming soon');
+}
+
+/* ─────────── DOCUMENT APPROVAL SHORTCUTS ─────────── */
+async function approveDoc(itemId){
+  await applyStatus(itemId, 'approved', null);
+}
+function openRevision(itemId){
+  pendingRevision = itemId;
+  document.getElementById('revision-note').value = '';
+  document.getElementById('modal-revision').classList.add('open');
+}
+
+/* ─────────── PHASE ADVANCE EMAIL ─────────── */
+function sendPhaseEmail(d, newPhaseIdx){
+  if(!EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY==='YOUR_EMAILJS_PUBLIC_KEY') return;
+  const borrowerEmail = d.borrower && d.borrower.email;
+  if(!borrowerEmail) return;
+  const phaseName = PHASES[newPhaseIdx];
+  const phaseMessages = {
+    1: 'Great news — your Phase 1 documents have been reviewed and your deal is now moving to the Soft Quote stage. We are actively presenting your deal to lenders and will be in touch with preliminary terms.',
+    2: 'Congratulations — your deal has received a soft quote and is now moving to the Term Sheet phase. Please review any outstanding documents and we will reach out shortly with formal written terms.',
+    3: 'Your deal is now entering the Underwriting phase. The lender will begin their full due diligence review. Please ensure all Phase 4 documents are uploaded promptly to avoid delays.',
+    4: 'Excellent news — your deal has cleared underwriting and is now in the Closing phase. Your team will be reaching out shortly with final closing documents and instructions.',
+  };
+  const msg = phaseMessages[newPhaseIdx] || `Your deal has been advanced to ${phaseName}. Please log in to your portal for the latest updates.`;
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_STATUS_TID, {
+    to_email:       borrowerEmail,
+    borrower_name:  d.borrower.full_name || borrowerEmail,
+    deal_name:      d.name,
+    doc_name:       `Phase ${newPhaseIdx+1} — ${phaseName}`,
+    new_status:     `Phase Advanced to ${phaseName}`,
+    revision_note:  msg,
+    portal_url:     window.location.href,
+  }).catch(e=>console.warn('Phase email not sent:', e));
+}
+
+/* ─────────── DEAL REVIEW VIEW (CRM tab) ─────────── */
+function obRenderDealsView(){
+  const tbody  = document.getElementById('dr-tbody');
+  const empty  = document.getElementById('dr-empty');
+  const sumEl  = document.getElementById('dr-summary');
+  if(!deals || !deals.length){
+    tbody.innerHTML=''; empty.style.display='block';
+    sumEl.innerHTML='';
+    return;
+  }
+  empty.style.display='none';
+
+  // compute global stats
+  let totalPending=0, totalApproved=0, totalRevision=0, totalDocs=0;
+  deals.forEach(d=>{
+    (d.checklist_items||[]).forEach(it=>{
+      totalDocs++;
+      if(it.status==='uploaded'||it.status==='review') totalPending++;
+      if(it.status==='approved') totalApproved++;
+      if(it.status==='needed'&&it.revision_note) totalRevision++;
+    });
+  });
+  sumEl.innerHTML=`
+    <div class="dr-stat pending"><div class="dr-num">${totalPending}</div><div class="dr-lbl">Awaiting Review</div></div>
+    <div class="dr-stat approved"><div class="dr-num">${totalApproved}</div><div class="dr-lbl">Approved</div></div>
+    <div class="dr-stat revision"><div class="dr-num">${totalRevision}</div><div class="dr-lbl">Revision Requested</div></div>
+    <div class="dr-stat total"><div class="dr-num">${totalDocs}</div><div class="dr-lbl">Total Documents</div></div>`;
+
+  // sort: most pending first
+  const sorted=[...deals].sort((a,b)=>{
+    const pa=(a.checklist_items||[]).filter(i=>i.status==='uploaded'||i.status==='review').length;
+    const pb=(b.checklist_items||[]).filter(i=>i.status==='uploaded'||i.status==='review').length;
+    return pb-pa;
+  });
+
+  tbody.innerHTML=sorted.map(d=>{
+    const items=d.checklist_items||[];
+    const pending=items.filter(i=>i.status==='uploaded'||i.status==='review').length;
+    const approved=items.filter(i=>i.status==='approved').length;
+    const revisions=items.filter(i=>i.status==='needed'&&i.revision_note).length;
+    const pct=items.length?Math.round(approved/items.length*100):0;
+    const borrower=d.borrower?(d.borrower.full_name||d.borrower.company||d.borrower.email||'—'):'Unassigned';
+    const badgeClass=revisions>0?'has-revision':pending===0?'zero':'';
+    return`<tr onclick="openDeal('${d.id}')">
+      <td><div class="dr-deal-name">${esc(d.name)}</div></td>
+      <td><div class="dr-borrower">${esc(borrower)}</div></td>
+      <td><span class="dr-phase-badge">Phase ${d.phase+1} — ${esc(PHASES[d.phase])}</span></td>
+      <td><span class="dr-pending-badge ${badgeClass}">${pending>0?pending+'&nbsp;pending':revisions>0?revisions+'&nbsp;revision':'All clear'}</span></td>
+      <td>
+        <div class="dr-prog-wrap">
+          <div class="dr-prog-outer"><div class="dr-prog-inner" style="width:${pct}%"></div></div>
+          <span style="font-size:0.72rem;color:var(--mid-grey);min-width:36px">${approved}/${items.length}</span>
+        </div>
+      </td>
+      <td><button class="btn-quiet" style="white-space:nowrap">Review →</button></td>
+    </tr>`;
+  }).join('');
 }
 
 /* ═══════════════════════════════════════════════════
