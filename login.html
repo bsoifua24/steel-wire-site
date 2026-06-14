@@ -504,9 +504,21 @@
   <div class="auth-page">
     <div class="hero-glow"></div>
     <div class="auth-card">
+
+      <!-- Step indicator — only visible during sign-up -->
+      <div id="auth-step-ind" style="display:none;margin-bottom:6px">
+        <div class="ob-label">Step 1 of 3</div>
+        <div class="ob-progress" style="margin-bottom:24px">
+          <div class="ob-step active"></div>
+          <div class="ob-step"></div>
+          <div class="ob-step"></div>
+        </div>
+      </div>
+
       <h2 id="auth-title">Sign <em>in.</em></h2>
       <p class="a-sub" id="auth-sub">Access your deal rooms and document checklists.</p>
       <div class="auth-msg" id="auth-msg"></div>
+
       <div class="auth-field" id="field-name" style="display:none">
         <label for="a-name">Full name</label>
         <input id="a-name" autocomplete="name" placeholder="Your name"/>
@@ -520,10 +532,25 @@
         <input id="a-pass" type="password" autocomplete="current-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"/>
       </div>
       <button class="btn-primary wide" id="auth-go" onclick="submitAuth()">Sign In</button>
-      <div class="auth-switch" id="auth-switch">
-        New here? <button onclick="setAuthMode('signup')">Create an account</button>
-        &nbsp;&middot;&nbsp; <button onclick="forgotPassword()">Forgot password?</button>
+
+      <!-- Sign-in bottom: forgot password + new account CTA -->
+      <div id="auth-signin-bottom">
+        <div style="text-align:right;margin-top:14px">
+          <button onclick="forgotPassword()" style="background:none;border:none;font-size:0.74rem;color:rgba(255,255,255,0.3);cursor:pointer;font-family:'Inter',sans-serif;transition:color 0.2s" onmouseover="this.style.color='rgba(255,255,255,0.65)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">Forgot password?</button>
+        </div>
+        <div style="margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.07)">
+          <p style="font-size:0.76rem;font-weight:500;letter-spacing:0.04em;color:rgba(255,255,255,0.3);margin-bottom:14px;text-align:center">New to Steel &amp; Aire?</p>
+          <button onclick="setAuthMode('signup')" style="width:100%;background:none;border:1px solid rgba(90,138,255,0.35);color:var(--blue-light);font-family:'Inter',sans-serif;font-size:0.74rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:13px;cursor:pointer;transition:border-color 0.2s,background 0.2s" onmouseover="this.style.borderColor='var(--blue-light)';this.style.background='rgba(26,61,181,0.18)'" onmouseout="this.style.borderColor='rgba(90,138,255,0.35)';this.style.background='none'">Create Account &rarr;</button>
+        </div>
       </div>
+
+      <!-- Sign-up bottom: back to sign in -->
+      <div id="auth-signup-bottom" style="display:none">
+        <div class="auth-switch" style="margin-top:22px;text-align:center">
+          Already have an account? <button onclick="setAuthMode('signin')">Sign in</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -1584,16 +1611,18 @@ async function signOut(){ await supa.auth.signOut(); }
 function setAuthMode(m){
   authMode = m;
   const signup = m==='signup';
-  document.getElementById('auth-title').innerHTML = signup ? 'Create your <em>account.</em>' : 'Sign <em>in.</em>';
-  document.getElementById('auth-sub').textContent = signup
-    ? 'Borrower accounts see only their own deals and uploads.'
+  document.getElementById('auth-step-ind').style.display   = signup ? 'block' : 'none';
+  document.getElementById('auth-title').innerHTML           = signup ? 'Create your <em>account.</em>' : 'Sign <em>in.</em>';
+  document.getElementById('auth-sub').textContent           = signup
+    ? 'Your account gives you access to your deal rooms and document checklists.'
     : 'Access your deal rooms and document checklists.';
-  document.getElementById('field-name').style.display = signup ? 'flex' : 'none';
-  document.getElementById('auth-go').textContent = signup ? 'Create Account' : 'Sign In';
-  document.getElementById('auth-switch').innerHTML = signup
-    ? 'Already have an account? <button onclick="setAuthMode(\'signin\')">Sign in</button>'
-    : 'New here? <button onclick="setAuthMode(\'signup\')">Create an account</button> &nbsp;&middot;&nbsp; <button onclick="forgotPassword()">Forgot password?</button>';
+  document.getElementById('field-name').style.display      = signup ? 'flex' : 'none';
+  document.getElementById('auth-go').textContent           = signup ? 'Continue →' : 'Sign In';
+  document.getElementById('auth-signin-bottom').style.display = signup ? 'none' : 'block';
+  document.getElementById('auth-signup-bottom').style.display = signup ? 'block' : 'none';
   authMsg('');
+  // focus the right first field
+  setTimeout(()=> document.getElementById(signup ? 'a-name' : 'a-email').focus(), 50);
 }
 function authMsg(text, ok){
   const el = document.getElementById('auth-msg');
