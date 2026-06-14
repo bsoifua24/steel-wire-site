@@ -298,6 +298,100 @@
   .faq-a ul{margin:8px 0 4px 18px;display:flex;flex-direction:column;gap:4px}
   @media(max-width:900px){.chat-panel{width:calc(100vw - 32px);right:16px;bottom:86px}.chat-bubble{right:16px;bottom:16px}}
 
+  /* ── 8-STEP ONBOARDING TRACKER ── */
+  .trk-green{--sc:#16a34a;--sp:#dcfce7} .trk-yellow{--sc:#d97706;--sp:#fef3c7} .trk-red{--sc:#dc2626;--sp:#fee2e2} .trk-complete{--sc:#5a8aff;--sp:#dce8ff}
+  .trk-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:14px}
+  .trk-title{font-family:'Cormorant Garant',serif;font-size:1.8rem;font-weight:400;color:var(--black)}
+  .trk-title em{font-style:italic;color:var(--blue)}
+  .trk-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:20px}
+  .trk-stat{background:var(--white);padding:16px 20px;border-bottom:3px solid var(--light-grey)}
+  .trk-stat.s-total{border-bottom-color:var(--blue)}
+  .trk-stat.s-green{border-bottom-color:#16a34a}
+  .trk-stat.s-yellow{border-bottom-color:#d97706}
+  .trk-stat.s-red{border-bottom-color:#dc2626}
+  .trk-stat-val{font-family:'Cormorant Garant',serif;font-size:1.8rem;font-weight:600;color:var(--black);line-height:1}
+  .trk-stat-lbl{font-size:0.62rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid-grey);margin-top:3px}
+  .trk-stuck-banner{background:#fef3c7;border-left:4px solid #d97706;padding:11px 16px;margin-bottom:18px;font-size:0.81rem;color:#92400e;display:none}
+  .trk-table-wrap{background:var(--white);overflow-x:auto}
+  .trk-table{width:100%;border-collapse:collapse}
+  .trk-table thead th{font-size:0.62rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey);padding:12px 16px;text-align:left;border-bottom:2px solid var(--light-grey);white-space:nowrap}
+  .trk-table tbody tr{border-bottom:1px solid var(--light-grey);cursor:pointer;transition:background 0.15s}
+  .trk-table tbody tr:hover{background:var(--offwhite)}
+  .trk-table tbody td{padding:14px 16px;font-size:0.82rem;vertical-align:middle}
+  .trk-td-name{font-weight:600;color:var(--black)}
+  .trk-td-date,.trk-td-upd{color:var(--mid-grey);font-size:0.75rem;white-space:nowrap}
+  .trk-prog-wrap{display:flex;align-items:center;gap:8px;min-width:130px}
+  .trk-prog-outer{flex:1;height:5px;background:var(--light-grey);border-radius:3px;overflow:hidden}
+  .trk-prog-inner{height:100%;border-radius:3px}
+  .trk-prog-pct{font-size:0.72rem;font-weight:600;color:var(--mid-grey);min-width:30px}
+  .trk-status-cell{display:flex;align-items:center;gap:6px;font-size:0.72rem;color:var(--mid-grey)}
+  .trk-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+  .trk-dot.green{background:#16a34a} .trk-dot.yellow{background:#d97706} .trk-dot.red{background:#dc2626} .trk-dot.complete{background:var(--blue-light)}
+  .trk-row-red td:first-child{border-left:3px solid #dc2626}
+  .trk-row-yellow td:first-child{border-left:3px solid #d97706}
+  .trk-row-green td:first-child{border-left:3px solid #16a34a}
+  .trk-row-complete td:first-child{border-left:3px solid var(--blue-light)}
+  .trk-empty{padding:50px 20px;text-align:center;color:var(--mid-grey);font-size:0.88rem}
+  .trk-empty strong{display:block;font-family:'Cormorant Garant',serif;font-size:1.4rem;font-weight:400;color:var(--black);margin-bottom:6px}
+  /* detail */
+  .trk-detail{display:none}
+  .trk-detail-hdr{margin-bottom:20px}
+  .trk-detail-name{font-family:'Cormorant Garant',serif;font-size:1.6rem;font-weight:400;color:var(--black)}
+  .trk-detail-meta{font-size:0.76rem;color:var(--mid-grey);margin-top:4px}
+  .trk-detail-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .trk-prog-summary{background:var(--white);padding:16px 20px;display:flex;align-items:center;gap:20px;margin-bottom:18px}
+  .trk-prog-big-pct{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:600;color:var(--blue)}
+  .trk-prog-summary-info{flex:1}
+  .trk-prog-summary-lbl{font-size:0.72rem;color:var(--mid-grey);margin-bottom:5px}
+  .trk-prog-summary-bar-outer{height:7px;background:var(--light-grey);border-radius:4px;overflow:hidden}
+  .trk-prog-summary-bar-inner{height:100%;border-radius:4px;background:var(--blue);transition:width 0.4s}
+  .trk-body{display:grid;grid-template-columns:1fr 320px;gap:18px;align-items:start}
+  .trk-checklist{background:var(--white)}
+  .trk-checklist-hdr{padding:14px 20px;border-bottom:1px solid var(--light-grey);font-size:0.63rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey)}
+  .trk-step-row{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;padding:16px 20px;border-bottom:1px solid var(--light-grey);transition:background 0.15s}
+  .trk-step-row:hover{background:var(--offwhite)}
+  .trk-step-row.done{background:#f0fdf4}
+  .trk-step-row:last-child{border-bottom:none}
+  .trk-step-check{width:17px;height:17px;cursor:pointer;accent-color:#16a34a;margin-top:2px}
+  .trk-step-label{font-size:0.84rem;font-weight:500;color:var(--black);margin-bottom:3px}
+  .trk-step-num{font-size:0.63rem;font-weight:600;letter-spacing:0.1em;color:var(--mid-grey);margin-right:6px}
+  .trk-step-label.done{text-decoration:line-through;color:var(--mid-grey)}
+  .trk-step-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:5px}
+  .trk-step-date{font-family:'Inter',sans-serif;font-size:0.72rem;color:var(--mid-grey);border:none;border-bottom:1px solid var(--light-grey);background:none;padding:2px 4px;outline:none}
+  .trk-step-date:focus{border-color:var(--blue)}
+  .trk-notes-btn{font-size:0.67rem;color:var(--blue);background:none;border:none;cursor:pointer;text-decoration:underline;padding:0}
+  .trk-notes-wrap{margin-top:7px;display:none}
+  .trk-notes-wrap.open{display:block}
+  .trk-notes{width:100%;font-family:'Inter',sans-serif;font-size:0.77rem;border:1px solid var(--light-grey);padding:7px 9px;resize:vertical;min-height:55px;outline:none}
+  .trk-notes:focus{border-color:var(--blue-light)}
+  .trk-step-icon{font-size:0.95rem;padding-top:3px}
+  .trk-stuck-badge{font-size:0.63rem;padding:2px 7px;margin-left:6px}
+  /* comments sidebar */
+  .trk-comments{background:var(--white);position:sticky;top:80px}
+  .trk-comments-hdr{padding:14px 20px;border-bottom:1px solid var(--light-grey);font-size:0.63rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey)}
+  .trk-comment-list{max-height:300px;overflow-y:auto}
+  .trk-comment-item{padding:12px 20px;border-bottom:1px solid var(--light-grey)}
+  .trk-comment-item:last-child{border-bottom:none}
+  .trk-comment-body{font-size:0.8rem;color:var(--black);line-height:1.5;margin-bottom:4px}
+  .trk-comment-date{font-size:0.67rem;color:var(--mid-grey)}
+  .trk-comment-empty{padding:16px 20px;font-size:0.78rem;color:var(--mid-grey);font-style:italic}
+  .trk-comment-form{padding:14px 20px;border-top:1px solid var(--light-grey)}
+  .trk-comment-ta{width:100%;font-family:'Inter',sans-serif;font-size:0.78rem;border:1px solid var(--light-grey);padding:9px 11px;resize:none;min-height:68px;outline:none;margin-bottom:9px}
+  .trk-comment-ta:focus{border-color:var(--blue-light)}
+  /* add modal */
+  .trk-modal-back{position:fixed;inset:0;background:rgba(8,8,15,0.7);z-index:400;display:none;align-items:center;justify-content:center}
+  .trk-modal-back.open{display:flex}
+  .trk-modal{background:var(--white);width:380px;max-width:calc(100vw - 32px)}
+  .trk-modal-hdr{background:var(--black);padding:18px 22px;display:flex;justify-content:space-between;align-items:center}
+  .trk-modal-ttl{font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:#fff}
+  .trk-modal-x{background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:1rem;padding:2px 6px}
+  .trk-modal-x:hover{color:#fff}
+  .trk-modal-body{padding:24px 22px}
+  .trk-modal-foot{padding:0 22px 22px;display:flex;gap:8px;justify-content:flex-end}
+  .trk-copy-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--black);color:#fff;font-size:0.76rem;padding:10px 20px;z-index:500;opacity:0;transition:opacity 0.25s;pointer-events:none}
+  .trk-copy-toast.show{opacity:1}
+  @media(max-width:900px){.trk-body{grid-template-columns:1fr}.trk-comments{position:static}.trk-stats{grid-template-columns:1fr 1fr}}
+
   /* ── ONBOARDING TRACKER / KANBAN ── */
   .ob-view-tabs{display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid var(--light-grey)}
   .ob-view-tab{padding:12px 24px;font-size:0.76rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;background:none;border:none;cursor:pointer;color:rgba(0,0,0,0.4);transition:all 0.2s;position:relative}
@@ -1060,6 +1154,111 @@
   </div>
 </div>
 
+<!-- ══════ 8-STEP ONBOARDING TRACKER (admin) ══════ -->
+<div id="page-tracker" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">Admin Tools</div>
+    <h1>Onboarding <em>Tracker.</em></h1>
+    <p class="hero-sub">8-step workflow for every client — from contract to go-live. Color-coded, one click deep.</p>
+  </div>
+  <div class="tab-section" style="background:var(--offwhite)">
+    <div id="trk-dashboard">
+      <div class="trk-header">
+        <h2 class="trk-title">Client <em>Progress</em></h2>
+        <div style="display:flex;gap:10px">
+          <button class="btn-quiet" onclick="trkCheckStuck(true)">Email Stuck Alerts</button>
+          <button class="btn-primary" onclick="trkOpenAdd()">+ Add Client</button>
+        </div>
+      </div>
+      <div id="trk-stuck-banner" class="trk-stuck-banner"></div>
+      <div class="trk-stats" id="trk-stats"></div>
+      <div class="trk-table-wrap">
+        <table class="trk-table">
+          <thead><tr>
+            <th>Client</th><th>Start Date</th><th>Current Step</th>
+            <th>Progress</th><th>Last Updated</th><th>Status</th>
+          </tr></thead>
+          <tbody id="trk-tbody"></tbody>
+        </table>
+        <div class="trk-empty" id="trk-empty" style="display:none">
+          <strong>No clients yet</strong>Click "+ Add Client" to get started.
+        </div>
+      </div>
+    </div>
+
+    <div class="trk-detail" id="trk-detail">
+      <div class="trk-detail-hdr">
+        <button class="btn-quiet" onclick="trkShowDash()" style="margin-bottom:12px">&larr; Back to Dashboard</button>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="trk-detail-name" id="trk-detail-name"></div>
+            <div class="trk-detail-meta" id="trk-detail-meta"></div>
+          </div>
+          <div class="trk-detail-actions">
+            <button class="btn-quiet" onclick="trkCopyShare()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:middle;margin-right:4px"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Share Link
+            </button>
+            <button class="btn-quiet btn-danger" onclick="trkDeleteClient()">Delete</button>
+          </div>
+        </div>
+      </div>
+      <div class="trk-prog-summary">
+        <div class="trk-prog-big-pct" id="trk-detail-pct">0%</div>
+        <div class="trk-prog-summary-info">
+          <div class="trk-prog-summary-lbl" id="trk-detail-steps-lbl">0 of 8 steps complete</div>
+          <div class="trk-prog-summary-bar-outer">
+            <div class="trk-prog-summary-bar-inner" id="trk-detail-bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="trk-body">
+        <div class="trk-checklist">
+          <div class="trk-checklist-hdr">Onboarding Checklist</div>
+          <div id="trk-steps"></div>
+        </div>
+        <div class="trk-comments">
+          <div class="trk-comments-hdr">Internal Notes</div>
+          <div class="trk-comment-list" id="trk-comment-list"></div>
+          <div class="trk-comment-form">
+            <textarea class="trk-comment-ta" id="trk-comment-input" placeholder="Add a team note…"></textarea>
+            <button class="btn-primary" style="width:100%;font-size:0.7rem;padding:10px" onclick="trkAddComment()">Add Note</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD CLIENT MODAL (tracker) -->
+<div class="trk-modal-back" id="trk-modal-back">
+  <div class="trk-modal">
+    <div class="trk-modal-hdr">
+      <div class="trk-modal-ttl">Add New Client</div>
+      <button class="trk-modal-x" onclick="trkCloseAdd()">✕</button>
+    </div>
+    <div class="trk-modal-body">
+      <div class="form-field" style="margin-bottom:16px">
+        <label>Client / Company Name</label>
+        <input class="form-field input" id="trk-add-name" type="text" placeholder="e.g. Acme Ventures"
+          style="font-family:Inter,sans-serif;font-size:0.88rem;padding:12px 13px;border:1px solid var(--light-grey);background:var(--white);color:var(--black);outline:none;width:100%"
+          onkeydown="if(event.key==='Enter')document.getElementById('trk-add-date').focus()"/>
+      </div>
+      <div class="form-field">
+        <label>Start Date</label>
+        <input class="form-field input" id="trk-add-date" type="date"
+          style="font-family:Inter,sans-serif;font-size:0.88rem;padding:12px 13px;border:1px solid var(--light-grey);background:var(--white);color:var(--black);outline:none;width:100%"
+          onkeydown="if(event.key==='Enter')trkSubmitAdd()"/>
+      </div>
+    </div>
+    <div class="trk-modal-foot">
+      <button class="btn-quiet" onclick="trkCloseAdd()">Cancel</button>
+      <button class="btn-primary" onclick="trkSubmitAdd()">Add Client</button>
+    </div>
+  </div>
+</div>
+<div class="trk-copy-toast" id="trk-toast">Link copied!</div>
+
 <!-- TASK DETAIL MODAL -->
 <div class="modal-back" id="task-modal-back" onclick="if(event.target===this)obCloseModal()">
   <div class="modal task-modal" style="max-width:720px">
@@ -1443,6 +1642,7 @@ function rerenderCurrent(){
   if(active.id==='page-borrower') renderBorrowerHome();
   if(active.id==='page-detail') renderDetail();
   if(active.id==='page-onboarding') obRefreshBoard();
+  if(active.id==='page-tracker') trkRenderDashboard();
 }
 
 /* ───────── ROUTING / NAV ───────── */
@@ -1456,9 +1656,10 @@ function route(where){
   if(where==='home') showOnly(isAdmin() ? 'page-dash' : 'page-borrower');
   if(where==='detail') showOnly('page-detail');
   if(where==='onboarding') showOnly('page-onboarding');
+  if(where==='tracker')   { showOnly('page-tracker'); trkRenderDashboard(); }
   if(where==='videos') showOnly('page-videos');
   if(where==='faq') showOnly('page-faq');
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.r===where || (where!=='detail'&&where!=='onboarding'&&b.dataset.r==='home')));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.r===where || (where!=='detail'&&where!=='onboarding'&&where!=='tracker'&&b.dataset.r==='home')));
   rerenderCurrent();
 }
 function renderNav(){
@@ -1467,7 +1668,7 @@ function renderNav(){
   const btn = document.getElementById('nav-auth-btn');
   if(!profile){ bar.innerHTML=''; userEl.style.display='none'; btn.style.display='none'; return; }
   bar.innerHTML = isAdmin()
-    ? '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Dashboard</button><button class="tab-btn" data-r="onboarding" onclick="route(\'onboarding\')">Client Onboarding</button>'
+    ? '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Dashboard</button><button class="tab-btn" data-r="onboarding" onclick="route(\'onboarding\')">CRM</button><button class="tab-btn" data-r="tracker" onclick="route(\'tracker\')">Onboarding Tracker</button>'
     : '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Your Deals</button><button class="tab-btn" data-r="videos" onclick="route(\'videos\')">Intro Videos</button><button class="tab-btn" data-r="faq" onclick="route(\'faq\')">FAQ</button>';
   userEl.innerHTML = esc(profile.full_name || me.email) +
     '<span class="role-badge">' + esc(profile.role) + '</span>';
@@ -2613,6 +2814,243 @@ async function obOpenCreateProspect(){
 
 async function obOpenProspect(clientId){
   alert('Prospect detail view coming soon');
+}
+
+/* ═══════════════════════════════════════════════════
+   8-STEP ONBOARDING TRACKER — embedded in admin portal
+   Shares localStorage key 'sa_onboarding' with onboarding.html
+   ═══════════════════════════════════════════════════ */
+const TRK_STEPS = [
+  'Contract Signed','Kickoff Scheduled','Kickoff Complete',
+  'Access Granted','Assets Received','First Draft Sent',
+  'Client Approval','Project Live'
+];
+const TRK_STUCK_DAYS = 3;
+let trkCurrentId = null;
+
+function trkStore(){ try{return JSON.parse(localStorage.getItem('sa_onboarding'))||{clients:[],lastEmailCheck:null};}catch{return{clients:[],lastEmailCheck:null};} }
+function trkSave(d){ localStorage.setItem('sa_onboarding',JSON.stringify(d)); }
+function trkById(id){ return trkStore().clients.find(c=>c.id===id); }
+function trkGenId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+
+function trkProgress(c){ return Math.round(c.steps.filter(s=>s.completed).length/TRK_STEPS.length*100); }
+function trkCurrentIdx(c){ const i=c.steps.findIndex(s=>!s.completed); return i===-1?TRK_STEPS.length:i; }
+function trkStuckDays(c){
+  const i=trkCurrentIdx(c); if(i>=TRK_STEPS.length)return 0;
+  const since=c.steps[i].stuckSince||c.startDate; if(!since)return 0;
+  return Math.floor((Date.now()-new Date(since).getTime())/86400000);
+}
+function trkStatus(c){
+  if(trkCurrentIdx(c)>=TRK_STEPS.length)return'complete';
+  const d=trkStuckDays(c); return d>=TRK_STUCK_DAYS?'red':d>=1?'yellow':'green';
+}
+function trkStatusLabel(c){
+  const s=trkStatus(c),d=trkStuckDays(c);
+  return s==='complete'?'Complete':d>0?`${d}d on step`:'On track';
+}
+function trkFmtDate(iso){
+  if(!iso)return'';
+  const d=new Date(iso+(iso.includes('T')?'':'T00:00:00'));
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+function trkRelTime(iso){
+  if(!iso)return'—';
+  const diff=Date.now()-new Date(iso).getTime();
+  const m=Math.floor(diff/60000);
+  if(m<1)return'just now'; if(m<60)return`${m}m ago`;
+  const h=Math.floor(m/60); if(h<24)return`${h}h ago`;
+  const days=Math.floor(h/24); if(days<7)return`${days}d ago`;
+  return trkFmtDate(iso);
+}
+function trkEsc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function trkRenderDashboard(){
+  const store=trkStore(); const clients=store.clients;
+  document.getElementById('trk-dashboard').style.display='block';
+  document.getElementById('trk-detail').style.display='none';
+
+  // stats
+  const s={total:clients.length,green:0,yellow:0,red:0,complete:0};
+  clients.forEach(c=>{ s[trkStatus(c)]++; });
+  document.getElementById('trk-stats').innerHTML=`
+    <div class="trk-stat s-total"><div class="trk-stat-val">${s.total}</div><div class="trk-stat-lbl">Total Clients</div></div>
+    <div class="trk-stat s-green"><div class="trk-stat-val">${s.green}</div><div class="trk-stat-lbl">On Track</div></div>
+    <div class="trk-stat s-yellow"><div class="trk-stat-val">${s.yellow}</div><div class="trk-stat-lbl">Needs Attention</div></div>
+    <div class="trk-stat s-red"><div class="trk-stat-val">${s.red}</div><div class="trk-stat-lbl">Action Required</div></div>`;
+
+  // stuck banner
+  const stuck=clients.filter(c=>trkStatus(c)==='red');
+  const banner=document.getElementById('trk-stuck-banner');
+  if(stuck.length>0){
+    banner.style.display='block';
+    banner.innerHTML=`⚠ <strong>${stuck.length} client${stuck.length>1?'s':''}</strong> stuck ${TRK_STUCK_DAYS}+ days: ${stuck.map(c=>`<strong>${c.name}</strong>`).join(', ')}`;
+  } else { banner.style.display='none'; }
+
+  // table
+  const tbody=document.getElementById('trk-tbody');
+  const empty=document.getElementById('trk-empty');
+  if(!clients.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+
+  const order={red:0,yellow:1,green:2,complete:3};
+  const sorted=[...clients].sort((a,b)=>order[trkStatus(a)]-order[trkStatus(b)]);
+  const barCol={complete:'var(--blue-light)',red:'#dc2626',yellow:'#d97706',green:'#16a34a'};
+
+  tbody.innerHTML=sorted.map(c=>{
+    const pct=trkProgress(c); const idx=trkCurrentIdx(c); const st=trkStatus(c);
+    const stepLbl=idx>=TRK_STEPS.length?'All Steps Complete':`${idx+1}/8 — ${TRK_STEPS[idx]}`;
+    return`<tr class="trk-row-${st}" onclick="trkShowDetail('${c.id}')">
+      <td class="trk-td-name">${trkEsc(c.name)}</td>
+      <td class="trk-td-date">${trkFmtDate(c.startDate)}</td>
+      <td style="font-size:0.82rem">${trkEsc(stepLbl)}</td>
+      <td><div class="trk-prog-wrap"><div class="trk-prog-outer"><div class="trk-prog-inner" style="width:${pct}%;background:${barCol[st]}"></div></div><span class="trk-prog-pct">${pct}%</span></div></td>
+      <td class="trk-td-upd">${trkRelTime(c.updatedAt)}</td>
+      <td><div class="trk-status-cell"><div class="trk-dot ${st}"></div>${trkStatusLabel(c)}</div></td>
+    </tr>`;
+  }).join('');
+}
+
+function trkShowDetail(id){
+  trkCurrentId=id;
+  document.getElementById('trk-dashboard').style.display='none';
+  document.getElementById('trk-detail').style.display='block';
+  trkRenderDetail(id);
+}
+function trkShowDash(){ trkCurrentId=null; trkRenderDashboard(); }
+
+function trkRenderDetail(id){
+  const c=trkById(id); if(!c){trkShowDash();return;}
+  const pct=trkProgress(c); const done=c.steps.filter(s=>s.completed).length;
+  document.getElementById('trk-detail-name').textContent=c.name;
+  document.getElementById('trk-detail-meta').innerHTML=`Started ${trkFmtDate(c.startDate)} · Last updated ${trkRelTime(c.updatedAt)} · ${trkStatusLabel(c)}`;
+  document.getElementById('trk-detail-pct').textContent=pct+'%';
+  document.getElementById('trk-detail-steps-lbl').textContent=`${done} of ${TRK_STEPS.length} steps complete`;
+  document.getElementById('trk-detail-bar').style.width=pct+'%';
+
+  document.getElementById('trk-steps').innerHTML=c.steps.map((step,i)=>{
+    const isDone=step.completed;
+    const isCurrent=trkCurrentIdx(c)===i;
+    const sd=isCurrent?trkStuckDays(c):0;
+    const badge=isCurrent&&sd>0?`<span class="trk-stuck-badge" style="background:${sd>=TRK_STUCK_DAYS?'#fee2e2':'#fef3c7'};color:${sd>=TRK_STUCK_DAYS?'#dc2626':'#d97706'}">${sd}d</span>`:'';
+    return`<div class="trk-step-row${isDone?' done':''}" id="trk-sr-${i}">
+      <input type="checkbox" class="trk-step-check" ${isDone?'checked':''} onchange="trkToggleStep('${id}',${i},this.checked)"/>
+      <div>
+        <div class="trk-step-label${isDone?' done':''}"><span class="trk-step-num">Step ${i+1}</span>${trkEsc(step.label)}${badge}</div>
+        <div class="trk-step-meta">
+          ${isDone?`<span style="font-size:0.68rem;color:var(--mid-grey)">Completed:</span><input type="date" class="trk-step-date" value="${step.completedDate||''}" onchange="trkUpdateDate('${id}',${i},this.value)"/>`:''}
+          <button class="trk-notes-btn" onclick="trkToggleNotes(${i})">${step.notes?'View notes':'Add notes'}</button>
+        </div>
+        <div class="trk-notes-wrap" id="trk-nw-${i}">
+          <textarea class="trk-notes" onblur="trkSaveNotes('${id}',${i},this.value)">${trkEsc(step.notes||'')}</textarea>
+        </div>
+      </div>
+      <div class="trk-step-icon">${isDone?'✅':isCurrent?'⏳':'○'}</div>
+    </div>`;
+  }).join('');
+
+  // comments
+  trkRenderComments(c);
+}
+
+function trkRenderComments(c){
+  const el=document.getElementById('trk-comment-list');
+  if(!c.comments||!c.comments.length){el.innerHTML='<div class="trk-comment-empty">No notes yet.</div>';return;}
+  el.innerHTML=[...c.comments].reverse().map(cm=>`
+    <div class="trk-comment-item"><div class="trk-comment-body">${trkEsc(cm.text)}</div><div class="trk-comment-date">${trkRelTime(cm.date)}</div></div>`).join('');
+}
+
+function trkToggleStep(cid,idx,checked){
+  const store=trkStore(); const c=store.clients.find(x=>x.id===cid); if(!c)return;
+  const now=new Date().toISOString();
+  c.steps[idx].completed=checked;
+  c.steps[idx].completedDate=checked?now.split('T')[0]:null;
+  if(checked&&idx+1<TRK_STEPS.length) c.steps[idx+1].stuckSince=now;
+  else if(!checked&&idx+1<TRK_STEPS.length) c.steps[idx+1].stuckSince=null;
+  c.updatedAt=now; trkSave(store); trkRenderDetail(cid);
+}
+function trkUpdateDate(cid,idx,val){
+  const store=trkStore(); const c=store.clients.find(x=>x.id===cid); if(!c)return;
+  c.steps[idx].completedDate=val; c.updatedAt=new Date().toISOString(); trkSave(store);
+}
+function trkSaveNotes(cid,idx,val){
+  const store=trkStore(); const c=store.clients.find(x=>x.id===cid); if(!c)return;
+  c.steps[idx].notes=val; c.updatedAt=new Date().toISOString(); trkSave(store);
+  const btn=document.querySelector(`#trk-sr-${idx} .trk-notes-btn`);
+  if(btn)btn.textContent=val?'View notes':'Add notes';
+}
+function trkToggleNotes(i){
+  const w=document.getElementById(`trk-nw-${i}`); if(!w)return;
+  const open=w.classList.toggle('open');
+  if(open)w.querySelector('textarea').focus();
+}
+function trkAddComment(){
+  const inp=document.getElementById('trk-comment-input');
+  const text=inp.value.trim(); if(!text||!trkCurrentId)return;
+  const store=trkStore(); const c=store.clients.find(x=>x.id===trkCurrentId); if(!c)return;
+  if(!c.comments)c.comments=[];
+  c.comments.push({text,date:new Date().toISOString()});
+  c.updatedAt=new Date().toISOString(); trkSave(store);
+  inp.value=''; trkRenderComments(c);
+}
+function trkDeleteClient(){
+  const c=trkById(trkCurrentId); if(!c)return;
+  if(!confirm(`Delete "${c.name}"? This cannot be undone.`))return;
+  const store=trkStore(); store.clients=store.clients.filter(x=>x.id!==trkCurrentId);
+  trkSave(store); trkCurrentId=null; trkShowDash();
+}
+
+/* add modal */
+function trkOpenAdd(){
+  document.getElementById('trk-add-name').value='';
+  document.getElementById('trk-add-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('trk-modal-back').classList.add('open');
+  setTimeout(()=>document.getElementById('trk-add-name').focus(),50);
+}
+function trkCloseAdd(){ document.getElementById('trk-modal-back').classList.remove('open'); }
+function trkSubmitAdd(){
+  const name=document.getElementById('trk-add-name').value.trim();
+  const date=document.getElementById('trk-add-date').value;
+  if(!name||!date)return;
+  const store=trkStore(); const now=new Date().toISOString();
+  store.clients.push({
+    id:trkGenId(),name,startDate:date,
+    steps:TRK_STEPS.map((label,i)=>({label,completed:false,completedDate:null,notes:'',stuckSince:i===0?date:null})),
+    comments:[],shareToken:trkGenId(),createdAt:now,updatedAt:now
+  });
+  trkSave(store); trkCloseAdd(); trkRenderDashboard();
+}
+document.addEventListener('click',function(e){
+  const back=document.getElementById('trk-modal-back');
+  if(e.target===back)trkCloseAdd();
+});
+
+/* share link (same format as onboarding.html — opens in that page) */
+function trkCopyShare(){
+  const c=trkById(trkCurrentId); if(!c)return;
+  const data=JSON.stringify({name:c.name,startDate:c.startDate,progress:trkProgress(c),steps:c.steps.map(s=>({label:s.label,completed:s.completed,completedDate:s.completedDate}))});
+  const url=`${location.origin.replace('login.html','')}/onboarding.html?share=1#${btoa(unescape(encodeURIComponent(data)))}`;
+  navigator.clipboard.writeText(url).then(()=>{
+    const t=document.getElementById('trk-toast');
+    t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600);
+  });
+}
+
+/* stuck email alerts */
+function trkCheckStuck(force){
+  const store=trkStore(); const today=new Date().toISOString().split('T')[0];
+  if(!force&&store.lastEmailCheck===today)return;
+  const stuck=store.clients.filter(c=>trkStatus(c)==='red');
+  if(!stuck.length){ if(force)toast('No stuck clients — all clear!'); store.lastEmailCheck=today; trkSave(store); return; }
+  const lines=stuck.map(c=>{
+    const i=trkCurrentIdx(c); return`• ${c.name} — stuck on "${i<TRK_STEPS.length?TRK_STEPS[i]:'Complete'}" for ${trkStuckDays(c)} days`;
+  });
+  if(typeof emailjs!=='undefined'&&EMAILJS_PUBLIC_KEY!=='YOUR_EMAILJS_PUBLIC_KEY'){
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    emailjs.send(EMAILJS_SERVICE_ID,'template_stuck_clients',{to_email:ADMIN_EMAIL,subject:`Steel & Aire: ${stuck.length} client(s) need attention`,client_list:lines.join('\n'),stuck_count:stuck.length})
+      .then(()=>toast(`Alert sent for ${stuck.length} stuck client(s).`))
+      .catch(()=>toast('Email failed — check EmailJS config.',true));
+  } else { toast(force?`⚠ ${stuck.length} stuck. Configure EmailJS to enable alerts.`:''); }
+  store.lastEmailCheck=today; trkSave(store);
 }
 </script>
 </body>
