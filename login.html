@@ -260,6 +260,112 @@
     .video-tag{font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;display:block}
 
     .preview-content p.eg{background:var(--offwhite);padding:12px 14px;font-style:italic;color:var(--mid-grey);font-size:0.8rem;margin:8px 0;line-height:1.65}
+
+  /* ── CHAT WIDGET ── */
+  .chat-bubble{position:fixed;bottom:28px;right:28px;z-index:280}
+  .chat-toggle-btn{width:54px;height:54px;border-radius:50%;background:var(--blue);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(26,61,181,0.45);transition:background 0.2s,transform 0.2s;color:var(--white)}
+  .chat-toggle-btn:hover{background:var(--blue-mid);transform:scale(1.06)}
+  .chat-panel{position:fixed;bottom:96px;right:28px;width:360px;max-height:500px;background:var(--white);border:1px solid var(--light-grey);box-shadow:0 8px 40px rgba(8,8,15,0.16);z-index:280;display:none;flex-direction:column;overflow:hidden}
+  .chat-panel.open{display:flex}
+  .chat-hdr{background:var(--black);padding:16px 18px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+  .chat-hdr-name{font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;color:var(--white);line-height:1.2}
+  .chat-hdr-sub{font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-top:2px}
+  .chat-close{background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:1rem;padding:4px;line-height:1;transition:color 0.2s}
+  .chat-close:hover{color:var(--white)}
+  .chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+  .chat-msg{max-width:88%;padding:10px 13px;font-size:0.81rem;line-height:1.62}
+  .chat-msg.bot{background:var(--offwhite);border-left:3px solid var(--blue-pale);color:var(--black);align-self:flex-start}
+  .chat-msg.user{background:var(--blue);color:var(--white);align-self:flex-end;text-align:right}
+  .chat-chips{display:flex;flex-wrap:wrap;gap:5px;padding:0 14px 10px;flex-shrink:0}
+  .chat-chip{background:none;border:1px solid var(--light-grey);color:var(--mid-grey);font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:500;padding:5px 10px;cursor:pointer;transition:border-color 0.2s,color 0.2s;text-align:left}
+  .chat-chip:hover{border-color:var(--blue);color:var(--blue)}
+  .chat-compose{display:flex;border-top:1px solid var(--light-grey);flex-shrink:0}
+  .chat-compose input{flex:1;font-family:'Inter',sans-serif;font-size:0.83rem;padding:12px 13px;border:none;outline:none;color:var(--black)}
+  .chat-compose button{background:var(--blue);color:var(--white);border:none;padding:0 16px;cursor:pointer;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-family:'Inter',sans-serif;transition:background 0.2s;flex-shrink:0}
+  .chat-compose button:hover{background:var(--blue-mid)}
+
+  /* ── FAQ PAGE ── */
+  .faq-section{margin-bottom:48px}
+  .faq-section-title{font-family:'Cormorant Garant',serif;font-size:1.45rem;font-weight:600;color:var(--black);padding-bottom:14px;margin-bottom:2px;border-bottom:2px solid var(--blue-pale)}
+  .faq-item{border-bottom:1px solid var(--light-grey)}
+  .faq-q{width:100%;text-align:left;background:none;border:none;font-family:'Inter',sans-serif;font-size:0.89rem;font-weight:500;color:var(--black);padding:17px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:color 0.2s}
+  .faq-q:hover,.faq-q.open{color:var(--blue)}
+  .faq-arrow{font-size:0.85rem;color:var(--mid-grey);transition:transform 0.22s;flex-shrink:0}
+  .faq-q.open .faq-arrow{transform:rotate(180deg);color:var(--blue)}
+  .faq-a{font-size:0.85rem;line-height:1.8;color:#3a4560;padding:0 0 18px 0;display:none;max-width:740px}
+  .faq-a.open{display:block}
+  .faq-a strong{color:var(--black)}
+  .faq-a ul{margin:8px 0 4px 18px;display:flex;flex-direction:column;gap:4px}
+  @media(max-width:900px){.chat-panel{width:calc(100vw - 32px);right:16px;bottom:86px}.chat-bubble{right:16px;bottom:16px}}
+
+  /* ── ONBOARDING TRACKER / KANBAN ── */
+  .ob-view-tabs{display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid var(--light-grey)}
+  .ob-view-tab{padding:12px 24px;font-size:0.76rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;background:none;border:none;cursor:pointer;color:rgba(0,0,0,0.4);transition:all 0.2s;position:relative}
+  .ob-view-tab.active{color:var(--black)}
+  .ob-view-tab.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--blue)}
+  .kanban-board{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:0}
+  .kanban-col{background:var(--charcoal);padding:20px;border-radius:0;min-height:600px;display:flex;flex-direction:column;position:relative}
+  .kanban-col-header{font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.1)}
+  .kanban-col-count{font-size:0.62rem;color:rgba(255,255,255,0.35);margin-left:6px}
+  .kanban-cards{flex:1;display:flex;flex-direction:column;gap:10px;min-height:0}
+  .kanban-card{background:var(--white);border:1px solid var(--light-grey);padding:14px;border-radius:0;cursor:grab;transition:box-shadow 0.2s,background 0.2s;position:relative}
+  .kanban-card:active{cursor:grabbing}
+  .kanban-card:hover{box-shadow:0 4px 16px rgba(26,61,181,0.12)}
+  .kanban-card.dragging{opacity:0.5;background:var(--offwhite)}
+  .card-title{font-size:0.82rem;font-weight:600;color:var(--black);margin-bottom:6px;line-height:1.3}
+  .card-meta{display:flex;gap:8px;align-items:center;justify-content:space-between;font-size:0.7rem;color:var(--mid-grey);margin-top:8px;flex-wrap:wrap}
+  .card-assignees{display:flex;gap:-4px}
+  .assignee-initial{width:20px;height:20px;border-radius:50%;background:var(--blue);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:0.58rem;font-weight:700;margin-left:-8px;border:2px solid var(--white)}
+  .assignee-initial:first-child{margin-left:0}
+  .card-due{font-size:0.68rem;color:var(--mid-grey)}
+  .priority-badge{display:inline-block;font-size:0.56rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:2px 6px;border-radius:2px}
+  .priority-low{background:#d3d3d3;color:var(--black)}
+  .priority-medium{background:#ffd700;color:var(--black)}
+  .priority-high{background:#ff8c00;color:var(--white)}
+  .priority-urgent{background:#e74c3c;color:var(--white)}
+  .team-view{margin-top:0}
+  .team-member-group{margin-bottom:36px;background:var(--white);padding:28px;border:1px solid var(--light-grey);border-radius:0}
+  .team-member-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid var(--blue-pale)}
+  .team-member-name{font-family:'Cormorant Garant',serif;font-size:1.3rem;font-weight:600;color:var(--black)}
+  .team-task-count{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid-grey)}
+  .team-tasks{display:flex;flex-direction:column;gap:8px}
+  .team-task-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--offwhite);border-left:3px solid var(--blue);cursor:pointer;transition:background 0.2s}
+  .team-task-item:hover{background:var(--blue-pale)}
+  .team-task-title{font-size:0.82rem;color:var(--black);font-weight:500;flex:1}
+  .team-task-status{font-size:0.62rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid-grey);padding:2px 6px;background:var(--light-grey);margin-left:8px}
+  .create-task-btn{margin-bottom:24px}
+  .prospects-view{margin-top:0}
+  .prospect-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2px;margin-top:24px}
+  .prospect-card{background:var(--white);padding:28px;border-bottom:3px solid transparent;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s}
+  .prospect-card:hover{border-bottom-color:var(--blue);box-shadow:0 4px 16px rgba(26,61,181,0.08)}
+  .prospect-name{font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:600;color:var(--black);margin-bottom:4px}
+  .prospect-detail{font-size:0.76rem;color:var(--mid-grey);margin:3px 0;line-height:1.5}
+  .prospect-status{font-size:0.66rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-top:10px;display:inline-block;padding:4px 9px;background:var(--blue-pale);color:var(--blue)}
+  .task-modal-form{display:flex;flex-direction:column;gap:18px}
+  .task-field{display:flex;flex-direction:column;gap:6px}
+  .task-field label{font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid-grey)}
+  .task-field input,.task-field textarea,.task-field select{font-family:'Inter',sans-serif;font-size:0.88rem;padding:11px 12px;border:1px solid var(--light-grey);background:var(--white);color:var(--black);outline:none}
+  .task-field input:focus,.task-field textarea:focus,.task-field select:focus{border-color:var(--blue)}
+  .task-field textarea{resize:vertical;min-height:80px}
+  .subtask-list{margin-top:12px;padding:10px 0;border-top:1px solid var(--light-grey)}
+  .subtask-item{display:flex;gap:8px;align-items:center;padding:8px 0;font-size:0.82rem;color:var(--black)}
+  .subtask-item input{width:auto;margin:0}
+  .comments-section{margin-top:20px;padding-top:20px;border-top:1px solid var(--light-grey)}
+  .comments-title{font-size:0.82rem;font-weight:600;color:var(--black);margin-bottom:12px}
+  .comment-list{max-height:240px;overflow-y:auto;margin-bottom:12px;display:flex;flex-direction:column;gap:8px}
+  .comment-item{background:var(--offwhite);padding:10px 12px;border-left:3px solid var(--blue);font-size:0.78rem;line-height:1.5;color:var(--black)}
+  .comment-meta{font-size:0.65rem;color:var(--mid-grey);margin-bottom:3px}
+  .comment-compose{display:flex;gap:6px}
+  .comment-compose input{flex:1;font-family:'Inter',sans-serif;font-size:0.82rem;padding:9px 10px;border:1px solid var(--light-grey);background:var(--white);outline:none}
+  .comment-compose button{font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:var(--blue);color:var(--white);border:none;padding:9px 16px;cursor:pointer;transition:background 0.2s}
+  .comment-compose button:hover{background:var(--blue-mid)}
+  @media(max-width:900px){
+    .kanban-board{grid-template-columns:1fr;gap:12px}
+    .kanban-col{min-height:auto}
+    .prospect-list{grid-template-columns:1fr}
+    .team-member-group{margin-bottom:20px;padding:20px}
+    .task-modal{max-width:90vw}
+  }
   </style>
 </head>
 <body>
@@ -593,8 +699,459 @@
   </div>
 </div>
 
+<!-- ══════ FAQ (borrower) ══════ -->
+<div id="page-faq" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">Help Center</div>
+    <h1>Frequently asked <em>questions.</em></h1>
+    <p class="hero-sub">Everything you need to know about the capital raise process, your document checklist, and working with Steel &amp; Aire.</p>
+  </div>
+  <div class="tab-section">
+    <div style="max-width:860px">
+
+      <div class="faq-section">
+        <div class="faq-section-title">Getting Started</div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What is this portal and how do I use it? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            This is your dedicated deal room — a private portal where you and the Steel &amp; Aire team manage your capital raise from start to close. You can track your progress through each of the 5 phases, upload required documents, message your deal team, and see exactly what's needed at every step. Everything is organized for you; just follow the checklist.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What is Steel &amp; Aire's role in my raise? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            Steel &amp; Aire acts as your capital placement partner. We package your deal, match it to the right lenders from our network, guide you through each documentation phase, and work to get you to a term sheet and close. We don't collect anything upfront — our fee is earned at closing from deal proceeds.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            Who can see my documents and information? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            Only you and the Steel &amp; Aire admin team can see your deal room. Borrowers cannot see other borrowers' deals. Documents are stored securely in private cloud storage. Nothing is shared with lenders until you and your deal team agree that the package is ready.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What if I don't have all my documents ready yet? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            That's fine — start with what you have. Phase 1 documents are the priority; you can upload later-phase documents as your raise progresses. The checklist shows you which documents are needed at which phase so you always know what to focus on next.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <div class="faq-section-title">The Capital Raise Process</div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What are the 5 phases of the capital raise? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            <ul>
+              <li><strong>Phase 1 — Intake:</strong> Initial deal review. You submit your executive summary, PFS, schedule of real estate owned, and sponsor bio so we can confirm the deal is financeable.</li>
+              <li><strong>Phase 2 — Soft Quote:</strong> Preliminary lender interest. We shop the deal and get a non-binding indication of rate, LTV, and loan terms from interested lenders.</li>
+              <li><strong>Phase 3 — Term Sheet:</strong> Formal written loan terms. A lender issues a term sheet outlining rate, amount, fees, and conditions. Both sides negotiate before execution.</li>
+              <li><strong>Phase 4 — Underwriting:</strong> Full lender due diligence. The lender orders an appraisal, reviews all financials in detail, and runs a complete credit analysis.</li>
+              <li><strong>Phase 5 — Closing:</strong> Final documents, title, insurance, and funding. You close the loan and receive proceeds.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            How long does the full process take? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            A well-prepared deal typically takes <strong>60–120 days from intake to close</strong>. The biggest variable is how quickly and completely documents are submitted. Deals with complete, accurate documentation at every phase close fastest. The single best thing you can do is have all Phase 1 documents uploaded before your first call with us.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What is a Soft Quote and is it binding? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            A soft quote is a <strong>non-binding preliminary indication of interest</strong> from a lender — it gives you a range for rate, loan-to-value, and basic terms based on an initial review. It signals that the deal is financeable but is subject to change during underwriting. Think of it as a "we're interested, here's roughly what we'd offer" from a lender.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What is a Term Sheet and what should I look for? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            A term sheet is a formal, written document from a lender summarizing the key loan terms they are prepared to offer. Key items to review: loan amount, interest rate (and whether it's fixed or floating), loan term, LTV/LTC ratio, origination fee, prepayment penalty, recourse vs. non-recourse, and any key conditions. A term sheet is still not a commitment — full commitment comes after underwriting.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            Can I upload documents for later phases early? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            Yes — you can upload any document at any time regardless of phase. If you already have your tax returns, appraisal, or Phase 4 documents ready, uploading them early is always a good idea. It speeds up the process when those phases arrive and shows lenders you're well-prepared.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <div class="faq-section-title">Your Document Checklist</div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What is a Personal Financial Statement (PFS)? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            A PFS is a complete snapshot of your personal finances — listing all assets (cash, real estate equity, investments, retirement accounts) and all liabilities (mortgages, loans, credit cards). It must be <strong>current (within 90 days), signed, and dated</strong>. It's the first thing virtually every lender requests. Click "View Template" on the PFS checklist item for a complete fillable template.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What is a Rent Roll and what should it include? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            A rent roll is a unit-by-unit breakdown of every tenant, their lease dates, contracted rent, collected rent, and unit status (occupied or vacant). It must be <strong>current — as of this month</strong>. Export it from property management software (AppFolio, Yardi, Buildium) or build it in Excel. Include all units, including vacant ones.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What is a T-12 Operating Statement? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            The T-12 is your <strong>trailing 12 months of actual income and expenses</strong> — the document lenders use to calculate Net Operating Income (NOI). It should show month-by-month columns plus a total, and must reflect actual figures — not estimates. Export from QuickBooks, AppFolio, or Yardi.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What is a Pro Forma and how is it different from the T-12? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            The T-12 shows what the property <em>has done</em> (historical actuals). The Pro Forma shows what you <em>believe it will do</em> at stabilized occupancy — forward-looking projections. Lenders compare both side by side. Every assumption in your Pro Forma (projected rents, vacancy rate, expense ratios) must be stated clearly and supported by market data.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What is Sources &amp; Uses and why does it have to balance? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            Sources &amp; Uses is a one-page breakdown of the entire capital stack — where every dollar comes from (senior debt, equity, mezzanine, etc.) and exactly where it goes (purchase price, closing costs, renovation, reserves). <strong>Sources must equal Uses to the dollar.</strong> A mismatch is one of the most common reasons a deal gets flagged immediately by a lender as unprepared.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What file formats should I upload? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            <strong>PDF is strongly preferred</strong> for all financial documents, statements, and legal documents — it preserves formatting and prevents editing. Excel (.xlsx) is acceptable for rent rolls, T-12s, and pro formas where the lender may want to work with the numbers. Avoid screenshots or photos of documents — lenders require clean, professional presentation.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            Can I upload multiple files to a single checklist item? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            Yes — you can upload multiple files to any single checklist item. For example, if you have 2 years of tax returns as separate PDFs, upload both to the Personal Tax Returns item. All uploaded files will be listed under that item for your team to review.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <div class="faq-section-title">Document Statuses Explained</div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What does each document status mean? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            <ul>
+              <li><strong>Needed</strong> — Not yet uploaded, or a revision was requested. Action required from you.</li>
+              <li><strong>Uploaded</strong> — File received. Your Steel &amp; Aire team has been notified and will review it.</li>
+              <li><strong>In Review</strong> — Your team is actively reviewing the document for completeness and lender-readiness.</li>
+              <li><strong>Approved</strong> — Reviewed and cleared. Ready to be included in the lender package.</li>
+            </ul>
+            You'll receive an email notification whenever a document status changes.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What does "Needs Revision" mean and what do I do? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            When your team marks a document as needing revision, a red note will appear on that checklist item explaining exactly what needs to be fixed — for example, "PFS is missing your signature on page 2." Simply correct the issue and re-upload the fixed file. The status will automatically return to "Uploaded" for another review.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What happens once all my documents are approved? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            Once all documents for the current phase are approved, your Steel &amp; Aire team advances your raise to the next phase — either by presenting to lenders for a soft quote, issuing a term sheet, or moving into underwriting. You'll see the phase indicator at the top of your deal room update, and your team will reach out to explain the next steps.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <div class="faq-section-title">Capital &amp; Terms</div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What types of capital does Steel &amp; Aire place? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            We place capital across all tiers of the capital stack: senior debt (first-lien mortgage loans), bridge loans, DSCR loans, construction loans, mezzanine debt, and preferred equity. For larger infrastructure projects (data centers, nuclear, industrial), we also arrange institutional equity and sovereign capital. We work with multifamily, commercial, mixed-use, and infrastructure asset types.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What are the key loan metrics lenders focus on? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            <ul>
+              <li><strong>LTV (Loan-to-Value):</strong> Loan amount ÷ property value. Most lenders cap at 65–80% depending on asset type and loan type.</li>
+              <li><strong>LTC (Loan-to-Cost):</strong> Loan amount ÷ total project cost. Common for construction and bridge loans.</li>
+              <li><strong>DSCR (Debt Service Coverage Ratio):</strong> NOI ÷ annual debt service. Most lenders require 1.20x–1.35x minimum.</li>
+              <li><strong>NOI (Net Operating Income):</strong> Effective gross income minus operating expenses (before debt service).</li>
+              <li><strong>Cap Rate:</strong> NOI ÷ property value. Used to compare properties in a market.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What are Steel &amp; Aire's fees? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            Steel &amp; Aire earns a capital placement fee at closing — paid from deal proceeds, not upfront. There are no fees during the document submission phase. Exact fee amounts depend on deal size, complexity, and loan type, and will be outlined by your Steel &amp; Aire contact before we begin marketing your deal to lenders. Nothing is charged without your prior agreement.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What is the difference between recourse and non-recourse debt? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            <strong>Recourse</strong> means that if the property doesn't generate enough to cover the loan and the lender forecloses, they can pursue you personally for any remaining deficiency — beyond just the property. <strong>Non-recourse</strong> limits the lender's remedy to the property itself. Non-recourse loans are typically only available to experienced sponsors on stabilized assets and come with "bad boy" carve-outs for fraud, misrepresentation, or environmental violations.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-section">
+        <div class="faq-section-title">Working With Steel &amp; Aire</div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            How do I reach my deal team? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            Use the <strong>Messages</strong> section at the bottom of your deal room — your team monitors it during business hours and will respond there. For urgent matters, email admin@mpeakp.com directly with your deal name in the subject line. Do not upload documents and assume we've seen them — always send a message or email to flag something that needs immediate attention.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            How quickly will I hear back from my deal team? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            Document status updates typically happen within <strong>1–3 business days</strong> of upload. Message replies are typically within 1 business day. For phase transitions and lender communications, your team will reach out proactively. If you haven't heard anything in 3+ business days after a major upload, send a message or email to follow up.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            What's the best way to make my deal move faster? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            The biggest factor is <strong>document completeness</strong>. Every time a lender has to ask for something that should have been in the package, it causes delays. Before uploading, review the "View Template" guide for each document — it shows exactly what needs to be included. Complete, professional, accurately dated documents close fastest. Incomplete or sloppy submissions are the #1 reason deals stall.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+            Can I have multiple deals in my portal? <span class="faq-arrow">▾</span>
+          </button>
+          <div class="faq-a">
+            Yes — if you have multiple properties or raises, your Steel &amp; Aire team can open a separate deal room for each one. Each deal has its own checklist, document uploads, messaging thread, and phase tracker. Reach out via the Messages section or email admin@mpeakp.com to request an additional deal room.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════ CLIENT ONBOARDING TRACKER (admin) ══════ -->
+<div id="page-onboarding" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">Team Tools</div>
+    <h1>Client Onboarding <em>Tracker.</em></h1>
+    <p class="hero-sub">Manage prospect pipeline and team workflows with Kanban boards. Track interested borrowers, assign tasks, and monitor team workload.</p>
+  </div>
+  <div class="tab-section" style="background:var(--white)">
+    <div style="max-width:1400px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+        <div>
+          <div class="ob-view-tabs">
+            <button class="ob-view-tab active" onclick="obSwitchView('board')">Board View</button>
+            <button class="ob-view-tab" onclick="obSwitchView('team')">Team View</button>
+            <button class="ob-view-tab" onclick="obSwitchView('prospects')">Prospects</button>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="obOpenCreateTask()">+ New Task</button>
+      </div>
+
+      <!-- BOARD VIEW -->
+      <div id="ob-board-view" class="ob-board">
+        <div class="kanban-board">
+          <div class="kanban-col">
+            <div class="kanban-col-header">Backlog<span class="kanban-col-count" id="col-count-backlog">0</span></div>
+            <div class="kanban-cards" id="col-backlog" data-status="backlog"></div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-header">In Progress<span class="kanban-col-count" id="col-count-in_progress">0</span></div>
+            <div class="kanban-cards" id="col-in_progress" data-status="in_progress"></div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-header">In Review<span class="kanban-col-count" id="col-count-in_review">0</span></div>
+            <div class="kanban-cards" id="col-in_review" data-status="in_review"></div>
+          </div>
+          <div class="kanban-col">
+            <div class="kanban-col-header">Done<span class="kanban-col-count" id="col-count-done">0</span></div>
+            <div class="kanban-cards" id="col-done" data-status="done"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEAM VIEW -->
+      <div id="ob-team-view" class="team-view" style="display:none">
+        <div id="team-members-list"></div>
+      </div>
+
+      <!-- PROSPECTS VIEW -->
+      <div id="ob-prospects-view" class="prospects-view" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+          <h3 style="font-family:Cormorant Garant,serif;font-size:1.4rem;font-weight:600;color:var(--black)">Interested Borrowers</h3>
+          <button class="btn-primary" onclick="obOpenCreateProspect()">+ Add Prospect</button>
+        </div>
+        <div id="prospects-list" class="prospect-list"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TASK DETAIL MODAL -->
+<div class="modal-back" id="task-modal-back" onclick="if(event.target===this)obCloseModal()">
+  <div class="modal task-modal" style="max-width:720px">
+    <h3 id="task-modal-title">New Task</h3>
+    <p class="m-sub" id="task-modal-sub"></p>
+    <div class="task-modal-form">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="task-field">
+          <label>Title</label>
+          <input id="task-input-title" placeholder="Task title" />
+        </div>
+        <div class="task-field">
+          <label>Priority</label>
+          <select id="task-input-priority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="task-field">
+          <label>Status</label>
+          <select id="task-input-status">
+            <option value="backlog">Backlog</option>
+            <option value="in_progress">In Progress</option>
+            <option value="in_review">In Review</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+        <div class="task-field">
+          <label>Due Date</label>
+          <input id="task-input-due" type="date" />
+        </div>
+      </div>
+      <div class="task-field full">
+        <label>Description</label>
+        <textarea id="task-input-description" placeholder="Task details..."></textarea>
+      </div>
+      <div class="task-field full">
+        <label>Assign To (select team members)</label>
+        <div id="task-assignees-list" style="display:flex;flex-direction:column;gap:6px;margin-top:8px"></div>
+      </div>
+      <div class="subtask-list">
+        <div style="font-size:0.82rem;font-weight:600;color:var(--black);margin-bottom:8px">Subtasks</div>
+        <div id="task-subtasks-list"></div>
+        <div style="display:flex;gap:6px;margin-top:8px">
+          <input id="task-subtask-input" type="text" placeholder="Add subtask..." style="flex:1;font-family:Inter,sans-serif;font-size:0.82rem;padding:8px 10px;border:1px solid var(--light-grey);background:var(--white);outline:none" />
+          <button onclick="obAddSubtask()" style="font-family:Inter,sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:var(--blue);color:var(--white);border:none;padding:8px 14px;cursor:pointer">Add</button>
+        </div>
+      </div>
+      <div class="comments-section">
+        <div class="comments-title">Internal Comments</div>
+        <div id="task-comments-list" class="comment-list"></div>
+        <div class="comment-compose">
+          <input id="task-comment-input" placeholder="Add comment..." />
+          <button onclick="obAddComment()">Post</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-quiet" onclick="obCloseModal()">Close</button>
+      <button class="btn-primary" id="task-save-btn" onclick="obSaveTask()">Save Task</button>
+    </div>
+  </div>
+</div>
+
 <input type="file" id="file-input" style="display:none" multiple/>
 <div class="toast" id="toast"></div>
+
+<!-- CHAT WIDGET -->
+<div class="chat-bubble">
+  <div class="chat-panel" id="chat-panel">
+    <div class="chat-hdr">
+      <div>
+        <div class="chat-hdr-name">Portal Assistant</div>
+        <div class="chat-hdr-sub">Ask about your raise</div>
+      </div>
+      <button class="chat-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chat-msgs" id="chat-msgs"></div>
+    <div class="chat-chips" id="chat-chips"></div>
+    <div class="chat-compose">
+      <input id="chat-inp" placeholder="Type your question…" onkeydown="if(event.key==='Enter')chatSend()"/>
+      <button onclick="chatSend()">Send</button>
+    </div>
+  </div>
+  <button class="chat-toggle-btn" id="chat-btn" onclick="toggleChat()" title="Ask a question">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+</div>
 
 <footer>
   <div class="footer-brand">Steel <span>&</span> Aire Soluciones — Deal Room</div>
@@ -885,6 +1442,7 @@ function rerenderCurrent(){
   if(active.id==='page-dash') renderDash();
   if(active.id==='page-borrower') renderBorrowerHome();
   if(active.id==='page-detail') renderDetail();
+  if(active.id==='page-onboarding') obRefreshBoard();
 }
 
 /* ───────── ROUTING / NAV ───────── */
@@ -897,8 +1455,10 @@ function route(where){
   if(!profile){ showOnly(configured?'page-auth':'page-config'); return; }
   if(where==='home') showOnly(isAdmin() ? 'page-dash' : 'page-borrower');
   if(where==='detail') showOnly('page-detail');
+  if(where==='onboarding') showOnly('page-onboarding');
   if(where==='videos') showOnly('page-videos');
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.r===where || (where!=='detail'&&b.dataset.r==='home')));
+  if(where==='faq') showOnly('page-faq');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.r===where || (where!=='detail'&&where!=='onboarding'&&b.dataset.r==='home')));
   rerenderCurrent();
 }
 function renderNav(){
@@ -907,8 +1467,8 @@ function renderNav(){
   const btn = document.getElementById('nav-auth-btn');
   if(!profile){ bar.innerHTML=''; userEl.style.display='none'; btn.style.display='none'; return; }
   bar.innerHTML = isAdmin()
-    ? '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Dashboard</button>'
-    : '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Your Deals</button><button class="tab-btn" data-r="videos" onclick="route(\'videos\')">Intro Videos</button>';
+    ? '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Dashboard</button><button class="tab-btn" data-r="onboarding" onclick="route(\'onboarding\')">Client Onboarding</button>'
+    : '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Your Deals</button><button class="tab-btn" data-r="videos" onclick="route(\'videos\')">Intro Videos</button><button class="tab-btn" data-r="faq" onclick="route(\'faq\')">FAQ</button>';
   userEl.innerHTML = esc(profile.full_name || me.email) +
     '<span class="role-badge">' + esc(profile.role) + '</span>';
   userEl.style.display = 'block';
@@ -1665,6 +2225,395 @@ function showPreview(docName){
   document.getElementById('modal-preview').classList.add('open');
 }
 function closePreview(){ document.getElementById('modal-preview').classList.remove('open'); }
+
+/* ───────── CHATBOT ───────── */
+const CHAT_QA = [
+  {keys:['process','how does it work','overview','stages','phases','what happens'],q:'What is the capital raise process?',a:'Your raise moves through 5 phases: Phase 1 (Intake) → Phase 2 (Soft Quote) → Phase 3 (Term Sheet) → Phase 4 (Underwriting) → Phase 5 (Closing). Each phase has a specific document checklist. Well-prepared deals typically close in 60–120 days from intake submission.'},
+  {keys:['intake','phase 1','first phase','first step'],q:'What is Phase 1?',a:'Phase 1 (Intake) is about getting the basics right — executive summary, PFS, schedule of real estate owned, rent roll, and sponsor bio. This lets us evaluate the deal and confirm there\'s a lending path before asking for more detailed documents.'},
+  {keys:['soft quote','phase 2'],q:'What is a Soft Quote?',a:'A soft quote is a non-binding preliminary indication of interest from a lender — it gives you a range for rate, LTV, and basic terms. It\'s not a commitment, but it\'s the first concrete signal that a lender is interested in your deal.'},
+  {keys:['term sheet','phase 3'],q:'What is a Term Sheet?',a:'A term sheet is a formal written summary of the key loan terms a lender is prepared to offer — rate, loan amount, LTV, fees, and timeline. It\'s negotiable and still not a full loan commitment, but it\'s a serious milestone. Full commitment follows after underwriting.'},
+  {keys:['underwriting','phase 4','due diligence'],q:'What happens in Underwriting?',a:'Phase 4 is full lender due diligence. The lender orders a third-party appraisal, reviews your tax returns, bank statements, and entity documents in detail, and runs a complete credit analysis. This phase typically takes 3–6 weeks.'},
+  {keys:['closing','phase 5','close','funded','fund'],q:'What happens at Closing?',a:'Phase 5 is the finish line. You\'ll provide title commitment, insurance binder, and any remaining closing conditions. Final documents are signed and funds are disbursed. Your deal is closed.'},
+  {keys:['document','documents','what do i need','checklist','required','what to upload'],q:'What documents do I need?',a:'Your checklist is organized by phase. Phase 1 requires your executive summary, PFS, schedule of real estate owned, and sponsor bio. Later phases add financial statements, appraisals, tax returns, and legal documents. Click "View Template" next to any document for a detailed guide on what to include.'},
+  {keys:['pfs','personal financial statement','net worth'],q:'What is a PFS?',a:'A Personal Financial Statement lists all your personal assets and liabilities — cash, real estate equity, investments, mortgages, loans, and credit cards. It must be current (within 90 days), signed, and dated. Click "View Template" on the PFS checklist item for a complete fillable template.'},
+  {keys:['rent roll','current rent roll','tenants','unit by unit'],q:'What is a Rent Roll?',a:'A rent roll is a unit-by-unit list of every tenant, their lease dates, contracted rent, collected rent, and unit status (occupied or vacant). It must be current — as of this month. Export it from AppFolio, Yardi, or Buildium, or build it in Excel.'},
+  {keys:['t-12','trailing 12','operating statement','noi','income expenses'],q:'What is a T-12?',a:'The T-12 is your trailing 12-month income and expense statement — showing actual revenue and costs month by month. Lenders use it to calculate NOI. Export from QuickBooks, AppFolio, or Yardi showing all 12 months plus a total column. Use actual figures, not estimates.'},
+  {keys:['pro forma','projections','stabilized','forward looking'],q:'What is a Pro Forma?',a:'A Pro Forma is your forward-looking income and expense projection at stabilized occupancy. Lenders compare it directly to your T-12, so every assumption (rent growth, vacancy, expense ratios) must be documented and defensible with market data.'},
+  {keys:['sources and uses','sources & uses','capital stack','sources uses'],q:'What is Sources & Uses?',a:'Sources & Uses is a one-page breakdown of every dollar in the capital stack — where it comes from (senior debt, equity, mezzanine) and where it goes (purchase price, closing costs, renovation, reserves). The two sides must balance exactly to the dollar. A mismatch is a major red flag to lenders.'},
+  {keys:['upload','how do i upload','submit','attach','file'],q:'How do I upload documents?',a:'Click the "Upload" button next to any document in your checklist. You can upload multiple files at once. Once uploaded, the status changes to "Uploaded" and your Steel & Aire team is notified. You\'ll receive an email when the status is updated.'},
+  {keys:['who reviews','who looks','review process'],q:'Who reviews my documents?',a:'Your Steel & Aire deal team reviews every upload for completeness, accuracy, and lender-readiness. If something needs fixing, the status will be set to "Needs Revision" with a specific note explaining what to correct.'},
+  {keys:['status','what does status mean','needed','uploaded','in review','approved'],q:'What does each status mean?',a:'"Needed" — not yet uploaded or revision requested. "Uploaded" — received, pending review. "In Review" — your team is actively reviewing. "Approved" — cleared and ready for lenders. You\'ll receive an email notification on each status change.'},
+  {keys:['revision','needs revision','rejected','sent back','revision requested'],q:'What does "Needs Revision" mean?',a:'A red note will appear on that checklist item explaining exactly what needs to be fixed. Correct the issue and re-upload the fixed file — the status will return to "Uploaded" for another review.'},
+  {keys:['fee','fees','cost','how much','pricing','commission'],q:'What are Steel & Aire\'s fees?',a:'Steel & Aire earns a capital placement fee at closing — paid from deal proceeds, never upfront. There are no fees during document submission. Exact fees depend on deal size and complexity and will be outlined by your team before we market your deal to lenders.'},
+  {keys:['contact','help','support','reach out','talk to someone','message team'],q:'How do I reach the Steel & Aire team?',a:'Use the Messages section at the bottom of your deal room — your team monitors it during business hours. For urgent matters, email admin@mpeakp.com with your deal name in the subject line.'},
+  {keys:['how long','timeline','time','days','weeks','months','when will','how soon'],q:'How long does the process take?',a:'A well-prepared deal typically closes in 60–120 days from intake. The biggest factor is document completeness. Having all Phase 1 documents uploaded before your first call is the single best way to accelerate your raise.'},
+  {keys:['bpo','broker price opinion','appraisal','value','valuation'],q:'What is a BPO vs an Appraisal?',a:'A BPO (Broker Price Opinion) is a licensed agent\'s market value estimate with comparable sales — required in Phase 2. An Appraisal is a formal certified value from a licensed appraiser — typically ordered by the lender in Phase 4. They serve different purposes and you cannot substitute one for the other.'},
+  {keys:['dscr','debt service coverage','ltv','loan to value','cap rate'],q:'What loan metrics do lenders focus on?',a:'Key metrics: LTV (loan ÷ value, typically 65–80%), DSCR (NOI ÷ annual debt service, usually 1.20x minimum), Cap Rate (NOI ÷ property value), and LTC (loan ÷ total cost, for construction deals). Your Pro Forma and T-12 directly determine these numbers.'},
+];
+const CHAT_FALLBACK = 'Good question — check the FAQ tab for detailed answers, or message your deal team directly using the Messages section in your deal room. You can also email admin@mpeakp.com with your deal name in the subject line.';
+const CHAT_GREETING = 'Hi! I can answer common questions about the capital raise process, your documents, and how the portal works. What would you like to know?';
+const CHAT_SUGGESTIONS = ['What are the 5 phases?','What is a PFS?','How do I upload documents?','What does each status mean?'];
+
+let chatOpen = false, chatStarted = false;
+
+function toggleChat(){
+  chatOpen = !chatOpen;
+  const panel = document.getElementById('chat-panel');
+  const btn = document.getElementById('chat-btn');
+  panel.classList.toggle('open', chatOpen);
+  btn.innerHTML = chatOpen
+    ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+    : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+  if(chatOpen && !chatStarted){ chatStarted=true; chatInit(); }
+}
+
+function chatInit(){
+  chatAddMsg(CHAT_GREETING, false);
+  const chips = document.getElementById('chat-chips');
+  chips.innerHTML = CHAT_SUGGESTIONS.map(s=>`<button class="chat-chip" onclick="chatAsk(this)">${s}</button>`).join('');
+}
+
+function chatAsk(btn){
+  const q = btn.textContent;
+  document.getElementById('chat-chips').innerHTML = '';
+  chatAddMsg(q, true);
+  setTimeout(()=>chatAddMsg(chatMatch(q), false), 320);
+}
+
+function chatSend(){
+  const inp = document.getElementById('chat-inp');
+  const text = inp.value.trim(); if(!text) return;
+  inp.value = '';
+  document.getElementById('chat-chips').innerHTML = '';
+  chatAddMsg(text, true);
+  setTimeout(()=>chatAddMsg(chatMatch(text), false), 320);
+}
+
+function chatAddMsg(text, isUser){
+  const el = document.getElementById('chat-msgs');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + (isUser ? 'user' : 'bot');
+  div.textContent = text;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+
+function chatMatch(input){
+  const t = input.toLowerCase();
+  let best = null, bestScore = 0;
+  for(const qa of CHAT_QA){
+    let score = 0;
+    for(const k of qa.keys){ if(t.includes(k.toLowerCase())) score++; }
+    if(score > bestScore){ bestScore = score; best = qa; }
+  }
+  return (best && bestScore > 0) ? best.a : CHAT_FALLBACK;
+}
+
+/* ─────────────────────────────────────────
+    CLIENT ONBOARDING TRACKER
+   ───────────────────────────────────────── */
+let onboardingTasks = [], onboardingClients = [], taskAssignees = {}, currentTaskId = null, teamMembers = [];
+
+async function obRefreshBoard(){
+  try{
+    const tasksReq = await supa.from('onboarding_tasks').select('*, task_assignees(*), task_subtasks(*), task_comments(*)').order('sort_order');
+    const clientsReq = await supa.from('onboarding_clients').select('*').order('created_at', {ascending:false});
+    const membersReq = await supa.from('profiles').select('id,full_name').eq('role','admin').order('full_name');
+
+    if(tasksReq.error) throw tasksReq.error;
+    if(clientsReq.error) throw clientsReq.error;
+    if(membersReq.error) throw membersReq.error;
+
+    onboardingTasks = tasksReq.data || [];
+    onboardingClients = clientsReq.data || [];
+    teamMembers = membersReq.data || [];
+
+    const view = document.querySelector('.ob-view-tab.active');
+    const activeView = view ? view.textContent.toLowerCase().replace(' view','').replace(' ','_') : 'board';
+
+    if(activeView === 'board') obRenderBoard();
+    else if(activeView === 'team') obRenderTeamView();
+    else if(activeView === 'prospects') obRenderProspectsView();
+  }catch(e){
+    err(e);
+  }
+}
+
+function obSwitchView(view){
+  document.querySelectorAll('.ob-view-tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('ob-board-view').style.display = view==='board' ? 'block' : 'none';
+  document.getElementById('ob-team-view').style.display = view==='team' ? 'block' : 'none';
+  document.getElementById('ob-prospects-view').style.display = view==='prospects' ? 'block' : 'none';
+  if(view==='board') obRenderBoard();
+  else if(view==='team') obRenderTeamView();
+  else if(view==='prospects') obRenderProspectsView();
+}
+
+function obRenderBoard(){
+  const statuses = ['backlog','in_progress','in_review','done'];
+  statuses.forEach(st=>{
+    const col = document.getElementById('col-'+st);
+    const counter = document.getElementById('col-count-'+st);
+    const tasks = onboardingTasks.filter(t=>t.status===st);
+    counter.textContent = tasks.length;
+    col.innerHTML = tasks.map(t=>obRenderCard(t)).join('');
+    col.querySelectorAll('.kanban-card').forEach(card=>{
+      card.addEventListener('click',()=>obOpenTaskDetail(card.dataset.id));
+    });
+  });
+  obInitDragDrop();
+}
+
+function obRenderCard(task){
+  const assignees = task.task_assignees || [];
+  const colors = ['#FF6B6B','#4ECDC4','#45B7D1','#FFA07A','#98D8C8','#F7DC6F'];
+  const assigneeHtml = assignees.slice(0,3).map((a,i)=>{
+    const member = teamMembers.find(m=>m.id===a.user_id);
+    const initials = member ? member.full_name.split(' ').map(n=>n[0]).join('').toUpperCase() : '?';
+    return `<div class="assignee-initial" style="background:${colors[i%colors.length]}">${initials}</div>`;
+  }).join('');
+  const moreCount = assignees.length > 3 ? `<div class="assignee-initial" style="background:#ccc;color:#666;font-size:0.5rem">+${assignees.length-3}</div>` : '';
+  const dueDate = task.due_date ? new Date(task.due_date).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '';
+  const priorityClass = `priority-${task.priority || 'medium'}`;
+  return `
+    <div class="kanban-card" data-id="${task.id}" draggable="true">
+      <div class="card-title">${esc(task.title)}</div>
+      <div class="card-meta">
+        <div class="card-assignees">${assigneeHtml}${moreCount}</div>
+        <div>
+          <span class="priority-badge ${priorityClass}">${task.priority || 'medium'}</span>
+          ${dueDate ? `<span class="card-due">${dueDate}</span>` : ''}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function obInitDragDrop(){
+  document.querySelectorAll('.kanban-cards').forEach(col=>{
+    col.addEventListener('dragover',e=>{e.preventDefault();e.target.closest('.kanban-cards').style.opacity='0.8'});
+    col.addEventListener('dragleave',e=>e.target.closest('.kanban-cards').style.opacity='1');
+    col.addEventListener('drop',async e=>{
+      e.preventDefault();
+      e.target.closest('.kanban-cards').style.opacity='1';
+      const taskId = e.dataTransfer.getData('text');
+      const newStatus = col.dataset.status;
+      const task = onboardingTasks.find(t=>t.id===taskId);
+      if(!task || task.status===newStatus) return;
+      const {error} = await supa.from('onboarding_tasks').update({status:newStatus}).eq('id',taskId);
+      if(error){ err(error); return; }
+      task.status = newStatus;
+      obRenderBoard();
+      toast('Task moved to '+newStatus.replace('_',' '));
+    });
+  });
+  document.querySelectorAll('.kanban-card').forEach(card=>{
+    card.addEventListener('dragstart',e=>e.dataTransfer.setData('text',card.dataset.id));
+  });
+}
+
+function obRenderTeamView(){
+  const html = teamMembers.map(member=>{
+    const tasks = onboardingTasks.filter(t=>t.task_assignees && t.task_assignees.some(a=>a.user_id===member.id));
+    const backlog = tasks.filter(t=>t.status==='backlog').length;
+    const inProgress = tasks.filter(t=>t.status==='in_progress').length;
+    const inReview = tasks.filter(t=>t.status==='in_review').length;
+    const done = tasks.filter(t=>t.status==='done').length;
+    return `
+      <div class="team-member-group">
+        <div class="team-member-header">
+          <div class="team-member-name">${esc(member.full_name || member.id.slice(0,8))}</div>
+          <div class="team-task-count">${tasks.length} tasks (${inProgress} in progress)</div>
+        </div>
+        <div class="team-tasks">
+          ${backlog > 0 ? `<div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;color:var(--mid-grey);margin-top:12px;margin-bottom:6px">Backlog (${backlog})</div>` : ''}
+          ${tasks.filter(t=>t.status==='backlog').map(t=>`
+            <div class="team-task-item" onclick="obOpenTaskDetail('${t.id}')">
+              <div class="team-task-title">${esc(t.title)}</div>
+              <div class="team-task-status">Backlog</div>
+            </div>
+          `).join('')}
+          ${inProgress > 0 ? `<div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;color:var(--mid-grey);margin-top:12px;margin-bottom:6px">In Progress (${inProgress})</div>` : ''}
+          ${tasks.filter(t=>t.status==='in_progress').map(t=>`
+            <div class="team-task-item" onclick="obOpenTaskDetail('${t.id}')">
+              <div class="team-task-title">${esc(t.title)}</div>
+              <div class="team-task-status">In Progress</div>
+            </div>
+          `).join('')}
+          ${inReview > 0 ? `<div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;color:var(--mid-grey);margin-top:12px;margin-bottom:6px">In Review (${inReview})</div>` : ''}
+          ${tasks.filter(t=>t.status==='in_review').map(t=>`
+            <div class="team-task-item" onclick="obOpenTaskDetail('${t.id}')">
+              <div class="team-task-title">${esc(t.title)}</div>
+              <div class="team-task-status">In Review</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('team-members-list').innerHTML = html || '<p style="color:var(--mid-grey);text-align:center;padding:40px">No team members found</p>';
+}
+
+function obRenderProspectsView(){
+  const html = onboardingClients.map(client=>`
+    <div class="prospect-card" onclick="obOpenProspect('${client.id}')">
+      <div class="prospect-name">${esc(client.name)}</div>
+      <div class="prospect-detail">📧 ${esc(client.email || 'No email')}</div>
+      <div class="prospect-detail">📱 ${esc(client.phone || 'No phone')}</div>
+      <div class="prospect-detail">🏢 ${esc(client.company || 'N/A')}</div>
+      <div class="prospect-status">${esc(client.status)}</div>
+    </div>
+  `).join('');
+  document.getElementById('prospects-list').innerHTML = html || '<p style="color:var(--mid-grey);text-align:center;padding:40px">No prospects yet</p>';
+}
+
+function obOpenCreateTask(){
+  currentTaskId = null;
+  document.getElementById('task-modal-title').textContent = 'Create New Task';
+  document.getElementById('task-modal-sub').textContent = '';
+  document.getElementById('task-input-title').value = '';
+  document.getElementById('task-input-priority').value = 'medium';
+  document.getElementById('task-input-status').value = 'backlog';
+  document.getElementById('task-input-due').value = '';
+  document.getElementById('task-input-description').value = '';
+  document.getElementById('task-subtasks-list').innerHTML = '';
+  document.getElementById('task-comments-list').innerHTML = '';
+  document.getElementById('task-comment-input').value = '';
+  obRenderAssigneeList([]);
+  document.getElementById('task-modal-back').classList.add('open');
+}
+
+function obOpenTaskDetail(taskId){
+  currentTaskId = taskId;
+  const task = onboardingTasks.find(t=>t.id===taskId);
+  if(!task) return;
+  document.getElementById('task-modal-title').textContent = esc(task.title);
+  document.getElementById('task-modal-sub').textContent = '';
+  document.getElementById('task-input-title').value = task.title;
+  document.getElementById('task-input-priority').value = task.priority || 'medium';
+  document.getElementById('task-input-status').value = task.status;
+  document.getElementById('task-input-due').value = task.due_date || '';
+  document.getElementById('task-input-description').value = task.description || '';
+  document.getElementById('task-subtasks-list').innerHTML = (task.task_subtasks || []).map(st=>`
+    <div class="subtask-item">
+      <input type="checkbox" ${st.completed ? 'checked' : ''} onchange="obToggleSubtask('${st.id}', this.checked)" />
+      <label style="cursor:pointer;flex:1">${esc(st.title)}</label>
+      <button onclick="obDeleteSubtask('${st.id}')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:0.8rem">✕</button>
+    </div>
+  `).join('');
+  document.getElementById('task-comments-list').innerHTML = (task.task_comments || []).map(c=>`
+    <div class="comment-item">
+      <div class="comment-meta">${esc(c.sender_name)} • ${new Date(c.created_at).toLocaleDateString()}</div>
+      <div>${esc(c.body)}</div>
+    </div>
+  `).join('');
+  document.getElementById('task-comment-input').value = '';
+  obRenderAssigneeList(task.task_assignees || []);
+  document.getElementById('task-modal-back').classList.add('open');
+}
+
+function obRenderAssigneeList(currentAssignees){
+  const assignedIds = currentAssignees.map(a=>a.user_id);
+  const html = teamMembers.map(member=>`
+    <label style="display:flex;gap:8px;align-items:center;font-size:0.82rem;cursor:pointer">
+      <input type="checkbox" value="${member.id}" ${assignedIds.includes(member.id) ? 'checked' : ''} style="cursor:pointer" />
+      ${esc(member.full_name || member.id.slice(0,8))}
+    </label>
+  `).join('');
+  document.getElementById('task-assignees-list').innerHTML = html;
+}
+
+function obCloseModal(){
+  currentTaskId = null;
+  document.getElementById('task-modal-back').classList.remove('open');
+}
+
+async function obSaveTask(){
+  const title = document.getElementById('task-input-title').value.trim();
+  const priority = document.getElementById('task-input-priority').value;
+  const status = document.getElementById('task-input-status').value;
+  const due = document.getElementById('task-input-due').value;
+  const description = document.getElementById('task-input-description').value.trim();
+  const assignedUserIds = Array.from(document.querySelectorAll('#task-assignees-list input:checked')).map(el=>el.value);
+
+  if(!title){ toast('Task title is required',true); return; }
+
+  try{
+    if(currentTaskId){
+      const {error} = await supa.from('onboarding_tasks').update({title,priority,status,due_date:due||null,description}).eq('id',currentTaskId);
+      if(error) throw error;
+
+      const existing = onboardingTasks.find(t=>t.id===currentTaskId).task_assignees || [];
+      const toRemove = existing.filter(a=>!assignedUserIds.includes(a.user_id)).map(a=>a.id);
+      const toAdd = assignedUserIds.filter(uid=>!existing.some(a=>a.user_id===uid));
+
+      for(const id of toRemove) await supa.from('task_assignees').delete().eq('id',id);
+      for(const uid of toAdd) await supa.from('task_assignees').insert({task_id:currentTaskId,user_id:uid});
+
+      toast('Task updated');
+    }else{
+      const {data,error} = await supa.from('onboarding_tasks').insert({title,priority,status,due_date:due||null,description,created_by:me.id}).select();
+      if(error) throw error;
+      const newTaskId = data[0].id;
+      for(const uid of assignedUserIds) await supa.from('task_assignees').insert({task_id:newTaskId,user_id:uid});
+      toast('Task created');
+    }
+    obCloseModal();
+    obRefreshBoard();
+  }catch(e){
+    err(e);
+  }
+}
+
+async function obAddSubtask(){
+  if(!currentTaskId){ toast('Open a task first',true); return; }
+  const title = document.getElementById('task-subtask-input').value.trim();
+  if(!title) return;
+  const {error} = await supa.from('task_subtasks').insert({task_id:currentTaskId,title});
+  if(error){ err(error); return; }
+  document.getElementById('task-subtask-input').value = '';
+  obOpenTaskDetail(currentTaskId);
+  toast('Subtask added');
+}
+
+async function obToggleSubtask(subtaskId, completed){
+  const {error} = await supa.from('task_subtasks').update({completed}).eq('id',subtaskId);
+  if(error){ err(error); return; }
+}
+
+async function obDeleteSubtask(subtaskId){
+  const {error} = await supa.from('task_subtasks').delete().eq('id',subtaskId);
+  if(error){ err(error); return; }
+  obOpenTaskDetail(currentTaskId);
+}
+
+async function obAddComment(){
+  if(!currentTaskId){ toast('Open a task first',true); return; }
+  const body = document.getElementById('task-comment-input').value.trim();
+  if(!body) return;
+  const {error} = await supa.from('task_comments').insert({task_id:currentTaskId,user_id:me.id,sender_name:profile.full_name||me.email,body});
+  if(error){ err(error); return; }
+  document.getElementById('task-comment-input').value = '';
+  obOpenTaskDetail(currentTaskId);
+  toast('Comment added');
+}
+
+async function obOpenCreateProspect(){
+  const name = prompt('Prospect name:');
+  if(!name) return;
+  const email = prompt('Email:');
+  const phone = prompt('Phone:');
+  const company = prompt('Company:');
+  const {error} = await supa.from('onboarding_clients').insert({name,email:email||null,phone:phone||null,company:company||null});
+  if(error){ err(error); return; }
+  obRefreshBoard();
+  toast('Prospect added');
+}
+
+async function obOpenProspect(clientId){
+  alert('Prospect detail view coming soon');
+}
 </script>
 </body>
 </html>

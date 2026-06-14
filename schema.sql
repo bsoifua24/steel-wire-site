@@ -132,6 +132,107 @@ create policy "borrower upload files"  on storage.objects for insert
 create policy "borrower read files"    on storage.objects for select
   using (bucket_id = 'deal-files' and auth.uid() is not null);
 
+-- ── DEAL MESSAGES ──
+create table if not exists deal_messages (
+  id           uuid primary key default gen_random_uuid(),
+  deal_id      uuid references deals(id) on delete cascade not null,
+  user_id      uuid references auth.users(id) not null,
+  sender_name  text not null,
+  body         text not null,
+  created_at   timestamptz default now()
+);
+alter table deal_messages enable row level security;
+create policy "admin all messages"     on deal_messages for all using (is_admin());
+create policy "borrower read messages" on deal_messages for select
+  using (exists (select 1 from deals where id = deal_messages.deal_id and borrower_id = auth.uid()));
+create policy "borrower send message"  on deal_messages for insert
+  with check (exists (select 1 from deals where id = deal_messages.deal_id and borrower_id = auth.uid()) and user_id = auth.uid());
+
+-- ── DEAL ACTIVITY LOG ──
+create table if not exists deal_activity (
+  id          uuid primary key default gen_random_uuid(),
+  deal_id     uuid references deals(id) on delete cascade not null,
+  user_id     uuid references auth.users(id),
+  description text not null,
+  created_at  timestamptz default now()
+);
+alter table deal_activity enable row level security;
+create policy "admin all activity"     on deal_activity for all using (is_admin());
+create policy "borrower read activity" on deal_activity for select
+  using (exists (select 1 from deals where id = deal_activity.deal_id and borrower_id = auth.uid()));
+create policy "any user log activity"  on deal_activity for insert
+  with check (is_admin() or exists (select 1 from deals where id = deal_activity.deal_id and borrower_id = auth.uid()));
+
+-- ── ONBOARDING CLIENTS (Prospect Tracking) ──
+create table if not exists onboarding_clients (
+  id            uuid primary key default gen_random_uuid(),
+  name          text not null,
+  email         text,
+  phone         text,
+  company       text,
+  project_type  text,
+  status        text not null default 'inquiry' check (status in ('inquiry','qualified','proposal_sent','negotiating','won','lost')),
+  created_at    timestamptz default now(),
+  updated_at    timestamptz default now()
+);
+
+-- ── ONBOARDING TASKS (Kanban Board) ──
+create table if not exists onboarding_tasks (
+  id            uuid primary key default gen_random_uuid(),
+  client_id     uuid references onboarding_clients(id) on delete set null,
+  title         text not null,
+  description   text,
+  status        text not null default 'backlog' check (status in ('backlog','in_progress','in_review','done')),
+  priority      text not null default 'medium' check (priority in ('low','medium','high','urgent')),
+  due_date      date,
+  created_by    uuid references auth.users(id),
+  sort_order    int default 0,
+  created_at    timestamptz default now(),
+  updated_at    timestamptz default now()
+);
+
+-- ── TASK ASSIGNEES (Multiple assignees per task) ──
+create table if not exists task_assignees (
+  id            uuid primary key default gen_random_uuid(),
+  task_id       uuid references onboarding_tasks(id) on delete cascade not null,
+  user_id       uuid references auth.users(id) on delete cascade not null,
+  assigned_at   timestamptz default now(),
+  unique(task_id, user_id)
+);
+
+-- ── TASK SUBTASKS (Checklist) ──
+create table if not exists task_subtasks (
+  id            uuid primary key default gen_random_uuid(),
+  task_id       uuid references onboarding_tasks(id) on delete cascade not null,
+  title         text not null,
+  completed     boolean default false,
+  created_at    timestamptz default now()
+);
+
+-- ── TASK COMMENTS (Internal notes) ──
+create table if not exists task_comments (
+  id            uuid primary key default gen_random_uuid(),
+  task_id       uuid references onboarding_tasks(id) on delete cascade not null,
+  user_id       uuid references auth.users(id),
+  sender_name   text not null,
+  body          text not null,
+  created_at    timestamptz default now()
+);
+
+-- ── RLS: Onboarding Tables ──
+alter table onboarding_clients enable row level security;
+alter table onboarding_tasks enable row level security;
+alter table task_assignees enable row level security;
+alter table task_subtasks enable row level security;
+alter table task_comments enable row level security;
+
+-- Admins can see and modify all onboarding data
+create policy "admin onboarding clients" on onboarding_clients for all using (is_admin());
+create policy "admin onboarding tasks" on onboarding_tasks for all using (is_admin());
+create policy "admin task assignees" on task_assignees for all using (is_admin());
+create policy "admin task subtasks" on task_subtasks for all using (is_admin());
+create policy "admin task comments" on task_comments for all using (is_admin());
+
 -- ══════════════════════════════════════════════════
 -- AFTER RUNNING: make your account the admin by
 -- running this one extra line (replace the email):

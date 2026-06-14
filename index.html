@@ -386,6 +386,30 @@
       footer p{text-align:center}
     }
     @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+    /* ── CHAT WIDGET ── */
+    .chat-bubble{position:fixed;bottom:28px;right:28px;z-index:250}
+    .chat-toggle-btn{width:54px;height:54px;border-radius:50%;background:var(--blue);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(26,61,181,0.45);transition:background 0.2s,transform 0.2s;color:var(--white)}
+    .chat-toggle-btn:hover{background:var(--blue-mid);transform:scale(1.06)}
+    .chat-panel{position:fixed;bottom:96px;right:28px;width:360px;max-height:500px;background:var(--white);border:1px solid var(--light-grey);box-shadow:0 8px 40px rgba(8,8,15,0.16);z-index:250;display:none;flex-direction:column;overflow:hidden}
+    .chat-panel.open{display:flex}
+    .chat-hdr{background:var(--black);padding:16px 18px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+    .chat-hdr-name{font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;color:var(--white);line-height:1.2}
+    .chat-hdr-sub{font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-top:2px}
+    .chat-close{background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:1rem;padding:4px;line-height:1;transition:color 0.2s}
+    .chat-close:hover{color:var(--white)}
+    .chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px;min-height:0}
+    .chat-msg{max-width:88%;padding:10px 13px;font-size:0.81rem;line-height:1.62}
+    .chat-msg.bot{background:var(--offwhite);border-left:3px solid var(--blue-pale);color:var(--black);align-self:flex-start}
+    .chat-msg.user{background:var(--blue);color:var(--white);align-self:flex-end;text-align:right}
+    .chat-chips{display:flex;flex-wrap:wrap;gap:5px;padding:0 14px 10px;flex-shrink:0}
+    .chat-chip{background:none;border:1px solid var(--light-grey);color:var(--mid-grey);font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:500;padding:5px 10px;cursor:pointer;transition:border-color 0.2s,color 0.2s;text-align:left}
+    .chat-chip:hover{border-color:var(--blue);color:var(--blue)}
+    .chat-compose{display:flex;border-top:1px solid var(--light-grey);flex-shrink:0}
+    .chat-compose input{flex:1;font-family:'Inter',sans-serif;font-size:0.83rem;padding:12px 13px;border:none;outline:none;color:var(--black)}
+    .chat-compose button{background:var(--blue);color:var(--white);border:none;padding:0 16px;cursor:pointer;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-family:'Inter',sans-serif;transition:background 0.2s;flex-shrink:0}
+    .chat-compose button:hover{background:var(--blue-mid)}
+    @media(max-width:900px){.chat-panel{width:calc(100vw - 32px);right:16px;bottom:86px}.chat-bubble{right:16px;bottom:16px}}
   </style>
 </head>
 <body>
@@ -1018,6 +1042,28 @@
   </div>
 </div>
 
+<!-- CHAT WIDGET -->
+<div class="chat-bubble">
+  <div class="chat-panel" id="chat-panel">
+    <div class="chat-hdr">
+      <div>
+        <div class="chat-hdr-name">Steel &amp; Aire Assistant</div>
+        <div class="chat-hdr-sub">Ask us anything</div>
+      </div>
+      <button class="chat-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chat-msgs" id="chat-msgs"></div>
+    <div class="chat-chips" id="chat-chips"></div>
+    <div class="chat-compose">
+      <input id="chat-inp" placeholder="Type your question…" onkeydown="if(event.key==='Enter')chatSend()"/>
+      <button onclick="chatSend()">Send</button>
+    </div>
+  </div>
+  <button class="chat-toggle-btn" id="chat-btn" onclick="toggleChat()" title="Ask a question">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-brand">Steel <span>&</span> Aire Soluciones</div>
@@ -1034,6 +1080,86 @@
     const idx = tabs.indexOf(name);
     document.querySelectorAll('.tab-btn')[idx].classList.add('active');
     window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // ── CHATBOT ──
+  const CHAT_QA = [
+    {keys:['what is','who are','about','company','steel aire','soluciones'],q:'What is Steel & Aire?',a:'Steel & Aire Soluciones is a global capital and infrastructure firm. We connect borrowers, developers, and governments with institutional capital — deploying across nuclear energy, data centers, multifamily real estate, and our tokenized investment fund. We operate across 5 territories: US, El Salvador, Ecuador, Fiji, and Samoa.'},
+    {keys:['invest','investor','how do i invest','participate','get involved'],q:'How do I invest?',a:'Accredited and institutional investors can reach us at admin@mpeakp.com to discuss participation in our tokenized fund or direct co-investment. We\'ll schedule a call, understand your mandate, and walk you through current opportunities.'},
+    {keys:['tokenized','token','fund','blockchain','on-chain','digital fund'],q:'What is the tokenized fund?',a:'We\'re building a fully tokenized investment fund — real-world assets (data centers, nuclear, multifamily) represented by blockchain-native tokens, enabling fractional ownership and global investor access. It is NOT a crypto speculation play — it\'s institutional-grade real assets in a digital ownership structure. Email admin@mpeakp.com to express interest.'},
+    {keys:['data center','datacenter','hyperscale','cloud','compute','server'],q:'Tell me about data centers.',a:'We originate and structure capital for hyperscale, colocation, and edge data centers across the Americas and Pacific. Deal sizes typically range from $10M to $500M+. Where possible, we co-locate data centers with nuclear energy projects for reliable, low-carbon power.'},
+    {keys:['nuclear','energy','smr','reactor','power plant','electricity','clean energy'],q:'Tell me about nuclear energy.',a:'Steel & Aire finances nuclear energy projects — from small modular reactors (SMRs) for Pacific Island grids to full-scale plant development. We work with developers and governments across North America, Latin America, and the Pacific to structure debt, equity, and hybrid financing.'},
+    {keys:['multifamily','real estate','apartment','housing','residential','dscr','bridge'],q:'Tell me about real estate lending.',a:'We place debt and equity across multifamily and commercial real estate — DSCR loans, bridge financing, construction loans, and portfolio refinancing. Our network includes multifamily debt funds, family offices, and private lenders who can close quickly across US and select international markets.'},
+    {keys:['minimum','minimum investment','how much to invest','entry'],q:'What is the minimum investment?',a:'Minimums vary by vehicle. Tokenized fund minimums will be announced closer to launch — email admin@mpeakp.com to be notified first. For direct co-investment, requirements depend on deal size and structure. Reach out to discuss your situation.'},
+    {keys:['broker','referral','co-broker','partner','broker program'],q:'How do I become a broker partner?',a:'We work with brokers through referral partnerships and co-brokerage agreements. You bring the deal and borrower relationship — we bring the capital. Fees are transparent and agreed upfront. Email admin@mpeakp.com to discuss.'},
+    {keys:['office','location','where','headquarters','based','austin','salt lake','honolulu','hawaii'],q:'Where are your offices?',a:'US offices: Austin TX, Salt Lake City UT, and Honolulu HI. International operations: El Salvador, Ecuador, Fiji, and Samoa — genuine on-the-ground presence across 5 territories and 3 continents.'},
+    {keys:['fee','fees','cost','commission','charge','pricing'],q:'What are your fees?',a:'Fees vary by deal type. For capital placement we typically earn a closing fee paid by the borrower — nothing upfront. For fund participation and advisory work, terms are discussed in our initial consultation. Email admin@mpeakp.com to discuss specifics.'},
+    {keys:['lender','lenders','capital source','capital partner','funding'],q:'What lenders do you work with?',a:'Our network spans multifamily debt funds, family offices, private money lenders, hard money lenders, sovereign development institutions, and digital asset credit facilities — covering all tiers of the capital stack from senior debt to mezzanine and preferred equity.'},
+    {keys:['apply','loan','raise capital','get funded','submit deal','borrow','borrower'],q:'How do I apply for capital?',a:'Email admin@mpeakp.com with your deal summary — asset type, location, raise amount, and a brief description. If there\'s a fit, we\'ll set up a call and put you in our borrower portal with a dedicated deal room and document checklist to track your raise.'},
+    {keys:['government','sovereign','diplomatic','ministry','public-private','ppp'],q:'Tell me about your government relationships.',a:'We work directly with government ministries, economic development agencies, and diplomatic representatives across our 5 territories — structuring public-private partnerships that align investor returns with national infrastructure priorities, particularly in energy and data infrastructure.'},
+    {keys:['pacific','fiji','samoa','island','pacific island'],q:'Tell me about your Pacific operations.',a:'With offices in Hawaii and active relationships in Fiji and Samoa, we\'re one of the few US capital firms with genuine Pacific Island presence — focused on digital infrastructure, energy development, and community capital in markets dramatically underserved by traditional finance.'},
+    {keys:['el salvador','ecuador','latin america','central america','south america'],q:'Tell me about Latin American operations.',a:'El Salvador is a key territory for digital infrastructure and sovereign capital initiatives. Ecuador is our regional hub for South American project origination and cross-border capital structuring. We have deep government relationships in both countries.'},
+    {keys:['accredited','accredited investor','qualify','eligible','who can invest'],q:'Do I need to be accredited?',a:'Fund interests and certain co-investment opportunities require accredited investor status under securities regulations. An accredited investor typically has $1M+ net worth (excluding primary residence) or $200K+ annual income ($300K joint). Institutional investors are also welcome. Email us to discuss eligibility.'},
+    {keys:['event','events','conference','summit','calendar','attend'],q:'What events do you have coming up?',a:'Upcoming: Pacific Infrastructure Summit (Aug 2026, Honolulu), Tokenized Fund Investor Briefing (Sep 2026, Austin), Latin America Capital Forum (Oct 2026, San Salvador), Nuclear & Data Center Summit (Nov 2026, Salt Lake City), and our Global Wealth & Abundance Conference (Q1 2027, Samoa). Email admin@mpeakp.com for invitations.'},
+    {keys:['contact','email','reach','get in touch','talk','call','phone'],q:'How do I contact Steel & Aire?',a:'Email us at admin@mpeakp.com — we respond to all serious inquiries within 1 business day. Include a brief note on what you\'d like to discuss so we can connect you with the right person on our team.'},
+  ];
+  const CHAT_FALLBACK = 'Great question — our team can give you a more detailed answer. Email us at admin@mpeakp.com and we\'ll get back to you within 1 business day. You can also explore the tabs above for in-depth information on our lender network, broker program, project types, and events.';
+  const CHAT_GREETING = 'Hello! I\'m the Steel & Aire assistant. Ask me about our capital network, investment opportunities, project types, or how to work with us — or choose a quick question below.';
+  const CHAT_SUGGESTIONS = ['How do I invest?','What is the tokenized fund?','Tell me about data centers','How do I become a broker?'];
+
+  let chatOpen = false, chatStarted = false;
+
+  function toggleChat(){
+    chatOpen = !chatOpen;
+    const panel = document.getElementById('chat-panel');
+    const btn = document.getElementById('chat-btn');
+    panel.classList.toggle('open', chatOpen);
+    btn.innerHTML = chatOpen
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+      : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+    if(chatOpen && !chatStarted){ chatStarted=true; chatInit(); }
+  }
+
+  function chatInit(){
+    chatAddMsg(CHAT_GREETING, false);
+    const chips = document.getElementById('chat-chips');
+    chips.innerHTML = CHAT_SUGGESTIONS.map(s=>`<button class="chat-chip" onclick="chatAsk(this)">${s}</button>`).join('');
+  }
+
+  function chatAsk(btn){
+    const q = btn.textContent;
+    document.getElementById('chat-chips').innerHTML = '';
+    chatAddMsg(q, true);
+    setTimeout(()=>chatAddMsg(chatMatch(q), false), 320);
+  }
+
+  function chatSend(){
+    const inp = document.getElementById('chat-inp');
+    const text = inp.value.trim(); if(!text) return;
+    inp.value = '';
+    document.getElementById('chat-chips').innerHTML = '';
+    chatAddMsg(text, true);
+    setTimeout(()=>chatAddMsg(chatMatch(text), false), 320);
+  }
+
+  function chatAddMsg(text, isUser){
+    const el = document.getElementById('chat-msgs');
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + (isUser ? 'user' : 'bot');
+    div.textContent = text;
+    el.appendChild(div);
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function chatMatch(input){
+    const t = input.toLowerCase();
+    let best = null, bestScore = 0;
+    for(const qa of CHAT_QA){
+      let score = 0;
+      for(const k of qa.keys){ if(t.includes(k.toLowerCase())) score++; }
+      if(score > bestScore){ bestScore = score; best = qa; }
+    }
+    return (best && bestScore > 0) ? best.a : CHAT_FALLBACK;
   }
 
   // Animated dot grid for hero
