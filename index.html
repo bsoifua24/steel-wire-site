@@ -417,6 +417,53 @@
     .chat-compose button{background:var(--blue);color:var(--white);border:none;padding:0 16px;cursor:pointer;font-size:0.68rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-family:'Inter',sans-serif;transition:background 0.2s;flex-shrink:0}
     .chat-compose button:hover{background:var(--blue-mid)}
     @media(max-width:900px){.chat-panel{width:calc(100vw - 32px);right:16px;bottom:86px}.chat-bubble{right:16px;bottom:16px}}
+
+    /* ── CHART CONTAINERS ── */
+    .chart-wrap{background:var(--charcoal);border:1px solid rgba(255,255,255,0.06);padding:36px 32px;border-radius:2px;position:relative}
+    .chart-canvas-box{position:relative;width:100%;max-width:760px;margin:0 auto}
+    .chart-donut-row{display:grid;grid-template-columns:340px 1fr;gap:48px;align-items:center;max-width:900px;margin:0 auto}
+    .chart-legend{display:flex;flex-direction:column;gap:14px}
+    .chart-legend-item{display:flex;align-items:center;gap:12px;font-size:0.83rem;color:rgba(255,255,255,0.7)}
+    .chart-legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+    .chart-legend-pct{margin-left:auto;font-weight:600;color:var(--white);font-size:0.9rem}
+    .chart-note{font-size:0.7rem;color:rgba(255,255,255,0.3);margin-top:20px;line-height:1.5;text-align:center}
+
+    /* ── TEMPLATE CARDS ── */
+    .template-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:40px}
+    .template-card{background:var(--charcoal);border:1px solid rgba(255,255,255,0.08);padding:28px 24px;cursor:pointer;transition:border-color 0.2s,transform 0.15s;position:relative;overflow:hidden}
+    .template-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform 0.2s}
+    .template-card:hover{border-color:rgba(90,138,255,0.3);transform:translateY(-2px)}
+    .template-card:hover::before{transform:scaleX(1)}
+    .template-card-tag{font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue-light);margin-bottom:10px;display:block}
+    .template-card h4{font-family:'Cormorant Garant',serif;font-size:1.15rem;font-weight:600;color:var(--white);margin-bottom:8px}
+    .template-card p{font-size:0.78rem;line-height:1.6;color:rgba(255,255,255,0.4)}
+    .template-card-cta{display:flex;align-items:center;gap:6px;margin-top:18px;font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue-light)}
+
+    /* ── MODAL SYSTEM ── */
+    #modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px}
+    #modal-overlay.open{display:flex}
+    .modal{display:none;background:#0f1117;border:1px solid rgba(255,255,255,0.1);max-width:640px;width:100%;max-height:88vh;overflow-y:auto;position:relative;padding:44px 40px}
+    .modal.active{display:block}
+    .modal-close{position:absolute;top:18px;right:18px;background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);width:32px;height:32px;cursor:pointer;font-size:0.9rem;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s,color 0.2s}
+    .modal-close:hover{border-color:var(--blue-light);color:var(--white)}
+    .modal-eyebrow{font-size:0.62rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue-light);margin-bottom:10px}
+    .modal-title{font-family:'Cormorant Garant',serif;font-size:1.8rem;font-weight:300;color:var(--white);margin-bottom:6px}
+    .modal-disclaimer{font-size:0.68rem;color:rgba(255,255,255,0.25);border:1px dashed rgba(255,255,255,0.1);padding:6px 12px;display:inline-block;margin-bottom:28px}
+    .modal-section{border-top:1px solid rgba(255,255,255,0.07);padding-top:20px;margin-top:20px}
+    .modal-section:first-of-type{border-top:none;padding-top:0;margin-top:0}
+    .modal-section-title{font-size:0.66rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:14px}
+    .modal-row{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.82rem}
+    .modal-row:last-child{border-bottom:none}
+    .modal-row-label{color:rgba(255,255,255,0.45)}
+    .modal-row-val{color:var(--white);font-weight:500;text-align:right}
+    .modal-row-val.blue{color:var(--blue-light)}
+    .modal-stack-bar{height:32px;display:flex;border-radius:2px;overflow:hidden;margin:16px 0}
+    .modal-stack-seg{display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:0.06em;white-space:nowrap;overflow:hidden;transition:filter 0.2s}
+    .modal-stack-seg:hover{filter:brightness(1.15)}
+    .modal-checklist{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+    .modal-check-item{display:flex;align-items:center;gap:10px;font-size:0.8rem;color:rgba(255,255,255,0.55);padding:6px 0}
+    .modal-check-icon{width:18px;height:18px;border-radius:50%;background:rgba(26,61,181,0.3);border:1px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:0.55rem;color:var(--blue-light);flex-shrink:0}
+    @media(max-width:680px){.modal{padding:28px 20px}.chart-donut-row{grid-template-columns:1fr;gap:24px}.chart-donut-row canvas{max-height:240px}}
   </style>
 </head>
 <body>
@@ -502,33 +549,37 @@
   <section id="global">
     <span class="section-tag">Global Presence</span>
     <h2>Feet on the ground<br>where it <em>matters most.</em></h2>
-    <div class="regions">
-      <div class="region">
+    <p style="font-size:0.83rem;color:rgba(255,255,255,0.35);max-width:560px;line-height:1.7;margin:0 0 32px">Hover any marker to see our operations on the ground. Six territories across three continents and the Pacific Ocean.</p>
+    <div id="globe-map" style="width:100%;border:1px solid rgba(26,61,181,0.2);overflow:hidden;background:#070c1a;min-height:380px;position:relative">
+      <div id="globe-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.18);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase">Loading map…</div>
+    </div>
+    <div class="regions" id="globe-cards" style="margin-top:28px">
+      <div class="region" style="transition:opacity 0.25s">
         <div class="region-flag">🇸🇻</div>
         <h4>El Salvador</h4>
         <p>Active operations supporting emerging market development, digital infrastructure, and sovereign capital initiatives.</p>
       </div>
-      <div class="region">
+      <div class="region" style="transition:opacity 0.25s">
         <div class="region-flag">🇪🇨</div>
         <h4>Ecuador</h4>
         <p>Regional hub for South American project origination, lender relationships, and cross-border capital structuring.</p>
       </div>
-      <div class="region">
+      <div class="region" style="transition:opacity 0.25s">
         <div class="region-flag">🇺🇸</div>
         <h4>United States</h4>
         <p>Offices in Austin TX, Salt Lake City UT, and Honolulu HI — anchoring our domestic capital markets and government relations work.</p>
       </div>
-      <div class="region">
+      <div class="region" style="transition:opacity 0.25s">
         <div class="region-flag">🌺</div>
         <h4>Hawaii</h4>
         <p>Pacific gateway office connecting US capital markets with Pacific Island partners and cross-Pacific infrastructure deals.</p>
       </div>
-      <div class="region">
+      <div class="region" style="transition:opacity 0.25s">
         <div class="region-flag">🇫🇯</div>
         <h4>Fiji</h4>
         <p>Pacific Island infrastructure and energy development — building resilient systems for underserved communities.</p>
       </div>
-      <div class="region">
+      <div class="region" style="transition:opacity 0.25s">
         <div class="region-flag">🇼🇸</div>
         <h4>Samoa</h4>
         <p>Community-focused development capital, renewable energy, and data infrastructure across the Samoan islands.</p>
@@ -756,6 +807,35 @@
     </div>
   </div>
 
+  <!-- RETURNS CHART -->
+  <div class="tab-section" style="background:var(--black-soft)">
+    <span class="section-tag" style="color:var(--blue-light)">Indicative Returns</span>
+    <h2 style="color:var(--white)">Return profiles<br><em style="color:var(--blue-light)">by asset class.</em></h2>
+    <p style="font-size:0.83rem;color:rgba(255,255,255,0.35);max-width:560px;line-height:1.7;margin:16px 0 36px">Illustrative target ranges based on typical structures in our pipeline. Actual returns vary by deal, structure, and market conditions.</p>
+    <div class="chart-wrap">
+      <div class="chart-canvas-box" style="height:320px">
+        <canvas id="chart-returns"></canvas>
+      </div>
+      <p class="chart-note">Conservative and target IRR ranges shown. Infrastructure and cross-border deals may carry additional sovereign risk premium not reflected above.</p>
+    </div>
+
+    <!-- TEMPLATE CARDS -->
+    <div class="template-cards" style="margin-top:48px">
+      <div class="template-card" onclick="openModal('modal-lender-pkg')">
+        <span class="template-card-tag">Sample Document</span>
+        <h4>Lender Package</h4>
+        <p>A full deal package as presented to capital partners — deal summary, capital structure, collateral, and document checklist.</p>
+        <div class="template-card-cta">View Example <span style="font-size:1rem">→</span></div>
+      </div>
+      <div class="template-card" onclick="openModal('modal-term-sheet')">
+        <span class="template-card-tag">Sample Document</span>
+        <h4>Term Sheet</h4>
+        <p>A representative term sheet covering rate, index, spread, fees, term, extension options, and recourse structure.</p>
+        <div class="template-card-cta">View Example <span style="font-size:1rem">→</span></div>
+      </div>
+    </div>
+  </div>
+
   <div class="tab-section" style="background:var(--white);text-align:center;padding:80px 60px">
     <h2>Interested in lending with us?</h2>
     <p style="font-size:0.9rem;color:var(--mid-grey);margin:16px auto 36px;max-width:480px;line-height:1.7">Reach out to discuss your lending criteria. We'll match you to deals that fit your mandate.</p>
@@ -818,6 +898,27 @@
       <div class="card dark-card">
         <h4>Global Deal Flow</h4>
         <p>Collaborate on deals originating in El Salvador, Ecuador, Fiji, and Samoa — territories where few US-based brokers have established relationships.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BROKER TEMPLATES -->
+  <div class="tab-section" style="background:var(--black-soft)">
+    <span class="section-tag" style="color:var(--blue-light)">Program Documents</span>
+    <h2 style="color:var(--white)">See what a<br><em style="color:var(--blue-light)">broker deal looks like.</em></h2>
+    <p style="font-size:0.83rem;color:rgba(255,255,255,0.35);max-width:560px;line-height:1.7;margin:16px 0 36px">Click any example below to preview how we structure broker partnerships and fee arrangements.</p>
+    <div class="template-cards">
+      <div class="template-card" onclick="openModal('modal-referral')">
+        <span class="template-card-tag">Sample Document</span>
+        <h4>Referral Partnership</h4>
+        <p>A fee-based referral structure — you send the deal, we handle placement and closing. Includes fee schedule and payment timing.</p>
+        <div class="template-card-cta">View Example <span style="font-size:1rem">→</span></div>
+      </div>
+      <div class="template-card" onclick="openModal('modal-cobroker')">
+        <span class="template-card-tag">Sample Document</span>
+        <h4>Co-Broker Agreement</h4>
+        <p>Full co-brokerage structure — split, roles, deal exclusivity, tail period, and closing mechanics for complex transactions.</p>
+        <div class="template-card-cta">View Example <span style="font-size:1rem">→</span></div>
       </div>
     </div>
   </div>
@@ -907,6 +1008,53 @@
         <span class="card-tag">Bridge</span>
         <h4>Bridge &amp; Construction</h4>
         <p>Short-term capital for acquisition, renovation, and new construction — leveraging our hard money and private lender network for fast deployment.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPITAL STACK CHART -->
+  <div class="tab-section" style="background:var(--black-soft)">
+    <span class="section-tag" style="color:var(--blue-light)">Capital Structure</span>
+    <h2 style="color:var(--white)">How we stack<br><em style="color:var(--blue-light)">a typical deal.</em></h2>
+    <p style="font-size:0.83rem;color:rgba(255,255,255,0.35);max-width:560px;line-height:1.7;margin:16px 0 36px">Every deal we structure has multiple layers of capital — each with its own return profile, risk position, and priority in the waterfall. This is what a representative structure looks like.</p>
+    <div class="chart-wrap">
+      <div class="chart-donut-row">
+        <div style="position:relative;height:300px">
+          <canvas id="chart-capstack"></canvas>
+        </div>
+        <div class="chart-legend">
+          <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#1a3db5"></div>Senior Debt<span class="chart-legend-pct">65%</span></div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.25);margin-left:24px;margin-top:-8px;margin-bottom:4px">First lien, lowest risk, lowest return. Banks &amp; debt funds.</div>
+          <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#3a6aff"></div>Mezzanine Debt<span class="chart-legend-pct">15%</span></div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.25);margin-left:24px;margin-top:-8px;margin-bottom:4px">Second position. Higher yield, subordinate to senior debt.</div>
+          <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#e8c062"></div>Preferred Equity<span class="chart-legend-pct">10%</span></div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.25);margin-left:24px;margin-top:-8px;margin-bottom:4px">Equity upside with preferred return priority. Family offices &amp; HNW.</div>
+          <div class="chart-legend-item"><div class="chart-legend-dot" style="background:#7a4fff"></div>Common Equity / GP<span class="chart-legend-pct">10%</span></div>
+          <div style="font-size:0.72rem;color:rgba(255,255,255,0.25);margin-left:24px;margin-top:-8px;margin-bottom:4px">Highest risk, highest upside. GP promote kicks in at preferred hurdle.</div>
+        </div>
+      </div>
+      <p class="chart-note">Percentages represent illustrative loan-to-value ratios for a $10M–$100M infrastructure deal. Actual structure varies by asset type, market, and lender mandate.</p>
+    </div>
+
+    <!-- DEAL TEMPLATE CARDS -->
+    <div class="template-cards" style="margin-top:48px">
+      <div class="template-card" onclick="openModal('modal-deal-multifamily')">
+        <span class="template-card-tag">Sample Deal Summary</span>
+        <h4>Multifamily Development</h4>
+        <p>127-unit workforce housing project — full capital structure, projected IRR, return timeline, and document checklist.</p>
+        <div class="template-card-cta">View Example <span style="font-size:1rem">→</span></div>
+      </div>
+      <div class="template-card" onclick="openModal('modal-deal-datacenter')">
+        <span class="template-card-tag">Sample Deal Summary</span>
+        <h4>Data Center Development</h4>
+        <p>40MW colocation facility — hyperscale tenant pre-lease, tax credit stack, debt/equity structure, and projected returns.</p>
+        <div class="template-card-cta">View Example <span style="font-size:1rem">→</span></div>
+      </div>
+      <div class="template-card" onclick="openModal('modal-deal-energy')">
+        <span class="template-card-tag">Sample Deal Summary</span>
+        <h4>Energy Infrastructure</h4>
+        <p>Small modular reactor project — sovereign co-investment structure, government MOU, phased capital deployment.</p>
+        <div class="template-card-cta">View Example <span style="font-size:1rem">→</span></div>
       </div>
     </div>
   </div>
@@ -1256,6 +1404,7 @@
 
 <script>
   // Tab navigation
+  const _chartDone = {};
   function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1264,6 +1413,8 @@
     const idx = tabs.indexOf(name);
     document.querySelectorAll('.tab-btn')[idx].classList.add('active');
     window.scrollTo({top:0, behavior:'smooth'});
+    if (!_chartDone.lenders  && name === 'lenders')  { _chartDone.lenders  = true; setTimeout(initReturnsChart,  80); }
+    if (!_chartDone.projects && name === 'projects') { _chartDone.projects = true; setTimeout(initCapstackChart, 80); }
   }
 
   // ── CHATBOT ──
@@ -1386,6 +1537,477 @@
     requestAnimationFrame(draw);
   })();
 </script>
+<!-- CDN: Chart.js, D3, TopoJSON -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+
+<script>
+// ── MODAL SYSTEM ──
+function openModal(id) {
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+  const t = document.getElementById(id);
+  if (t) t.classList.add('active');
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── RETURNS CHART (Lenders page) ──
+function initReturnsChart() {
+  const el = document.getElementById('chart-returns');
+  if (!el || typeof Chart === 'undefined') return;
+  new Chart(el, {
+    type: 'bar',
+    data: {
+      labels: ['Multifamily', 'Data Center', 'Nuclear / Energy', 'Cross-Border', 'Mixed-Use'],
+      datasets: [
+        { label: 'Conservative', data: [8,12,10,11,9],
+          backgroundColor:'rgba(26,61,181,0.55)', borderColor:'#1a3db5', borderWidth:1, borderRadius:2 },
+        { label: 'Target', data: [14,22,18,20,16],
+          backgroundColor:'rgba(90,138,255,0.72)', borderColor:'#5a8aff', borderWidth:1, borderRadius:2 }
+      ]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color:'rgba(255,255,255,0.55)', font:{family:'Inter',size:11},
+          usePointStyle:true, pointStyleWidth:8 } },
+        tooltip: { callbacks:{ label: c => ` ${c.dataset.label}: ${c.raw}% IRR` },
+          backgroundColor:'#0f1117', borderColor:'rgba(90,138,255,0.3)', borderWidth:1,
+          titleColor:'#fff', bodyColor:'rgba(255,255,255,0.55)', padding:10 }
+      },
+      scales: {
+        x: { min:0, max:25, grid:{color:'rgba(255,255,255,0.04)'}, border:{color:'rgba(255,255,255,0.06)'},
+          ticks:{ color:'rgba(255,255,255,0.35)', callback:v=>v+'%', font:{family:'Inter',size:10} } },
+        y: { grid:{color:'rgba(255,255,255,0.04)'}, border:{color:'rgba(255,255,255,0.06)'},
+          ticks:{ color:'rgba(255,255,255,0.55)', font:{family:'Inter',size:11} } }
+      }
+    }
+  });
+}
+
+// ── CAPITAL STACK CHART (Projects page) ──
+function initCapstackChart() {
+  const el = document.getElementById('chart-capstack');
+  if (!el || typeof Chart === 'undefined') return;
+  new Chart(el, {
+    type: 'doughnut',
+    data: {
+      labels: ['Senior Debt','Mezzanine Debt','Preferred Equity','Common Equity / GP'],
+      datasets: [{ data:[65,15,10,10],
+        backgroundColor:['#1a3db5','#3a6aff','#e8c062','#7a4fff'],
+        borderColor:'#0a0a0f', borderWidth:3, hoverBorderColor:'rgba(255,255,255,0.18)' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout:'65%',
+      plugins: {
+        legend: { display:false },
+        tooltip: { callbacks:{ label: c=>' '+c.label+': '+c.raw+'%' },
+          backgroundColor:'#0f1117', borderColor:'rgba(90,138,255,0.3)', borderWidth:1,
+          titleColor:'#fff', bodyColor:'rgba(255,255,255,0.55)', padding:10 }
+      }
+    }
+  });
+}
+
+// ── INTERACTIVE WORLD MAP ──
+const MAP_LOCS = [
+  { name:'El Salvador',   city:'San Salvador',          lat:13.8,  lon:-88.9,  card:0, detail:'Active operations supporting emerging market development, digital infrastructure, and sovereign capital initiatives.' },
+  { name:'Ecuador',       city:'Quito',                 lat:-0.2,  lon:-78.5,  card:1, detail:'Regional hub for South American project origination, lender relationships, and cross-border capital structuring.' },
+  { name:'United States', city:'Austin TX · SLC UT',   lat:37.5,  lon:-99,    card:2, detail:'Offices in Austin TX, Salt Lake City UT — anchoring our domestic capital markets and government relations work.' },
+  { name:'Hawaii',        city:'Honolulu, HI',          lat:21.3,  lon:-157.8, card:3, detail:'Pacific gateway office connecting US capital markets with Pacific Island partners and cross-Pacific infrastructure deals.' },
+  { name:'Fiji',          city:'Suva, Fiji',            lat:-18.1, lon:178.4,  card:4, detail:'Pacific Island infrastructure and energy development — building resilient systems for underserved communities.' },
+  { name:'Samoa',         city:'Apia, Samoa',           lat:-13.8, lon:-172.1, card:5, detail:'Community-focused development capital, renewable energy, and data infrastructure across the Samoan islands.' },
+];
+
+let _globeDone = false;
+async function initGlobe() {
+  if (_globeDone || typeof d3 === 'undefined' || typeof topojson === 'undefined') return;
+  _globeDone = true;
+  try {
+    const world = await d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+    const wrap  = document.getElementById('globe-map');
+    const loadEl = document.getElementById('globe-loading');
+    if (loadEl) loadEl.remove();
+
+    const W = wrap.offsetWidth || 800;
+    const H = Math.round(W * 0.47);
+
+    const proj = d3.geoNaturalEarth1().scale(W / 6.3).translate([W/2, H/2]);
+    const path = d3.geoPath().projection(proj);
+
+    const svg = d3.select('#globe-map').append('svg')
+      .attr('width','100%').attr('viewBox',`0 0 ${W} ${H}`)
+      .attr('preserveAspectRatio','xMidYMid meet');
+
+    // Ocean
+    svg.append('rect').attr('width',W).attr('height',H).attr('fill','#070c1a');
+
+    // Graticule grid
+    svg.append('path').datum(d3.geoGraticule()()).attr('d',path)
+      .attr('fill','none').attr('stroke','rgba(26,61,181,0.08)').attr('stroke-width',0.4);
+
+    // Sphere outline
+    svg.append('path').datum({type:'Sphere'}).attr('d',path)
+      .attr('fill','none').attr('stroke','rgba(26,61,181,0.2)').attr('stroke-width',1);
+
+    // Country fills
+    const countries = topojson.feature(world, world.objects.countries);
+    svg.selectAll('path.ctry').data(countries.features).join('path')
+      .attr('class','ctry').attr('d',path)
+      .attr('fill','#141a2c').attr('stroke','rgba(26,61,181,0.2)').attr('stroke-width',0.4);
+
+    // Country borders
+    svg.append('path')
+      .datum(topojson.mesh(world, world.objects.countries, (a,b) => a !== b))
+      .attr('d',path).attr('fill','none')
+      .attr('stroke','rgba(26,61,181,0.14)').attr('stroke-width',0.3);
+
+    // Tooltip
+    let tip = document.getElementById('map-tip');
+    if (!tip) {
+      tip = document.createElement('div'); tip.id = 'map-tip';
+      tip.style.cssText = 'position:fixed;background:#0f1117;border:1px solid rgba(90,138,255,0.32);padding:14px 16px;pointer-events:none;opacity:0;transition:opacity 0.18s;max-width:240px;z-index:9998;font-family:Inter,sans-serif;box-shadow:0 8px 32px rgba(0,0,0,0.7)';
+      document.body.appendChild(tip);
+    }
+
+    const cards = document.querySelectorAll('#globe-cards .region');
+
+    MAP_LOCS.forEach((loc, i) => {
+      const [x, y] = proj([loc.lon, loc.lat]);
+      if (!x || isNaN(x)) return;
+
+      const g = svg.append('g').style('cursor','pointer');
+
+      // Animated pulse ring
+      const ring = g.append('circle').attr('cx',x).attr('cy',y).attr('r',5)
+        .attr('fill','none').attr('stroke','rgba(90,138,255,0.45)').attr('stroke-width',1);
+      ring.append('animate').attr('attributeName','r').attr('from','4').attr('to','22')
+        .attr('dur','2.4s').attr('repeatCount','indefinite');
+      ring.append('animate').attr('attributeName','opacity').attr('from','0.8').attr('to','0')
+        .attr('dur','2.4s').attr('repeatCount','indefinite');
+
+      // Glow halo
+      g.append('circle').attr('class','pin-glow').attr('cx',x).attr('cy',y).attr('r',7)
+        .attr('fill','rgba(90,138,255,0.12)');
+
+      // Core dot
+      g.append('circle').attr('class','pin-core').attr('cx',x).attr('cy',y).attr('r',4)
+        .attr('fill','#5a8aff').attr('stroke','#fff').attr('stroke-width',1.2);
+
+      // Large invisible hit area
+      g.append('circle').attr('cx',x).attr('cy',y).attr('r',16).attr('fill','transparent')
+        .on('mouseover', function(ev) {
+          g.select('.pin-glow').attr('r',11).attr('fill','rgba(90,138,255,0.25)');
+          g.select('.pin-core').attr('r',5.5).attr('fill','#8aaaff');
+          tip.innerHTML = `<div style="font-size:0.6rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#5a8aff;margin-bottom:4px">${loc.city}</div><div style="font-size:0.88rem;font-weight:600;color:#fff;margin-bottom:8px">${loc.name}</div><div style="font-size:0.76rem;color:rgba(255,255,255,0.48);line-height:1.55">${loc.detail}</div>`;
+          tip.style.opacity = '1';
+          tip.style.left = (ev.clientX + 14) + 'px';
+          tip.style.top  = (ev.clientY - 14) + 'px';
+          cards.forEach((c,j) => c.style.opacity = j === loc.card ? '1' : '0.28');
+        })
+        .on('mousemove', function(ev) {
+          tip.style.left = (ev.clientX + 14) + 'px';
+          tip.style.top  = (ev.clientY - 14) + 'px';
+        })
+        .on('mouseout', function() {
+          g.select('.pin-glow').attr('r',7).attr('fill','rgba(90,138,255,0.12)');
+          g.select('.pin-core').attr('r',4).attr('fill','#5a8aff');
+          tip.style.opacity = '0';
+          cards.forEach(c => c.style.opacity = '1');
+        })
+        .on('click', function(ev) {
+          // Mobile: toggle tooltip on tap
+          tip.style.opacity = tip.style.opacity === '1' ? '0' : '1';
+          const bx = ev.clientX; const by = ev.clientY;
+          tip.style.left = Math.max(8, Math.min(bx - 120, window.innerWidth - 260)) + 'px';
+          tip.style.top  = (by + 18) + 'px';
+        });
+    });
+
+  } catch(e) { console.warn('Globe init error', e); }
+}
+
+// Lazy-load globe via IntersectionObserver
+(function() {
+  const el = document.getElementById('globe-map');
+  if (!el) return;
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { initGlobe(); obs.disconnect(); }
+  }, { threshold: 0.1 });
+  obs.observe(el);
+})();
+</script>
+
+<!-- ── MODALS ── -->
+<div id="modal-overlay" onclick="if(event.target===this)closeModal()">
+
+  <!-- Lender Package -->
+  <div class="modal" id="modal-lender-pkg">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-eyebrow">Sample Document</div>
+    <h3 class="modal-title">Lender Package</h3>
+    <div class="modal-disclaimer">For illustration only — figures are representative</div>
+    <div class="modal-section">
+      <div class="modal-section-title">Deal Summary</div>
+      <div class="modal-row"><span class="modal-row-label">Asset Type</span><span class="modal-row-val">Multifamily / Bridge</span></div>
+      <div class="modal-row"><span class="modal-row-label">Location</span><span class="modal-row-val">Austin, TX</span></div>
+      <div class="modal-row"><span class="modal-row-label">Loan Request</span><span class="modal-row-val blue">$8,500,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Appraised Value</span><span class="modal-row-val">$12,800,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">LTV</span><span class="modal-row-val">66%</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Capital Structure</div>
+      <div class="modal-stack-bar">
+        <div class="modal-stack-seg" style="width:66%;background:#1a3db5">Senior 66%</div>
+        <div class="modal-stack-seg" style="width:34%;background:#1e2540;border:1px dashed rgba(255,255,255,0.08)">Equity 34%</div>
+      </div>
+      <div class="modal-row"><span class="modal-row-label">Senior Debt</span><span class="modal-row-val blue">$8,500,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Borrower Equity</span><span class="modal-row-val">$4,300,000</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Property</div>
+      <div class="modal-row"><span class="modal-row-label">Units</span><span class="modal-row-val">127 units</span></div>
+      <div class="modal-row"><span class="modal-row-label">Year Built</span><span class="modal-row-val">2018</span></div>
+      <div class="modal-row"><span class="modal-row-label">Occupancy</span><span class="modal-row-val">94%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Avg. Rent</span><span class="modal-row-val">$1,650 / mo</span></div>
+      <div class="modal-row"><span class="modal-row-label">NOI (T-12)</span><span class="modal-row-val">$680,000</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Documents Included</div>
+      <div class="modal-checklist">
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Executive Summary</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>MAI Appraisal</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Rent Roll (current)</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>T-12 Operating Statement</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Borrower Financial Statements</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Personal Financial Statement</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Photo Package</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Term Sheet -->
+  <div class="modal" id="modal-term-sheet">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-eyebrow">Sample Document</div>
+    <h3 class="modal-title">Term Sheet</h3>
+    <div class="modal-disclaimer">For illustration only — figures are representative</div>
+    <div class="modal-section">
+      <div class="modal-section-title">Loan Terms</div>
+      <div class="modal-row"><span class="modal-row-label">Principal</span><span class="modal-row-val blue">$8,500,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Index</span><span class="modal-row-val">30-Day SOFR</span></div>
+      <div class="modal-row"><span class="modal-row-label">Spread</span><span class="modal-row-val">+285 bps</span></div>
+      <div class="modal-row"><span class="modal-row-label">Floor Rate</span><span class="modal-row-val">6.50%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Term</span><span class="modal-row-val">18 months</span></div>
+      <div class="modal-row"><span class="modal-row-label">Extensions</span><span class="modal-row-val">2 × 6 months</span></div>
+      <div class="modal-row"><span class="modal-row-label">Amortization</span><span class="modal-row-val">Interest Only</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Fees</div>
+      <div class="modal-row"><span class="modal-row-label">Origination Fee</span><span class="modal-row-val">1.50%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Exit Fee</span><span class="modal-row-val">0.50%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Extension Fee (each)</span><span class="modal-row-val">0.25%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Processing Fee</span><span class="modal-row-val">$2,500</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Structure</div>
+      <div class="modal-row"><span class="modal-row-label">Recourse</span><span class="modal-row-val">Non-recourse + carve-outs</span></div>
+      <div class="modal-row"><span class="modal-row-label">Prepayment</span><span class="modal-row-val">Open after month 6</span></div>
+      <div class="modal-row"><span class="modal-row-label">Reserve</span><span class="modal-row-val">3 months PITIA</span></div>
+      <div class="modal-row"><span class="modal-row-label">Closing Timeline</span><span class="modal-row-val">21–28 days from LOI</span></div>
+    </div>
+  </div>
+
+  <!-- Referral Partnership -->
+  <div class="modal" id="modal-referral">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-eyebrow">Sample Document</div>
+    <h3 class="modal-title">Referral Partnership</h3>
+    <div class="modal-disclaimer">For illustration only — actual terms vary by deal</div>
+    <div class="modal-section">
+      <div class="modal-section-title">Program Overview</div>
+      <div class="modal-row"><span class="modal-row-label">Broker Role</span><span class="modal-row-val">Introduce borrower + deal</span></div>
+      <div class="modal-row"><span class="modal-row-label">SA Role</span><span class="modal-row-val">Underwriting, placement, close</span></div>
+      <div class="modal-row"><span class="modal-row-label">Min. Deal Size</span><span class="modal-row-val">$500,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Asset Types</span><span class="modal-row-val">All (RE, energy, infrastructure)</span></div>
+      <div class="modal-row"><span class="modal-row-label">Markets</span><span class="modal-row-val">US, LATAM, Pacific</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Fee Structure</div>
+      <div class="modal-row"><span class="modal-row-label">Referral Fee</span><span class="modal-row-val blue">1.00% – 1.50%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Fee Basis</span><span class="modal-row-val">Funded loan amount</span></div>
+      <div class="modal-row"><span class="modal-row-label">Payment Trigger</span><span class="modal-row-val">Funding close</span></div>
+      <div class="modal-row"><span class="modal-row-label">Payment</span><span class="modal-row-val">Wire within 3 business days</span></div>
+      <div class="modal-row"><span class="modal-row-label">Upfront Fee</span><span class="modal-row-val">None</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Requirements</div>
+      <div class="modal-checklist">
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Signed Broker Registration Form</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>NDA (deal-specific)</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Deal submission via portal</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>W-9 / entity docs for payment</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Co-Broker Agreement -->
+  <div class="modal" id="modal-cobroker">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-eyebrow">Sample Document</div>
+    <h3 class="modal-title">Co-Broker Agreement</h3>
+    <div class="modal-disclaimer">For illustration only — actual terms vary by deal</div>
+    <div class="modal-section">
+      <div class="modal-section-title">Structure</div>
+      <div class="modal-row"><span class="modal-row-label">Fee Split</span><span class="modal-row-val blue">50 / 50</span></div>
+      <div class="modal-row"><span class="modal-row-label">Fee Basis</span><span class="modal-row-val">Gross origination fee at close</span></div>
+      <div class="modal-row"><span class="modal-row-label">Exclusivity</span><span class="modal-row-val">Deal-specific</span></div>
+      <div class="modal-row"><span class="modal-row-label">Term</span><span class="modal-row-val">6 months from execution</span></div>
+      <div class="modal-row"><span class="modal-row-label">Tail Period</span><span class="modal-row-val">12 months</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Broker Responsibilities</div>
+      <div class="modal-checklist">
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Deal origination &amp; borrower relationship</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Initial document collection</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Borrower communication</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Closing coordination support</div>
+      </div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Steel &amp; Aire Responsibilities</div>
+      <div class="modal-checklist">
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Full underwriting &amp; analysis</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Lender sourcing &amp; negotiations</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Term sheet &amp; LOI management</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Due diligence coordination</div>
+        <div class="modal-check-item"><div class="modal-check-icon">✓</div>Closing management</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multifamily Deal Summary -->
+  <div class="modal" id="modal-deal-multifamily">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-eyebrow">Sample Deal Summary</div>
+    <h3 class="modal-title">Multifamily Development</h3>
+    <div class="modal-disclaimer">For illustration only — figures are representative</div>
+    <div class="modal-section">
+      <div class="modal-section-title">Project Overview</div>
+      <div class="modal-row"><span class="modal-row-label">Asset Type</span><span class="modal-row-val">Multifamily Development</span></div>
+      <div class="modal-row"><span class="modal-row-label">Location</span><span class="modal-row-val">Austin, TX</span></div>
+      <div class="modal-row"><span class="modal-row-label">Units</span><span class="modal-row-val">127 units</span></div>
+      <div class="modal-row"><span class="modal-row-label">Total Capitalization</span><span class="modal-row-val blue">$42,000,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Hold Period</span><span class="modal-row-val">5 years</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Capital Stack</div>
+      <div class="modal-stack-bar">
+        <div class="modal-stack-seg" style="width:65%;background:#1a3db5">Senior 65%</div>
+        <div class="modal-stack-seg" style="width:15%;background:#3a6aff">Mezz 15%</div>
+        <div class="modal-stack-seg" style="width:10%;background:#e8c062;color:#0a0a0f">Pref 10%</div>
+        <div class="modal-stack-seg" style="width:10%;background:#7a4fff">Eq 10%</div>
+      </div>
+      <div class="modal-row"><span class="modal-row-label">Senior Debt</span><span class="modal-row-val">$27,300,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Mezzanine</span><span class="modal-row-val">$6,300,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Preferred Equity</span><span class="modal-row-val">$4,200,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Common Equity / GP</span><span class="modal-row-val">$4,200,000</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Projected Returns</div>
+      <div class="modal-row"><span class="modal-row-label">Target IRR</span><span class="modal-row-val blue">16% – 19%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Equity Multiple</span><span class="modal-row-val">2.1× – 2.4×</span></div>
+      <div class="modal-row"><span class="modal-row-label">Cash-on-Cash (Yr 1)</span><span class="modal-row-val">6.2%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Preferred Return (LP)</span><span class="modal-row-val">8%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Distributions</span><span class="modal-row-val">Quarterly</span></div>
+    </div>
+  </div>
+
+  <!-- Data Center Deal Summary -->
+  <div class="modal" id="modal-deal-datacenter">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-eyebrow">Sample Deal Summary</div>
+    <h3 class="modal-title">Data Center Development</h3>
+    <div class="modal-disclaimer">For illustration only — figures are representative</div>
+    <div class="modal-section">
+      <div class="modal-section-title">Project Overview</div>
+      <div class="modal-row"><span class="modal-row-label">Asset Type</span><span class="modal-row-val">Colocation Data Center</span></div>
+      <div class="modal-row"><span class="modal-row-label">Location</span><span class="modal-row-val">Central US / Pacific Island</span></div>
+      <div class="modal-row"><span class="modal-row-label">Scale</span><span class="modal-row-val">40 MW critical load</span></div>
+      <div class="modal-row"><span class="modal-row-label">Total Capitalization</span><span class="modal-row-val blue">$185,000,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Anchor Tenant</span><span class="modal-row-val">Hyperscale (pre-lease)</span></div>
+      <div class="modal-row"><span class="modal-row-label">Hold Period</span><span class="modal-row-val">7–10 years</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Capital Stack</div>
+      <div class="modal-stack-bar">
+        <div class="modal-stack-seg" style="width:60%;background:#1a3db5">Senior 60%</div>
+        <div class="modal-stack-seg" style="width:15%;background:#3a6aff">Mezz 15%</div>
+        <div class="modal-stack-seg" style="width:10%;background:#e8c062;color:#0a0a0f">Pref 10%</div>
+        <div class="modal-stack-seg" style="width:15%;background:#7a4fff">Eq 15%</div>
+      </div>
+      <div class="modal-row"><span class="modal-row-label">Senior Debt</span><span class="modal-row-val">$111,000,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Mezzanine</span><span class="modal-row-val">$27,750,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Preferred Equity</span><span class="modal-row-val">$18,500,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Common Equity</span><span class="modal-row-val">$27,750,000</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Projected Returns</div>
+      <div class="modal-row"><span class="modal-row-label">Target IRR</span><span class="modal-row-val blue">20% – 25%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Equity Multiple</span><span class="modal-row-val">2.8× – 3.4×</span></div>
+      <div class="modal-row"><span class="modal-row-label">Stabilized NOI Yield</span><span class="modal-row-val">8.5% – 10%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Tax Credits (§48C)</span><span class="modal-row-val">Eligible</span></div>
+      <div class="modal-row"><span class="modal-row-label">Power Source</span><span class="modal-row-val">Nuclear co-location (target)</span></div>
+    </div>
+  </div>
+
+  <!-- Energy / SMR Deal Summary -->
+  <div class="modal" id="modal-deal-energy">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-eyebrow">Sample Deal Summary</div>
+    <h3 class="modal-title">Energy Infrastructure</h3>
+    <div class="modal-disclaimer">For illustration only — figures are representative</div>
+    <div class="modal-section">
+      <div class="modal-section-title">Project Overview</div>
+      <div class="modal-row"><span class="modal-row-label">Asset Type</span><span class="modal-row-val">Small Modular Reactor (SMR)</span></div>
+      <div class="modal-row"><span class="modal-row-label">Location</span><span class="modal-row-val">Pacific Island Territory</span></div>
+      <div class="modal-row"><span class="modal-row-label">Output</span><span class="modal-row-val">20–50 MW</span></div>
+      <div class="modal-row"><span class="modal-row-label">Total Capitalization</span><span class="modal-row-val blue">$340,000,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Sovereign MOU</span><span class="modal-row-val">Executed</span></div>
+      <div class="modal-row"><span class="modal-row-label">Hold Period</span><span class="modal-row-val">20+ years</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Capital Stack</div>
+      <div class="modal-stack-bar">
+        <div class="modal-stack-seg" style="width:50%;background:#1a3db5">Sov 50%</div>
+        <div class="modal-stack-seg" style="width:20%;background:#3a6aff">DFI 20%</div>
+        <div class="modal-stack-seg" style="width:15%;background:#e8c062;color:#0a0a0f">Inst 15%</div>
+        <div class="modal-stack-seg" style="width:15%;background:#7a4fff">GP 15%</div>
+      </div>
+      <div class="modal-row"><span class="modal-row-label">Sovereign Debt / Guarantee</span><span class="modal-row-val">$170,000,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Dev. Finance Institution</span><span class="modal-row-val">$68,000,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">Institutional Equity</span><span class="modal-row-val">$51,000,000</span></div>
+      <div class="modal-row"><span class="modal-row-label">GP / Project Equity</span><span class="modal-row-val">$51,000,000</span></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-section-title">Projected Returns</div>
+      <div class="modal-row"><span class="modal-row-label">Target IRR (Equity)</span><span class="modal-row-val blue">17% – 22%</span></div>
+      <div class="modal-row"><span class="modal-row-label">Revenue Stream</span><span class="modal-row-val">Power Purchase Agreement</span></div>
+      <div class="modal-row"><span class="modal-row-label">PPA Term</span><span class="modal-row-val">25 years</span></div>
+      <div class="modal-row"><span class="modal-row-label">Government Backing</span><span class="modal-row-val">Full sovereign support</span></div>
+      <div class="modal-row"><span class="modal-row-label">Construction Timeline</span><span class="modal-row-val">4–6 years to operations</span></div>
+    </div>
+  </div>
+
+</div><!-- /#modal-overlay -->
+
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
