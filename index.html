@@ -434,6 +434,32 @@
     @media(max-width:500px){.svc-grid{grid-template-columns:1fr}}
     @media(max-width:860px){#inquiry-layout{grid-template-columns:1fr!important}}
     @media(max-width:860px){#inquiry-layout>div:last-child{padding-top:0!important}}
+
+    /* ── CAPITAL PARTNERS SLIDESHOW (Partners page) ── */
+    .cap-slideshow{position:relative;background:var(--black)}
+    .cap-slides{position:relative;height:74vh;min-height:500px;overflow:hidden}
+    .cap-slide{position:absolute;inset:0;opacity:0;transition:opacity 0.75s ease;pointer-events:none}
+    .cap-slide.active{opacity:1;pointer-events:auto}
+    .cap-slide>img{width:100%;height:100%;object-fit:cover}
+    .cap-slide-ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,7,18,0.92) 0%,rgba(4,7,18,0.65) 45%,rgba(4,7,18,0.15) 100%)}
+    .cap-slide-body{position:absolute;left:10%;top:50%;transform:translateY(-50%);max-width:560px;z-index:2}
+    .cap-slide-body h2{font-family:'Cormorant Garant',serif;font-size:clamp(2.4rem,4.5vw,4rem);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:16px}
+    .cap-slide-body h2 em{color:var(--blue-light);font-style:italic}
+    .cap-slide-body p{font-size:0.9rem;color:rgba(255,255,255,0.5);line-height:1.8;max-width:440px;margin-bottom:28px}
+    .cap-slide-tag{display:inline-flex;align-items:center;gap:10px;font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue-light);border:1px solid rgba(90,138,255,0.3);padding:9px 18px}
+    .cap-tabs{display:grid;grid-template-columns:repeat(6,1fr);background:rgba(4,7,18,0.98);border-top:1px solid rgba(255,255,255,0.06)}
+    .cap-tab{position:relative;padding:18px 22px;border:none;background:transparent;color:rgba(255,255,255,0.28);cursor:pointer;text-align:left;border-right:1px solid rgba(255,255,255,0.05);transition:color 0.2s,background 0.2s;overflow:hidden}
+    .cap-tab:last-child{border-right:none}
+    .cap-tab:hover{color:rgba(255,255,255,0.65)}
+    .cap-tab.active{color:var(--white);background:rgba(26,61,181,0.1)}
+    .cap-tab-num{font-size:0.52rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(90,138,255,0.5);margin-bottom:5px;transition:color 0.2s}
+    .cap-tab.active .cap-tab-num{color:var(--blue-light)}
+    .cap-tab-name{font-size:0.71rem;font-weight:600;line-height:1.35}
+    .cap-tab-prog{position:absolute;bottom:0;left:0;height:2px;background:var(--blue-light);width:0}
+    @media(max-width:900px){.cap-tabs{grid-template-columns:repeat(3,1fr)}.cap-slides{height:60vh}}
+    @media(max-width:540px){.cap-tabs{grid-template-columns:repeat(2,1fr)}.cap-slides{height:55vh}}
+    @media(max-width:900px){.cap-slide-body{left:6%}}
+    @media(max-width:540px){.cap-slide-body{left:5%;right:5%}}
     /* synopsis */
     .synopsis-block{
       max-width:820px;margin:0 auto;
@@ -1111,43 +1137,117 @@
     </div>
   </div>
 
-  <!-- CAPITAL NETWORK -->
-  <div class="tab-section" style="background:var(--offwhite)">
-    <span class="section-tag">Our Capital Network</span>
-    <h2>200+ capital partners.<br><em>Every tier of the stack.</em></h2>
-    <div class="cards-grid" style="margin-top:44px">
-      <div class="card">
-        <span class="card-tag">Debt Capital</span>
-        <h4>Multifamily Debt Funds</h4>
-        <p>Institutional funds specializing in multifamily bridge, DSCR, and permanent debt — active across the US and select international markets.</p>
+  <!-- CAPITAL NETWORK SLIDESHOW -->
+  <div class="cap-slideshow" id="cap-slideshow">
+    <div class="cap-slides">
+
+      <!-- Slide 1: Multifamily Debt Funds -->
+      <div class="cap-slide active">
+        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+        <div class="cap-slide-ov"></div>
+        <div class="cap-slide-body">
+          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Debt Capital · Institutional</p>
+          <h2>Multifamily<br><em>Debt Funds</em></h2>
+          <p>Institutional funds specializing in multifamily bridge, DSCR, and permanent debt — active across the US and select international markets.</p>
+          <span class="cap-slide-tag">$100M+ deal capacity</span>
+        </div>
       </div>
-      <div class="card">
-        <span class="card-tag">Private Credit</span>
-        <h4>Hard Money &amp; Bridge</h4>
-        <p>Asset-backed lenders capable of fast deployment. We work with private money lenders who can close in days — ideal for time-sensitive acquisitions and construction starts.</p>
+
+      <!-- Slide 2: Hard Money & Bridge -->
+      <div class="cap-slide">
+        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+        <div class="cap-slide-ov"></div>
+        <div class="cap-slide-body">
+          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Private Credit · Speed</p>
+          <h2>Hard Money<br><em>&amp; Bridge</em></h2>
+          <p>Asset-backed lenders who move in days, not weeks — ideal for time-sensitive acquisitions, renovations, and construction starts when speed is the deal.</p>
+          <span class="cap-slide-tag">72-hour close possible</span>
+        </div>
       </div>
-      <div class="card">
-        <span class="card-tag">Ultra-High Net Worth</span>
-        <h4>Family Offices</h4>
-        <p>Multi-generational wealth vehicles seeking direct lending and equity co-investment. We match family office mandates to deals that fit their return profile and timeline.</p>
+
+      <!-- Slide 3: Family Offices -->
+      <div class="cap-slide">
+        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+        <div class="cap-slide-ov"></div>
+        <div class="cap-slide-body">
+          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Ultra-High Net Worth · Direct</p>
+          <h2>Family<br><em>Offices</em></h2>
+          <p>Multi-generational wealth vehicles seeking direct lending and equity co-investment. We match family office mandates to deals that fit their return profile and timeline.</p>
+          <span class="cap-slide-tag">$50M+ typical mandate</span>
+        </div>
       </div>
-      <div class="card">
-        <span class="card-tag">Sovereign</span>
-        <h4>Development Finance Institutions</h4>
-        <p>Sovereign wealth vehicles and DFIs engaged in energy, data infrastructure, and community development across our international territories.</p>
+
+      <!-- Slide 4: Development Finance Institutions -->
+      <div class="cap-slide">
+        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+        <div class="cap-slide-ov"></div>
+        <div class="cap-slide-body">
+          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Sovereign · Government-Backed</p>
+          <h2>Development Finance<br><em>Institutions</em></h2>
+          <p>Sovereign wealth vehicles and DFIs engaged in energy, data infrastructure, and community development across our international territories.</p>
+          <span class="cap-slide-tag">5 sovereign territories</span>
+        </div>
       </div>
-      <div class="card">
-        <span class="card-tag">Digital Finance</span>
-        <h4>Tokenized &amp; On-Chain Credit</h4>
-        <p>Emerging lenders in the digital asset space providing on-chain credit facilities secured by real-world assets — aligned with our tokenized fund strategy.</p>
+
+      <!-- Slide 5: Tokenized & On-Chain Credit -->
+      <div class="cap-slide">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+        <div class="cap-slide-ov"></div>
+        <div class="cap-slide-body">
+          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Digital Finance · Frontier</p>
+          <h2>Tokenized &amp;<br><em>On-Chain Credit</em></h2>
+          <p>Emerging credit facilities secured by real-world assets on-chain — aligned with our tokenized fund strategy and the next generation of capital markets.</p>
+          <span class="cap-slide-tag">24/7 global liquidity</span>
+        </div>
       </div>
-      <div class="card">
-        <span class="card-tag">Cross-Border</span>
-        <h4>International Capital</h4>
-        <p>Capital partners active in Latin America and Pacific territories — lenders who understand sovereign risk, cross-border structuring, and government-backed projects.</p>
+
+      <!-- Slide 6: International Capital -->
+      <div class="cap-slide">
+        <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+        <div class="cap-slide-ov"></div>
+        <div class="cap-slide-body">
+          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Cross-Border · Global</p>
+          <h2>International<br><em>Capital</em></h2>
+          <p>Partners active in Latin America and the Pacific who understand sovereign risk, cross-border structuring, and government-backed project finance.</p>
+          <span class="cap-slide-tag">6 territories · 3 continents</span>
+        </div>
       </div>
+
+    </div><!-- /cap-slides -->
+
+    <div class="cap-tabs">
+      <button class="cap-tab active" data-cap="0">
+        <div class="cap-tab-num">01</div>
+        <div class="cap-tab-name">Multifamily Debt</div>
+        <div class="cap-tab-prog"></div>
+      </button>
+      <button class="cap-tab" data-cap="1">
+        <div class="cap-tab-num">02</div>
+        <div class="cap-tab-name">Hard Money &amp; Bridge</div>
+        <div class="cap-tab-prog"></div>
+      </button>
+      <button class="cap-tab" data-cap="2">
+        <div class="cap-tab-num">03</div>
+        <div class="cap-tab-name">Family Offices</div>
+        <div class="cap-tab-prog"></div>
+      </button>
+      <button class="cap-tab" data-cap="3">
+        <div class="cap-tab-num">04</div>
+        <div class="cap-tab-name">Dev Finance</div>
+        <div class="cap-tab-prog"></div>
+      </button>
+      <button class="cap-tab" data-cap="4">
+        <div class="cap-tab-num">05</div>
+        <div class="cap-tab-name">Tokenized Credit</div>
+        <div class="cap-tab-prog"></div>
+      </button>
+      <button class="cap-tab" data-cap="5">
+        <div class="cap-tab-num">06</div>
+        <div class="cap-tab-name">International Capital</div>
+        <div class="cap-tab-prog"></div>
+      </button>
     </div>
-  </div>
+  </div><!-- /cap-slideshow -->
 
   <!-- RETURNS CHART -->
   <div class="tab-section" style="background:var(--black-soft)">
@@ -2589,6 +2689,46 @@ async function initGlobe() {
       document.querySelector('.slide-prev')?.addEventListener('click', () => { stop(); goTo(idx - 1); start(); });
       document.querySelector('.slide-next')?.addEventListener('click', () => { stop(); goTo(idx + 1); start(); });
     }
+  })();
+
+  // ── CAPITAL PARTNERS SLIDESHOW ──
+  (function initCapSlideshow() {
+    const slides = document.querySelectorAll('#cap-slideshow .cap-slide');
+    const tabs   = document.querySelectorAll('#cap-slideshow .cap-tab');
+    if (!slides.length) return;
+    const DURATION = 5000;
+    let idx = 0, timer;
+
+    function setProgress(tabEl, run) {
+      const prog = tabEl.querySelector('.cap-tab-prog');
+      if (!prog) return;
+      prog.style.transition = 'none';
+      prog.style.width = '0';
+      if (run) {
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          prog.style.transition = 'width ' + DURATION + 'ms linear';
+          prog.style.width = '100%';
+        }));
+      }
+    }
+
+    function goTo(n) {
+      slides[idx].classList.remove('active');
+      tabs[idx].classList.remove('active');
+      setProgress(tabs[idx], false);
+      idx = ((n % slides.length) + slides.length) % slides.length;
+      slides[idx].classList.add('active');
+      tabs[idx].classList.add('active');
+      setProgress(tabs[idx], true);
+    }
+
+    function tick() { goTo(idx + 1); }
+    function start() { timer = setInterval(tick, DURATION); }
+    function stop()  { clearInterval(timer); }
+
+    goTo(0);
+    start();
+    tabs.forEach((t, i) => t.addEventListener('click', () => { stop(); goTo(i); start(); }));
   })();
 
   function handleInquirySubmit(e) {
