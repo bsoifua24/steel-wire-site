@@ -464,6 +464,39 @@
     .modal-check-item{display:flex;align-items:center;gap:10px;font-size:0.8rem;color:rgba(255,255,255,0.55);padding:6px 0}
     .modal-check-icon{width:18px;height:18px;border-radius:50%;background:rgba(26,61,181,0.3);border:1px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:0.55rem;color:var(--blue-light);flex-shrink:0}
     @media(max-width:680px){.modal{padding:28px 20px}.chart-donut-row{grid-template-columns:1fr;gap:24px}.chart-donut-row canvas{max-height:240px}}
+
+    /* ── PLATFORM PAGE ── */
+    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:40px;max-width:860px;margin-left:auto;margin-right:auto}
+    .compare-col{padding:32px 28px}
+    .compare-col.old-way{background:var(--offwhite)}
+    .compare-col.new-way{background:var(--blue)}
+    .compare-head{font-size:0.66rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:16px}
+    .compare-col.old-way .compare-head{color:var(--mid-grey)}
+    .compare-col.new-way .compare-head{color:rgba(255,255,255,0.5)}
+    .compare-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05);font-size:0.82rem;line-height:1.5}
+    .compare-col.new-way .compare-item{border-bottom-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.88)}
+    .compare-item:last-child{border-bottom:none}
+    .cmp-icon{flex-shrink:0;font-size:0.9rem;margin-top:1px}
+    .portal-preview{background:#080c1a;border:1px solid rgba(26,61,181,0.25);overflow:hidden;font-family:'Inter',sans-serif;max-width:520px}
+    .portal-header{background:#0c1020;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(26,61,181,0.18)}
+    .portal-logo{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4)}
+    .portal-deal{font-size:0.72rem;font-weight:500;color:rgba(255,255,255,0.55)}
+    .portal-phase-bar{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.04)}
+    .portal-phase-label{font-size:0.62rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:8px}
+    .portal-prog{height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+    .portal-prog-fill{height:100%;background:var(--blue-light)}
+    .portal-row{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid rgba(255,255,255,0.03);font-size:0.76rem;color:rgba(255,255,255,0.5)}
+    .portal-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+    .portal-dot.ok{background:#00c864}
+    .portal-dot.rev{background:#ffa020}
+    .portal-dot.need{background:rgba(255,255,255,0.18)}
+    .portal-badge{margin-left:auto;font-size:0.58rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:3px 8px;border-radius:1px}
+    .portal-badge.ok{background:rgba(0,200,100,0.12);color:#00c864}
+    .portal-badge.rev{background:rgba(255,160,32,0.12);color:#ffa020}
+    .portal-badge.need{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.28)}
+    .feature-icon-box{width:40px;height:40px;background:rgba(26,61,181,0.2);border:1px solid rgba(26,61,181,0.3);display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:16px;flex-shrink:0}
+    @media(max-width:760px){.compare-grid{grid-template-columns:1fr}}
+    @media(max-width:680px){.portal-preview{max-width:100%}}
   </style>
 </head>
 <body>
@@ -482,10 +515,10 @@
   </div>
   <div class="tab-bar">
     <button class="tab-btn active" onclick="showPage('home')">Overview</button>
-    <button class="tab-btn" onclick="showPage('lenders')">Lenders</button>
-    <button class="tab-btn" onclick="showPage('brokers')">Brokers</button>
-    <button class="tab-btn" onclick="showPage('projects')">Project Types</button>
+    <button class="tab-btn" onclick="showPage('partners')">Partners</button>
+    <button class="tab-btn" onclick="showPage('projects')">Projects</button>
     <button class="tab-btn" onclick="showPage('landpartners')">Land Partners</button>
+    <button class="tab-btn" onclick="showPage('platform')">Platform</button>
     <button class="tab-btn" onclick="showPage('events')">Events</button>
     <button class="tab-btn" onclick="showPage('synopsis')">Synopsis</button>
     <a class="tab-btn" href="login.html">Deal Room &nearr;</a>
@@ -502,11 +535,11 @@
     <canvas id="worldCanvas" class="world-dots" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.15;pointer-events:none"></canvas>
 
     <p class="hero-eyebrow">Steel &amp; Aire Soluciones</p>
-    <h1>Building wealth.<br><em>Crossing borders.</em><br>Powering the future.</h1>
-    <p class="hero-sub">A global capital and infrastructure firm deploying capital, building funds, and forging partnerships from the Pacific to the Americas — with presence on five sovereign territories.</p>
+    <h1>We raise capital.<br><em>We make money.</em><br>Globally.</h1>
+    <p class="hero-sub">A global capital and infrastructure firm with roots across five sovereign territories — and a purpose-built fintech platform that streamlines every step from inquiry to funded. Lenders, brokers, borrowers, and land partners, all in one place.</p>
     <div class="hero-actions">
-      <a href="#mission" class="btn-primary" onclick="showPage('home')">Our Mission</a>
-      <a href="#" class="btn-ghost" onclick="showPage('synopsis');return false">Read Synopsis</a>
+      <a href="#" class="btn-primary" onclick="showPage('platform');return false">See the Platform</a>
+      <a href="#" class="btn-ghost" onclick="showPage('partners');return false">Our Partners</a>
     </div>
     <div class="hero-stats">
       <div class="stat">
@@ -606,6 +639,39 @@
         <div class="cap-icon">🏦</div>
         <h4>Private Money Lenders</h4>
         <p>A curated network of private and hard money lenders capable of deploying capital quickly across asset classes and geographies — including cross-border transactions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORM TEASER -->
+  <section id="platform-home" style="background:var(--black);padding:80px 60px">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center">
+      <div>
+        <span class="section-tag">Our Platform</span>
+        <h2 style="color:var(--white)">The funding process,<br>finally <em style="color:var(--blue-light)">done right.</em></h2>
+        <p style="font-size:0.88rem;color:rgba(255,255,255,0.45);line-height:1.8;margin:20px 0 32px">We built the deal room that fintech forgot — a single place where borrowers submit deals, lenders receive complete packages, and brokers track everything from referral to close. Submit an inquiry in under 3 minutes. Everything else is handled.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="#" onclick="showPage('platform');return false" class="btn-primary">How It Works</a>
+          <a href="login.html" class="btn-ghost">Enter Deal Room ↗</a>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">
+        <div style="background:var(--charcoal);padding:28px 22px">
+          <div style="font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--blue-light);line-height:1">&lt;3 min</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.35);margin-top:6px;line-height:1.5">Average time to submit a deal inquiry on our platform</div>
+        </div>
+        <div style="background:var(--charcoal);padding:28px 22px">
+          <div style="font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--blue-light);line-height:1">5 phases</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.35);margin-top:6px;line-height:1.5">From first document upload to fully funded and closed</div>
+        </div>
+        <div style="background:var(--charcoal);padding:28px 22px">
+          <div style="font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--blue-light);line-height:1">Real-time</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.35);margin-top:6px;line-height:1.5">Document approval status — no more emailing to ask if docs were received</div>
+        </div>
+        <div style="background:var(--charcoal);padding:28px 22px">
+          <div style="font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--blue-light);line-height:1">200+</div>
+          <div style="font-size:0.7rem;color:rgba(255,255,255,0.35);margin-top:6px;line-height:1.5">Lenders in our network, all receiving fully packaged deals</div>
+        </div>
       </div>
     </div>
   </section>
@@ -742,19 +808,87 @@
 
 </div><!-- end home -->
 
-<!-- ══════════════ LENDERS PAGE ══════════════ -->
-<div id="page-lenders" class="page">
+<!-- ══════════════ PARTNERS PAGE ══════════════ -->
+<div id="page-partners" class="page">
+
   <div class="tab-page-hero">
     <div class="hero-glow"></div>
     <p class="hero-eyebrow">Capital Partners</p>
-    <h1>Our <em>Lender</em> Network</h1>
-    <p class="hero-sub" style="color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.8;max-width:540px;margin-top:16px">We maintain active relationships across every tier of the lending ecosystem — from boutique private lenders to institutional debt funds with global mandates.</p>
+    <h1>One deal.<br><em>Every player.</em><br>All winning.</h1>
+    <p class="hero-sub" style="color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.8;max-width:600px;margin-top:16px">Great capital deals don't happen between two parties. They happen when the right lenders, brokers, borrowers, and land partners are all aligned — with a firm in the center that knows how to structure it so everyone wins.</p>
+    <div style="margin-top:36px;display:flex;gap:16px;flex-wrap:wrap">
+      <a href="mailto:admin@mpeakp.com" class="btn-primary">Become a Partner</a>
+      <a href="login.html" class="btn-ghost">Access Deal Room ↗</a>
+    </div>
   </div>
 
-  <div class="tab-section mid">
-    <span class="section-tag">Lender Categories</span>
-    <h2>Who we work with</h2>
-    <div class="cards-grid">
+  <!-- WHO'S AT THE TABLE -->
+  <div class="tab-section" style="background:var(--white)">
+    <span class="section-tag">Who We Work With</span>
+    <h2>Four types of partners.<br><em>One deal table.</em></h2>
+    <div class="cards-grid" style="margin-top:44px">
+      <div class="card">
+        <span class="card-tag">Borrowers &amp; Developers</span>
+        <h4>Capital for Builders</h4>
+        <p>Developing multifamily housing, a data center, or an energy project? We are your capital partner. Submit your deal in minutes through our platform, get a dedicated deal room, and access our full lender network — without sending a single cold email.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Lenders &amp; Family Offices</span>
+        <h4>Pre-Packaged Deal Flow</h4>
+        <p>Every deal that reaches your desk through Steel &amp; Aire is fully underwritten and document-complete before you ever look at it. No incomplete packages. No months of chasing borrowers. Institutional-quality deal flow from six global territories.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Brokers</span>
+        <h4>Referrals That Pay Well</h4>
+        <p>Send us your deals. We handle underwriting, lender placement, and closing — you earn a closing fee with zero back-office work. We support referral partnerships and co-brokerage agreements. Transparent splits. Agreed upfront. No surprises.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Land Partners</span>
+        <h4>Your Land is the Deal</h4>
+        <p>Own land with development potential? We architect the project, raise all required capital, and structure your land contribution as an equity stake — so you participate in the full return of what gets built, instead of selling once and watching from the outside.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW A DEAL FLOWS -->
+  <div class="tab-section" style="background:var(--black-soft)">
+    <span class="section-tag" style="color:var(--blue-light)">The Process</span>
+    <h2 style="color:var(--white)">From first inquiry<br>to <em style="color:var(--blue-light)">fully funded.</em></h2>
+    <p style="font-size:0.83rem;color:rgba(255,255,255,0.35);max-width:560px;line-height:1.7;margin:16px 0 44px">Every deal moves through the same five phases — transparent, trackable, and managed by our team from start to close.</p>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:2px">
+      <div style="background:var(--charcoal);padding:32px 24px;border-top:2px solid var(--blue)">
+        <div style="font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--blue-light);line-height:1;margin-bottom:14px">01</div>
+        <h4 style="font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:8px">Submit</h4>
+        <p style="font-size:0.78rem;line-height:1.6;color:rgba(255,255,255,0.38)">Send your inquiry in under 3 minutes. No upfront package required. We review every submission within 2 business days.</p>
+      </div>
+      <div style="background:var(--charcoal);padding:32px 24px;border-top:2px solid rgba(26,61,181,0.7)">
+        <div style="font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--blue-light);line-height:1;margin-bottom:14px">02</div>
+        <h4 style="font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:8px">Deal Room</h4>
+        <p style="font-size:0.78rem;line-height:1.6;color:rgba(255,255,255,0.38)">You receive a private deal room with a phase-by-phase checklist. You know exactly what's needed — and when.</p>
+      </div>
+      <div style="background:var(--charcoal);padding:32px 24px;border-top:2px solid rgba(26,61,181,0.45)">
+        <div style="font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--blue-light);line-height:1;margin-bottom:14px">03</div>
+        <h4 style="font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:8px">Package</h4>
+        <p style="font-size:0.78rem;line-height:1.6;color:rgba(255,255,255,0.38)">Our team underwrites and assembles a full lender package — financials, appraisal, executive summary, structure. You upload; we package.</p>
+      </div>
+      <div style="background:var(--charcoal);padding:32px 24px;border-top:2px solid rgba(26,61,181,0.25)">
+        <div style="font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--blue-light);line-height:1;margin-bottom:14px">04</div>
+        <h4 style="font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:8px">Match</h4>
+        <p style="font-size:0.78rem;line-height:1.6;color:rgba(255,255,255,0.38)">We match your deal to the right capital source from our 200+ lender network — based on asset type, size, geography, and structure.</p>
+      </div>
+      <div style="background:var(--charcoal);padding:32px 24px;border-top:2px solid rgba(90,138,255,0.2)">
+        <div style="font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--blue-light);line-height:1;margin-bottom:14px">05</div>
+        <h4 style="font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:8px">Close</h4>
+        <p style="font-size:0.78rem;line-height:1.6;color:rgba(255,255,255,0.38)">We manage the deal to close — coordinating lender, borrower, legal, and any government approvals required. You get funded.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPITAL NETWORK -->
+  <div class="tab-section" style="background:var(--offwhite)">
+    <span class="section-tag">Our Capital Network</span>
+    <h2>200+ capital partners.<br><em>Every tier of the stack.</em></h2>
+    <div class="cards-grid" style="margin-top:44px">
       <div class="card">
         <span class="card-tag">Debt Capital</span>
         <h4>Multifamily Debt Funds</h4>
@@ -762,8 +896,8 @@
       </div>
       <div class="card">
         <span class="card-tag">Private Credit</span>
-        <h4>Private Money Lenders</h4>
-        <p>Asset-backed lenders capable of fast deployment on residential, commercial, and infrastructure collateral. Relationships spanning the US, Latin America, and Pacific.</p>
+        <h4>Hard Money &amp; Bridge</h4>
+        <p>Asset-backed lenders capable of fast deployment. We work with private money lenders who can close in days — ideal for time-sensitive acquisitions and construction starts.</p>
       </div>
       <div class="card">
         <span class="card-tag">Ultra-High Net Worth</span>
@@ -771,38 +905,19 @@
         <p>Multi-generational wealth vehicles seeking direct lending and equity co-investment. We match family office mandates to deals that fit their return profile and timeline.</p>
       </div>
       <div class="card">
-        <span class="card-tag">Infrastructure</span>
-        <h4>Sovereign &amp; Development Capital</h4>
-        <p>Development finance institutions and sovereign wealth vehicles engaged in energy, data, and community infrastructure across our operating territories.</p>
-      </div>
-      <div class="card">
-        <span class="card-tag">Bridge &amp; Hard Money</span>
-        <h4>Hard Money &amp; Bridge Lenders</h4>
-        <p>Short-term capital partners who move fast. We work with hard money lenders across the US who can close in days, not weeks, for time-sensitive acquisitions and construction.</p>
+        <span class="card-tag">Sovereign</span>
+        <h4>Development Finance Institutions</h4>
+        <p>Sovereign wealth vehicles and DFIs engaged in energy, data infrastructure, and community development across our international territories.</p>
       </div>
       <div class="card">
         <span class="card-tag">Digital Finance</span>
-        <h4>Crypto &amp; Tokenized Credit</h4>
+        <h4>Tokenized &amp; On-Chain Credit</h4>
         <p>Emerging lenders in the digital asset space providing on-chain credit facilities secured by real-world assets — aligned with our tokenized fund strategy.</p>
       </div>
-    </div>
-  </div>
-
-  <div class="tab-section dark">
-    <span class="section-tag">For Lenders</span>
-    <h2 style="color:var(--white)">Why partner with <em style="color:var(--blue-light)">Steel &amp; Aire?</em></h2>
-    <div class="cards-grid" style="margin-top:44px">
-      <div class="card dark-card">
-        <h4>Pre-Packaged Deals</h4>
-        <p>Every deal we present is fully underwritten and packaged before it hits your desk — minimizing back-and-forth and accelerating your decision process.</p>
-      </div>
-      <div class="card dark-card">
-        <h4>Global Deal Flow</h4>
-        <p>Access deal flow from six territories across three continents. We bring you opportunities you won't see through domestic channels alone.</p>
-      </div>
-      <div class="card dark-card">
-        <h4>Government-Backed Projects</h4>
-        <p>Many projects carry sovereign endorsement or public-private partnership structures that significantly de-risk the lending position.</p>
+      <div class="card">
+        <span class="card-tag">Cross-Border</span>
+        <h4>International Capital</h4>
+        <p>Capital partners active in Latin America and Pacific territories — lenders who understand sovereign risk, cross-border structuring, and government-backed projects.</p>
       </div>
     </div>
   </div>
@@ -816,10 +931,8 @@
       <div class="chart-canvas-box" style="height:320px">
         <canvas id="chart-returns"></canvas>
       </div>
-      <p class="chart-note">Conservative and target IRR ranges shown. Infrastructure and cross-border deals may carry additional sovereign risk premium not reflected above.</p>
+      <p class="chart-note">Conservative and target IRR ranges shown. Infrastructure and cross-border deals may carry additional sovereign risk premium.</p>
     </div>
-
-    <!-- TEMPLATE CARDS -->
     <div class="template-cards" style="margin-top:48px">
       <div class="template-card" onclick="openModal('modal-lender-pkg')">
         <span class="template-card-tag">Sample Document</span>
@@ -833,81 +946,6 @@
         <p>A representative term sheet covering rate, index, spread, fees, term, extension options, and recourse structure.</p>
         <div class="template-card-cta">View Example <span style="font-size:1rem">→</span></div>
       </div>
-    </div>
-  </div>
-
-  <div class="tab-section" style="background:var(--white);text-align:center;padding:80px 60px">
-    <h2>Interested in lending with us?</h2>
-    <p style="font-size:0.9rem;color:var(--mid-grey);margin:16px auto 36px;max-width:480px;line-height:1.7">Reach out to discuss your lending criteria. We'll match you to deals that fit your mandate.</p>
-    <a href="mailto:admin@mpeakp.com" class="btn-primary">Contact Our Capital Team</a>
-  </div>
-</div>
-
-<!-- ══════════════ BROKERS PAGE ══════════════ -->
-<div id="page-brokers" class="page">
-  <div class="tab-page-hero">
-    <div class="hero-glow"></div>
-    <p class="hero-eyebrow">Broker Partners</p>
-    <h1>We <em>elevate</em><br>our broker partners.</h1>
-    <p class="hero-sub" style="color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.8;max-width:540px;margin-top:16px">Steel &amp; Aire works with a select network of brokers who share our commitment to creative capital solutions and cross-border deal-making.</p>
-  </div>
-
-  <div class="tab-section mid">
-    <span class="section-tag">Broker Program</span>
-    <h2>Built for <em>serious brokers.</em></h2>
-    <div class="cards-grid">
-      <div class="card">
-        <span class="card-tag">Referrals</span>
-        <h4>Referral Partnerships</h4>
-        <p>Send us your deals. We handle underwriting, lender placement, and closing — you earn a referral fee at closing with no additional work required.</p>
-      </div>
-      <div class="card">
-        <span class="card-tag">Co-Brokerage</span>
-        <h4>Co-Broker Agreements</h4>
-        <p>Work alongside our team on complex transactions. We bring the capital relationships; you bring the deal and borrower relationship. Splits are transparent and agreed upfront.</p>
-      </div>
-      <div class="card">
-        <span class="card-tag">International</span>
-        <h4>Cross-Border Deals</h4>
-        <p>We specialize in transactions that cross jurisdictions — a capability most brokers don't have. If you have a deal that needs international capital or sovereign involvement, we're your partner.</p>
-      </div>
-      <div class="card">
-        <span class="card-tag">Infrastructure</span>
-        <h4>Large-Scale Projects</h4>
-        <p>Data centers, energy, and infrastructure deals require specialized capital. We provide brokers access to lenders and funds that are specifically mandated for these asset classes.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="tab-section dark">
-    <span class="section-tag">Broker Benefits</span>
-    <h2 style="color:var(--white)">What you get when you<br><em style="color:var(--blue-light)">work with us.</em></h2>
-    <div class="cards-grid">
-      <div class="card dark-card">
-        <h4>Access to 200+ Lenders</h4>
-        <p>Tap our curated network of private lenders, family offices, debt funds, and sovereign capital — without building those relationships yourself.</p>
-      </div>
-      <div class="card dark-card">
-        <h4>Government-Level Relationships</h4>
-        <p>For the right deals, we can involve diplomatic and government connections that unlock project approvals and sovereign guarantees.</p>
-      </div>
-      <div class="card dark-card">
-        <h4>Tokenized Deal Access</h4>
-        <p>Be among the first brokers to place deals into our fully tokenized fund — a first-mover advantage in a market that's just emerging.</p>
-      </div>
-      <div class="card dark-card">
-        <h4>Global Deal Flow</h4>
-        <p>Collaborate on deals originating in El Salvador, Ecuador, Fiji, and Samoa — territories where few US-based brokers have established relationships.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- BROKER TEMPLATES -->
-  <div class="tab-section" style="background:var(--black-soft)">
-    <span class="section-tag" style="color:var(--blue-light)">Program Documents</span>
-    <h2 style="color:var(--white)">See what a<br><em style="color:var(--blue-light)">broker deal looks like.</em></h2>
-    <p style="font-size:0.83rem;color:rgba(255,255,255,0.35);max-width:560px;line-height:1.7;margin:16px 0 36px">Click any example below to preview how we structure broker partnerships and fee arrangements.</p>
-    <div class="template-cards">
       <div class="template-card" onclick="openModal('modal-referral')">
         <span class="template-card-tag">Sample Document</span>
         <h4>Referral Partnership</h4>
@@ -917,17 +955,182 @@
       <div class="template-card" onclick="openModal('modal-cobroker')">
         <span class="template-card-tag">Sample Document</span>
         <h4>Co-Broker Agreement</h4>
-        <p>Full co-brokerage structure — split, roles, deal exclusivity, tail period, and closing mechanics for complex transactions.</p>
+        <p>Full co-brokerage structure — split, roles, deal exclusivity, tail period, and closing mechanics.</p>
         <div class="template-card-cta">View Example <span style="font-size:1rem">→</span></div>
       </div>
     </div>
   </div>
 
   <div class="tab-section" style="background:var(--white);text-align:center;padding:80px 60px">
-    <h2>Ready to become a broker partner?</h2>
-    <p style="font-size:0.9rem;color:var(--mid-grey);margin:16px auto 36px;max-width:480px;line-height:1.7">Tell us about the types of deals you work on. We'll let you know if there's a fit.</p>
-    <a href="mailto:admin@mpeakp.com" class="btn-primary">Connect With Us</a>
+    <h2>Ready to work together?</h2>
+    <p style="font-size:0.9rem;color:var(--mid-grey);margin:16px auto 36px;max-width:500px;line-height:1.7">Whether you're a lender, broker, developer, or land owner — there's a seat at our deal table for you.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="mailto:admin@mpeakp.com" class="btn-primary">Contact Our Team</a>
+      <a href="login.html" class="btn-ghost" style="color:var(--blue);border-color:var(--blue)">Enter Deal Room ↗</a>
+    </div>
   </div>
+
+</div>
+
+<!-- ══════════════ PLATFORM PAGE ══════════════ -->
+<div id="page-platform" class="page">
+
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <p class="hero-eyebrow">The Deal Room</p>
+    <h1>The funding platform<br><em>fintech forgot</em><br>to build.</h1>
+    <p class="hero-sub" style="color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.8;max-width:620px;margin-top:16px">Getting capital has always been slow, opaque, and exhausting — for everyone. We built the deal room that changes that. Submit an inquiry in under 3 minutes. Get a dedicated room. Track every document, every approval, every phase — in real time. From first upload to funded.</p>
+    <div style="margin-top:36px;display:flex;gap:16px;flex-wrap:wrap">
+      <a href="login.html" class="btn-primary">Enter the Deal Room ↗</a>
+      <a href="mailto:admin@mpeakp.com" class="btn-ghost">Submit an Inquiry</a>
+    </div>
+  </div>
+
+  <!-- OLD WAY VS NEW WAY -->
+  <div class="tab-section" style="background:var(--white)">
+    <span class="section-tag">What Changed</span>
+    <h2>The old way was costing<br><em>everyone money.</em></h2>
+    <div class="compare-grid">
+      <div class="compare-col old-way">
+        <div class="compare-head">Before Steel &amp; Aire</div>
+        <div class="compare-item"><span class="cmp-icon">✗</span><span>Email attachments lost in chains — no one knows if documents were received</span></div>
+        <div class="compare-item"><span class="cmp-icon">✗</span><span>Weeks of back-and-forth before a lender even looks at your deal</span></div>
+        <div class="compare-item"><span class="cmp-icon">✗</span><span>No visibility into which documents are approved vs. still needed</span></div>
+        <div class="compare-item"><span class="cmp-icon">✗</span><span>Borrowers don't know what lenders need — lenders get incomplete packages</span></div>
+        <div class="compare-item"><span class="cmp-icon">✗</span><span>Manual tracking on spreadsheets, sticky notes, and tribal knowledge</span></div>
+        <div class="compare-item"><span class="cmp-icon">✗</span><span>Status updates only if you ask — silence is the default</span></div>
+        <div class="compare-item"><span class="cmp-icon">✗</span><span>Multiple portals, tools, and inboxes — nothing connected</span></div>
+      </div>
+      <div class="compare-col new-way">
+        <div class="compare-head">With Steel &amp; Aire Platform</div>
+        <div class="compare-item"><span class="cmp-icon">✓</span><span>Centralized secure document vault — everything in one place, always findable</span></div>
+        <div class="compare-item"><span class="cmp-icon">✓</span><span>Submit an inquiry in under 3 minutes. Get a deal room immediately</span></div>
+        <div class="compare-item"><span class="cmp-icon">✓</span><span>Real-time document status — Approved, In Review, or Needed — always visible</span></div>
+        <div class="compare-item"><span class="cmp-icon">✓</span><span>Phase-by-phase checklist tells borrowers exactly what's needed at every stage</span></div>
+        <div class="compare-item"><span class="cmp-icon">✓</span><span>Automatic email notifications when documents are approved or phases advance</span></div>
+        <div class="compare-item"><span class="cmp-icon">✓</span><span>Full deal history, comments, and activity — all tracked automatically</span></div>
+        <div class="compare-item"><span class="cmp-icon">✓</span><span>One login. One platform. Every player connected.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PORTAL PREVIEW + FEATURES -->
+  <div class="tab-section" style="background:var(--black-soft)">
+    <span class="section-tag" style="color:var(--blue-light)">Inside the Platform</span>
+    <h2 style="color:var(--white)">A real-time deal room<br><em style="color:var(--blue-light)">unlike anything in the market.</em></h2>
+    <div style="display:grid;grid-template-columns:1fr 420px;gap:60px;align-items:start;margin-top:48px;max-width:1060px;margin-left:auto;margin-right:auto">
+      <div style="display:grid;gap:28px">
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <div class="feature-icon-box">📁</div>
+          <div>
+            <h4 style="font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:6px">Secure Document Vault</h4>
+            <p style="font-size:0.8rem;line-height:1.65;color:rgba(255,255,255,0.42)">Every deal has its own private room. Documents are organized by phase, never lost, and access-controlled — only the right people see the right files.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <div class="feature-icon-box">✅</div>
+          <div>
+            <h4 style="font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:6px">Phase-by-Phase Checklist</h4>
+            <p style="font-size:0.8rem;line-height:1.65;color:rgba(255,255,255,0.42)">Five deal phases with a precise checklist at each stage. Borrowers know exactly what to upload — and nothing moves forward until it's complete.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <div class="feature-icon-box">🔔</div>
+          <div>
+            <h4 style="font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:6px">Instant Email Notifications</h4>
+            <p style="font-size:0.8rem;line-height:1.65;color:rgba(255,255,255,0.42)">Every approval, every revision request, every phase advance triggers an automatic email to the right parties. No one has to ask for updates.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <div class="feature-icon-box">🔗</div>
+          <div>
+            <h4 style="font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:6px">Read-Only Share Links</h4>
+            <p style="font-size:0.8rem;line-height:1.65;color:rgba(255,255,255,0.42)">Generate a secure, read-only progress link and send it to anyone — a lender, a partner, a client — without giving them portal access.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <div class="feature-icon-box">💬</div>
+          <div>
+            <h4 style="font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:6px">Team Comments &amp; Notes</h4>
+            <p style="font-size:0.8rem;line-height:1.65;color:rgba(255,255,255,0.42)">Internal deal notes, revision feedback, and team comments live inside each deal — not buried in email threads. Everything stays with the deal.</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start">
+          <div class="feature-icon-box">📊</div>
+          <div>
+            <h4 style="font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:6px">CRM &amp; Deal Dashboard</h4>
+            <p style="font-size:0.8rem;line-height:1.65;color:rgba(255,255,255,0.42)">Our team manages the full pipeline from a central CRM — deal phases, document status, pending approvals, and client onboarding, all in one view.</p>
+          </div>
+        </div>
+      </div>
+      <!-- PORTAL PREVIEW UI -->
+      <div>
+        <div class="portal-preview">
+          <div class="portal-header">
+            <div class="portal-logo">S&amp;A · Deal Room</div>
+            <div class="portal-deal">Deal #2847 — Austin MF Bridge</div>
+          </div>
+          <div class="portal-phase-bar">
+            <div class="portal-phase-label">Phase 2 — Application &amp; Underwriting</div>
+            <div class="portal-prog"><div class="portal-prog-fill" style="width:60%"></div></div>
+            <div style="font-size:0.6rem;color:rgba(255,255,255,0.2);margin-top:6px">4 of 7 documents complete</div>
+          </div>
+          <div class="portal-row"><div class="portal-dot ok"></div>Executive Summary<span class="portal-badge ok">Approved</span></div>
+          <div class="portal-row"><div class="portal-dot ok"></div>MAI Appraisal<span class="portal-badge ok">Approved</span></div>
+          <div class="portal-row"><div class="portal-dot ok"></div>Rent Roll (Current)<span class="portal-badge ok">Approved</span></div>
+          <div class="portal-row"><div class="portal-dot rev"></div>T-12 Operating Statement<span class="portal-badge rev">Revision</span></div>
+          <div class="portal-row"><div class="portal-dot need"></div>Borrower Financials<span class="portal-badge need">Needed</span></div>
+          <div class="portal-row"><div class="portal-dot need"></div>Personal Financial Statement<span class="portal-badge need">Needed</span></div>
+          <div class="portal-row"><div class="portal-dot need"></div>Entity Docs / Operating Agmt<span class="portal-badge need">Needed</span></div>
+          <div style="padding:12px 18px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.04)">
+            <span style="font-size:0.62rem;color:rgba(255,255,255,0.2)">Last updated 2 hours ago</span>
+            <span style="font-size:0.62rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--blue-light);cursor:pointer">Upload Documents →</span>
+          </div>
+        </div>
+        <p style="font-size:0.68rem;color:rgba(255,255,255,0.2);margin-top:12px;line-height:1.5;text-align:center">Live deal room interface — exactly what borrowers see after submitting their inquiry.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHO IT'S FOR -->
+  <div class="tab-section" style="background:var(--offwhite)">
+    <span class="section-tag">Built for Everyone</span>
+    <h2>Anyone can submit.<br><em>In under 3 minutes.</em></h2>
+    <p style="font-size:0.88rem;color:var(--mid-grey);max-width:560px;line-height:1.7;margin:16px 0 44px">There's no barrier to entry. If you have a deal — a property, a project, land, or a client — you can submit it and get a deal room today.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px">
+      <div style="background:var(--white);padding:36px 28px;border-top:3px solid var(--blue)">
+        <div style="font-size:2rem;margin-bottom:14px">🏗️</div>
+        <h4 style="font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:600;color:var(--black);margin-bottom:10px">Borrowers &amp; Developers</h4>
+        <p style="font-size:0.82rem;line-height:1.65;color:var(--mid-grey);margin-bottom:20px">Submit your deal, upload documents phase by phase, and track your raise from first inquiry to close — without a single spreadsheet.</p>
+        <a href="login.html" style="font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);text-decoration:none">Start Your Deal Room →</a>
+      </div>
+      <div style="background:var(--white);padding:36px 28px;border-top:3px solid var(--blue-mid)">
+        <div style="font-size:2rem;margin-bottom:14px">🤝</div>
+        <h4 style="font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:600;color:var(--black);margin-bottom:10px">Brokers &amp; Referrals</h4>
+        <p style="font-size:0.82rem;line-height:1.65;color:var(--mid-grey);margin-bottom:20px">Submit your client's deal in minutes. Track every document and phase on their behalf. Get paid at close — no back-office work required on your end.</p>
+        <a href="mailto:admin@mpeakp.com" style="font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);text-decoration:none">Become a Broker Partner →</a>
+      </div>
+      <div style="background:var(--white);padding:36px 28px;border-top:3px solid var(--blue-light)">
+        <div style="font-size:2rem;margin-bottom:14px">🌱</div>
+        <h4 style="font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:600;color:var(--black);margin-bottom:10px">Land Partners</h4>
+        <p style="font-size:0.82rem;line-height:1.65;color:var(--mid-grey);margin-bottom:20px">Tell us about your land in under 3 minutes. We assess the development opportunity, come back with a strategy, and manage the entire capital raise through our platform.</p>
+        <a href="#" onclick="showPage('landpartners');return false" style="font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);text-decoration:none">Learn About Land Partnerships →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL CTA -->
+  <div class="tab-section" style="background:var(--black);text-align:center;padding:100px 60px">
+    <span class="section-tag" style="color:var(--blue-light);display:block;text-align:center">Get Started</span>
+    <h2 style="color:var(--white);max-width:600px;margin:0 auto 20px">Submit your deal today.<br><em style="color:var(--blue-light)">No package needed.</em></h2>
+    <p style="font-size:0.88rem;color:rgba(255,255,255,0.35);max-width:480px;margin:0 auto 48px;line-height:1.8">Tell us your asset type, location, and raise amount. We'll review it, set up your deal room, and take it from there. The process begins with one email or three minutes on our platform.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="login.html" class="btn-primary">Enter the Deal Room ↗</a>
+      <a href="mailto:admin@mpeakp.com?subject=Deal Inquiry" class="btn-ghost">Email an Inquiry</a>
+    </div>
+    <p style="font-size:0.7rem;color:rgba(255,255,255,0.18);margin-top:36px">We review every submission within 2 business days. All inquiries are confidential.</p>
+  </div>
+
 </div>
 
 <!-- ══════════════ PROJECTS PAGE ══════════════ -->
@@ -1409,11 +1612,11 @@
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('page-' + name).classList.add('active');
-    const tabs = ['home','lenders','brokers','projects','landpartners','events','synopsis'];
+    const tabs = ['home','partners','projects','landpartners','platform','events','synopsis'];
     const idx = tabs.indexOf(name);
     document.querySelectorAll('.tab-btn')[idx].classList.add('active');
     window.scrollTo({top:0, behavior:'smooth'});
-    if (!_chartDone.lenders  && name === 'lenders')  { _chartDone.lenders  = true; setTimeout(initReturnsChart,  80); }
+    if (!_chartDone.lenders  && name === 'partners') { _chartDone.lenders  = true; setTimeout(initReturnsChart,  80); }
     if (!_chartDone.projects && name === 'projects') { _chartDone.projects = true; setTimeout(initCapstackChart, 80); }
   }
 
