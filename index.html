@@ -499,11 +499,15 @@
     @media(max-width:680px){.portal-preview{max-width:100%}}
 
     /* ── HERO GLOBE LAYOUT ── */
-    #hero{padding-bottom:0}
-    #hero-inner{display:grid;grid-template-columns:1fr 520px;gap:40px;align-items:center;width:100%;position:relative}
-    #hero-globe-wrap{width:520px;height:520px;position:relative;flex-shrink:0}
+    #hero{padding-bottom:0;overflow:visible}
+    #hero-inner{display:grid;grid-template-columns:1fr 560px;gap:0;align-items:center;width:100%;position:relative}
+    #hero-globe-wrap{
+      width:620px;height:620px;position:relative;flex-shrink:0;
+      margin-right:-60px; /* bleed past hero edge for premium look */
+    }
     #hero-globe-wrap canvas{pointer-events:none!important}
-    @media(max-width:1100px){#hero-inner{grid-template-columns:1fr}#hero-globe-wrap{display:none}}
+    @media(max-width:1200px){#hero-inner{grid-template-columns:1fr 480px}#hero-globe-wrap{width:520px;height:520px;margin-right:-40px}}
+    @media(max-width:1000px){#hero-inner{grid-template-columns:1fr}#hero-globe-wrap{display:none}}
 
     /* ── CINEMATIC SECTIONS ── */
     .cinematic{position:relative;min-height:88vh;display:flex;align-items:center;overflow:hidden}
@@ -1184,7 +1188,7 @@
          src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=90&auto=format&fit=crop"
          alt="Global infrastructure" loading="eager">
     <div class="cin-ov-c"></div>
-    <div class="cinematic-content" style="max-width:700px;padding-bottom:140px">
+    <div class="cinematic-content" style="max-width:700px;padding-top:140px;padding-bottom:80px">
       <span class="cin-eyebrow">Steel &amp; Aire · Project Portfolio</span>
       <h2 style="font-size:clamp(3rem,6vw,5.5rem);font-weight:300">Infrastructure<br>for a <em>better world.</em></h2>
       <p class="cin-sub" style="max-width:560px">We finance and develop the projects that shape economies — nuclear energy, hyperscale data infrastructure, multifamily housing, and tokenized real assets. Active across the Americas, Pacific, and beyond.</p>
@@ -1935,8 +1939,8 @@ const MAP_LOCS = [
     globe.controls().enablePan = false;
     globe.controls().enableDamping = true;
 
-    // Initial camera position - slightly elevated
-    globe.pointOfView({ lat: 20, lng: -40, altitude: 2.2 }, 0);
+    // Camera close enough to fill the container
+    globe.pointOfView({ lat: 15, lng: -30, altitude: 1.65 }, 0);
 
     // Make canvas non-interactive so hero scroll still works
     const cv = wrap.querySelector('canvas');
