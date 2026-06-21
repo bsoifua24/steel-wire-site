@@ -497,6 +497,40 @@
     .feature-icon-box{width:40px;height:40px;background:rgba(26,61,181,0.2);border:1px solid rgba(26,61,181,0.3);display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:16px;flex-shrink:0}
     @media(max-width:760px){.compare-grid{grid-template-columns:1fr}}
     @media(max-width:680px){.portal-preview{max-width:100%}}
+
+    /* ── HERO GLOBE LAYOUT ── */
+    #hero{padding-bottom:0}
+    #hero-inner{display:grid;grid-template-columns:1fr 520px;gap:40px;align-items:center;width:100%;position:relative}
+    #hero-globe-wrap{width:520px;height:520px;position:relative;flex-shrink:0}
+    #hero-globe-wrap canvas{pointer-events:none!important}
+    @media(max-width:1100px){#hero-inner{grid-template-columns:1fr}#hero-globe-wrap{display:none}}
+
+    /* ── CINEMATIC SECTIONS ── */
+    .cinematic{position:relative;min-height:88vh;display:flex;align-items:center;overflow:hidden}
+    .cinematic-hero{min-height:100vh}
+    .cinematic-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .cinematic-bg-ani{animation:kb 20s ease-out forwards}
+    @keyframes kb{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.07) translate(-1%,-1%)}}
+    .cin-ov-l{position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,7,18,0.94) 0%,rgba(4,7,18,0.72) 42%,rgba(4,7,18,0.2) 78%,transparent 100%)}
+    .cin-ov-r{position:absolute;inset:0;background:linear-gradient(270deg,rgba(4,7,18,0.94) 0%,rgba(4,7,18,0.72) 42%,rgba(4,7,18,0.2) 78%,transparent 100%)}
+    .cin-ov-c{position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,7,18,0.4) 0%,rgba(4,7,18,0.7) 60%,rgba(4,7,18,0.96) 100%)}
+    .cinematic-content{position:relative;z-index:2;padding:80px 8% 80px 10%;max-width:660px}
+    .cinematic-content.cr{margin-left:auto;padding:80px 10% 80px 8%}
+    .cinematic h2{font-family:'Cormorant Garant',serif;font-size:clamp(2.8rem,5vw,5rem);font-weight:300;color:var(--white);line-height:1.08;margin-bottom:20px}
+    .cinematic h2 em{color:var(--blue-light);font-style:italic}
+    .cin-sub{font-size:0.92rem;color:rgba(255,255,255,0.5);line-height:1.85;max-width:500px;margin-bottom:28px}
+    .cin-bullets{display:flex;flex-direction:column;gap:10px;margin:24px 0 36px}
+    .cin-bullet{display:flex;align-items:center;gap:14px;font-size:0.8rem;color:rgba(255,255,255,0.55);letter-spacing:0.02em}
+    .cin-bullet::before{content:'';width:22px;height:1px;background:var(--blue-light);flex-shrink:0}
+    .cin-eyebrow{font-size:0.62rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--blue-light);margin-bottom:16px;display:block}
+    .cin-badge{position:absolute;top:36px;right:48px;z-index:3;font-size:0.6rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.22);border:1px solid rgba(255,255,255,0.1);padding:5px 12px}
+    @media(max-width:768px){.cinematic{min-height:70vh}.cinematic-content,.cinematic-content.cr{padding:60px 24px;margin-left:0}}
+
+    /* ── VISUAL HERO BACKGROUNDS (tab pages) ── */
+    .tab-page-hero.vis{position:relative;overflow:hidden}
+    .tab-page-hero.vis .thbg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.28}
+    .tab-page-hero.vis::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,var(--black) 100%)}
+    .tab-page-hero.vis>*:not(.thbg):not(.hero-glow){position:relative;z-index:1}
   </style>
 </head>
 <body>
@@ -534,13 +568,19 @@
     <div class="hero-glow-r"></div>
     <canvas id="worldCanvas" class="world-dots" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.15;pointer-events:none"></canvas>
 
-    <p class="hero-eyebrow">Steel &amp; Aire Soluciones</p>
-    <h1>We raise capital.<br><em>We make money.</em><br>Globally.</h1>
-    <p class="hero-sub">A global capital and infrastructure firm with roots across five sovereign territories — and a purpose-built fintech platform that streamlines every step from inquiry to funded. Lenders, brokers, borrowers, and land partners, all in one place.</p>
-    <div class="hero-actions">
-      <a href="#" class="btn-primary" onclick="showPage('platform');return false">See the Platform</a>
-      <a href="#" class="btn-ghost" onclick="showPage('partners');return false">Our Partners</a>
+    <div id="hero-inner">
+      <div id="hero-text">
+        <p class="hero-eyebrow">Steel &amp; Aire Soluciones</p>
+        <h1>We raise capital.<br><em>We make money.</em><br>Globally.</h1>
+        <p class="hero-sub">A global capital and infrastructure firm — with active deals across five sovereign territories and a purpose-built platform that streamlines every step from inquiry to funded.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn-primary" onclick="showPage('platform');return false">See the Platform</a>
+          <a href="#" class="btn-ghost" onclick="showPage('partners');return false">Our Partners</a>
+        </div>
+      </div>
+      <div id="hero-globe-wrap"></div>
     </div>
+
     <div class="hero-stats">
       <div class="stat">
         <div class="stat-num">5<span> territories</span></div>
@@ -551,12 +591,12 @@
         <div class="stat-label">Infrastructure Focus</div>
       </div>
       <div class="stat">
-        <div class="stat-num">100<span>%</span></div>
-        <div class="stat-label">Tokenized Fund Target</div>
+        <div class="stat-num">200<span>+</span></div>
+        <div class="stat-label">Capital Partners</div>
       </div>
       <div class="stat">
-        <div class="stat-num">∞<span></span></div>
-        <div class="stat-label">Wealth to Spread</div>
+        <div class="stat-num">&lt;3<span> min</span></div>
+        <div class="stat-label">To Submit a Deal</div>
       </div>
     </div>
   </section>
@@ -811,7 +851,8 @@
 <!-- ══════════════ PARTNERS PAGE ══════════════ -->
 <div id="page-partners" class="page">
 
-  <div class="tab-page-hero">
+  <div class="tab-page-hero vis">
+    <img class="thbg" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
     <div class="hero-glow"></div>
     <p class="hero-eyebrow">Capital Partners</p>
     <h1>One deal.<br><em>Every player.</em><br>All winning.</h1>
@@ -975,7 +1016,8 @@
 <!-- ══════════════ PLATFORM PAGE ══════════════ -->
 <div id="page-platform" class="page">
 
-  <div class="tab-page-hero">
+  <div class="tab-page-hero vis">
+    <img class="thbg" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
     <div class="hero-glow"></div>
     <p class="hero-eyebrow">The Deal Room</p>
     <h1>The funding platform<br><em>fintech forgot</em><br>to build.</h1>
@@ -1135,82 +1177,109 @@
 
 <!-- ══════════════ PROJECTS PAGE ══════════════ -->
 <div id="page-projects" class="page">
-  <div class="tab-page-hero">
-    <div class="hero-glow"></div>
-    <p class="hero-eyebrow">Project Types</p>
-    <h1>Infrastructure for<br>a <em>better world.</em></h1>
-    <p class="hero-sub" style="color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.8;max-width:540px;margin-top:16px">We finance and develop projects that create lasting economic value — across energy, technology, housing, and digital finance.</p>
-  </div>
 
-  <div class="tab-section mid">
-    <span class="section-tag">Energy</span>
-    <h2><em>Nuclear</em> Energy</h2>
-    <div class="body-text" style="max-width:720px">
-      <p>Steel &amp; Aire is actively involved in the financing and development of nuclear energy projects — from small modular reactors (SMRs) to full-scale plant development. We believe nuclear is the only baseload energy source capable of delivering reliable, carbon-free power at the scale the world needs.</p>
-      <p>We work with developers, governments, and institutional capital partners to structure debt, equity, and hybrid financing for nuclear assets across North America, Latin America, and the Pacific Islands.</p>
-    </div>
-    <div class="cards-grid" style="margin-top:40px">
-      <div class="card">
-        <span class="card-tag">Development Stage</span>
-        <h4>Small Modular Reactors</h4>
-        <p>Next-generation SMR financing for remote communities and island grids — particularly relevant in Fiji, Samoa, and Pacific territories.</p>
-      </div>
-      <div class="card">
-        <span class="card-tag">Infrastructure</span>
-        <h4>Grid-Scale Nuclear</h4>
-        <p>Large-scale plant development and refurbishment financing in partnership with government energy ministries and institutional investors.</p>
-      </div>
-      <div class="card">
-        <span class="card-tag">Advisory</span>
-        <h4>Energy Policy &amp; Structuring</h4>
-        <p>Working with governments to develop the regulatory and capital frameworks needed to bring nuclear projects to financial close.</p>
+  <!-- CINEMATIC HERO -->
+  <div class="cinematic cinematic-hero">
+    <img class="cinematic-bg cinematic-bg-ani"
+         src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=90&auto=format&fit=crop"
+         alt="Global infrastructure" loading="eager">
+    <div class="cin-ov-c"></div>
+    <div class="cinematic-content" style="max-width:700px;padding-bottom:140px">
+      <span class="cin-eyebrow">Steel &amp; Aire · Project Portfolio</span>
+      <h2 style="font-size:clamp(3rem,6vw,5.5rem);font-weight:300">Infrastructure<br>for a <em>better world.</em></h2>
+      <p class="cin-sub" style="max-width:560px">We finance and develop the projects that shape economies — nuclear energy, hyperscale data infrastructure, multifamily housing, and tokenized real assets. Active across the Americas, Pacific, and beyond.</p>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <a href="mailto:admin@mpeakp.com" class="btn-primary">Submit Your Project</a>
+        <a href="login.html" class="btn-ghost">Enter Deal Room ↗</a>
       </div>
     </div>
   </div>
 
-  <div class="tab-section dark">
-    <span class="section-tag">Technology</span>
-    <h2 style="color:var(--white)"><em style="color:var(--blue-light)">Data Center</em> Development</h2>
-    <div class="body-text" style="color:rgba(255,255,255,0.45);max-width:720px">
-      <p>The world's demand for data infrastructure is accelerating. Steel &amp; Aire finances hyperscale, colocation, and edge data centers across the Americas and Pacific — connecting developers with the debt and equity capital needed to build.</p>
-    </div>
-    <div class="cards-grid" style="margin-top:40px">
-      <div class="card dark-card">
-        <span class="card-tag">Scale</span>
-        <h4>Hyperscale Facilities</h4>
-        <p>Large-scale data center campuses serving cloud providers and enterprises — requiring $100M+ capital structures involving debt, equity, and infrastructure funds.</p>
+  <!-- NUCLEAR — left text, image right -->
+  <div class="cinematic">
+    <img class="cinematic-bg cinematic-bg-ani"
+         src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=90&auto=format&fit=crop"
+         alt="Nuclear energy infrastructure" loading="lazy">
+    <div class="cin-ov-l"></div>
+    <span class="cin-badge">01 / Energy</span>
+    <div class="cinematic-content">
+      <span class="cin-eyebrow">Energy Infrastructure</span>
+      <h2>Nuclear<br><em>Energy</em></h2>
+      <p class="cin-sub">We believe nuclear is the only baseload energy source capable of delivering reliable, carbon-free power at the scale the world needs. Steel &amp; Aire finances and develops nuclear projects from small modular reactors to full-scale plant development — structuring sovereign-backed debt, equity, and hybrid capital across North America, Latin America, and the Pacific.</p>
+      <div class="cin-bullets">
+        <div class="cin-bullet">Small Modular Reactors (SMRs) for island grids</div>
+        <div class="cin-bullet">Grid-scale plant financing with government co-investment</div>
+        <div class="cin-bullet">Energy policy structuring &amp; regulatory advisory</div>
+        <div class="cin-bullet">Vertically integrated nuclear + data center campuses</div>
       </div>
-      <div class="card dark-card">
-        <span class="card-tag">Pacific</span>
-        <h4>Edge &amp; Island Infrastructure</h4>
-        <p>Smaller, resilient data facilities for Pacific Island communities and emerging markets — bringing digital connectivity to underserved populations.</p>
-      </div>
-      <div class="card dark-card">
-        <span class="card-tag">Power</span>
-        <h4>Powered by Nuclear</h4>
-        <p>Where possible, we co-locate data centers with nuclear energy projects — creating vertically integrated, low-carbon compute infrastructure.</p>
-      </div>
+      <a href="#" class="btn-primary" onclick="openModal('modal-deal-energy');return false">View Sample Deal →</a>
     </div>
   </div>
 
-  <div class="tab-section mid">
-    <span class="section-tag">Real Assets</span>
-    <h2>Multifamily &amp; <em>Real Estate</em></h2>
-    <div class="cards-grid">
-      <div class="card">
-        <span class="card-tag">Residential</span>
-        <h4>Multifamily Development</h4>
-        <p>Originating debt and equity for multifamily housing — with a focus on affordable and workforce housing in markets where supply is critically short.</p>
+  <!-- DATA CENTER — right text, image left -->
+  <div class="cinematic">
+    <img class="cinematic-bg cinematic-bg-ani"
+         src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=90&auto=format&fit=crop"
+         alt="Data center infrastructure" loading="lazy">
+    <div class="cin-ov-r"></div>
+    <span class="cin-badge">02 / Technology</span>
+    <div class="cinematic-content cr">
+      <span class="cin-eyebrow">Technology Infrastructure</span>
+      <h2>Data Center<br><em>Development</em></h2>
+      <p class="cin-sub">The world's demand for compute is accelerating at a pace that legacy capital markets were never built to serve. Steel &amp; Aire finances hyperscale, colocation, and edge data centers across the Americas and Pacific — connecting developers with the debt and equity capital needed to build at speed and scale.</p>
+      <div class="cin-bullets">
+        <div class="cin-bullet">Hyperscale facilities — $100M+ capital structures</div>
+        <div class="cin-bullet">Edge infrastructure for Pacific Island markets</div>
+        <div class="cin-bullet">Nuclear-powered data center co-location projects</div>
+        <div class="cin-bullet">Tax credit stacking and government incentive structuring</div>
       </div>
-      <div class="card">
-        <span class="card-tag">Portfolio</span>
-        <h4>Portfolio Lending</h4>
-        <p>DSCR, blanket loans, and portfolio refinancing for investors holding multiple properties — both domestic and international.</p>
+      <a href="#" class="btn-primary" onclick="openModal('modal-deal-datacenter');return false">View Sample Deal →</a>
+    </div>
+  </div>
+
+  <!-- MULTIFAMILY — left text, image right -->
+  <div class="cinematic">
+    <img class="cinematic-bg cinematic-bg-ani"
+         src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920&q=90&auto=format&fit=crop"
+         alt="Multifamily real estate development" loading="lazy">
+    <div class="cin-ov-l"></div>
+    <span class="cin-badge">03 / Real Assets</span>
+    <div class="cinematic-content">
+      <span class="cin-eyebrow">Real Estate &amp; Housing</span>
+      <h2>Multifamily &amp;<br><em>Real Estate</em></h2>
+      <p class="cin-sub">From 50-unit workforce housing to 500-unit urban high-rise, Steel &amp; Aire originates debt and equity for multifamily development with a focus on markets where supply is critically short. We work with builders, land owners, and institutional partners to structure deals that close.</p>
+      <div class="cin-bullets">
+        <div class="cin-bullet">Multifamily development — bridge, construction, perm</div>
+        <div class="cin-bullet">DSCR and portfolio lending for multi-property investors</div>
+        <div class="cin-bullet">International residential projects in Latin America &amp; Pacific</div>
+        <div class="cin-bullet">Affordable and workforce housing with government backstops</div>
       </div>
-      <div class="card">
-        <span class="card-tag">Bridge</span>
-        <h4>Bridge &amp; Construction</h4>
-        <p>Short-term capital for acquisition, renovation, and new construction — leveraging our hard money and private lender network for fast deployment.</p>
+      <a href="#" class="btn-primary" onclick="openModal('modal-deal-multifamily');return false">View Sample Deal →</a>
+    </div>
+  </div>
+
+  <!-- TOKENIZED FUND — dark card section, full-width visual -->
+  <div style="position:relative;background:var(--black);overflow:hidden">
+    <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.12"
+         src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1920&q=85&auto=format&fit=crop"
+         alt="Digital finance blockchain" loading="lazy">
+    <div style="position:relative;z-index:1;padding:100px 10%">
+      <span class="cin-eyebrow" style="display:block;margin-bottom:16px">04 / Digital Finance</span>
+      <h2 style="font-family:'Cormorant Garant',serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:20px;max-width:700px">Tokenized Fund &amp;<br><em style="color:var(--blue-light)">On-Chain Capital</em></h2>
+      <p style="font-size:0.9rem;color:rgba(255,255,255,0.45);max-width:600px;line-height:1.85;margin-bottom:48px">We are building the first fully tokenized real estate and infrastructure fund — enabling fractional ownership, on-chain settlement, and 24/7 liquidity for asset classes that have historically been locked up for years. This is where traditional capital markets end and the future begins.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;max-width:900px">
+        <div style="background:rgba(26,61,181,0.12);border:1px solid rgba(26,61,181,0.2);padding:28px 24px">
+          <h4 style="font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:8px">On-Chain Settlement</h4>
+          <p style="font-size:0.78rem;color:rgba(255,255,255,0.38);line-height:1.6">Real assets tokenized on blockchain — enabling near-instant settlement, fractional participation, and full auditability.</p>
+        </div>
+        <div style="background:rgba(26,61,181,0.12);border:1px solid rgba(26,61,181,0.2);padding:28px 24px">
+          <h4 style="font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:8px">Fractional Ownership</h4>
+          <p style="font-size:0.78rem;color:rgba(255,255,255,0.38);line-height:1.6">Accredited and institutional investors participate in deals that were previously accessible only to the largest family offices and funds.</p>
+        </div>
+        <div style="background:rgba(26,61,181,0.12);border:1px solid rgba(26,61,181,0.2);padding:28px 24px">
+          <h4 style="font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:8px">First Mover Advantage</h4>
+          <p style="font-size:0.78rem;color:rgba(255,255,255,0.38);line-height:1.6">Be among the first brokers and capital partners to place deals into the fund. Early participants gain the most favorable economics.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -1272,7 +1341,8 @@
 <!-- ══════════════ LAND PARTNERS PAGE ══════════════ -->
 <div id="page-landpartners" class="page">
 
-  <div class="tab-page-hero">
+  <div class="tab-page-hero vis">
+    <img class="thbg" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
     <div class="hero-glow"></div>
     <p class="hero-eyebrow">Land Partners</p>
     <h1>Your land.<br>Our <em>vision.</em><br>A shared deal.</h1>
@@ -1744,6 +1814,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+<script src="https://unpkg.com/three@0.160.1/build/three.min.js"></script>
+<script src="https://unpkg.com/globe.gl@2.30.0/dist/globe.gl.min.js"></script>
 
 <script>
 // ── MODAL SYSTEM ──
@@ -1828,6 +1900,50 @@ const MAP_LOCS = [
   { name:'Fiji',          city:'Suva, Fiji',            lat:-18.1, lon:178.4,  card:4, detail:'Pacific Island infrastructure and energy development — building resilient systems for underserved communities.' },
   { name:'Samoa',         city:'Apia, Samoa',           lat:-13.8, lon:-172.1, card:5, detail:'Community-focused development capital, renewable energy, and data infrastructure across the Samoan islands.' },
 ];
+
+/* ── HERO 3D GLOBE ── */
+(function initHeroGlobe() {
+  const wrap = document.getElementById('hero-globe-wrap');
+  if (!wrap) return;
+
+  function tryBuild() {
+    if (typeof Globe === 'undefined' || typeof THREE === 'undefined') {
+      setTimeout(tryBuild, 200);
+      return;
+    }
+    const globe = Globe({
+      rendererConfig: { antialias: true, alpha: true }
+    })(wrap)
+      .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-night.jpg')
+      .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
+      .backgroundImageUrl(null)
+      .backgroundColor('rgba(0,0,0,0)')
+      .atmosphereColor('#3a6aff')
+      .atmosphereAltitude(0.18)
+      .pointsData(MAP_LOCS)
+      .pointLat(d => d.lat)
+      .pointLng(d => d.lon)
+      .pointAltitude(0.06)
+      .pointRadius(0.35)
+      .pointColor(() => '#5a8aff')
+      .pointResolution(10)
+      .pointLabel(d => `<div style="background:rgba(10,10,15,0.92);border:1px solid rgba(90,138,255,0.4);padding:8px 14px;font-size:11px;font-family:Inter,sans-serif;color:#fff;line-height:1.4"><strong style="color:#5a8aff">${d.name}</strong><br>${d.city}</div>`);
+
+    globe.controls().autoRotate = true;
+    globe.controls().autoRotateSpeed = 0.55;
+    globe.controls().enableZoom = false;
+    globe.controls().enablePan = false;
+    globe.controls().enableDamping = true;
+
+    // Initial camera position - slightly elevated
+    globe.pointOfView({ lat: 20, lng: -40, altitude: 2.2 }, 0);
+
+    // Make canvas non-interactive so hero scroll still works
+    const cv = wrap.querySelector('canvas');
+    if (cv) cv.style.pointerEvents = 'none';
+  }
+  tryBuild();
+})();
 
 let _globeDone = false;
 async function initGlobe() {
