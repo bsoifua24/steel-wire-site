@@ -190,6 +190,52 @@
     #global h2 em{color:var(--blue-light)}
     #global .section-tag{color:var(--blue-light)}
     #global .body-text{color:rgba(255,255,255,0.45)}
+
+    /* ── TERRITORY CARDS (replaces .regions) ── */
+    .territory-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:28px}
+    .territory-card{
+      position:relative;overflow:hidden;background:#0b1120;
+      padding:40px 36px;min-height:240px;
+      display:flex;flex-direction:column;justify-content:space-between;
+      transition:background 0.35s;cursor:default;
+    }
+    .territory-card:hover{background:#111827}
+    .tc-flag-bg{
+      position:absolute;right:-24px;bottom:-16px;width:200px;height:auto;
+      opacity:0.06;transform:rotate(-6deg);pointer-events:none;filter:blur(0.5px);
+    }
+    .tc-flag{width:58px;height:auto;box-shadow:0 4px 18px rgba(0,0,0,0.65);flex-shrink:0;margin-bottom:22px}
+    .tc-name{font-family:'Cormorant Garant',serif;font-size:1.6rem;font-weight:600;color:#fff;margin-bottom:4px;line-height:1.1}
+    .tc-city{font-size:0.6rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:14px}
+    .tc-desc{font-size:0.8rem;color:rgba(255,255,255,0.42);line-height:1.65}
+    @media(max-width:760px){.territory-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:480px){.territory-grid{grid-template-columns:1fr}}
+
+    /* ── SLIDESHOW ── */
+    .slideshow{position:relative;height:68vh;min-height:460px;overflow:hidden;background:var(--black)}
+    .slide{position:absolute;inset:0;opacity:0;transition:opacity 0.85s ease;pointer-events:none}
+    .slide.active{opacity:1;pointer-events:auto}
+    .slide-img{width:100%;height:100%;object-fit:cover}
+    .slide-ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,7,18,0.88) 0%,rgba(4,7,18,0.55) 48%,rgba(4,7,18,0.1) 100%)}
+    .slide-content{position:absolute;bottom:80px;left:10%;max-width:520px;z-index:2}
+    .slide-content .cin-eyebrow{display:block;margin-bottom:12px}
+    .slide-content h3{font-family:'Cormorant Garant',serif;font-size:clamp(2rem,4vw,3.4rem);font-weight:300;color:#fff;line-height:1.1;margin-bottom:14px}
+    .slide-content h3 em{color:var(--blue-light);font-style:italic}
+    .slide-content p{font-size:0.86rem;color:rgba(255,255,255,0.5);line-height:1.75;max-width:420px}
+    .slideshow-nav{position:absolute;bottom:32px;left:10%;display:flex;align-items:center;gap:10px;z-index:3}
+    .sdot{width:28px;height:2px;background:rgba(255,255,255,0.2);cursor:pointer;transition:all 0.3s;border:none;padding:0}
+    .sdot.active{background:var(--blue-light);width:42px}
+    .slide-arrows{position:absolute;right:60px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:3}
+    .slide-arr{width:40px;height:40px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+    .slide-arr:hover{background:rgba(26,61,181,0.4);border-color:var(--blue-light);color:#fff}
+
+    /* ── CAPITAL NETWORK REDESIGN ── */
+    .cap-net-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+    .cap-stat{text-align:center;padding:24px 0}
+    .cap-stat-num{font-family:'Cormorant Garant',serif;font-size:3rem;font-weight:600;color:var(--white);line-height:1}
+    .cap-stat-num span{color:var(--blue-light);font-size:1.8rem}
+    .cap-stat-label{font-size:0.62rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:6px}
+
     .regions{
       display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:52px;
     }
@@ -654,6 +700,73 @@
     </div>
   </section>
 
+  <!-- WHAT WE DO SLIDESHOW -->
+  <div class="slideshow" id="main-slideshow">
+    <!-- Slide 1: Nuclear -->
+    <div class="slide active">
+      <img class="slide-img cinematic-bg-ani" src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+      <div class="slide-ov"></div>
+      <div class="slide-content">
+        <span class="cin-eyebrow">01 — Energy Infrastructure</span>
+        <h3>Nuclear <em>Energy</em></h3>
+        <p>From small modular reactors to grid-scale plant financing — we structure sovereign-backed capital for the cleanest baseload energy on earth.</p>
+      </div>
+    </div>
+    <!-- Slide 2: Data Centers -->
+    <div class="slide">
+      <img class="slide-img cinematic-bg-ani" src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+      <div class="slide-ov"></div>
+      <div class="slide-content">
+        <span class="cin-eyebrow">02 — Technology Infrastructure</span>
+        <h3>Data Center <em>Development</em></h3>
+        <p>Hyperscale, colocation, and edge data centers across the Americas and Pacific — financed for developers who need capital to move at the speed of demand.</p>
+      </div>
+    </div>
+    <!-- Slide 3: Multifamily -->
+    <div class="slide">
+      <img class="slide-img cinematic-bg-ani" src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+      <div class="slide-ov"></div>
+      <div class="slide-content">
+        <span class="cin-eyebrow">03 — Real Estate</span>
+        <h3>Multifamily &amp; <em>Housing</em></h3>
+        <p>Bridge, construction, and permanent financing for multifamily developers — in markets where supply is short and the right capital unlocks everything.</p>
+      </div>
+    </div>
+    <!-- Slide 4: Global -->
+    <div class="slide">
+      <img class="slide-img cinematic-bg-ani" src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+      <div class="slide-ov"></div>
+      <div class="slide-content">
+        <span class="cin-eyebrow">04 — Global Presence</span>
+        <h3>Active in <em>Six Territories</em></h3>
+        <p>El Salvador, Ecuador, United States, Hawaii, Fiji, and Samoa. We don't just know these markets — we operate inside them with government relationships and boots on the ground.</p>
+      </div>
+    </div>
+    <!-- Slide 5: Land Partners -->
+    <div class="slide">
+      <img class="slide-img cinematic-bg-ani" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+      <div class="slide-ov"></div>
+      <div class="slide-content">
+        <span class="cin-eyebrow">05 — Land Partnerships</span>
+        <h3>Your Land. <em>Our Capital.</em></h3>
+        <p>Land owners become equity partners — we raise all required capital, build the development strategy, and you participate in the full return of what gets built.</p>
+      </div>
+    </div>
+    <!-- Dots -->
+    <div class="slideshow-nav">
+      <button class="sdot active" aria-label="Slide 1"></button>
+      <button class="sdot" aria-label="Slide 2"></button>
+      <button class="sdot" aria-label="Slide 3"></button>
+      <button class="sdot" aria-label="Slide 4"></button>
+      <button class="sdot" aria-label="Slide 5"></button>
+    </div>
+    <!-- Arrows -->
+    <div class="slide-arrows">
+      <button class="slide-arr slide-prev" aria-label="Previous">↑</button>
+      <button class="slide-arr slide-next" aria-label="Next">↓</button>
+    </div>
+  </div>
+
   <!-- GLOBAL PRESENCE -->
   <section id="global">
     <span class="section-tag">Global Presence</span>
@@ -662,59 +775,110 @@
     <div id="globe-map" style="width:100%;border:1px solid rgba(26,61,181,0.2);overflow:hidden;background:#070c1a;min-height:380px;position:relative">
       <div id="globe-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.18);font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase">Loading map…</div>
     </div>
-    <div class="regions" id="globe-cards" style="margin-top:28px">
-      <div class="region" style="transition:opacity 0.25s">
-        <div class="region-flag">🇸🇻</div>
-        <h4>El Salvador</h4>
-        <p>Active operations supporting emerging market development, digital infrastructure, and sovereign capital initiatives.</p>
+    <div class="territory-grid" id="globe-cards" style="margin-top:28px">
+      <div class="region territory-card" style="transition:opacity 0.25s">
+        <img class="tc-flag-bg" src="https://flagcdn.com/w320/sv.png" alt="">
+        <div>
+          <img class="tc-flag" src="https://flagcdn.com/w320/sv.png" alt="El Salvador flag">
+          <div class="tc-name">El Salvador</div>
+          <div class="tc-city">San Salvador</div>
+          <div class="tc-desc">Active operations supporting emerging market development, digital infrastructure, and sovereign capital initiatives.</div>
+        </div>
       </div>
-      <div class="region" style="transition:opacity 0.25s">
-        <div class="region-flag">🇪🇨</div>
-        <h4>Ecuador</h4>
-        <p>Regional hub for South American project origination, lender relationships, and cross-border capital structuring.</p>
+      <div class="region territory-card" style="transition:opacity 0.25s">
+        <img class="tc-flag-bg" src="https://flagcdn.com/w320/ec.png" alt="">
+        <div>
+          <img class="tc-flag" src="https://flagcdn.com/w320/ec.png" alt="Ecuador flag">
+          <div class="tc-name">Ecuador</div>
+          <div class="tc-city">Quito</div>
+          <div class="tc-desc">Regional hub for South American project origination, lender relationships, and cross-border capital structuring.</div>
+        </div>
       </div>
-      <div class="region" style="transition:opacity 0.25s">
-        <div class="region-flag">🇺🇸</div>
-        <h4>United States</h4>
-        <p>Offices in Austin TX, Salt Lake City UT, and Honolulu HI — anchoring our domestic capital markets and government relations work.</p>
+      <div class="region territory-card" style="transition:opacity 0.25s">
+        <img class="tc-flag-bg" src="https://flagcdn.com/w320/us.png" alt="">
+        <div>
+          <img class="tc-flag" src="https://flagcdn.com/w320/us.png" alt="United States flag">
+          <div class="tc-name">United States</div>
+          <div class="tc-city">Austin TX · Salt Lake City UT</div>
+          <div class="tc-desc">Offices anchoring our domestic capital markets and government relations work across the continental US.</div>
+        </div>
       </div>
-      <div class="region" style="transition:opacity 0.25s">
-        <div class="region-flag">🌺</div>
-        <h4>Hawaii</h4>
-        <p>Pacific gateway office connecting US capital markets with Pacific Island partners and cross-Pacific infrastructure deals.</p>
+      <div class="region territory-card" style="transition:opacity 0.25s">
+        <img class="tc-flag-bg" src="https://flagcdn.com/w320/us-hi.png" alt="">
+        <div>
+          <img class="tc-flag" src="https://flagcdn.com/w320/us-hi.png" alt="Hawaii flag">
+          <div class="tc-name">Hawaii</div>
+          <div class="tc-city">Honolulu, HI</div>
+          <div class="tc-desc">Pacific gateway connecting US capital markets with Pacific Island partners and cross-Pacific infrastructure deals.</div>
+        </div>
       </div>
-      <div class="region" style="transition:opacity 0.25s">
-        <div class="region-flag">🇫🇯</div>
-        <h4>Fiji</h4>
-        <p>Pacific Island infrastructure and energy development — building resilient systems for underserved communities.</p>
+      <div class="region territory-card" style="transition:opacity 0.25s">
+        <img class="tc-flag-bg" src="https://flagcdn.com/w320/fj.png" alt="">
+        <div>
+          <img class="tc-flag" src="https://flagcdn.com/w320/fj.png" alt="Fiji flag">
+          <div class="tc-name">Fiji</div>
+          <div class="tc-city">Suva, Fiji</div>
+          <div class="tc-desc">Pacific Island infrastructure and energy development — building resilient systems for underserved communities.</div>
+        </div>
       </div>
-      <div class="region" style="transition:opacity 0.25s">
-        <div class="region-flag">🇼🇸</div>
-        <h4>Samoa</h4>
-        <p>Community-focused development capital, renewable energy, and data infrastructure across the Samoan islands.</p>
+      <div class="region territory-card" style="transition:opacity 0.25s">
+        <img class="tc-flag-bg" src="https://flagcdn.com/w320/ws.png" alt="">
+        <div>
+          <img class="tc-flag" src="https://flagcdn.com/w320/ws.png" alt="Samoa flag">
+          <div class="tc-name">Samoa</div>
+          <div class="tc-city">Apia, Samoa</div>
+          <div class="tc-desc">Community-focused development capital, renewable energy, and data infrastructure across the Samoan islands.</div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- CAPITAL NETWORK -->
-  <section id="capital">
-    <span class="section-tag">Capital Network</span>
-    <h2>Connected to every<br>layer of the <em>capital stack.</em></h2>
-    <div class="capital-grid">
-      <div class="cap-card">
-        <div class="cap-icon">🏢</div>
-        <h4>Multifamily Funds</h4>
-        <p>Deep connections to institutional multifamily capital sources — including debt funds, DSCR lenders, and portfolio lenders active in emerging and established markets.</p>
+  <section id="capital" style="position:relative;background:var(--black-soft);padding:100px 60px;overflow:hidden">
+    <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.09;pointer-events:none"
+         src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1920&q=80&auto=format&fit=crop"
+         alt="" loading="lazy">
+    <div class="cap-net-inner">
+      <div>
+        <span class="section-tag">Capital Network</span>
+        <h2 style="color:var(--white)">Connected to every<br>layer of the <em style="color:var(--blue-light)">capital stack.</em></h2>
+        <p style="font-size:0.88rem;color:rgba(255,255,255,0.42);line-height:1.8;max-width:380px;margin:20px 0 44px">200+ active capital relationships across every tier — from first-lien senior debt to on-chain credit facilities and sovereign development capital.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">
+          <div style="background:rgba(26,61,181,0.12);border:1px solid rgba(26,61,181,0.2);padding:24px">
+            <div class="cap-stat-num">200<span>+</span></div>
+            <div class="cap-stat-label">Active Capital Partners</div>
+          </div>
+          <div style="background:rgba(26,61,181,0.12);border:1px solid rgba(26,61,181,0.2);padding:24px">
+            <div class="cap-stat-num">6<span></span></div>
+            <div class="cap-stat-label">Tiers of the Stack</div>
+          </div>
+        </div>
       </div>
-      <div class="cap-card">
-        <div class="cap-icon">👨‍👩‍👧‍👦</div>
-        <h4>Family Offices</h4>
-        <p>Long-standing relationships with family offices seeking direct investment in infrastructure, real assets, and tokenized vehicles with strong risk-adjusted returns.</p>
-      </div>
-      <div class="cap-card">
-        <div class="cap-icon">🏦</div>
-        <h4>Private Money Lenders</h4>
-        <p>A curated network of private and hard money lenders capable of deploying capital quickly across asset classes and geographies — including cross-border transactions.</p>
+      <div class="clean-list" style="padding-top:8px">
+        <div class="clean-item" style="border-top-color:rgba(255,255,255,0.06);border-bottom:none">
+          <div class="clean-item-title" style="color:var(--white)">Multifamily Debt Funds</div>
+          <div class="clean-item-sub" style="color:rgba(255,255,255,0.35)">Institutional DSCR, bridge, and permanent debt funds active across the US and international markets.</div>
+        </div>
+        <div class="clean-item" style="border-top-color:rgba(255,255,255,0.06)">
+          <div class="clean-item-title" style="color:var(--white)">Family Offices</div>
+          <div class="clean-item-sub" style="color:rgba(255,255,255,0.35)">Multi-generational wealth seeking direct lending, equity co-investment, and infrastructure exposure.</div>
+        </div>
+        <div class="clean-item" style="border-top-color:rgba(255,255,255,0.06)">
+          <div class="clean-item-title" style="color:var(--white)">Hard Money &amp; Bridge Lenders</div>
+          <div class="clean-item-sub" style="color:rgba(255,255,255,0.35)">Private capital that moves in days — for time-sensitive acquisitions and construction starts.</div>
+        </div>
+        <div class="clean-item" style="border-top-color:rgba(255,255,255,0.06)">
+          <div class="clean-item-title" style="color:var(--white)">Sovereign &amp; Development Finance</div>
+          <div class="clean-item-sub" style="color:rgba(255,255,255,0.35)">DFIs and sovereign wealth vehicles engaged in energy and infrastructure across our territories.</div>
+        </div>
+        <div class="clean-item" style="border-top-color:rgba(255,255,255,0.06)">
+          <div class="clean-item-title" style="color:var(--white)">International Capital</div>
+          <div class="clean-item-sub" style="color:rgba(255,255,255,0.35)">Cross-border lenders in Latin America and the Pacific with sovereign risk expertise.</div>
+        </div>
+        <div class="clean-item" style="border-top-color:rgba(255,255,255,0.06)">
+          <div class="clean-item-title" style="color:var(--white)">Tokenized &amp; On-Chain Credit</div>
+          <div class="clean-item-sub" style="color:rgba(255,255,255,0.35)">Blockchain-native credit facilities secured by real-world assets — the frontier of alternative lending.</div>
+        </div>
       </div>
     </div>
   </section>
@@ -1543,7 +1707,8 @@
 
 <!-- ══════════════ EVENTS PAGE ══════════════ -->
 <div id="page-events" class="page">
-  <div class="tab-page-hero">
+  <div class="tab-page-hero vis">
+    <img class="thbg" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
     <div class="hero-glow"></div>
     <p class="hero-eyebrow">Events &amp; Gatherings</p>
     <h1>Where <em>capital</em><br>meets vision.</h1>
@@ -2403,6 +2568,29 @@ async function initGlobe() {
 </div><!-- /#modal-overlay -->
 
 <script>
+  /* ── SLIDESHOW ── */
+  (function() {
+    const slides = document.querySelectorAll('#main-slideshow .slide');
+    const dots   = document.querySelectorAll('#main-slideshow .sdot');
+    let idx = 0, timer;
+    function goTo(n) {
+      slides[idx].classList.remove('active');
+      dots[idx].classList.remove('active');
+      idx = ((n % slides.length) + slides.length) % slides.length;
+      slides[idx].classList.add('active');
+      dots[idx].classList.add('active');
+    }
+    function tick() { goTo(idx + 1); }
+    function start() { timer = setInterval(tick, 5000); }
+    function stop()  { clearInterval(timer); }
+    if (slides.length) {
+      start();
+      dots.forEach((d, i) => d.addEventListener('click', () => { stop(); goTo(i); start(); }));
+      document.querySelector('.slide-prev')?.addEventListener('click', () => { stop(); goTo(idx - 1); start(); });
+      document.querySelector('.slide-next')?.addEventListener('click', () => { stop(); goTo(idx + 1); start(); });
+    }
+  })();
+
   function handleInquirySubmit(e) {
     const form = document.getElementById('inquiry-form');
     const success = document.getElementById('inquiry-success');
