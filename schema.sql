@@ -8,7 +8,7 @@
 -- ── TABLES ──
 create table if not exists profiles (
   id                uuid references auth.users(id) on delete cascade primary key,
-  role              text not null default 'borrower' check (role in ('admin','borrower')),
+  role              text not null default 'borrower' check (role in ('admin','borrower','lender','broker')),
   full_name         text,
   company           text,
   phone             text,
@@ -157,6 +157,11 @@ create table if not exists task_comments (
   body        text not null,
   created_at  timestamptz default now()
 );
+
+-- ── ROLE CONSTRAINT (idempotent update) ──
+alter table profiles drop constraint if exists profiles_role_check;
+alter table profiles add constraint profiles_role_check
+  check (role in ('admin','borrower','lender','broker'));
 
 -- ── SAFE COLUMN ADDITIONS ──
 alter table profiles          add column if not exists phone             text;

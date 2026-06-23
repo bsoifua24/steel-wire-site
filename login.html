@@ -499,6 +499,117 @@
   .btn-revise:hover{border-color:var(--red);background:#fee2e2}
   .doc-row-approved .d-name{color:var(--mid-grey)}
   @media(max-width:900px){.dr-summary{grid-template-columns:1fr 1fr}}
+
+  /* ── ROLE SELECTION ── */
+  .role-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--black);padding:130px 24px 60px}
+  .role-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+  .role-card{background:var(--charcoal);border:2px solid rgba(90,138,255,0.15);padding:30px 24px;cursor:pointer;transition:all 0.25s;text-align:left;font-family:'Inter',sans-serif;width:100%}
+  .role-card:hover{border-color:rgba(90,138,255,0.5);background:rgba(26,61,181,0.14)}
+  .role-card.selected{border-color:var(--blue-light);background:rgba(26,61,181,0.25)}
+  .role-icon{font-size:1.7rem;margin-bottom:12px;display:block}
+  .role-title{font-family:'Cormorant Garant',serif;font-size:1.35rem;font-weight:600;color:var(--white);margin-bottom:8px}
+  .role-desc{font-size:0.78rem;color:rgba(255,255,255,0.42);line-height:1.6}
+  .role-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+  .role-tag{font-size:0.58rem;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;padding:3px 8px;background:rgba(90,138,255,0.1);color:var(--blue-light);border:1px solid rgba(90,138,255,0.2)}
+  @media(max-width:700px){.role-card-grid{grid-template-columns:1fr}}
+
+  /* ── VAULT (borrower document hierarchy) ── */
+  .vault-phase{margin-bottom:4px}
+  .vault-phase-hdr{display:flex;align-items:center;gap:14px;padding:16px 22px;background:var(--black);color:var(--white);cursor:pointer;border-left:3px solid transparent;transition:border-color 0.2s,background 0.2s;user-select:none}
+  .vault-phase-hdr:hover,.vault-phase-hdr.current{border-left-color:var(--blue-light)}
+  .vault-phase-hdr.locked{cursor:default;opacity:0.42}
+  .vault-phase-num{font-family:'Cormorant Garant',serif;font-size:1.4rem;font-weight:600;color:var(--blue-light);min-width:26px;line-height:1}
+  .vault-phase-name{font-size:0.84rem;font-weight:600;letter-spacing:0.05em;flex:1}
+  .vault-phase-meta{display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .vault-phase-pct{font-size:0.7rem;color:rgba(255,255,255,0.38)}
+  .vault-phase-arrow{font-size:0.6rem;color:rgba(255,255,255,0.3);transition:transform 0.2s;margin-left:4px}
+  .vault-phase.open .vault-phase-arrow{transform:rotate(90deg)}
+  .vault-phase-body{display:none;border-left:3px solid rgba(90,138,255,0.3)}
+  .vault-phase.open .vault-phase-body{display:block}
+  .vault-group-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 22px 9px 36px;background:#edf0f8;border-bottom:1px solid #d4daed}
+  .vault-group-name{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey)}
+  .vault-group-count{font-size:0.66rem;color:var(--mid-grey)}
+  .vault-item{display:grid;grid-template-columns:14px 1fr 110px auto;gap:12px;align-items:center;padding:13px 22px 13px 36px;border-bottom:1px solid #e4e8f4;background:var(--white);transition:background 0.15s}
+  .vault-item:hover{background:var(--blue-pale)}
+  .vault-item:last-child{border-bottom:none}
+  .vault-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:2px}
+  .vault-dot.needed{background:#dbb3b3}
+  .vault-dot.uploaded{background:var(--amber)}
+  .vault-dot.review{background:var(--blue-light)}
+  .vault-dot.approved{background:var(--green)}
+  .vault-item-name{font-size:0.85rem;font-weight:500;color:var(--black)}
+  .vault-item-sub{font-size:0.71rem;color:var(--mid-grey);margin-top:2px}
+  .vault-item-files{margin-top:5px;display:flex;flex-wrap:wrap;gap:5px}
+  .vault-revision{margin-top:5px;font-size:0.72rem;color:var(--red)}
+  .vault-actions{display:flex;gap:5px;justify-content:flex-end;flex-wrap:wrap}
+  @media(max-width:700px){.vault-item{grid-template-columns:12px 1fr}.vault-item .pill,.vault-actions{grid-column:2}}
+
+  /* ── REVIEW QUEUE ── */
+  .rq-badge{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;border-radius:9px;background:var(--red);color:#fff;font-size:0.58rem;font-weight:700;padding:0 4px;margin-left:5px;vertical-align:middle}
+  .rq-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:24px}
+  .rq-stat{background:var(--charcoal);padding:22px 24px}
+  .rq-num{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:600;color:var(--white);line-height:1;margin-bottom:4px}
+  .rq-lbl{font-size:0.62rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+  .rq-table-outer{overflow-x:auto;background:var(--white)}
+  .rq-table{width:100%;border-collapse:collapse}
+  .rq-table thead th{font-size:0.62rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey);padding:12px 16px;text-align:left;border-bottom:2px solid var(--light-grey);white-space:nowrap;background:var(--offwhite)}
+  .rq-table tbody tr{border-bottom:1px solid var(--light-grey);transition:background 0.15s}
+  .rq-table tbody tr:hover{background:var(--offwhite)}
+  .rq-table tbody td{padding:12px 16px;font-size:0.82rem;vertical-align:middle}
+  .rq-doc-name{font-weight:600;color:var(--black)}
+  .rq-doc-group{font-size:0.71rem;color:var(--mid-grey);margin-top:2px}
+  .rq-deal-link{color:var(--blue);cursor:pointer;text-decoration:underline;font-weight:500;background:none;border:none;padding:0;font-family:inherit;font-size:inherit}
+  .rq-borrower,.rq-date{color:var(--mid-grey);font-size:0.76rem}
+  .rq-dl-link{font-size:0.67rem;color:var(--blue);cursor:pointer;background:none;border:none;padding:0;font-family:inherit;text-decoration:underline}
+  .rq-actions{display:flex;gap:5px;white-space:nowrap}
+  @media(max-width:900px){.rq-stats{grid-template-columns:1fr 1fr}}
+
+  /* ── LENDER PORTAL ── */
+  .lf-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .lf-btn{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:7px 16px;border:1px solid rgba(255,255,255,0.15);background:none;color:rgba(255,255,255,0.45);cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif}
+  .lf-btn.active,.lf-btn:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
+  .lender-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2px}
+  .lender-card{background:var(--offwhite);padding:28px 24px;border-bottom:3px solid transparent;transition:border-color 0.2s,box-shadow 0.2s}
+  .lender-card:hover{border-bottom-color:var(--blue);box-shadow:0 4px 18px rgba(26,61,181,0.09)}
+  .lender-card-type{font-size:0.62rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+  .lender-card h4{font-family:'Cormorant Garant',serif;font-size:1.25rem;font-weight:600;color:var(--black);margin-bottom:6px}
+  .lender-card-meta{font-size:0.78rem;color:var(--mid-grey);margin-bottom:14px;line-height:1.55}
+  .lender-indicators{display:flex;gap:5px;flex-wrap:wrap}
+  .lender-ind{font-size:0.6rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;background:rgba(26,61,181,0.07);color:var(--blue)}
+  .lender-profile-box{padding:28px;margin-top:36px;border-left:3px solid var(--blue);background:var(--offwhite)}
+  .lp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .lp-field{display:flex;flex-direction:column;gap:6px}
+  .lp-field label{font-size:0.64rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey)}
+  .lp-field input,.lp-field select{font-family:'Inter',sans-serif;font-size:0.86rem;padding:10px 12px;border:1px solid var(--light-grey);background:var(--white);color:var(--black);outline:none}
+  .lp-field input:focus,.lp-field select:focus{border-color:var(--blue)}
+  @media(max-width:700px){.lp-grid{grid-template-columns:1fr}}
+
+  /* ── BROKER PORTAL ── */
+  .broker-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:36px}
+  .broker-stat{background:var(--charcoal);padding:24px;border-top:2px solid transparent}
+  .broker-stat:nth-child(1){border-top-color:var(--blue-light)}
+  .broker-stat:nth-child(2){border-top-color:var(--amber)}
+  .broker-stat:nth-child(3){border-top-color:var(--green)}
+  .broker-stat:nth-child(4){border-top-color:var(--blue)}
+  .broker-stat .bs-num{font-family:'Cormorant Garant',serif;font-size:2.1rem;font-weight:600;color:var(--white);line-height:1;margin-bottom:4px}
+  .broker-stat .bs-lbl{font-size:0.62rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+  .broker-pipeline{margin-top:0}
+  .bp-stage{margin-bottom:3px}
+  .bp-stage-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 22px;background:var(--charcoal);cursor:pointer;user-select:none;transition:background 0.15s}
+  .bp-stage-hdr:hover{background:#252535}
+  .bp-stage-name{font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7)}
+  .bp-stage-count{font-size:0.72rem;color:rgba(255,255,255,0.35)}
+  .bp-deals{background:var(--offwhite);display:none}
+  .bp-stage.open .bp-deals{display:block}
+  .bp-deal-row{display:flex;align-items:flex-start;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--light-grey);gap:14px}
+  .bp-deal-row:last-child{border-bottom:none}
+  .bp-deal-name{font-size:0.88rem;font-weight:600;color:var(--black)}
+  .bp-deal-meta{font-size:0.74rem;color:var(--mid-grey);margin-top:2px;line-height:1.5}
+  .bp-deal-amt{font-size:0.84rem;font-weight:600;color:var(--blue);white-space:nowrap}
+  .broker-submit-box{background:var(--white);padding:38px;max-width:740px;border:1px solid var(--light-grey)}
+  .broker-submit-box h3{font-family:'Cormorant Garant',serif;font-size:1.55rem;font-weight:400;margin-bottom:8px;color:var(--black)}
+  .broker-submit-box .bs-intro{font-size:0.85rem;color:var(--mid-grey);margin-bottom:28px;line-height:1.7}
+  @media(max-width:900px){.broker-stats{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
@@ -645,6 +756,41 @@
   </div>
 </div>
 
+<!-- ══════ ROLE SELECTION (new users, step 1 of 3) ══════ -->
+<div id="page-role" class="page">
+  <div class="role-page">
+    <div class="hero-glow"></div>
+    <div style="max-width:780px;width:100%">
+      <div class="ob-label" style="color:rgba(255,255,255,0.3)">Step 1 of 3 — Role</div>
+      <div class="ob-progress" style="margin-bottom:22px">
+        <div class="ob-step active"></div><div class="ob-step"></div><div class="ob-step"></div>
+      </div>
+      <h2 style="font-family:'Cormorant Garant',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;color:var(--white);margin-bottom:6px">I am a <em style="color:var(--blue-light);font-style:italic">...</em></h2>
+      <p style="font-size:0.8rem;color:rgba(255,255,255,0.32);margin-bottom:2px">Select your role to access the tools built for how you operate in private funding.</p>
+      <div class="role-card-grid">
+        <button class="role-card" data-role="borrower" onclick="submitRole(this)">
+          <span class="role-icon">🏗️</span>
+          <div class="role-title">Borrower</div>
+          <div class="role-desc">You have a project that needs capital. Upload your deal documents, track your raise through each phase, and communicate with the Steel &amp; Aire team.</div>
+          <div class="role-tags"><span class="role-tag">Document Vault</span><span class="role-tag">Phase Tracker</span><span class="role-tag">Deal Checklist</span></div>
+        </button>
+        <button class="role-card" data-role="lender" onclick="submitRole(this)">
+          <span class="role-icon">🏦</span>
+          <div class="role-title">Lender</div>
+          <div class="role-desc">You deploy capital into real assets. Review curated deal flow that matches your criteria, save your lending profile, and signal interest directly.</div>
+          <div class="role-tags"><span class="role-tag">Curated Deal Flow</span><span class="role-tag">Lending Criteria</span><span class="role-tag">Interest Signals</span></div>
+        </button>
+        <button class="role-card" data-role="broker" onclick="submitRole(this)">
+          <span class="role-icon">🤝</span>
+          <div class="role-title">Broker</div>
+          <div class="role-desc">You bring deals to the platform. Submit your clients' deals, track their progress through the capital raise pipeline, and manage your commission expectations.</div>
+          <div class="role-tags"><span class="role-tag">Deal Submission</span><span class="role-tag">Pipeline View</span><span class="role-tag">Commission Tracker</span></div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══════ ADMIN DASHBOARD ══════ -->
 <div id="page-dash" class="page">
   <div class="tab-page-hero">
@@ -674,6 +820,125 @@
     <span class="section-tag">Your Deal Rooms</span>
     <h2>Active <em>raises.</em></h2>
     <div id="borrower-deals"></div>
+  </div>
+</div>
+
+<!-- ══════ LENDER HOME ══════ -->
+<div id="page-lender" class="page">
+  <div class="tab-page-hero" style="background:var(--black)">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">Lender Portal</div>
+    <h1>Curated <em>deal flow.</em></h1>
+    <p class="hero-sub">Deals below are pre-screened by the Steel &amp; Aire team. Set your lending criteria once and we match accordingly.</p>
+    <div class="lf-bar" style="margin-top:28px">
+      <button class="lf-btn active" data-t="" onclick="lenderFilter(this,'')">All Types</button>
+      <button class="lf-btn" data-t="Multifamily" onclick="lenderFilter(this,'Multifamily')">Multifamily</button>
+      <button class="lf-btn" data-t="Industrial" onclick="lenderFilter(this,'Industrial')">Industrial</button>
+      <button class="lf-btn" data-t="Mixed-Use" onclick="lenderFilter(this,'Mixed-Use')">Mixed-Use</button>
+    </div>
+    <div class="lender-grid" id="lender-deal-grid" style="margin-top:18px"></div>
+  </div>
+  <div class="tab-section">
+    <span class="section-tag">Your Lending Profile</span>
+    <h2>Set your <em>criteria.</em></h2>
+    <p style="font-size:0.88rem;color:var(--mid-grey);max-width:580px;line-height:1.7;margin-bottom:30px">These preferences are used to match you to eligible deals. Update anytime — we review these when new deal flow arrives.</p>
+    <div class="lender-profile-box">
+      <div class="lp-grid">
+        <div class="lp-field"><label>Preferred Asset Types</label><input id="lp-types" placeholder="e.g. Multifamily, Industrial"/></div>
+        <div class="lp-field"><label>Loan Size Range</label><input id="lp-size" placeholder="e.g. $2M – $50M"/></div>
+        <div class="lp-field"><label>Max LTV</label><input id="lp-ltv" placeholder="e.g. 75%"/></div>
+        <div class="lp-field"><label>Preferred Deal Structure</label>
+          <select id="lp-structure">
+            <option value="">Any</option>
+            <option>Bridge / Short-Term</option>
+            <option>Permanent / Agency</option>
+            <option>Construction</option>
+            <option>DSCR / Stabilized</option>
+            <option>Preferred Equity</option>
+            <option>Mezzanine</option>
+          </select>
+        </div>
+        <div class="lp-field"><label>Target Geography</label><input id="lp-geo" placeholder="e.g. Southeast, Texas, Nationwide"/></div>
+        <div class="lp-field"><label>Min. DSCR</label><input id="lp-dscr" placeholder="e.g. 1.20x"/></div>
+      </div>
+      <div style="margin-top:22px"><button class="btn-primary" onclick="saveLenderProfile()">Save Criteria</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ BROKER HOME ══════ -->
+<div id="page-broker" class="page">
+  <div class="tab-page-hero" style="background:var(--black)">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">Broker Portal</div>
+    <h1>Your <em>pipeline.</em></h1>
+    <div class="broker-stats" id="broker-stats"></div>
+  </div>
+  <div class="tab-section">
+    <span class="section-tag">Submitted Deals</span>
+    <h2>Active <em>pipeline.</em></h2>
+    <p style="font-size:0.88rem;color:var(--mid-grey);margin-bottom:30px;max-width:560px;line-height:1.7">All deals you've submitted are tracked here by phase. Click any phase to expand the deals within it.</p>
+    <div class="broker-pipeline" id="broker-pipeline"></div>
+  </div>
+</div>
+
+<!-- ══════ BROKER SUBMIT DEAL ══════ -->
+<div id="page-broker-submit" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">Submit a Deal</div>
+    <h1>Add a deal to <em>your pipeline.</em></h1>
+    <p class="hero-sub">Fill out the details below to submit your client's deal. Steel &amp; Aire will review it and set up a full deal room — you can track everything from your pipeline view.</p>
+  </div>
+  <div class="tab-section">
+    <div class="broker-submit-box">
+      <h3>Deal <em>Submission</em></h3>
+      <p class="bs-intro">All fields marked * are required. The more detail you provide, the faster we can evaluate and advance the deal.</p>
+      <div class="form-grid">
+        <div class="form-field"><label>Deal / Project Name *</label><input id="bs-name" placeholder="e.g. Riverside Multifamily — Austin TX"/></div>
+        <div class="form-field"><label>Asset Type *</label>
+          <select id="bs-asset">
+            <option value="">Select type...</option>
+            <option>Multifamily</option><option>Industrial</option><option>Mixed-Use</option>
+            <option>Data Center</option><option>Hospitality</option><option>Land / Development</option>
+            <option>Office</option><option>Retail</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-field"><label>Raise / Loan Amount *</label><input id="bs-raise" placeholder="e.g. $4,500,000"/></div>
+        <div class="form-field"><label>Loan Type</label>
+          <select id="bs-loan">
+            <option value="">Select...</option>
+            <option>Bridge</option><option>Construction</option><option>Permanent / DSCR</option>
+            <option>Hard Money</option><option>Preferred Equity</option><option>Mezzanine</option>
+          </select>
+        </div>
+        <div class="form-field"><label>Borrower / Sponsor Name *</label><input id="bs-sponsor" placeholder="Full legal name or entity"/></div>
+        <div class="form-field"><label>Borrower Email</label><input type="email" id="bs-borrower-email" placeholder="borrower@email.com"/></div>
+        <div class="form-field"><label>Property Address</label><input id="bs-address" placeholder="123 Main St, Austin TX 78701"/></div>
+        <div class="form-field"><label>Number of Units / SF</label><input id="bs-units" placeholder="e.g. 48 units or 82,000 SF"/></div>
+        <div class="form-field full"><label>Deal Summary</label><textarea id="bs-notes" rows="4" placeholder="Project description, sponsor track record, why this is a strong deal..."></textarea></div>
+        <div class="form-field"><label>Your Commission Expectation</label><input id="bs-commission" placeholder="e.g. 1.0% of loan amount"/></div>
+        <div class="form-field"><label>Expected Close Timeline</label><input id="bs-timeline" placeholder="e.g. 60–90 days"/></div>
+      </div>
+      <div class="auth-msg" id="bs-msg" style="margin-top:16px"></div>
+      <div style="margin-top:26px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn-primary" onclick="submitBrokerDeal()">Submit Deal &rarr;</button>
+        <button class="btn-quiet" onclick="route('broker')">&larr; Back to Pipeline</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ REVIEW QUEUE (admin) ══════ -->
+<div id="page-review-queue" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">Admin Review Queue</div>
+    <h1>All pending <em>documents.</em></h1>
+    <p class="hero-sub">Every uploaded document across every deal room — approve or request revisions without opening individual deal rooms.</p>
+  </div>
+  <div class="tab-section">
+    <div id="rq-table-wrap"></div>
   </div>
 </div>
 
@@ -1503,7 +1768,9 @@ let deals = [], borrowers = [];
 let currentDealId = null, filterCurrentPhase = true;
 let currentMessages = [], currentActivity = [];
 let authMode = 'signin', pendingUpload = null, booted = false, recovering = false;
-const isAdmin = () => profile && profile.role === 'admin';
+const isAdmin  = () => profile && profile.role === 'admin';
+const isLender = () => profile && profile.role === 'lender';
+const isBroker = () => profile && profile.role === 'broker';
 
 /* ───────── PASSWORD RESET ───────── */
 async function forgotPassword(){
@@ -1655,7 +1922,12 @@ async function boot(user){
   }finally{
     veil(false);
     if(!isAdmin() && profile && !profile.phone && !profile.position){
-      showOnly('page-onboard2');
+      if(localStorage.getItem('sa_needs_role')==='1'){
+        localStorage.removeItem('sa_needs_role');
+        showOnly('page-role');
+      } else {
+        showOnly('page-onboard2');
+      }
     } else {
       route('home');
     }
@@ -1695,6 +1967,7 @@ async function submitAuth(){
       const full_name = document.getElementById('a-name').value.trim();
       const {data, error} = await supa.auth.signUp({email, password, options:{data:{full_name}}});
       if(error) throw error;
+      localStorage.setItem('sa_needs_role', '1');
       if(!data.session){ authMsg('Account created — check your email to confirm, then sign in.', true); setAuthMode('signin'); }
     } else {
       const {error} = await supa.auth.signInWithPassword({email, password});
@@ -1724,11 +1997,14 @@ async function refresh(toastIt = true){
 function rerenderCurrent(){
   const active = document.querySelector('.page.active');
   if(!active) return;
-  if(active.id==='page-dash') renderDash();
-  if(active.id==='page-borrower') renderBorrowerHome();
-  if(active.id==='page-detail') renderDetail();
-  if(active.id==='page-onboarding') obRefreshBoard();
-  if(active.id==='page-tracker') trkRenderDashboard();
+  if(active.id==='page-dash')          renderDash();
+  if(active.id==='page-borrower')      renderBorrowerHome();
+  if(active.id==='page-detail')        renderDetail();
+  if(active.id==='page-onboarding')    obRefreshBoard();
+  if(active.id==='page-tracker')       trkRenderDashboard();
+  if(active.id==='page-review-queue')  renderReviewQueue();
+  if(active.id==='page-lender')        renderLenderHome();
+  if(active.id==='page-broker')        renderBrokerHome();
 }
 
 /* ───────── ROUTING / NAV ───────── */
@@ -1739,13 +2015,24 @@ function showOnly(id){
 }
 function route(where){
   if(!profile){ showOnly(configured?'page-auth':'page-config'); return; }
-  if(where==='home') showOnly(isAdmin() ? 'page-dash' : 'page-borrower');
-  if(where==='detail') showOnly('page-detail');
-  if(where==='onboarding') showOnly('page-onboarding');
-  if(where==='tracker')   { showOnly('page-tracker'); trkRenderDashboard(); }
-  if(where==='videos') showOnly('page-videos');
-  if(where==='faq') showOnly('page-faq');
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.r===where || (where!=='detail'&&where!=='onboarding'&&where!=='tracker'&&b.dataset.r==='home')));
+  if(where==='home'){
+    if(isAdmin())       showOnly('page-dash');
+    else if(isLender()) showOnly('page-lender');
+    else if(isBroker()) showOnly('page-broker');
+    else                showOnly('page-borrower');
+  }
+  if(where==='detail')        showOnly('page-detail');
+  if(where==='onboarding')    showOnly('page-onboarding');
+  if(where==='tracker')       { showOnly('page-tracker'); trkRenderDashboard(); }
+  if(where==='videos')        showOnly('page-videos');
+  if(where==='faq')           showOnly('page-faq');
+  if(where==='review-queue')  { showOnly('page-review-queue'); renderReviewQueue(); }
+  if(where==='lender')        { showOnly('page-lender'); renderLenderHome(); }
+  if(where==='broker')        { showOnly('page-broker'); renderBrokerHome(); }
+  if(where==='broker-submit') showOnly('page-broker-submit');
+  const nonHome = ['detail','onboarding','tracker','review-queue','lender','broker','broker-submit'];
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',
+    b.dataset.r===where || (!nonHome.includes(where) && b.dataset.r==='home')));
   rerenderCurrent();
 }
 function renderNav(){
@@ -1753,9 +2040,20 @@ function renderNav(){
   const userEl = document.getElementById('nav-user');
   const btn = document.getElementById('nav-auth-btn');
   if(!profile){ bar.innerHTML=''; userEl.style.display='none'; btn.style.display='none'; return; }
-  bar.innerHTML = isAdmin()
-    ? '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Dashboard</button><button class="tab-btn" data-r="onboarding" onclick="route(\'onboarding\')">CRM</button><button class="tab-btn" data-r="tracker" onclick="route(\'tracker\')">Onboarding Tracker</button>'
-    : '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Your Deals</button><button class="tab-btn" data-r="videos" onclick="route(\'videos\')">Intro Videos</button><button class="tab-btn" data-r="faq" onclick="route(\'faq\')">FAQ</button>';
+  const T = (r,label)=>`<button class="tab-btn" data-r="${r}" onclick="route('${r}')">${label}</button>`;
+  let tabs = '';
+  if(isAdmin()){
+    const n = getPendingDocCount();
+    const badge = n ? `<span class="rq-badge">${n}</span>` : '';
+    tabs = T('home','Dashboard') + T('review-queue','Review Queue'+badge) + T('onboarding','CRM') + T('tracker','Tracker');
+  } else if(isLender()){
+    tabs = T('home','Deal Flow') + T('faq','FAQ');
+  } else if(isBroker()){
+    tabs = T('home','My Pipeline') + T('broker-submit','Submit a Deal') + T('faq','FAQ');
+  } else {
+    tabs = T('home','My Deals') + T('videos','Intro Videos') + T('faq','FAQ');
+  }
+  bar.innerHTML = tabs;
   userEl.innerHTML = esc(profile.full_name || me.email) +
     '<span class="role-badge">' + esc(profile.role) + '</span>';
   userEl.style.display = 'block';
@@ -1861,6 +2159,15 @@ async function createDeal(){
   btn.disabled = false;
 }
 
+async function seedChecklist(dealId){
+  let sort = 0; const rows = [];
+  CHECKLIST_TEMPLATE.forEach(g=>g.items.forEach(it=>rows.push({
+    deal_id:dealId, group_name:g.group, doc_name:it.name, doc_sub:it.sub, phase:it.phase, sort_order:sort++
+  })));
+  const ci = await supa.from('checklist_items').insert(rows);
+  if(ci.error) throw ci.error;
+}
+
 async function deleteDeal(){
   const d = deal(currentDealId); if(!d || !isAdmin()) return;
   if(!confirm('Delete "'+d.name+'", its checklist, and its document records? Files in storage are kept until removed in Supabase.')) return;
@@ -1913,7 +2220,8 @@ function renderDetail(){
     else banner=`<div class="next-action-banner success"><div class="banner-icon">✓</div><div><strong>Phase ${phase+1} documents are complete.</strong> Your team is advancing your raise to the next stage.</div></div>`;
     document.getElementById('dd-banner').innerHTML = banner;
   } else { document.getElementById('dd-banner').innerHTML = ''; }
-  renderChecklist(d);
+  if(admin) renderChecklist(d);
+  else document.getElementById('dd-checklist').innerHTML = renderVault(d);
 }
 
 async function setPhase(i){
@@ -2172,7 +2480,8 @@ async function submitOnboard2(){
   btn.disabled = false;
   if(error){ const m=document.getElementById('ob2-msg'); m.textContent=error.message; m.className='auth-msg err'; return; }
   if(profile){ profile.phone=phone; profile.position=position; profile.company=company; }
-  showOnly('page-onboard3');
+  if(isLender() || isBroker()) route('home');
+  else showOnly('page-onboard3');
 }
 
 async function submitOnboard3(){
@@ -2181,6 +2490,290 @@ async function submitOnboard3(){
   if(selected.length) await supa.from('profiles').update({project_interests: selected.join(', ')}).eq('id', me.id);
   btn.disabled = false;
   route('home');
+}
+
+/* ───────── ROLE SELECTION ───────── */
+async function submitRole(btn){
+  const role = btn.dataset.role;
+  document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('selected'));
+  btn.classList.add('selected');
+  veil(true, 'Saving your role…');
+  await supa.from('profiles').update({role}).eq('id', me.id);
+  if(profile) profile.role = role;
+  veil(false);
+  renderNav();
+  showOnly('page-onboard2');
+}
+
+/* ───────── PENDING DOC COUNT (for review queue badge) ───────── */
+function getPendingDocCount(){
+  let n = 0;
+  deals.forEach(d=>(d.checklist_items||[]).forEach(i=>{
+    if(i.status==='uploaded'||i.status==='review') n++;
+  }));
+  return n;
+}
+
+/* ───────── REVIEW QUEUE (admin) ───────── */
+function renderReviewQueue(){
+  const wrap = document.getElementById('rq-table-wrap');
+  if(!wrap) return;
+  const pending = [];
+  deals.forEach(d=>(d.checklist_items||[]).forEach(i=>{
+    if(i.status==='uploaded'||i.status==='review'){
+      pending.push({d, i, docs: docsForItem(d, i.id)});
+    }
+  }));
+  // Refresh badge in nav
+  document.querySelectorAll('[data-r="review-queue"]').forEach(b=>{
+    const base = 'Review Queue';
+    const n = pending.length;
+    b.innerHTML = n ? base+`<span class="rq-badge">${n}</span>` : base;
+  });
+  if(!pending.length){
+    wrap.innerHTML=`<div class="empty-state"><h4>Queue is clear</h4><p>No documents awaiting review across any deal room. You're all caught up.</p></div>`;
+    return;
+  }
+  const dealCount = [...new Set(pending.map(p=>p.d.id))].length;
+  wrap.innerHTML=`
+    <div class="rq-stats">
+      <div class="rq-stat"><div class="rq-num">${pending.length}</div><div class="rq-lbl">Awaiting Review</div></div>
+      <div class="rq-stat"><div class="rq-num">${dealCount}</div><div class="rq-lbl">Deals with Pending Docs</div></div>
+      <div class="rq-stat"><div class="rq-num">${deals.length}</div><div class="rq-lbl">Total Deal Rooms</div></div>
+    </div>
+    <div class="rq-table-outer">
+      <table class="rq-table">
+        <thead><tr>
+          <th>Document</th><th>Deal</th><th>Borrower</th><th>Phase</th><th>Status</th><th>Uploaded</th><th>Actions</th>
+        </tr></thead>
+        <tbody>${pending.map(({d,i,docs})=>{
+          const latest = docs[docs.length-1];
+          const uploaded = latest ? new Date(latest.created_at).toLocaleDateString() : '—';
+          return `<tr>
+            <td><div class="rq-doc-name">${esc(i.doc_name)}</div><div class="rq-doc-group">${esc(i.group_name)}</div></td>
+            <td><button class="rq-deal-link" onclick="openDeal('${d.id}')">${esc(d.name)}</button></td>
+            <td class="rq-borrower">${esc(d.borrower?(d.borrower.full_name||d.borrower.company||''):'—')}</td>
+            <td><span class="pill phase">${PHASES[d.phase]}</span></td>
+            <td><span class="pill ${i.status}">${STATUS_LABEL[i.status]}</span></td>
+            <td class="rq-date">${uploaded}${latest?`<br><button class="rq-dl-link" onclick="downloadFileGlobal('${latest.id}')">&#8595; Download</button>`:''}
+            </td>
+            <td class="rq-actions">
+              <button class="btn-approve" onclick="approveFromQueue('${i.id}')">&#10003; Approve</button>
+              <button class="btn-revise" onclick="reviseFromQueue('${i.id}')">&#8629; Revise</button>
+            </td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table>
+    </div>`;
+}
+async function approveFromQueue(itemId){
+  await applyStatus(itemId,'approved',null);
+  await refresh(false); renderReviewQueue();
+}
+async function reviseFromQueue(itemId){
+  const note = prompt('What revision is needed?');
+  if(note===null) return;
+  await applyStatus(itemId,'needed', note||'Revision requested');
+  await refresh(false); renderReviewQueue();
+}
+async function downloadFileGlobal(docId){
+  for(const d of deals){
+    const doc = (d.documents||[]).find(x=>x.id===docId);
+    if(doc){
+      const {data} = await supa.storage.from('deal-files').createSignedUrl(doc.storage_path,60);
+      if(data?.signedUrl) window.open(data.signedUrl,'_blank');
+      return;
+    }
+  }
+}
+
+/* ───────── VAULT (borrower deal document view) ───────── */
+function renderVault(d){
+  const phase = d.phase;
+  // Group items by phase, then by group_name
+  const byPhase = {};
+  (d.checklist_items||[]).forEach(it=>{
+    (byPhase[it.phase] = byPhase[it.phase]||{})[it.group_name] = (byPhase[it.phase][it.group_name]||[]);
+    byPhase[it.phase][it.group_name].push(it);
+  });
+  return PHASES.map((pname,pi)=>{
+    const groups = byPhase[pi];
+    const allItems = groups ? Object.values(groups).flat() : [];
+    const approved = allItems.filter(i=>i.status==='approved').length;
+    const pct = allItems.length ? Math.round(approved/allItems.length*100) : 0;
+    const isLocked = pi > phase;
+    const isCurrent = pi === phase;
+    const isOpen = isCurrent && !isLocked;
+    return `<div class="vault-phase${isOpen?' open':''}">
+      <div class="vault-phase-hdr${isCurrent?' current':''}${isLocked?' locked':''}"
+        onclick="${isLocked?'':`toggleVaultPhase(this.parentElement)`}">
+        <div class="vault-phase-num">${pi+1}</div>
+        <div class="vault-phase-name">${esc(pname)}</div>
+        <div class="vault-phase-meta">
+          ${isLocked?`<span style="font-size:0.7rem;color:rgba(255,255,255,0.25)">&#128274; Locked</span>`:`<span class="vault-phase-pct">${approved}/${allItems.length}</span><span class="pill ${pct===100?'approved':isCurrent?'review':'phase'}" style="font-size:0.6rem;padding:3px 8px">${pct}%</span>`}
+        </div>
+        ${isLocked?'':'<span class="vault-phase-arrow">&#9654;</span>'}
+      </div>
+      ${isLocked||!groups?'':`<div class="vault-phase-body">${
+        Object.entries(groups).map(([gname,items])=>{
+          const gDone = items.filter(i=>i.status==='approved').length;
+          return `<div class="vault-group-hdr"><div class="vault-group-name">&#128193; ${esc(gname)}</div><span class="vault-group-count">${gDone}/${items.length} approved</span></div>
+          ${items.map(it=>{
+            const files = docsForItem(d, it.id);
+            return `<div class="vault-item">
+              <div><div class="vault-dot ${it.status}"></div></div>
+              <div>
+                <div class="vault-item-name">${esc(it.doc_name)}</div>
+                <div class="vault-item-sub">${esc(it.doc_sub||'')}</div>
+                ${it.revision_note&&it.status==='needed'?`<div class="vault-revision">&#9888; ${esc(it.revision_note)}</div>`:''}
+                ${files.length?`<div class="vault-item-files">${files.map(f=>`<span class="file-chip">&#128206; <a href="#" onclick="downloadFile('${f.id}');return false">${esc(f.file_name)}</a></span>`).join('')}</div>`:''}
+              </div>
+              <span class="pill ${it.status}">${STATUS_LABEL[it.status]}</span>
+              <div class="vault-actions">
+                ${DOCUMENT_PREVIEWS[it.doc_name]?`<button class="btn-quiet" onclick="showPreview(${JSON.stringify(it.doc_name)})">Template</button>`:''}
+                <button class="btn-quiet" onclick="pickFile('${it.id}')">Upload</button>
+              </div>
+            </div>`;
+          }).join('')}`;
+        }).join('')
+      }</div>`}
+    </div>`;
+  }).join('');
+}
+function toggleVaultPhase(el){ el.classList.toggle('open'); }
+
+/* ───────── LENDER PORTAL ───────── */
+function renderLenderHome(){
+  const grid = document.getElementById('lender-deal-grid');
+  if(!grid) return;
+  const activeBtn = document.querySelector('.lf-btn.active')||document.querySelector('.lf-btn');
+  lenderFilter(activeBtn, '');
+}
+function lenderFilter(btn, type){
+  document.querySelectorAll('.lf-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  const grid = document.getElementById('lender-deal-grid');
+  if(!grid) return;
+  const visible = deals.filter(d=>!type || d.asset_type===type);
+  if(!visible.length){
+    grid.innerHTML=`<div style="grid-column:1/-1;color:rgba(255,255,255,0.35);font-size:0.85rem;padding:20px 0">No deals currently match this filter.</div>`;
+    return;
+  }
+  grid.innerHTML = visible.map(d=>{
+    const s = docStats(d);
+    return `<div class="lender-card">
+      <div class="lender-card-type">${esc(d.asset_type)}</div>
+      <h4>${esc(d.name)}</h4>
+      <div class="lender-card-meta">${esc(d.raise_amount||'Amount not disclosed')} &middot; Phase ${d.phase+1}: ${PHASES[d.phase]}<br>Document completion: ${s.pct}%</div>
+      <div class="lender-indicators">
+        <span class="lender-ind">${PHASES[d.phase]}</span>
+        <span class="lender-ind">${s.pct}% complete</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+function saveLenderProfile(){
+  const data = {
+    types: document.getElementById('lp-types')?.value||'',
+    size:  document.getElementById('lp-size')?.value||'',
+    ltv:   document.getElementById('lp-ltv')?.value||'',
+    structure: document.getElementById('lp-structure')?.value||'',
+    geo:   document.getElementById('lp-geo')?.value||'',
+    dscr:  document.getElementById('lp-dscr')?.value||''
+  };
+  localStorage.setItem('sa_lender_profile', JSON.stringify(data));
+  toast('Lending criteria saved.');
+}
+(function loadLenderProfile(){
+  try{
+    const d = JSON.parse(localStorage.getItem('sa_lender_profile')||'{}');
+    if(d.types) document.getElementById('lp-types')?.setAttribute('value',d.types);
+    if(d.size)  document.getElementById('lp-size')?.setAttribute('value',d.size);
+    if(d.ltv)   document.getElementById('lp-ltv')?.setAttribute('value',d.ltv);
+    if(d.geo)   document.getElementById('lp-geo')?.setAttribute('value',d.geo);
+    if(d.dscr)  document.getElementById('lp-dscr')?.setAttribute('value',d.dscr);
+  }catch(e){}
+})();
+
+/* ───────── BROKER PORTAL ───────── */
+function renderBrokerHome(){
+  const statsEl = document.getElementById('broker-stats');
+  const pipeEl  = document.getElementById('broker-pipeline');
+  if(!statsEl||!pipeEl) return;
+  const myDeals = deals.filter(d=>(d.name||'').startsWith('[Broker]')||
+    (d.borrower && d.borrower.email===me?.email));
+  const byPhase = {};
+  PHASES.forEach((p,i)=>{ byPhase[i]=[]; });
+  myDeals.forEach(d=>{ if(byPhase[d.phase]) byPhase[d.phase].push(d); });
+  statsEl.innerHTML=`
+    <div class="broker-stat"><div class="bs-num">${myDeals.length}</div><div class="bs-lbl">Deals Submitted</div></div>
+    <div class="broker-stat"><div class="bs-num">${myDeals.filter(d=>d.phase<2).length}</div><div class="bs-lbl">In Early Stages</div></div>
+    <div class="broker-stat"><div class="bs-num">${myDeals.filter(d=>d.phase>=3).length}</div><div class="bs-lbl">In Underwriting+</div></div>
+    <div class="broker-stat"><div class="bs-num">${myDeals.filter(d=>d.phase===4).length}</div><div class="bs-lbl">At Closing</div></div>`;
+  if(!myDeals.length){
+    pipeEl.innerHTML=`<div class="empty-state"><h4>No deals yet</h4><p>Submit your first deal using the "Submit a Deal" tab above. Once received, Steel &amp; Aire will set up the deal room and you can track it here.</p><button class="btn-primary" onclick="route('broker-submit')">Submit a Deal &rarr;</button></div>`;
+    return;
+  }
+  pipeEl.innerHTML = PHASES.map((pname,pi)=>{
+    const pdls = byPhase[pi]||[];
+    return `<div class="bp-stage${pdls.length?' open':''}">
+      <div class="bp-stage-hdr" onclick="this.parentElement.classList.toggle('open')">
+        <span class="bp-stage-name">Phase ${pi+1}: ${pname}</span>
+        <span class="bp-stage-count">${pdls.length} deal${pdls.length!==1?'s':''}</span>
+      </div>
+      <div class="bp-deals">${pdls.length?pdls.map(d=>`
+        <div class="bp-deal-row">
+          <div><div class="bp-deal-name">${esc(d.name.replace(/^\[Broker\]\s*/,''))}</div>
+          <div class="bp-deal-meta">${esc(d.asset_type)}${d.borrower?' &middot; '+esc(d.borrower.full_name||d.borrower.company||''):''}</div></div>
+          <div class="bp-deal-amt">${esc(d.raise_amount||'—')}</div>
+        </div>`).join(''):
+        `<div style="padding:16px 22px;font-size:0.82rem;color:var(--mid-grey);font-style:italic">No deals in this phase.</div>`
+      }</div>
+    </div>`;
+  }).join('');
+}
+async function submitBrokerDeal(){
+  const name    = document.getElementById('bs-name')?.value.trim();
+  const asset   = document.getElementById('bs-asset')?.value;
+  const raise   = document.getElementById('bs-raise')?.value.trim();
+  const sponsor = document.getElementById('bs-sponsor')?.value.trim();
+  const msg = document.getElementById('bs-msg');
+  if(!name||!asset||!raise||!sponsor){
+    msg.textContent='Please fill in all required fields (*).'; msg.className='auth-msg err'; return;
+  }
+  const loan    = document.getElementById('bs-loan')?.value||'';
+  const address = document.getElementById('bs-address')?.value.trim()||'';
+  const units   = document.getElementById('bs-units')?.value.trim()||'';
+  const notes   = document.getElementById('bs-notes')?.value.trim()||'';
+  const commission = document.getElementById('bs-commission')?.value.trim()||'';
+  const timeline   = document.getElementById('bs-timeline')?.value.trim()||'';
+  const borrowerEmail = document.getElementById('bs-borrower-email')?.value.trim()||'';
+  const dealName = `[Broker] ${name}`;
+  const privateNotes = [
+    `Submitted by broker: ${profile.full_name||me.email}`,
+    `Sponsor: ${sponsor}`,
+    borrowerEmail?`Borrower email: ${borrowerEmail}`:'',
+    loan?`Loan type: ${loan}`:'',
+    address?`Address: ${address}`:'',
+    units?`Units/SF: ${units}`:'',
+    notes?`Deal summary: ${notes}`:'',
+    commission?`Commission expectation: ${commission}`:'',
+    timeline?`Timeline: ${timeline}`:''
+  ].filter(Boolean).join('\n');
+  msg.textContent='Submitting…'; msg.className='auth-msg ok'; msg.style.display='block';
+  const {data:d, error} = await supa.from('deals').insert({
+    name: dealName, asset_type: asset, raise_amount: raise,
+    borrower_id: null
+  }).select().single();
+  if(error){ msg.textContent=error.message; msg.className='auth-msg err'; return; }
+  await supa.from('deal_private').upsert({deal_id:d.id, notes:privateNotes});
+  await seedChecklist(d.id);
+  await logActivity(d.id, `Deal submitted by broker ${profile.full_name||me.email}`);
+  await refresh(false);
+  msg.textContent='Deal submitted! You can track it from your pipeline.'; msg.className='auth-msg ok';
+  ['bs-name','bs-raise','bs-sponsor','bs-borrower-email','bs-address','bs-units','bs-notes','bs-commission','bs-timeline']
+    .forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  setTimeout(()=>route('broker'),2000);
 }
 
 /* ───────── DOCUMENT PREVIEWS ───────── */
