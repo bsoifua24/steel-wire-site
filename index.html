@@ -435,31 +435,44 @@
     @media(max-width:860px){#inquiry-layout{grid-template-columns:1fr!important}}
     @media(max-width:860px){#inquiry-layout>div:last-child{padding-top:0!important}}
 
-    /* ── CAPITAL PARTNERS SLIDESHOW (Partners page) ── */
-    .cap-slideshow{position:relative;background:var(--black)}
-    .cap-slides{position:relative;height:74vh;min-height:500px;overflow:hidden}
-    .cap-slide{position:absolute;inset:0;opacity:0;transition:opacity 0.75s ease;pointer-events:none}
-    .cap-slide.active{opacity:1;pointer-events:auto}
-    .cap-slide>img{width:100%;height:100%;object-fit:cover}
-    .cap-slide-ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,7,18,0.92) 0%,rgba(4,7,18,0.65) 45%,rgba(4,7,18,0.15) 100%)}
-    .cap-slide-body{position:absolute;left:10%;top:50%;transform:translateY(-50%);max-width:560px;z-index:2}
-    .cap-slide-body h2{font-family:'Cormorant Garant',serif;font-size:clamp(2.4rem,4.5vw,4rem);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:16px}
-    .cap-slide-body h2 em{color:var(--blue-light);font-style:italic}
-    .cap-slide-body p{font-size:0.9rem;color:rgba(255,255,255,0.5);line-height:1.8;max-width:440px;margin-bottom:28px}
-    .cap-slide-tag{display:inline-flex;align-items:center;gap:10px;font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue-light);border:1px solid rgba(90,138,255,0.3);padding:9px 18px}
-    .cap-tabs{display:grid;grid-template-columns:repeat(6,1fr);background:rgba(4,7,18,0.98);border-top:1px solid rgba(255,255,255,0.06)}
-    .cap-tab{position:relative;padding:18px 22px;border:none;background:transparent;color:rgba(255,255,255,0.28);cursor:pointer;text-align:left;border-right:1px solid rgba(255,255,255,0.05);transition:color 0.2s,background 0.2s;overflow:hidden}
-    .cap-tab:last-child{border-right:none}
-    .cap-tab:hover{color:rgba(255,255,255,0.65)}
-    .cap-tab.active{color:var(--white);background:rgba(26,61,181,0.1)}
-    .cap-tab-num{font-size:0.52rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(90,138,255,0.5);margin-bottom:5px;transition:color 0.2s}
-    .cap-tab.active .cap-tab-num{color:var(--blue-light)}
-    .cap-tab-name{font-size:0.71rem;font-weight:600;line-height:1.35}
-    .cap-tab-prog{position:absolute;bottom:0;left:0;height:2px;background:var(--blue-light);width:0}
-    @media(max-width:900px){.cap-tabs{grid-template-columns:repeat(3,1fr)}.cap-slides{height:60vh}}
-    @media(max-width:540px){.cap-tabs{grid-template-columns:repeat(2,1fr)}.cap-slides{height:55vh}}
-    @media(max-width:900px){.cap-slide-body{left:6%}}
-    @media(max-width:540px){.cap-slide-body{left:5%;right:5%}}
+    /* ── CAPITAL PARTNERS ACCORDION (Partners page) ── */
+    .cap-accordion{display:flex;height:78vh;min-height:520px;background:var(--black);overflow:hidden}
+    .cap-panel{flex:1;position:relative;overflow:hidden;cursor:pointer;transition:flex 0.65s cubic-bezier(0.4,0,0.2,1)}
+    .cap-panel.active{flex:7}
+    .cap-panel-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(45%) brightness(0.65);transition:filter 0.65s,transform 0.65s}
+    .cap-panel.active .cap-panel-img{filter:grayscale(0%) brightness(0.78);transform:scale(1.04)}
+    .cap-panel-ov{position:absolute;inset:0;background:rgba(4,7,18,0.55);transition:background 0.55s}
+    .cap-panel.active .cap-panel-ov{background:linear-gradient(100deg,rgba(4,7,18,0.92) 0%,rgba(4,7,18,0.6) 48%,rgba(4,7,18,0.12) 100%)}
+    .cap-panel-top{position:absolute;top:0;left:0;right:0;height:2px;background:rgba(90,138,255,0.12);z-index:4;transition:background 0.4s,box-shadow 0.4s}
+    .cap-panel.active .cap-panel-top{background:var(--blue-light);box-shadow:0 0 14px rgba(90,138,255,0.45)}
+    /* Collapsed label – vertical rotated text */
+    .cap-panel-stripe{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px 6px;transition:opacity 0.22s}
+    .cap-panel.active .cap-panel-stripe{opacity:0;pointer-events:none}
+    .cap-panel-snum{font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(90,138,255,0.55)}
+    .cap-panel-scat{writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font-size:0.68rem;font-weight:600;letter-spacing:0.08em;color:rgba(255,255,255,0.5);white-space:nowrap;line-height:1}
+    /* Expanded content */
+    .cap-panel-body{position:absolute;left:52px;bottom:68px;max-width:480px;z-index:3;opacity:0;transform:translateY(22px);transition:opacity 0.38s 0.26s,transform 0.38s 0.26s;pointer-events:none}
+    .cap-panel.active .cap-panel-body{opacity:1;transform:translateY(0);pointer-events:auto}
+    .cap-panel-body .cp-eyebrow{font-size:0.6rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue-light);margin-bottom:16px;display:block}
+    .cap-panel-body h2{font-family:'Cormorant Garant',serif;font-size:clamp(2rem,3.2vw,3.4rem);font-weight:300;color:#fff;line-height:1.1;margin-bottom:14px}
+    .cap-panel-body h2 em{color:var(--blue-light);font-style:italic}
+    .cap-panel-body p{font-size:0.86rem;color:rgba(255,255,255,0.46);line-height:1.82;max-width:400px;margin-bottom:26px}
+    .cap-panel-rule{width:28px;height:1px;background:var(--blue-light);opacity:0.6;margin-bottom:26px}
+    .cap-tag{display:inline-flex;align-items:center;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue-light);border:1px solid rgba(90,138,255,0.32);padding:8px 16px}
+    /* Large watermark number on expanded panel */
+    .cap-panel-wm{position:absolute;right:40px;top:50%;transform:translateY(-56%);font-family:'Cormorant Garant',serif;font-size:clamp(6rem,10vw,11rem);font-weight:700;color:rgba(90,138,255,0.05);line-height:1;z-index:2;pointer-events:none;opacity:0;transition:opacity 0.5s 0.2s}
+    .cap-panel.active .cap-panel-wm{opacity:1}
+    /* Mobile: collapse to vertical stack */
+    @media(max-width:860px){
+      .cap-accordion{flex-direction:column;height:auto}
+      .cap-panel{flex:none;height:72px;transition:height 0.55s cubic-bezier(0.4,0,0.2,1)}
+      .cap-panel.active{height:430px}
+      .cap-panel-stripe{flex-direction:row;justify-content:flex-start;padding:0 24px;gap:14px;align-items:center}
+      .cap-panel-scat{writing-mode:horizontal-tb;transform:none;font-size:0.75rem}
+      .cap-panel-body{left:28px;bottom:40px;max-width:85%}
+      .cap-panel-body h2{font-size:1.9rem}
+      .cap-panel-wm{display:none}
+    }
     /* synopsis */
     .synopsis-block{
       max-width:820px;margin:0 auto;
@@ -1137,117 +1150,124 @@
     </div>
   </div>
 
-  <!-- CAPITAL NETWORK SLIDESHOW -->
-  <div class="cap-slideshow" id="cap-slideshow">
-    <div class="cap-slides">
+  <!-- CAPITAL NETWORK ACCORDION -->
+  <div class="cap-accordion" id="cap-accordion">
 
-      <!-- Slide 1: Multifamily Debt Funds -->
-      <div class="cap-slide active">
-        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
-        <div class="cap-slide-ov"></div>
-        <div class="cap-slide-body">
-          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Debt Capital · Institutional</p>
-          <h2>Multifamily<br><em>Debt Funds</em></h2>
-          <p>Institutional funds specializing in multifamily bridge, DSCR, and permanent debt — active across the US and select international markets.</p>
-          <span class="cap-slide-tag">$100M+ deal capacity</span>
-        </div>
+    <!-- Panel 1: Multifamily Debt Funds -->
+    <div class="cap-panel active">
+      <img class="cap-panel-img" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+      <div class="cap-panel-ov"></div>
+      <div class="cap-panel-top"></div>
+      <div class="cap-panel-wm">01</div>
+      <div class="cap-panel-stripe">
+        <div class="cap-panel-snum">01</div>
+        <div class="cap-panel-scat">Multifamily Debt</div>
       </div>
-
-      <!-- Slide 2: Hard Money & Bridge -->
-      <div class="cap-slide">
-        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
-        <div class="cap-slide-ov"></div>
-        <div class="cap-slide-body">
-          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Private Credit · Speed</p>
-          <h2>Hard Money<br><em>&amp; Bridge</em></h2>
-          <p>Asset-backed lenders who move in days, not weeks — ideal for time-sensitive acquisitions, renovations, and construction starts when speed is the deal.</p>
-          <span class="cap-slide-tag">72-hour close possible</span>
-        </div>
+      <div class="cap-panel-body">
+        <span class="cp-eyebrow">Debt Capital · Institutional</span>
+        <h2>Multifamily<br><em>Debt Funds</em></h2>
+        <div class="cap-panel-rule"></div>
+        <p>Institutional funds specializing in multifamily bridge, DSCR, and permanent debt — active across the US and select international markets.</p>
+        <span class="cap-tag">$100M+ deal capacity</span>
       </div>
-
-      <!-- Slide 3: Family Offices -->
-      <div class="cap-slide">
-        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
-        <div class="cap-slide-ov"></div>
-        <div class="cap-slide-body">
-          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Ultra-High Net Worth · Direct</p>
-          <h2>Family<br><em>Offices</em></h2>
-          <p>Multi-generational wealth vehicles seeking direct lending and equity co-investment. We match family office mandates to deals that fit their return profile and timeline.</p>
-          <span class="cap-slide-tag">$50M+ typical mandate</span>
-        </div>
-      </div>
-
-      <!-- Slide 4: Development Finance Institutions -->
-      <div class="cap-slide">
-        <img src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
-        <div class="cap-slide-ov"></div>
-        <div class="cap-slide-body">
-          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Sovereign · Government-Backed</p>
-          <h2>Development Finance<br><em>Institutions</em></h2>
-          <p>Sovereign wealth vehicles and DFIs engaged in energy, data infrastructure, and community development across our international territories.</p>
-          <span class="cap-slide-tag">5 sovereign territories</span>
-        </div>
-      </div>
-
-      <!-- Slide 5: Tokenized & On-Chain Credit -->
-      <div class="cap-slide">
-        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
-        <div class="cap-slide-ov"></div>
-        <div class="cap-slide-body">
-          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Digital Finance · Frontier</p>
-          <h2>Tokenized &amp;<br><em>On-Chain Credit</em></h2>
-          <p>Emerging credit facilities secured by real-world assets on-chain — aligned with our tokenized fund strategy and the next generation of capital markets.</p>
-          <span class="cap-slide-tag">24/7 global liquidity</span>
-        </div>
-      </div>
-
-      <!-- Slide 6: International Capital -->
-      <div class="cap-slide">
-        <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
-        <div class="cap-slide-ov"></div>
-        <div class="cap-slide-body">
-          <p class="cin-eyebrow" style="color:var(--blue-light);margin-bottom:18px">Cross-Border · Global</p>
-          <h2>International<br><em>Capital</em></h2>
-          <p>Partners active in Latin America and the Pacific who understand sovereign risk, cross-border structuring, and government-backed project finance.</p>
-          <span class="cap-slide-tag">6 territories · 3 continents</span>
-        </div>
-      </div>
-
-    </div><!-- /cap-slides -->
-
-    <div class="cap-tabs">
-      <button class="cap-tab active" data-cap="0">
-        <div class="cap-tab-num">01</div>
-        <div class="cap-tab-name">Multifamily Debt</div>
-        <div class="cap-tab-prog"></div>
-      </button>
-      <button class="cap-tab" data-cap="1">
-        <div class="cap-tab-num">02</div>
-        <div class="cap-tab-name">Hard Money &amp; Bridge</div>
-        <div class="cap-tab-prog"></div>
-      </button>
-      <button class="cap-tab" data-cap="2">
-        <div class="cap-tab-num">03</div>
-        <div class="cap-tab-name">Family Offices</div>
-        <div class="cap-tab-prog"></div>
-      </button>
-      <button class="cap-tab" data-cap="3">
-        <div class="cap-tab-num">04</div>
-        <div class="cap-tab-name">Dev Finance</div>
-        <div class="cap-tab-prog"></div>
-      </button>
-      <button class="cap-tab" data-cap="4">
-        <div class="cap-tab-num">05</div>
-        <div class="cap-tab-name">Tokenized Credit</div>
-        <div class="cap-tab-prog"></div>
-      </button>
-      <button class="cap-tab" data-cap="5">
-        <div class="cap-tab-num">06</div>
-        <div class="cap-tab-name">International Capital</div>
-        <div class="cap-tab-prog"></div>
-      </button>
     </div>
-  </div><!-- /cap-slideshow -->
+
+    <!-- Panel 2: Hard Money & Bridge -->
+    <div class="cap-panel">
+      <img class="cap-panel-img" src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+      <div class="cap-panel-ov"></div>
+      <div class="cap-panel-top"></div>
+      <div class="cap-panel-wm">02</div>
+      <div class="cap-panel-stripe">
+        <div class="cap-panel-snum">02</div>
+        <div class="cap-panel-scat">Hard Money &amp; Bridge</div>
+      </div>
+      <div class="cap-panel-body">
+        <span class="cp-eyebrow">Private Credit · Speed</span>
+        <h2>Hard Money<br><em>&amp; Bridge</em></h2>
+        <div class="cap-panel-rule"></div>
+        <p>Asset-backed lenders who close in days — not weeks. Ideal for time-sensitive acquisitions, renovations, and construction starts when speed is the deal.</p>
+        <span class="cap-tag">72-hour close possible</span>
+      </div>
+    </div>
+
+    <!-- Panel 3: Family Offices -->
+    <div class="cap-panel">
+      <img class="cap-panel-img" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+      <div class="cap-panel-ov"></div>
+      <div class="cap-panel-top"></div>
+      <div class="cap-panel-wm">03</div>
+      <div class="cap-panel-stripe">
+        <div class="cap-panel-snum">03</div>
+        <div class="cap-panel-scat">Family Offices</div>
+      </div>
+      <div class="cap-panel-body">
+        <span class="cp-eyebrow">Ultra-High Net Worth · Direct</span>
+        <h2>Family<br><em>Offices</em></h2>
+        <div class="cap-panel-rule"></div>
+        <p>Multi-generational wealth vehicles seeking direct lending and equity co-investment. We match family office mandates to deals that fit their return profile.</p>
+        <span class="cap-tag">$50M+ typical mandate</span>
+      </div>
+    </div>
+
+    <!-- Panel 4: Development Finance Institutions -->
+    <div class="cap-panel">
+      <img class="cap-panel-img" src="https://images.unsplash.com/photo-1497366754035-f200581374d4?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+      <div class="cap-panel-ov"></div>
+      <div class="cap-panel-top"></div>
+      <div class="cap-panel-wm">04</div>
+      <div class="cap-panel-stripe">
+        <div class="cap-panel-snum">04</div>
+        <div class="cap-panel-scat">Dev Finance</div>
+      </div>
+      <div class="cap-panel-body">
+        <span class="cp-eyebrow">Sovereign · Government-Backed</span>
+        <h2>Development Finance<br><em>Institutions</em></h2>
+        <div class="cap-panel-rule"></div>
+        <p>Sovereign wealth vehicles and DFIs engaged in energy, data infrastructure, and community development across our international territories.</p>
+        <span class="cap-tag">5 sovereign territories</span>
+      </div>
+    </div>
+
+    <!-- Panel 5: Tokenized & On-Chain Credit -->
+    <div class="cap-panel">
+      <img class="cap-panel-img" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+      <div class="cap-panel-ov"></div>
+      <div class="cap-panel-top"></div>
+      <div class="cap-panel-wm">05</div>
+      <div class="cap-panel-stripe">
+        <div class="cap-panel-snum">05</div>
+        <div class="cap-panel-scat">Tokenized Credit</div>
+      </div>
+      <div class="cap-panel-body">
+        <span class="cp-eyebrow">Digital Finance · Frontier</span>
+        <h2>Tokenized &amp;<br><em>On-Chain Credit</em></h2>
+        <div class="cap-panel-rule"></div>
+        <p>Credit facilities secured by real-world assets on-chain — aligned with our tokenized fund strategy and the next generation of capital markets.</p>
+        <span class="cap-tag">24/7 global liquidity</span>
+      </div>
+    </div>
+
+    <!-- Panel 6: International Capital -->
+    <div class="cap-panel">
+      <img class="cap-panel-img" src="https://images.unsplash.com/photo-1524813686514-a57563d77965?w=1920&q=85&auto=format&fit=crop" alt="" loading="lazy">
+      <div class="cap-panel-ov"></div>
+      <div class="cap-panel-top"></div>
+      <div class="cap-panel-wm">06</div>
+      <div class="cap-panel-stripe">
+        <div class="cap-panel-snum">06</div>
+        <div class="cap-panel-scat">International Capital</div>
+      </div>
+      <div class="cap-panel-body">
+        <span class="cp-eyebrow">Cross-Border · Global</span>
+        <h2>International<br><em>Capital</em></h2>
+        <div class="cap-panel-rule"></div>
+        <p>Partners active in Latin America and the Pacific who understand sovereign risk, cross-border structuring, and government-backed project finance.</p>
+        <span class="cap-tag">6 territories · 3 continents</span>
+      </div>
+    </div>
+
+  </div><!-- /cap-accordion -->
 
   <!-- RETURNS CHART -->
   <div class="tab-section" style="background:var(--black-soft)">
@@ -2691,44 +2711,36 @@ async function initGlobe() {
     }
   })();
 
-  // ── CAPITAL PARTNERS SLIDESHOW ──
-  (function initCapSlideshow() {
-    const slides = document.querySelectorAll('#cap-slideshow .cap-slide');
-    const tabs   = document.querySelectorAll('#cap-slideshow .cap-tab');
-    if (!slides.length) return;
-    const DURATION = 5000;
-    let idx = 0, timer;
+  // ── CAPITAL PARTNERS ACCORDION ──
+  (function initCapAccordion() {
+    const accordion = document.getElementById('cap-accordion');
+    if (!accordion) return;
+    const panels = accordion.querySelectorAll('.cap-panel');
+    if (!panels.length) return;
+    const DURATION = 4200;
+    let idx = 0, timer, paused = false;
 
-    function setProgress(tabEl, run) {
-      const prog = tabEl.querySelector('.cap-tab-prog');
-      if (!prog) return;
-      prog.style.transition = 'none';
-      prog.style.width = '0';
-      if (run) {
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          prog.style.transition = 'width ' + DURATION + 'ms linear';
-          prog.style.width = '100%';
-        }));
-      }
+    function activate(n) {
+      panels[idx].classList.remove('active');
+      idx = ((n % panels.length) + panels.length) % panels.length;
+      panels[idx].classList.add('active');
     }
 
-    function goTo(n) {
-      slides[idx].classList.remove('active');
-      tabs[idx].classList.remove('active');
-      setProgress(tabs[idx], false);
-      idx = ((n % slides.length) + slides.length) % slides.length;
-      slides[idx].classList.add('active');
-      tabs[idx].classList.add('active');
-      setProgress(tabs[idx], true);
-    }
-
-    function tick() { goTo(idx + 1); }
+    function tick() { activate(idx + 1); }
     function start() { timer = setInterval(tick, DURATION); }
     function stop()  { clearInterval(timer); }
 
-    goTo(0);
+    panels.forEach((p, i) => {
+      p.addEventListener('mouseenter', () => { stop(); activate(i); paused = true; });
+      p.addEventListener('click',      () => { stop(); activate(i); paused = true; });
+    });
+    accordion.addEventListener('mouseleave', () => {
+      paused = false;
+      start();
+    });
+
+    activate(0);
     start();
-    tabs.forEach((t, i) => t.addEventListener('click', () => { stop(); goTo(i); start(); }));
   })();
 
   function handleInquirySubmit(e) {
