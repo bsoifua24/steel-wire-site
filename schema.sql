@@ -1,10 +1,11 @@
 -- ══════════════════════════════════════════════════
 -- Steel & Aire Soluciones — Supabase Schema
+-- IDEMPOTENT: safe to run multiple times.
 -- Paste this entire file into Supabase SQL Editor
 -- and click Run.
 -- ══════════════════════════════════════════════════
 
--- ── PROFILES ──
+-- ── TABLES ──
 create table if not exists profiles (
   id                uuid references auth.users(id) on delete cascade primary key,
   role              text not null default 'borrower' check (role in ('admin','borrower')),
@@ -17,7 +18,6 @@ create table if not exists profiles (
   created_at        timestamptz default now()
 );
 
--- ── DEALS ──
 create table if not exists deals (
   id            uuid primary key default gen_random_uuid(),
   name          text not null,
@@ -28,7 +28,6 @@ create table if not exists deals (
   created_at    timestamptz default now()
 );
 
--- ── CHECKLIST ITEMS ──
 create table if not exists checklist_items (
   id             uuid primary key default gen_random_uuid(),
   deal_id        uuid references deals(id) on delete cascade not null,
@@ -42,7 +41,6 @@ create table if not exists checklist_items (
   created_at     timestamptz default now()
 );
 
--- ── DOCUMENTS ──
 create table if not exists documents (
   id            uuid primary key default gen_random_uuid(),
   item_id       uuid references checklist_items(id) on delete cascade not null,
@@ -54,14 +52,12 @@ create table if not exists documents (
   created_at    timestamptz default now()
 );
 
--- ── DEAL PRIVATE NOTES (admin only) ──
 create table if not exists deal_private (
   deal_id     uuid references deals(id) on delete cascade primary key,
   notes       text,
   updated_at  timestamptz default now()
 );
 
--- ── DEAL MESSAGES ──
 create table if not exists deal_messages (
   id           uuid primary key default gen_random_uuid(),
   deal_id      uuid references deals(id) on delete cascade not null,
@@ -71,7 +67,6 @@ create table if not exists deal_messages (
   created_at   timestamptz default now()
 );
 
--- ── DEAL ACTIVITY LOG ──
 create table if not exists deal_activity (
   id          uuid primary key default gen_random_uuid(),
   deal_id     uuid references deals(id) on delete cascade not null,
@@ -79,10 +74,6 @@ create table if not exists deal_activity (
   description text not null,
   created_at  timestamptz default now()
 );
-
--- ── CLIENT ONBOARDING TRACKER ──
--- 8-step workflow tracker (used by onboarding.html / localStorage,
--- mirror here if you want Supabase persistence later)
 
 create table if not exists onboarding_tracker_clients (
   id           uuid primary key default gen_random_uuid(),
@@ -113,16 +104,6 @@ create table if not exists onboarding_tracker_comments (
   created_at timestamptz default now()
 );
 
--- RLS (admin only)
-alter table onboarding_tracker_clients  enable row level security;
-alter table onboarding_tracker_steps    enable row level security;
-alter table onboarding_tracker_comments enable row level security;
-
-create policy "admin tracker clients"  on onboarding_tracker_clients  for all using (is_admin());
-create policy "admin tracker steps"    on onboarding_tracker_steps    for all using (is_admin());
-create policy "admin tracker comments" on onboarding_tracker_comments for all using (is_admin());
-
--- ── ONBOARDING CLIENTS (Prospect Tracking / CRM) ──
 create table if not exists onboarding_clients (
   id            uuid primary key default gen_random_uuid(),
   name          text not null,
@@ -136,7 +117,6 @@ create table if not exists onboarding_clients (
   updated_at    timestamptz default now()
 );
 
--- ── ONBOARDING TASKS (Kanban Board) ──
 create table if not exists onboarding_tasks (
   id          uuid primary key default gen_random_uuid(),
   client_id   uuid references onboarding_clients(id) on delete set null,
@@ -153,7 +133,6 @@ create table if not exists onboarding_tasks (
   updated_at  timestamptz default now()
 );
 
--- ── TASK ASSIGNEES ──
 create table if not exists task_assignees (
   id          uuid primary key default gen_random_uuid(),
   task_id     uuid references onboarding_tasks(id) on delete cascade not null,
@@ -162,7 +141,6 @@ create table if not exists task_assignees (
   unique(task_id, user_id)
 );
 
--- ── TASK SUBTASKS ──
 create table if not exists task_subtasks (
   id         uuid primary key default gen_random_uuid(),
   task_id    uuid references onboarding_tasks(id) on delete cascade not null,
@@ -171,7 +149,6 @@ create table if not exists task_subtasks (
   created_at timestamptz default now()
 );
 
--- ── TASK COMMENTS ──
 create table if not exists task_comments (
   id          uuid primary key default gen_random_uuid(),
   task_id     uuid references onboarding_tasks(id) on delete cascade not null,
@@ -181,7 +158,7 @@ create table if not exists task_comments (
   created_at  timestamptz default now()
 );
 
--- ── SAFE COLUMN ADDITIONS (if upgrading an existing DB) ──
+-- ── SAFE COLUMN ADDITIONS ──
 alter table profiles          add column if not exists phone             text;
 alter table profiles          add column if not exists position          text;
 alter table profiles          add column if not exists project_interests text;
@@ -204,25 +181,57 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure handle_new_user();
 
--- ── ROW LEVEL SECURITY ──
-alter table profiles           enable row level security;
-alter table deals              enable row level security;
-alter table checklist_items    enable row level security;
-alter table documents          enable row level security;
-alter table deal_private       enable row level security;
-alter table deal_messages      enable row level security;
-alter table deal_activity      enable row level security;
-alter table onboarding_clients enable row level security;
-alter table onboarding_tasks   enable row level security;
-alter table task_assignees     enable row level security;
-alter table task_subtasks      enable row level security;
-alter table task_comments      enable row level security;
-
--- Helper: is the current user an admin?
+-- ── HELPER FUNCTION ──
 create or replace function is_admin()
 returns boolean language sql security definer as $$
   select exists (select 1 from profiles where id = auth.uid() and role = 'admin')
 $$;
+
+-- ── ROW LEVEL SECURITY ──
+alter table profiles                    enable row level security;
+alter table deals                       enable row level security;
+alter table checklist_items             enable row level security;
+alter table documents                   enable row level security;
+alter table deal_private                enable row level security;
+alter table deal_messages               enable row level security;
+alter table deal_activity               enable row level security;
+alter table onboarding_clients          enable row level security;
+alter table onboarding_tasks            enable row level security;
+alter table task_assignees              enable row level security;
+alter table task_subtasks               enable row level security;
+alter table task_comments               enable row level security;
+alter table onboarding_tracker_clients  enable row level security;
+alter table onboarding_tracker_steps    enable row level security;
+alter table onboarding_tracker_comments enable row level security;
+
+-- ── DROP ALL POLICIES (so re-runs don't error) ──
+drop policy if exists "own profile read"            on profiles;
+drop policy if exists "admin profile read"          on profiles;
+drop policy if exists "own profile update"          on profiles;
+drop policy if exists "admin all deals"             on deals;
+drop policy if exists "borrower own deals"          on deals;
+drop policy if exists "admin all checklist"         on checklist_items;
+drop policy if exists "borrower read checklist"     on checklist_items;
+drop policy if exists "admin all docs"              on documents;
+drop policy if exists "borrower read docs"          on documents;
+drop policy if exists "borrower upload docs"        on documents;
+drop policy if exists "admin private notes"         on deal_private;
+drop policy if exists "admin all messages"          on deal_messages;
+drop policy if exists "borrower read messages"      on deal_messages;
+drop policy if exists "borrower send message"       on deal_messages;
+drop policy if exists "admin all activity"          on deal_activity;
+drop policy if exists "borrower read activity"      on deal_activity;
+drop policy if exists "any user log activity"       on deal_activity;
+drop policy if exists "admin onboarding clients"    on onboarding_clients;
+drop policy if exists "admin onboarding tasks"      on onboarding_tasks;
+drop policy if exists "admin task assignees"        on task_assignees;
+drop policy if exists "admin task subtasks"         on task_subtasks;
+drop policy if exists "admin task comments"         on task_comments;
+drop policy if exists "admin tracker clients"       on onboarding_tracker_clients;
+drop policy if exists "admin tracker steps"         on onboarding_tracker_steps;
+drop policy if exists "admin tracker comments"      on onboarding_tracker_comments;
+
+-- ── CREATE POLICIES ──
 
 -- Profiles
 create policy "own profile read"   on profiles for select using (id = auth.uid());
@@ -234,7 +243,7 @@ create policy "admin all deals"    on deals for all    using (is_admin());
 create policy "borrower own deals" on deals for select using (borrower_id = auth.uid());
 
 -- Checklist items
-create policy "admin all checklist"    on checklist_items for all    using (is_admin());
+create policy "admin all checklist"     on checklist_items for all    using (is_admin());
 create policy "borrower read checklist" on checklist_items for select
   using (exists (select 1 from deals where id = checklist_items.deal_id and borrower_id = auth.uid()));
 
@@ -268,17 +277,26 @@ create policy "any user log activity"  on deal_activity for insert
     or exists (select 1 from deals where id = deal_activity.deal_id and borrower_id = auth.uid())
   );
 
--- Onboarding (admin only)
-create policy "admin onboarding clients"  on onboarding_clients for all using (is_admin());
-create policy "admin onboarding tasks"    on onboarding_tasks   for all using (is_admin());
-create policy "admin task assignees"      on task_assignees      for all using (is_admin());
-create policy "admin task subtasks"       on task_subtasks       for all using (is_admin());
-create policy "admin task comments"       on task_comments       for all using (is_admin());
+-- Onboarding CRM (admin only)
+create policy "admin onboarding clients" on onboarding_clients for all using (is_admin());
+create policy "admin onboarding tasks"   on onboarding_tasks   for all using (is_admin());
+create policy "admin task assignees"     on task_assignees     for all using (is_admin());
+create policy "admin task subtasks"      on task_subtasks      for all using (is_admin());
+create policy "admin task comments"      on task_comments      for all using (is_admin());
+
+-- Onboarding tracker (admin only)
+create policy "admin tracker clients"  on onboarding_tracker_clients  for all using (is_admin());
+create policy "admin tracker steps"    on onboarding_tracker_steps    for all using (is_admin());
+create policy "admin tracker comments" on onboarding_tracker_comments for all using (is_admin());
 
 -- ── STORAGE BUCKET ──
 insert into storage.buckets (id, name, public)
 values ('deal-files', 'deal-files', false)
 on conflict (id) do nothing;
+
+drop policy if exists "admin storage"         on storage.objects;
+drop policy if exists "borrower upload files" on storage.objects;
+drop policy if exists "borrower read files"   on storage.objects;
 
 create policy "admin storage"         on storage.objects for all
   using (bucket_id = 'deal-files' and is_admin());
@@ -289,9 +307,10 @@ create policy "borrower read files"   on storage.objects for select
 
 -- ══════════════════════════════════════════════════
 -- AFTER RUNNING: make your account the admin.
--- Run this separately, replacing the email:
+-- Run this separately in a new SQL Editor tab,
+-- replacing the email with yours:
 --
 -- update profiles set role = 'admin'
---   where id = (select id from auth.users where email = 'your@email.com');
+--   where id = (select id from auth.users where email = 'bsoifua24@gmail.com');
 --
 -- ══════════════════════════════════════════════════
