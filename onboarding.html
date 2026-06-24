@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Client Onboarding — Steel &amp; Aire Soluciones</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --blue:#1A3DB5;--blue-dark:#0D2680;--blue-deep:#091a5e;
+      --blue-mid:#2952cc;--blue-light:#5a8aff;--blue-pale:#dce8ff;
+      --black:#08080f;--black-soft:#111118;--charcoal:#1c1c28;
+      --white:#ffffff;--offwhite:#f5f8ff;--mid-grey:#6b7a99;--light-grey:#e8edf8;
+      --green:#16a34a;--green-pale:#dcfce7;
+      --yellow:#d97706;--yellow-pale:#fef3c7;
+      --red:#dc2626;--red-pale:#fee2e2;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--offwhite);color:var(--black);min-height:100vh}
+
+    /* ── NAV ── */
+    .onb-nav{
+      position:sticky;top:0;z-index:100;
+      background:var(--black);border-bottom:1px solid rgba(26,61,181,0.25);
+      display:flex;justify-content:space-between;align-items:center;
+      padding:0 40px;height:64px;
+    }
+    .onb-nav-brand{text-decoration:none;display:flex;flex-direction:column;gap:1px}
+    .onb-nav-name{font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:600;color:#fff;letter-spacing:0.04em}
+    .onb-nav-name span{color:var(--blue-light)}
+    .onb-nav-sub{font-size:0.58rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--mid-grey)}
+    .onb-nav-right{display:flex;gap:12px;align-items:center}
+    .onb-nav-tag{font-size:0.64rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue-light);border:1px solid rgba(90,138,255,0.3);padding:5px 12px}
+    .btn-logout{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);background:none;border:1px solid rgba(255,255,255,0.1);padding:6px 14px;cursor:pointer;transition:color 0.2s,border-color 0.2s}
+    .btn-logout:hover{color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.25)}
+    .btn-back{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue-light);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;padding:6px 0;transition:color 0.2s}
+    .btn-back:hover{color:#fff}
+    .btn-back::before{content:'←'}
+
+    /* ── GATE ── */
+    #gate{
+      min-height:100vh;background:var(--black);
+      display:flex;align-items:center;justify-content:center;
+      flex-direction:column;gap:0;
+    }
+    .gate-box{width:380px;max-width:calc(100vw - 48px)}
+    .gate-logo{font-family:'Cormorant Garant',serif;font-size:1.6rem;font-weight:600;color:#fff;margin-bottom:6px;letter-spacing:0.04em}
+    .gate-logo span{color:var(--blue-light)}
+    .gate-label{font-size:0.6rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--mid-grey);margin-bottom:40px}
+    .gate-title{font-size:1rem;font-weight:600;color:rgba(255,255,255,0.7);margin-bottom:20px}
+    .gate-input{
+      width:100%;font-family:'Inter',sans-serif;font-size:0.9rem;
+      background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+      color:#fff;padding:13px 16px;outline:none;letter-spacing:0.05em;
+      transition:border-color 0.2s;margin-bottom:12px;
+    }
+    .gate-input:focus{border-color:rgba(90,138,255,0.5)}
+    .gate-btn{
+      width:100%;background:var(--blue);color:#fff;border:none;
+      font-family:'Inter',sans-serif;font-size:0.74rem;font-weight:600;
+      letter-spacing:0.12em;text-transform:uppercase;padding:14px;
+      cursor:pointer;transition:background 0.2s;
+    }
+    .gate-btn:hover{background:var(--blue-mid)}
+    .gate-error{font-size:0.78rem;color:#f87171;margin-top:10px;min-height:20px}
+
+    /* ── MAIN APP ── */
+    #app{display:none;min-height:100vh}
+
+    /* ── DASHBOARD ── */
+    #view-dashboard{padding:40px}
+    .dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:16px}
+    .dash-title{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:400;color:var(--black)}
+    .dash-title em{font-style:italic;color:var(--blue)}
+    .dash-actions{display:flex;gap:10px;align-items:center}
+    .btn-add{
+      background:var(--blue);color:#fff;border:none;
+      font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;
+      letter-spacing:0.1em;text-transform:uppercase;padding:11px 22px;
+      cursor:pointer;transition:background 0.2s;display:flex;align-items:center;gap:7px;
+    }
+    .btn-add:hover{background:var(--blue-mid)}
+    .btn-add::before{content:'+';font-size:1rem;line-height:1}
+    .btn-secondary{
+      background:none;color:var(--mid-grey);border:1px solid var(--light-grey);
+      font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:500;
+      letter-spacing:0.08em;text-transform:uppercase;padding:10px 18px;
+      cursor:pointer;transition:border-color 0.2s,color 0.2s;
+    }
+    .btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+
+    /* Stuck banner */
+    #stuck-banner{
+      background:var(--yellow-pale);border-left:4px solid var(--yellow);
+      padding:12px 18px;margin-bottom:24px;font-size:0.82rem;color:#92400e;
+      display:none;
+    }
+    #stuck-banner strong{font-weight:600}
+
+    /* Stats row */
+    .dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:28px}
+    .stat-box{background:#fff;padding:20px 24px;border-bottom:3px solid transparent}
+    .stat-box.green{border-bottom-color:var(--green)}
+    .stat-box.yellow{border-bottom-color:var(--yellow)}
+    .stat-box.red{border-bottom-color:var(--red)}
+    .stat-box.total{border-bottom-color:var(--blue)}
+    .stat-val{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:600;color:var(--black);line-height:1}
+    .stat-lbl{font-size:0.64rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid-grey);margin-top:4px}
+
+    /* Table */
+    .table-wrap{background:#fff;overflow:auto}
+    table{width:100%;border-collapse:collapse}
+    thead th{
+      font-size:0.63rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+      color:var(--mid-grey);padding:14px 20px;text-align:left;
+      border-bottom:2px solid var(--light-grey);white-space:nowrap;background:#fff;
+    }
+    tbody tr{
+      border-bottom:1px solid var(--light-grey);cursor:pointer;
+      transition:background 0.15s;
+    }
+    tbody tr:hover{background:var(--offwhite)}
+    tbody td{padding:16px 20px;font-size:0.83rem;vertical-align:middle}
+    .td-name{font-weight:600;color:var(--black)}
+    .td-step{color:var(--mid-grey)}
+    .td-step strong{color:var(--black);font-weight:500}
+    .td-date{color:var(--mid-grey);font-size:0.78rem;white-space:nowrap}
+    .td-updated{color:var(--mid-grey);font-size:0.75rem;white-space:nowrap}
+
+    /* Progress bar */
+    .progress-wrap{display:flex;align-items:center;gap:10px;min-width:150px}
+    .progress-bar-outer{flex:1;height:6px;background:var(--light-grey);border-radius:3px;overflow:hidden}
+    .progress-bar-inner{height:100%;border-radius:3px;transition:width 0.3s}
+    .progress-pct{font-size:0.74rem;font-weight:600;color:var(--mid-grey);min-width:32px}
+
+    /* Status dot */
+    .status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .status-dot.green{background:var(--green)}
+    .status-dot.yellow{background:var(--yellow)}
+    .status-dot.red{background:var(--red)}
+    .status-dot.complete{background:var(--blue-light)}
+    .status-cell{display:flex;align-items:center;gap:7px;font-size:0.75rem}
+    .status-cell .label{color:var(--mid-grey);font-size:0.72rem}
+
+    .row-red td:first-child{border-left:3px solid var(--red)}
+    .row-yellow td:first-child{border-left:3px solid var(--yellow)}
+    .row-green td:first-child{border-left:3px solid var(--green)}
+    .row-complete td:first-child{border-left:3px solid var(--blue-light)}
+
+    .empty-state{padding:60px 20px;text-align:center;color:var(--mid-grey);font-size:0.9rem}
+    .empty-state strong{display:block;font-family:'Cormorant Garant',serif;font-size:1.6rem;font-weight:400;color:var(--black);margin-bottom:8px}
+
+    /* ── DETAIL VIEW ── */
+    #view-detail{padding:40px;display:none}
+    .detail-header{margin-bottom:32px}
+    .detail-meta{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:16px}
+    .detail-name{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:400;color:var(--black)}
+    .detail-info{font-size:0.78rem;color:var(--mid-grey);margin-top:4px}
+    .detail-info span{margin-right:18px}
+    .detail-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .btn-share{
+      background:none;border:1px solid rgba(26,61,181,0.3);color:var(--blue);
+      font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;
+      letter-spacing:0.1em;text-transform:uppercase;padding:9px 16px;
+      cursor:pointer;transition:border-color 0.2s,background 0.2s;display:flex;align-items:center;gap:6px;
+    }
+    .btn-share:hover{border-color:var(--blue);background:var(--blue-pale)}
+    .btn-delete{
+      background:none;border:1px solid rgba(220,38,38,0.2);color:var(--red);
+      font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;
+      letter-spacing:0.1em;text-transform:uppercase;padding:9px 16px;
+      cursor:pointer;transition:border-color 0.2s,background 0.2s;
+    }
+    .btn-delete:hover{border-color:var(--red);background:#fee2e2}
+
+    /* Progress summary bar */
+    .detail-progress{
+      background:#fff;padding:20px 24px;margin-bottom:24px;
+      display:flex;align-items:center;gap:24px;
+    }
+    .detail-progress-pct{font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--blue)}
+    .detail-progress-info{flex:1}
+    .detail-progress-label{font-size:0.75rem;color:var(--mid-grey);margin-bottom:6px}
+    .detail-progress-bar-outer{height:8px;background:var(--light-grey);border-radius:4px;overflow:hidden}
+    .detail-progress-bar-inner{height:100%;border-radius:4px;background:var(--blue);transition:width 0.4s}
+
+    /* Two-column layout */
+    .detail-body{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+
+    /* Checklist */
+    .checklist-card{background:#fff;padding:0}
+    .checklist-card-header{
+      padding:18px 24px;border-bottom:1px solid var(--light-grey);
+      font-size:0.65rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey);
+    }
+    .step-row{
+      display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:start;
+      padding:18px 24px;border-bottom:1px solid var(--light-grey);transition:background 0.15s;
+    }
+    .step-row:last-child{border-bottom:none}
+    .step-row:hover{background:var(--offwhite)}
+    .step-row.completed{background:#f0fdf4}
+    .step-check-wrap{padding-top:1px}
+    .step-check{
+      width:18px;height:18px;cursor:pointer;accent-color:var(--green);
+    }
+    .step-content{}
+    .step-label{font-size:0.85rem;font-weight:500;color:var(--black);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+    .step-num{font-size:0.65rem;font-weight:600;letter-spacing:0.1em;color:var(--mid-grey)}
+    .step-label.done{text-decoration:line-through;color:var(--mid-grey)}
+    .step-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:6px}
+    .step-date-input{
+      font-family:'Inter',sans-serif;font-size:0.74rem;color:var(--mid-grey);
+      border:none;border-bottom:1px solid var(--light-grey);background:none;
+      padding:2px 4px;outline:none;transition:border-color 0.2s;
+    }
+    .step-date-input:focus{border-color:var(--blue);color:var(--black)}
+    .step-date-label{font-size:0.68rem;color:var(--mid-grey)}
+    .step-notes-toggle{
+      font-size:0.68rem;color:var(--blue);background:none;border:none;cursor:pointer;
+      text-decoration:underline;text-underline-offset:2px;padding:0;
+    }
+    .step-notes-wrap{margin-top:8px;display:none}
+    .step-notes-wrap.open{display:block}
+    .step-notes{
+      width:100%;font-family:'Inter',sans-serif;font-size:0.78rem;
+      border:1px solid var(--light-grey);padding:8px 10px;resize:vertical;
+      min-height:60px;outline:none;color:var(--black);
+      transition:border-color 0.2s;
+    }
+    .step-notes:focus{border-color:var(--blue-light)}
+    .step-status-icon{font-size:1rem;padding-top:2px}
+
+    /* Comments */
+    .comments-card{background:#fff;padding:0;position:sticky;top:80px}
+    .comments-card-header{
+      padding:18px 24px;border-bottom:1px solid var(--light-grey);
+      font-size:0.65rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey);
+    }
+    .comment-list{padding:0;max-height:320px;overflow-y:auto}
+    .comment-item{padding:14px 24px;border-bottom:1px solid var(--light-grey)}
+    .comment-item:last-child{border-bottom:none}
+    .comment-body{font-size:0.82rem;color:var(--black);line-height:1.55;margin-bottom:5px}
+    .comment-date{font-size:0.68rem;color:var(--mid-grey)}
+    .comment-empty{padding:20px 24px;font-size:0.8rem;color:var(--mid-grey);font-style:italic}
+    .comment-form{padding:16px 24px;border-top:1px solid var(--light-grey)}
+    .comment-textarea{
+      width:100%;font-family:'Inter',sans-serif;font-size:0.8rem;
+      border:1px solid var(--light-grey);padding:10px 12px;resize:none;
+      min-height:72px;outline:none;color:var(--black);margin-bottom:10px;
+      transition:border-color 0.2s;
+    }
+    .comment-textarea:focus{border-color:var(--blue-light)}
+    .btn-comment{
+      background:var(--blue);color:#fff;border:none;
+      font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;
+      letter-spacing:0.1em;text-transform:uppercase;padding:9px 18px;
+      cursor:pointer;transition:background 0.2s;width:100%;
+    }
+    .btn-comment:hover{background:var(--blue-mid)}
+
+    /* ── MODALS ── */
+    .modal-overlay{
+      position:fixed;inset:0;background:rgba(8,8,15,0.7);z-index:500;
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;pointer-events:none;transition:opacity 0.2s;
+    }
+    .modal-overlay.open{opacity:1;pointer-events:all}
+    .modal{
+      background:#fff;width:400px;max-width:calc(100vw - 32px);
+      transform:translateY(20px);transition:transform 0.2s;
+    }
+    .modal-overlay.open .modal{transform:translateY(0)}
+    .modal-header{
+      background:var(--black);padding:20px 24px;
+      display:flex;justify-content:space-between;align-items:center;
+    }
+    .modal-title{font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:600;color:#fff}
+    .modal-close{background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:1.1rem;padding:2px 6px;line-height:1;transition:color 0.2s}
+    .modal-close:hover{color:#fff}
+    .modal-body{padding:28px 24px}
+    .modal-footer{padding:0 24px 24px;display:flex;gap:8px;justify-content:flex-end}
+    .form-group{margin-bottom:18px}
+    .form-label{font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid-grey);margin-bottom:7px;display:block}
+    .form-input{
+      width:100%;font-family:'Inter',sans-serif;font-size:0.88rem;
+      border:1px solid var(--light-grey);padding:11px 13px;outline:none;
+      color:var(--black);transition:border-color 0.2s;
+    }
+    .form-input:focus{border-color:var(--blue-light)}
+    .btn-modal-primary{
+      background:var(--blue);color:#fff;border:none;
+      font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;
+      letter-spacing:0.1em;text-transform:uppercase;padding:11px 24px;
+      cursor:pointer;transition:background 0.2s;
+    }
+    .btn-modal-primary:hover{background:var(--blue-mid)}
+    .btn-modal-cancel{
+      background:none;color:var(--mid-grey);border:1px solid var(--light-grey);
+      font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:500;
+      letter-spacing:0.08em;text-transform:uppercase;padding:10px 18px;
+      cursor:pointer;transition:border-color 0.2s;
+    }
+    .btn-modal-cancel:hover{border-color:var(--mid-grey)}
+
+    /* Share toast */
+    #copy-toast{
+      position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+      background:var(--black);color:#fff;font-size:0.78rem;font-weight:500;
+      padding:10px 20px;z-index:600;letter-spacing:0.04em;
+      opacity:0;transition:opacity 0.25s;pointer-events:none;
+    }
+    #copy-toast.show{opacity:1}
+
+    /* ── SHARE / READ-ONLY VIEW ── */
+    #view-share{display:none;min-height:100vh;background:var(--black)}
+    .share-hero{
+      padding:80px 40px 60px;background:var(--black);
+      border-bottom:1px solid rgba(26,61,181,0.2);
+    }
+    .share-brand{font-size:0.62rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue-light);margin-bottom:24px}
+    .share-name{font-family:'Cormorant Garant',serif;font-size:2.8rem;font-weight:300;color:#fff;line-height:1.1;margin-bottom:8px}
+    .share-sub{font-size:0.82rem;color:rgba(255,255,255,0.35)}
+    .share-progress-bar-outer{height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;margin-top:32px;max-width:500px}
+    .share-progress-bar-inner{height:100%;border-radius:3px;background:var(--blue-light);transition:width 0.5s}
+    .share-pct{font-size:0.78rem;color:rgba(255,255,255,0.5);margin-top:8px}
+    .share-steps{padding:40px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2px}
+    .share-step{background:var(--charcoal);padding:22px 24px;display:flex;align-items:flex-start;gap:14px}
+    .share-step.done{background:#0f1f10}
+    .share-step-icon{font-size:1.1rem;flex-shrink:0;padding-top:1px}
+    .share-step-num{font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid-grey);margin-bottom:3px}
+    .share-step-label{font-size:0.88rem;font-weight:500;color:rgba(255,255,255,0.8)}
+    .share-step.done .share-step-label{color:#4ade80}
+    .share-step-date{font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:4px}
+    .share-footer{padding:32px 40px;text-align:center;border-top:1px solid rgba(26,61,181,0.15);font-size:0.7rem;color:rgba(255,255,255,0.2)}
+
+    /* Responsive */
+    @media(max-width:900px){
+      #view-dashboard,#view-detail{padding:24px 16px}
+      .dash-stats{grid-template-columns:1fr 1fr}
+      .detail-body{grid-template-columns:1fr}
+      .comments-card{position:static}
+      .onb-nav{padding:0 20px}
+      .share-hero{padding:60px 24px 40px}
+      .share-steps{padding:24px 16px}
+    }
+    @media(max-width:600px){
+      .dash-stats{grid-template-columns:1fr 1fr}
+      table{font-size:0.78rem}
+      thead th,tbody td{padding:12px}
+      .progress-wrap{min-width:100px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ PASSWORD GATE ══════════════ -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-logo">Steel <span>&</span> Aire Soluciones</div>
+    <div class="gate-label">Internal Operations</div>
+    <div class="gate-title">Client Onboarding Portal</div>
+    <input class="gate-input" type="password" id="gate-pw" placeholder="Enter password"
+      onkeydown="if(event.key==='Enter')gateSubmit()"/>
+    <button class="gate-btn" onclick="gateSubmit()">Access Dashboard</button>
+    <div class="gate-error" id="gate-err"></div>
+  </div>
+</div>
+
+<!-- ══════════════ MAIN APP ══════════════ -->
+<div id="app">
+
+  <nav class="onb-nav">
+    <a href="index.html" class="onb-nav-brand">
+      <div class="onb-nav-name">Steel <span>&</span> Aire</div>
+      <div class="onb-nav-sub">Soluciones</div>
+    </a>
+    <div class="onb-nav-right">
+      <span class="onb-nav-tag">Onboarding Tracker</span>
+      <button class="btn-logout" onclick="logout()">Log Out</button>
+    </div>
+  </nav>
+
+  <!-- DASHBOARD -->
+  <div id="view-dashboard">
+    <div class="dash-header">
+      <h1 class="dash-title">Client <em>Onboarding</em></h1>
+      <div class="dash-actions">
+        <button class="btn-secondary" onclick="checkStuckAndEmail(true)">Check &amp; Email Alerts</button>
+        <button class="btn-add" onclick="openAddModal()">Add Client</button>
+      </div>
+    </div>
+
+    <div id="stuck-banner"></div>
+
+    <div class="dash-stats" id="dash-stats"></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Start Date</th>
+            <th>Current Step</th>
+            <th>Progress</th>
+            <th>Last Updated</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="client-table-body"></tbody>
+      </table>
+      <div class="empty-state" id="empty-state" style="display:none">
+        <strong>No clients yet</strong>
+        Click "Add Client" to get started — takes 30 seconds.
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL VIEW -->
+  <div id="view-detail">
+    <div class="detail-header">
+      <button class="btn-back" onclick="showDashboard()">Back to Dashboard</button>
+      <div class="detail-meta">
+        <div>
+          <div class="detail-name" id="detail-name"></div>
+          <div class="detail-info" id="detail-info"></div>
+        </div>
+        <div class="detail-actions">
+          <button class="btn-share" onclick="copyShareLink()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share Progress Link
+          </button>
+          <button class="btn-delete" onclick="deleteClient()">Delete Client</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-progress">
+      <div class="detail-progress-pct" id="detail-pct">0%</div>
+      <div class="detail-progress-info">
+        <div class="detail-progress-label" id="detail-progress-label">0 of 8 steps complete</div>
+        <div class="detail-progress-bar-outer">
+          <div class="detail-progress-bar-inner" id="detail-progress-bar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-body">
+      <div class="checklist-card">
+        <div class="checklist-card-header">Onboarding Checklist</div>
+        <div id="checklist-rows"></div>
+      </div>
+      <div class="comments-card">
+        <div class="comments-card-header">Internal Team Notes</div>
+        <div class="comment-list" id="comment-list"></div>
+        <div class="comment-form">
+          <textarea class="comment-textarea" id="comment-input" placeholder="Add an internal note…"></textarea>
+          <button class="btn-comment" onclick="addComment()">Add Note</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end #app -->
+
+<!-- ADD CLIENT MODAL -->
+<div class="modal-overlay" id="modal-add-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Add New Client</div>
+      <button class="modal-close" onclick="closeAddModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label" for="add-name">Client / Company Name</label>
+        <input class="form-input" type="text" id="add-name" placeholder="e.g. Acme Ventures"
+          onkeydown="if(event.key==='Enter')document.getElementById('add-date').focus()"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="add-date">Start Date</label>
+        <input class="form-input" type="date" id="add-date"
+          onkeydown="if(event.key==='Enter')submitAddClient()"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal-cancel" onclick="closeAddModal()">Cancel</button>
+      <button class="btn-modal-primary" onclick="submitAddClient()">Add Client</button>
+    </div>
+  </div>
+</div>
+
+<!-- COPY TOAST -->
+<div id="copy-toast">Link copied to clipboard!</div>
+
+<!-- ══════════════ READ-ONLY SHARE VIEW ══════════════ -->
+<div id="view-share">
+  <div class="share-hero">
+    <div class="share-brand">Steel &amp; Aire Soluciones — Client Progress</div>
+    <div class="share-name" id="share-client-name">Loading…</div>
+    <div class="share-sub" id="share-client-sub"></div>
+    <div class="share-progress-bar-outer">
+      <div class="share-progress-bar-inner" id="share-progress-bar" style="width:0%"></div>
+    </div>
+    <div class="share-pct" id="share-pct-label"></div>
+  </div>
+  <div class="share-steps" id="share-steps-list"></div>
+  <div class="share-footer">© 2026 Steel &amp; Aire Soluciones — Internal Progress Report</div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════
+// CONFIG — update these to match your setup
+// ════════════════════════════════════════════════
+const APP_PASSWORD       = 'steelaire2026';
+const NOTIFY_EMAIL       = 'bsoifua24@gmail.com';
+const STUCK_DAYS         = 3;
+const EMAILJS_PUBLIC_KEY = 'YOUR_EMAILJS_PUBLIC_KEY';
+const EMAILJS_SERVICE_ID = 'YOUR_EMAILJS_SERVICE_ID';
+const EMAILJS_TEMPLATE   = 'YOUR_EMAILJS_TEMPLATE_ID';
+
+const STEPS = [
+  'Contract Signed',
+  'Kickoff Scheduled',
+  'Kickoff Complete',
+  'Access Granted',
+  'Assets Received',
+  'First Draft Sent',
+  'Client Approval',
+  'Project Live'
+];
+
+// ════════════════════════════════════════════════
+// DATA LAYER
+// ════════════════════════════════════════════════
+function getStore() {
+  try { return JSON.parse(localStorage.getItem('sa_onboarding')) || { clients: [], lastEmailCheck: null }; }
+  catch { return { clients: [], lastEmailCheck: null }; }
+}
+function saveStore(data) {
+  localStorage.setItem('sa_onboarding', JSON.stringify(data));
+}
+function genId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
+function createClient(name, startDate) {
+  const now = new Date().toISOString();
+  return {
+    id: genId(),
+    name,
+    startDate,
+    steps: STEPS.map((label, i) => ({
+      label,
+      completed: false,
+      completedDate: null,
+      notes: '',
+      stuckSince: i === 0 ? startDate : null
+    })),
+    comments: [],
+    shareToken: genId(),
+    createdAt: now,
+    updatedAt: now
+  };
+}
+
+function addClientToStore(name, startDate) {
+  const store = getStore();
+  const c = createClient(name, startDate);
+  store.clients.push(c);
+  saveStore(store);
+  return c;
+}
+
+function getClientById(id) {
+  return getStore().clients.find(c => c.id === id);
+}
+
+function saveClient(client) {
+  client.updatedAt = new Date().toISOString();
+  const store = getStore();
+  const idx = store.clients.findIndex(c => c.id === client.id);
+  if (idx !== -1) { store.clients[idx] = client; saveStore(store); }
+}
+
+function deleteClientById(id) {
+  const store = getStore();
+  store.clients = store.clients.filter(c => c.id !== id);
+  saveStore(store);
+}
+
+// ════════════════════════════════════════════════
+// CALCULATIONS
+// ════════════════════════════════════════════════
+function getProgress(client) {
+  const done = client.steps.filter(s => s.completed).length;
+  return Math.round(done / STEPS.length * 100);
+}
+
+function getCurrentStepIdx(client) {
+  const idx = client.steps.findIndex(s => !s.completed);
+  return idx === -1 ? STEPS.length : idx; // STEPS.length = all done
+}
+
+function getStuckDays(client) {
+  const idx = getCurrentStepIdx(client);
+  if (idx >= STEPS.length) return 0;
+  const since = client.steps[idx].stuckSince || client.startDate;
+  if (!since) return 0;
+  return Math.floor((Date.now() - new Date(since).getTime()) / 86400000);
+}
+
+function getStatus(client) {
+  const idx = getCurrentStepIdx(client);
+  if (idx >= STEPS.length) return 'complete';
+  const days = getStuckDays(client);
+  if (days >= STUCK_DAYS) return 'red';
+  if (days >= 1) return 'yellow';
+  return 'green';
+}
+
+function getStatusLabel(client) {
+  const status = getStatus(client);
+  const days = getStuckDays(client);
+  if (status === 'complete') return 'Complete';
+  if (status === 'red') return `${days}d on step`;
+  if (status === 'yellow') return `${days}d on step`;
+  return 'On track';
+}
+
+function relativeTime(iso) {
+  if (!iso) return '—';
+  const diff = Date.now() - new Date(iso).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + (iso.includes('T') ? '' : 'T00:00:00'));
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// ════════════════════════════════════════════════
+// AUTH
+// ════════════════════════════════════════════════
+let authed = false;
+
+function gateSubmit() {
+  const pw = document.getElementById('gate-pw').value;
+  if (pw === APP_PASSWORD) {
+    authed = true;
+    sessionStorage.setItem('sa_ob_auth', '1');
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    renderDashboard();
+    checkStuckAndEmail(false);
+  } else {
+    document.getElementById('gate-err').textContent = 'Incorrect password.';
+    document.getElementById('gate-pw').value = '';
+    document.getElementById('gate-pw').focus();
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem('sa_ob_auth');
+  authed = false;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('gate').style.display = 'flex';
+  document.getElementById('gate-pw').value = '';
+  document.getElementById('gate-err').textContent = '';
+}
+
+// ════════════════════════════════════════════════
+// DASHBOARD
+// ════════════════════════════════════════════════
+let currentClientId = null;
+
+function showDashboard() {
+  document.getElementById('view-dashboard').style.display = 'block';
+  document.getElementById('view-detail').style.display = 'none';
+  renderDashboard();
+}
+
+function showDetail(id) {
+  currentClientId = id;
+  document.getElementById('view-dashboard').style.display = 'none';
+  document.getElementById('view-detail').style.display = 'block';
+  renderDetail(id);
+}
+
+function renderDashboard() {
+  const store = getStore();
+  const clients = store.clients;
+
+  // Stats
+  const stats = { total: clients.length, green: 0, yellow: 0, red: 0, complete: 0 };
+  clients.forEach(c => { stats[getStatus(c)]++; });
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat-box total"><div class="stat-val">${stats.total}</div><div class="stat-lbl">Total Clients</div></div>
+    <div class="stat-box green"><div class="stat-val">${stats.green}</div><div class="stat-lbl">On Track</div></div>
+    <div class="stat-box yellow"><div class="stat-val">${stats.yellow}</div><div class="stat-lbl">Needs Attention</div></div>
+    <div class="stat-box red"><div class="stat-val">${stats.red + stats.complete}</div><div class="stat-lbl">Action Req. / Done</div></div>
+  `;
+
+  // Stuck banner
+  const stuck = clients.filter(c => getStatus(c) === 'red');
+  const banner = document.getElementById('stuck-banner');
+  if (stuck.length > 0) {
+    banner.style.display = 'block';
+    banner.innerHTML = `⚠ <strong>${stuck.length} client${stuck.length > 1 ? 's' : ''}</strong> stuck for ${STUCK_DAYS}+ days: ${stuck.map(c => `<strong>${c.name}</strong>`).join(', ')}. <button onclick="checkStuckAndEmail(true)" style="background:none;border:none;cursor:pointer;color:inherit;text-decoration:underline;font-size:inherit;padding:0;margin-left:8px">Send email alert</button>`;
+  } else {
+    banner.style.display = 'none';
+  }
+
+  // Table
+  const tbody = document.getElementById('client-table-body');
+  const empty = document.getElementById('empty-state');
+  if (clients.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // Sort: red first, then yellow, then green, then complete
+  const order = { red: 0, yellow: 1, green: 2, complete: 3 };
+  const sorted = [...clients].sort((a, b) => order[getStatus(a)] - order[getStatus(b)]);
+
+  tbody.innerHTML = sorted.map(c => {
+    const pct = getProgress(c);
+    const idx = getCurrentStepIdx(c);
+    const status = getStatus(c);
+    const stepLabel = idx >= STEPS.length ? 'All Steps Complete' : `${idx + 1}/8 — ${STEPS[idx]}`;
+    const barColor = status === 'complete' ? 'var(--blue-light)' : status === 'red' ? 'var(--red)' : status === 'yellow' ? 'var(--yellow)' : 'var(--green)';
+    return `
+      <tr class="row-${status}" onclick="showDetail('${c.id}')">
+        <td class="td-name">${escHtml(c.name)}</td>
+        <td class="td-date">${fmtDate(c.startDate)}</td>
+        <td class="td-step"><strong>${stepLabel}</strong></td>
+        <td>
+          <div class="progress-wrap">
+            <div class="progress-bar-outer">
+              <div class="progress-bar-inner" style="width:${pct}%;background:${barColor}"></div>
+            </div>
+            <span class="progress-pct">${pct}%</span>
+          </div>
+        </td>
+        <td class="td-updated">${relativeTime(c.updatedAt)}</td>
+        <td>
+          <div class="status-cell">
+            <div class="status-dot ${status}"></div>
+            <span class="label">${getStatusLabel(c)}</span>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════
+// DETAIL
+// ════════════════════════════════════════════════
+function renderDetail(id) {
+  const client = getClientById(id);
+  if (!client) { showDashboard(); return; }
+
+  const pct = getProgress(client);
+  const doneCount = client.steps.filter(s => s.completed).length;
+
+  document.getElementById('detail-name').textContent = client.name;
+  document.getElementById('detail-info').innerHTML =
+    `<span>Started ${fmtDate(client.startDate)}</span><span>Last updated ${relativeTime(client.updatedAt)}</span><span>${getStatusLabel(client)}</span>`;
+  document.getElementById('detail-pct').textContent = pct + '%';
+  document.getElementById('detail-progress-label').textContent = `${doneCount} of ${STEPS.length} steps complete`;
+  document.getElementById('detail-progress-bar').style.width = pct + '%';
+
+  // Checklist
+  const rows = client.steps.map((step, i) => {
+    const isDone = step.completed;
+    const isCurrentStep = getCurrentStepIdx(client) === i;
+    const stuckDays = isCurrentStep ? getStuckDays(client) : 0;
+    const stuckBadge = isCurrentStep && stuckDays > 0
+      ? `<span style="font-size:0.65rem;background:${stuckDays >= STUCK_DAYS ? 'var(--red-pale)' : 'var(--yellow-pale)'};color:${stuckDays >= STUCK_DAYS ? 'var(--red)' : 'var(--yellow)'};padding:2px 7px;margin-left:6px">${stuckDays}d on this step</span>`
+      : '';
+    return `
+      <div class="step-row ${isDone ? 'completed' : ''}" id="step-row-${i}">
+        <div class="step-check-wrap">
+          <input type="checkbox" class="step-check" ${isDone ? 'checked' : ''}
+            onchange="toggleStep('${id}', ${i}, this.checked)"/>
+        </div>
+        <div class="step-content">
+          <div class="step-label ${isDone ? 'done' : ''}">
+            <span class="step-num">Step ${i + 1}</span>
+            ${escHtml(step.label)}${stuckBadge}
+          </div>
+          <div class="step-meta">
+            ${isDone ? `
+              <span class="step-date-label">Completed:</span>
+              <input type="date" class="step-date-input"
+                value="${step.completedDate || ''}"
+                onchange="updateStepDate('${id}', ${i}, this.value)"/>
+            ` : ''}
+            <button class="step-notes-toggle" onclick="toggleNotes(${i})">
+              ${step.notes ? 'View notes' : 'Add notes'}
+            </button>
+          </div>
+          <div class="step-notes-wrap" id="step-notes-wrap-${i}">
+            <textarea class="step-notes" placeholder="Notes for this step…"
+              onblur="saveStepNotes('${id}', ${i}, this.value)"
+            >${escHtml(step.notes || '')}</textarea>
+          </div>
+        </div>
+        <div class="step-status-icon">${isDone ? '✅' : isCurrentStep ? '⏳' : '○'}</div>
+      </div>`;
+  }).join('');
+  document.getElementById('checklist-rows').innerHTML = rows;
+
+  // Comments
+  renderComments(client);
+}
+
+function renderComments(client) {
+  const list = document.getElementById('comment-list');
+  if (!client.comments || client.comments.length === 0) {
+    list.innerHTML = '<div class="comment-empty">No notes yet.</div>';
+    return;
+  }
+  list.innerHTML = [...client.comments].reverse().map(c => `
+    <div class="comment-item">
+      <div class="comment-body">${escHtml(c.text)}</div>
+      <div class="comment-date">${relativeTime(c.date)}</div>
+    </div>`).join('');
+}
+
+function toggleStep(clientId, stepIdx, checked) {
+  const client = getClientById(clientId);
+  if (!client) return;
+  const now = new Date().toISOString();
+  client.steps[stepIdx].completed = checked;
+  if (checked) {
+    client.steps[stepIdx].completedDate = now.split('T')[0];
+    // Set stuckSince for the NEXT step
+    if (stepIdx + 1 < STEPS.length) {
+      client.steps[stepIdx + 1].stuckSince = now;
+    }
+  } else {
+    client.steps[stepIdx].completedDate = null;
+    // Clear stuckSince for next step
+    if (stepIdx + 1 < STEPS.length) {
+      client.steps[stepIdx + 1].stuckSince = null;
+    }
+  }
+  saveClient(client);
+  renderDetail(clientId);
+}
+
+function updateStepDate(clientId, stepIdx, val) {
+  const client = getClientById(clientId);
+  if (!client) return;
+  client.steps[stepIdx].completedDate = val;
+  saveClient(client);
+}
+
+function saveStepNotes(clientId, stepIdx, val) {
+  const client = getClientById(clientId);
+  if (!client) return;
+  client.steps[stepIdx].notes = val;
+  saveClient(client);
+  // Update toggle button label without full re-render
+  const btn = document.querySelector(`#step-row-${stepIdx} .step-notes-toggle`);
+  if (btn) btn.textContent = val ? 'View notes' : 'Add notes';
+}
+
+function toggleNotes(i) {
+  const wrap = document.getElementById(`step-notes-wrap-${i}`);
+  if (!wrap) return;
+  const open = wrap.classList.toggle('open');
+  if (open) wrap.querySelector('textarea').focus();
+}
+
+function addComment() {
+  const inp = document.getElementById('comment-input');
+  const text = inp.value.trim();
+  if (!text || !currentClientId) return;
+  const client = getClientById(currentClientId);
+  if (!client) return;
+  if (!client.comments) client.comments = [];
+  client.comments.push({ text, date: new Date().toISOString() });
+  saveClient(client);
+  inp.value = '';
+  renderComments(client);
+}
+
+function deleteClient() {
+  const client = getClientById(currentClientId);
+  if (!client) return;
+  if (!confirm(`Delete "${client.name}"? This cannot be undone.`)) return;
+  deleteClientById(currentClientId);
+  currentClientId = null;
+  showDashboard();
+}
+
+// ════════════════════════════════════════════════
+// ADD CLIENT MODAL
+// ════════════════════════════════════════════════
+function openAddModal() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('add-name').value = '';
+  document.getElementById('add-date').value = today;
+  document.getElementById('modal-add-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('add-name').focus(), 50);
+}
+
+function closeAddModal() {
+  document.getElementById('modal-add-overlay').classList.remove('open');
+}
+
+function submitAddClient() {
+  const name = document.getElementById('add-name').value.trim();
+  const date = document.getElementById('add-date').value;
+  if (!name) { document.getElementById('add-name').focus(); return; }
+  if (!date) { document.getElementById('add-date').focus(); return; }
+  addClientToStore(name, date);
+  closeAddModal();
+  renderDashboard();
+}
+
+document.getElementById('modal-add-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeAddModal();
+});
+
+// ════════════════════════════════════════════════
+// SHARE LINK
+// ════════════════════════════════════════════════
+function buildShareData(client) {
+  return {
+    name: client.name,
+    startDate: client.startDate,
+    progress: getProgress(client),
+    steps: client.steps.map(s => ({
+      label: s.label,
+      completed: s.completed,
+      completedDate: s.completedDate
+    }))
+  };
+}
+
+function copyShareLink() {
+  const client = getClientById(currentClientId);
+  if (!client) return;
+  const data = JSON.stringify(buildShareData(client));
+  const encoded = btoa(unescape(encodeURIComponent(data)));
+  const url = `${location.origin}${location.pathname}?share=1#${encoded}`;
+  navigator.clipboard.writeText(url).then(() => showToast('Link copied to clipboard!'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('copy-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ════════════════════════════════════════════════
+// EMAIL ALERTS (stuck clients)
+// ════════════════════════════════════════════════
+function checkStuckAndEmail(force) {
+  const store = getStore();
+  const today = new Date().toISOString().split('T')[0];
+
+  if (!force && store.lastEmailCheck === today) return;
+
+  const stuck = store.clients.filter(c => getStatus(c) === 'red');
+  if (stuck.length === 0) {
+    if (force) showToast('No stuck clients — all clear!');
+    store.lastEmailCheck = today;
+    saveStore(store);
+    return;
+  }
+
+  const lines = stuck.map(c => {
+    const idx = getCurrentStepIdx(c);
+    const stepName = idx < STEPS.length ? STEPS[idx] : 'Complete';
+    return `• ${c.name} — stuck on "${stepName}" for ${getStuckDays(c)} days`;
+  });
+
+  const templateParams = {
+    to_email:    NOTIFY_EMAIL,
+    subject:     `Steel & Aire: ${stuck.length} client(s) need attention`,
+    client_list: lines.join('\n'),
+    stuck_count: stuck.length
+  };
+
+  if (EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE, templateParams)
+      .then(() => showToast(`Alert email sent for ${stuck.length} client(s)!`))
+      .catch(() => showToast('Email send failed — check EmailJS config.'));
+  } else {
+    // EmailJS not configured — show console summary
+    console.warn('EmailJS not configured. Stuck clients:', lines);
+    if (force) showToast(`⚠ ${stuck.length} stuck client(s). Configure EmailJS to enable email alerts.`);
+  }
+
+  store.lastEmailCheck = today;
+  saveStore(store);
+}
+
+// ════════════════════════════════════════════════
+// SHARE VIEW (read-only, URL-encoded)
+// ════════════════════════════════════════════════
+function initShareView() {
+  const hash = location.hash.slice(1);
+  if (!hash) return false;
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(hash))));
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('view-share').style.display = 'block';
+
+    document.title = `${data.name} — Onboarding Progress`;
+    document.getElementById('share-client-name').textContent = data.name;
+    document.getElementById('share-client-sub').textContent =
+      `Started ${fmtDate(data.startDate)} · ${data.progress}% complete`;
+    document.getElementById('share-progress-bar').style.width = data.progress + '%';
+    document.getElementById('share-pct-label').textContent = `${data.progress}% complete`;
+
+    document.getElementById('share-steps-list').innerHTML = data.steps.map((s, i) => `
+      <div class="share-step ${s.completed ? 'done' : ''}">
+        <div class="share-step-icon">${s.completed ? '✅' : i === data.steps.findIndex(x => !x.completed) ? '⏳' : '○'}</div>
+        <div>
+          <div class="share-step-num">Step ${i + 1}</div>
+          <div class="share-step-label">${escHtml(s.label)}</div>
+          ${s.completed && s.completedDate ? `<div class="share-step-date">Completed ${fmtDate(s.completedDate)}</div>` : ''}
+        </div>
+      </div>`).join('');
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// ════════════════════════════════════════════════
+// UTILS
+// ════════════════════════════════════════════════
+function escHtml(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════
+(function init() {
+  // Check for share view first (no auth needed)
+  if (location.search.includes('share=1') && initShareView()) return;
+
+  // Check session auth
+  if (sessionStorage.getItem('sa_ob_auth') === '1') {
+    authed = true;
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    renderDashboard();
+    checkStuckAndEmail(false);
+  } else {
+    document.getElementById('gate').style.display = 'flex';
+    setTimeout(() => document.getElementById('gate-pw').focus(), 100);
+  }
+})();
+</script>
+</body>
+</html>

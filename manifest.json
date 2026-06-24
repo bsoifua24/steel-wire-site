@@ -1,0 +1,42 @@
+{
+  "name": "Steel & Aire Soluciones",
+  "short_name": "Steel & Aire",
+  "description": "Global capital & infrastructure — Deal Room portal",
+  "start_url": "/login.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0a0a0f",
+  "theme_color": "#1a3db5",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "business"],
+  "shortcuts": [
+    {
+      "name": "Deal Room",
+      "short_name": "Deals",
+      "description": "Open the client deal room",
+      "url": "/login.html",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Overview",
+      "short_name": "Overview",
+      "description": "Steel & Aire public site",
+      "url": "/",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
