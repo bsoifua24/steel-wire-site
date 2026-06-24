@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Steel & Aire Soluciones</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --blue:#1A3DB5;--blue-dark:#0D2680;--blue-deep:#091a5e;
+      --blue-mid:#2952cc;--blue-light:#5a8aff;--blue-pale:#dce8ff;
+      --black:#08080f;--black-soft:#111118;--charcoal:#1c1c28;
+      --white:#ffffff;--offwhite:#f5f8ff;--mid-grey:#6b7a99;--light-grey:#e8edf8;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--offwhite);color:var(--black);overflow-x:hidden}
+
+    /* ── NAV ── */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:200;
+      background:var(--black);
+      border-bottom:1px solid rgba(26,61,181,0.25);
+    }
+    .nav-top{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:0 60px;height:70px;
+    }
+    .nav-brand{text-decoration:none;display:flex;flex-direction:column;gap:2px}
+    .nav-brand-name{
+      font-family:'Cormorant Garant',serif;font-size:1.3rem;font-weight:600;
+      color:var(--white);letter-spacing:0.04em;
+    }
+    .nav-brand-name span{color:var(--blue-light)}
+    .nav-brand-sub{
+      font-size:0.6rem;font-weight:500;letter-spacing:0.22em;
+      text-transform:uppercase;color:var(--mid-grey);
+    }
+    .nav-cta{
+      font-size:0.74rem;font-weight:600;letter-spacing:0.1em;
+      text-transform:uppercase;color:var(--white);background:var(--blue);
+      padding:10px 24px;text-decoration:none;transition:background 0.2s;
+    }
+    .nav-cta:hover{background:var(--blue-mid)}
+    .nav-login{
+      font-size:0.74rem;font-weight:600;letter-spacing:0.1em;
+      text-transform:uppercase;color:var(--blue-light);background:none;
+      border:1px solid rgba(90,138,255,0.45);padding:9px 22px;
+      text-decoration:none;transition:border-color 0.2s,color 0.2s,background 0.2s;
+    }
+    .nav-login:hover{border-color:var(--blue-light);background:rgba(26,61,181,0.18);color:var(--white)}
+    a.tab-btn{text-decoration:none;display:inline-block}
+
+    /* tab bar */
+    .tab-bar{
+      display:flex;align-items:center;gap:0;
+      padding:0 60px;
+      border-top:1px solid rgba(26,61,181,0.15);
+      background:rgba(8,8,15,0.97);
+    }
+    .tab-btn{
+      font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;
+      color:rgba(255,255,255,0.4);background:none;border:none;cursor:pointer;
+      padding:14px 24px;position:relative;transition:color 0.2s;white-space:nowrap;
+    }
+    .tab-btn::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+      background:var(--blue-light);transform:scaleX(0);transition:transform 0.25s;
+    }
+    .tab-btn:hover{color:rgba(255,255,255,0.75)}
+    .tab-btn.active{color:var(--white)}
+    .tab-btn.active::after{transform:scaleX(1)}
+
+    /* ── PAGES ── */
+    .page{display:none}
+    .page.active{display:block}
+
+    /* ── HERO ── */
+    #hero{
+      min-height:100vh;background:var(--black);
+      display:flex;flex-direction:column;justify-content:center;
+      padding:140px 60px 0;position:relative;overflow:hidden;
+    }
+
+    /* dot-grid world map signature element */
+    .world-dots{
+      position:absolute;inset:0;pointer-events:none;overflow:hidden;
+      opacity:0.18;
+    }
+    .world-dots canvas{width:100%;height:100%}
+
+    .hero-glow{
+      position:absolute;top:15%;left:-10%;
+      width:60vw;height:60vh;
+      background:radial-gradient(ellipse,rgba(26,61,181,0.2) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .hero-glow-r{
+      position:absolute;bottom:10%;right:-5%;
+      width:40vw;height:40vh;
+      background:radial-gradient(ellipse,rgba(26,61,181,0.1) 0%,transparent 70%);
+      pointer-events:none;
+    }
+
+    .hero-eyebrow{
+      font-size:0.7rem;font-weight:500;letter-spacing:0.22em;
+      text-transform:uppercase;color:var(--blue-light);
+      margin-bottom:24px;position:relative;padding-left:40px;
+    }
+    .hero-eyebrow::before{
+      content:'';position:absolute;left:0;top:50%;
+      width:28px;height:1px;background:var(--blue);
+    }
+    h1{
+      font-family:'Cormorant Garant',serif;
+      font-size:clamp(3rem,6vw,5.8rem);font-weight:300;
+      line-height:1.06;color:var(--white);max-width:860px;
+      margin-bottom:30px;position:relative;
+    }
+    h1 em{font-style:italic;color:var(--blue-light)}
+    .hero-sub{
+      font-size:1rem;font-weight:300;line-height:1.8;
+      color:rgba(255,255,255,0.48);max-width:540px;
+      margin-bottom:48px;position:relative;
+    }
+    .hero-actions{display:flex;gap:20px;align-items:center;position:relative;flex-wrap:wrap}
+    .btn-primary{
+      background:var(--blue);color:var(--white);
+      font-size:0.76rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+      padding:15px 34px;text-decoration:none;transition:background 0.2s,transform 0.15s;display:inline-block;
+    }
+    .btn-primary:hover{background:var(--blue-mid);transform:translateY(-1px)}
+    .btn-ghost{
+      color:rgba(255,255,255,0.45);font-size:0.76rem;font-weight:500;
+      letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;
+      display:inline-flex;align-items:center;gap:8px;transition:color 0.2s;
+    }
+    .btn-ghost:hover{color:var(--white)}
+    .btn-ghost::after{content:'→';transition:transform 0.2s}
+    .btn-ghost:hover::after{transform:translateX(4px)}
+
+    .hero-stats{
+      display:flex;margin-top:72px;
+      border-top:1px solid rgba(26,61,181,0.2);position:relative;
+    }
+    .stat{flex:1;padding:26px 36px;border-right:1px solid rgba(26,61,181,0.15)}
+    .stat:last-child{border-right:none}
+    .stat-num{
+      font-family:'Cormorant Garant',serif;font-size:2.3rem;font-weight:600;
+      color:var(--white);line-height:1;margin-bottom:5px;
+    }
+    .stat-num span{color:var(--blue-light);font-size:1.5rem}
+    .stat-label{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+
+    /* ── SHARED SECTION STYLES ── */
+    section{padding:100px 60px}
+    .section-tag{
+      font-size:0.68rem;font-weight:600;letter-spacing:0.22em;
+      text-transform:uppercase;color:var(--blue);margin-bottom:16px;display:block;
+    }
+    h2{
+      font-family:'Cormorant Garant',serif;font-size:clamp(2rem,3.5vw,3rem);
+      font-weight:300;line-height:1.15;color:var(--black);margin-bottom:24px;
+    }
+    h2 em{font-style:italic;color:var(--blue)}
+    .body-text{font-size:0.92rem;line-height:1.85;color:#4a5568;max-width:640px}
+    .body-text p+p{margin-top:16px}
+
+    /* ── MISSION ── */
+    #mission{background:var(--white)}
+    .mission-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    .mission-quote{
+      font-family:'Cormorant Garant',serif;font-size:2rem;font-style:italic;
+      font-weight:300;color:var(--blue-dark);line-height:1.35;
+      border-left:3px solid var(--blue);padding-left:28px;
+    }
+
+    /* ── GLOBAL ── */
+    #global{background:var(--black-soft)}
+    #global h2{color:var(--white)}
+    #global h2 em{color:var(--blue-light)}
+    #global .section-tag{color:var(--blue-light)}
+    #global .body-text{color:rgba(255,255,255,0.45)}
+    .regions{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:52px;
+    }
+    .region{
+      background:var(--charcoal);padding:36px 32px;
+      border-top:2px solid transparent;transition:border-color 0.3s,background 0.3s;
+    }
+    .region:hover{border-top-color:var(--blue-light);background:#22223a}
+    .region-flag{font-size:2rem;margin-bottom:14px}
+    .region h4{
+      font-family:'Cormorant Garant',serif;font-size:1.2rem;
+      color:var(--white);margin-bottom:8px;
+    }
+    .region p{font-size:0.8rem;color:rgba(255,255,255,0.38);line-height:1.6}
+
+    /* ── CAPITAL NETWORK ── */
+    #capital{background:var(--offwhite)}
+    .capital-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:52px}
+    .cap-card{
+      background:var(--white);padding:40px 32px;
+      border-bottom:3px solid transparent;transition:border-color 0.25s,box-shadow 0.25s;
+    }
+    .cap-card:hover{border-bottom-color:var(--blue);box-shadow:0 4px 28px rgba(26,61,181,0.08)}
+    .cap-icon{font-size:1.8rem;margin-bottom:16px}
+    .cap-card h4{
+      font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:600;
+      color:var(--black);margin-bottom:10px;
+    }
+    .cap-card p{font-size:0.83rem;line-height:1.65;color:var(--mid-grey)}
+
+    /* ── PROJECTS ── */
+    #projects-home{background:var(--black)}
+    #projects-home h2{color:var(--white)}
+    #projects-home h2 em{color:var(--blue-light)}
+    #projects-home .section-tag{color:var(--blue-light)}
+    .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:52px}
+    .proj-card{
+      background:var(--charcoal);padding:48px 40px;position:relative;overflow:hidden;
+      transition:background 0.3s;
+    }
+    .proj-card:hover{background:#22223a}
+    .proj-card::before{
+      content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+      background:var(--blue);transform:scaleY(0);transform-origin:top;transition:transform 0.35s;
+    }
+    .proj-card:hover::before{transform:scaleY(1)}
+    .proj-card h3{
+      font-family:'Cormorant Garant',serif;font-size:1.6rem;font-weight:400;
+      color:var(--white);margin-bottom:14px;
+    }
+    .proj-card p{font-size:0.85rem;line-height:1.7;color:rgba(255,255,255,0.42)}
+    .proj-tag{
+      display:inline-block;font-size:0.65rem;font-weight:600;letter-spacing:0.15em;
+      text-transform:uppercase;color:var(--blue-light);
+      border:1px solid rgba(90,138,255,0.3);padding:4px 10px;margin-bottom:16px;
+    }
+
+    /* ── TOKEN FUND ── */
+    #token{background:var(--blue-deep)}
+    #token h2{color:var(--white)}
+    #token h2 em{color:var(--blue-light)}
+    #token .section-tag{color:var(--blue-light)}
+    #token .body-text{color:rgba(255,255,255,0.52)}
+    .token-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    .token-metrics{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+    .tok-metric{
+      background:rgba(0,0,0,0.35);padding:32px 28px;
+      border:1px solid rgba(255,255,255,0.06);
+    }
+    .tok-val{
+      font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;
+      color:var(--white);line-height:1;margin-bottom:6px;
+    }
+    .tok-val em{font-style:normal;color:var(--blue-light)}
+    .tok-label{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.4)}
+    .tok-sub{font-size:0.74rem;color:rgba(255,255,255,0.25);margin-top:4px;line-height:1.5}
+
+    /* ── GOVERNMENT ── */
+    #government{background:var(--white)}
+    .gov-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    .gov-points{display:flex;flex-direction:column;gap:2px;margin-top:0}
+    .gov-point{
+      display:flex;gap:16px;align-items:flex-start;
+      padding:24px;background:var(--offwhite);
+      border-left:3px solid transparent;transition:border-color 0.2s;
+    }
+    .gov-point:hover{border-left-color:var(--blue)}
+    .gov-icon{font-size:1.4rem;flex-shrink:0}
+    .gov-point h5{
+      font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;
+      color:var(--black);margin-bottom:4px;
+    }
+    .gov-point p{font-size:0.8rem;line-height:1.6;color:var(--mid-grey)}
+
+    /* ── CONTACT ── */
+    #contact-section{background:var(--black);text-align:center}
+    #contact-section h2{color:var(--white);max-width:640px;margin:0 auto 20px}
+    #contact-section h2 em{color:var(--blue-light)}
+    .contact-sub{font-size:0.92rem;color:rgba(255,255,255,0.38);max-width:480px;margin:0 auto 52px;line-height:1.7}
+    .contact-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);
+      gap:2px;max-width:900px;margin:0 auto 52px;
+    }
+    .contact-box{
+      background:var(--charcoal);padding:32px 28px;
+    }
+    .contact-box strong{
+      display:block;font-size:0.66rem;font-weight:600;letter-spacing:0.18em;
+      text-transform:uppercase;color:var(--blue-light);margin-bottom:10px;
+    }
+    .contact-box p{font-size:0.85rem;color:rgba(255,255,255,0.55);line-height:1.6}
+    .contact-email{
+      font-size:0.9rem;color:var(--blue-light);text-decoration:none;
+      border-bottom:1px solid rgba(90,138,255,0.3);padding-bottom:2px;
+    }
+
+    /* ── TAB PAGES ── */
+    .tab-page-hero{
+      background:var(--black);padding:140px 60px 80px;
+      position:relative;overflow:hidden;
+    }
+    .tab-page-hero .hero-glow{position:absolute}
+    .tab-page-hero h1{font-size:clamp(2.5rem,5vw,4.5rem)}
+
+    .tab-section{background:var(--white);padding:80px 60px}
+    .tab-section.dark{background:var(--black-soft)}
+    .tab-section.mid{background:var(--offwhite)}
+    .tab-section h2{font-size:clamp(1.8rem,3vw,2.6rem)}
+    .tab-section.dark h2{color:var(--white)}
+    .tab-section.dark h2 em{color:var(--blue-light)}
+    .tab-section.dark .section-tag{color:var(--blue-light)}
+    .tab-section.dark .body-text{color:rgba(255,255,255,0.45)}
+
+    /* cards grid shared */
+    .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px;margin-top:44px}
+    .card{background:var(--offwhite);padding:36px 30px;border-bottom:3px solid transparent;transition:border-color 0.2s,box-shadow 0.2s}
+    .card:hover{border-bottom-color:var(--blue);box-shadow:0 4px 20px rgba(26,61,181,0.07)}
+    .card.dark-card{background:var(--charcoal);border-bottom-color:transparent}
+    .card.dark-card:hover{border-bottom-color:var(--blue-light)}
+    .card h4{font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:600;color:var(--black);margin-bottom:8px}
+    .card.dark-card h4{color:var(--white)}
+    .card p{font-size:0.82rem;line-height:1.65;color:var(--mid-grey)}
+    .card.dark-card p{color:rgba(255,255,255,0.38)}
+    .card-tag{
+      font-size:0.62rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;
+      color:var(--blue);margin-bottom:10px;display:block;
+    }
+    .dark-card .card-tag{color:var(--blue-light)}
+
+    /* events */
+    .events-list{display:flex;flex-direction:column;gap:2px;margin-top:44px}
+    .event-item{
+      display:grid;grid-template-columns:120px 1fr auto;gap:32px;
+      align-items:center;background:var(--offwhite);padding:28px 32px;
+      border-left:3px solid transparent;transition:border-color 0.2s,background 0.2s;
+    }
+    .event-item:hover{border-left-color:var(--blue);background:var(--blue-pale)}
+    .event-date{
+      font-family:'Cormorant Garant',serif;font-size:1.5rem;font-weight:600;
+      color:var(--blue);line-height:1;
+    }
+    .event-date span{display:block;font-size:0.7rem;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid-grey);margin-top:4px}
+    .event-info h4{font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--black);margin-bottom:4px}
+    .event-info p{font-size:0.8rem;color:var(--mid-grey)}
+    .event-loc{font-size:0.75rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid-grey);white-space:nowrap}
+
+    /* synopsis */
+    .synopsis-block{
+      max-width:820px;margin:0 auto;
+    }
+    .synopsis-block p{font-size:0.95rem;line-height:1.9;color:#3a4560;margin-bottom:20px}
+    .synopsis-block h3{
+      font-family:'Cormorant Garant',serif;font-size:1.6rem;font-weight:400;
+      color:var(--black);margin:44px 0 16px;padding-top:44px;
+      border-top:1px solid var(--light-grey);
+    }
+
+    /* ── FOOTER ── */
+    footer{
+      background:#05050a;padding:36px 60px;
+      display:flex;justify-content:space-between;align-items:center;
+      border-top:1px solid rgba(26,61,181,0.15);
+    }
+    .footer-brand{font-family:'Cormorant Garant',serif;font-size:1rem;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.04em}
+    .footer-brand span{color:var(--blue-light)}
+    footer p{font-size:0.7rem;color:rgba(255,255,255,0.18);max-width:500px;text-align:right;line-height:1.6}
+
+    /* ── PROJECT IMAGE BANNERS ── */
+    .proj-banner{
+      margin:-80px -60px 48px -60px;height:190px;position:relative;
+      overflow:hidden;display:flex;align-items:flex-end;padding:24px 60px;
+    }
+    .proj-banner-content{position:relative;z-index:1}
+    .proj-banner-eye{font-size:0.62rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:5px}
+    .proj-banner-title{font-family:'Cormorant Garant',serif;font-size:1.9rem;font-weight:300;color:var(--white);font-style:italic}
+
+    /* ── DEAL TEMPLATE CARDS ── */
+    .deal-section{margin-top:56px;padding-top:44px;border-top:1px solid var(--light-grey)}
+    .deal-section.ds-dark{border-top-color:rgba(255,255,255,0.08)}
+    .deal-section-lbl{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+    .deal-section-lbl::after{content:'';flex:1;height:1px;background:var(--light-grey)}
+    .deal-section.ds-dark .deal-section-lbl{color:var(--blue-light)}
+    .deal-section.ds-dark .deal-section-lbl::after{background:rgba(255,255,255,0.07)}
+    .deal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px}
+    .deal-card{padding:28px 24px;background:var(--white);border:1px solid var(--light-grey);position:relative}
+    .deal-card.dc-dk{background:rgba(0,0,0,0.25);border-color:rgba(255,255,255,0.07)}
+    .deal-badge{position:absolute;top:14px;right:14px;font-size:0.55rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:3px 8px;background:rgba(26,61,181,0.07);color:var(--blue);border:1px solid rgba(26,61,181,0.15)}
+    .deal-card.dc-dk .deal-badge{background:rgba(90,138,255,0.08);color:var(--blue-light);border-color:rgba(90,138,255,0.2)}
+    .deal-name{font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;color:var(--black);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--light-grey);padding-right:76px;line-height:1.3}
+    .deal-card.dc-dk .deal-name{color:var(--white);border-color:rgba(255,255,255,0.07)}
+    .dr{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.04)}
+    .deal-card.dc-dk .dr{border-bottom-color:rgba(255,255,255,0.04)}
+    .dr:last-child{border-bottom:none}
+    .dk{font-size:0.66rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--mid-grey)}
+    .deal-card.dc-dk .dk{color:rgba(255,255,255,0.3)}
+    .dv{font-family:'Cormorant Garant',serif;font-size:0.96rem;font-weight:600;color:var(--black)}
+    .deal-card.dc-dk .dv{color:var(--white)}
+    .dv.hi{color:var(--blue)}
+    .deal-card.dc-dk .dv.hi{color:var(--blue-light)}
+    .dv.gr{color:#1a8f5a}
+
+    /* ── CHART SECTIONS ── */
+    .chart-sec{margin-top:56px;padding:40px;background:var(--white);border:1px solid var(--light-grey)}
+    .chart-sec.cs-dk{background:rgba(0,0,0,0.28);border-color:rgba(255,255,255,0.07)}
+    .chart-sec-lbl{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue);margin-bottom:8px;display:block}
+    .chart-sec.cs-dk .chart-sec-lbl{color:var(--blue-light)}
+    .chart-sec-h{font-family:'Cormorant Garant',serif;font-size:1.35rem;font-weight:300;color:var(--black);margin-bottom:5px}
+    .chart-sec.cs-dk .chart-sec-h{color:var(--white)}
+    .chart-sec-sub{font-size:0.75rem;color:var(--mid-grey);line-height:1.55;margin-bottom:24px}
+    .chart-sec.cs-dk .chart-sec-sub{color:rgba(255,255,255,0.3)}
+    .chart-duo{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center}
+    @media(max-width:720px){.chart-duo{grid-template-columns:1fr}}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px){
+      .nav-top{padding:0 24px}
+      .tab-bar{padding:0 8px;overflow-x:auto}
+      .tab-btn{padding:12px 14px;font-size:0.66rem}
+      section,#hero,.tab-page-hero,.tab-section{padding-left:24px;padding-right:24px}
+      .mission-inner,.token-inner,.gov-inner{grid-template-columns:1fr;gap:40px}
+      .regions,.capital-grid,.proj-grid,.contact-grid,.cards-grid{grid-template-columns:1fr}
+      .hero-stats{flex-wrap:wrap}
+      .stat{flex:1 1 50%}
+      .event-item{grid-template-columns:80px 1fr;gap:16px}
+      .event-loc{display:none}
+      footer{flex-direction:column;gap:14px;padding:28px 24px}
+      footer p{text-align:center}
+    }
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-top">
+    <a href="#" class="nav-brand" onclick="showPage('home');return false">
+      <div class="nav-brand-name">Steel <span>&</span> Aire Soluciones</div>
+      <div class="nav-brand-sub">Global Capital &amp; Infrastructure</div>
+    </a>
+    <div style="display:flex;gap:12px;align-items:center">
+      <a href="login.html" class="nav-login">Client Login</a>
+      <a href="#contact-section" class="nav-cta" onclick="showPage('home')">Contact Us</a>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showPage('home')">Overview</button>
+    <button class="tab-btn" onclick="showPage('lenders')">Lenders</button>
+    <button class="tab-btn" onclick="showPage('brokers')">Brokers</button>
+    <button class="tab-btn" onclick="showPage('projects')">Project Types</button>
+    <button class="tab-btn" onclick="showPage('events')">Events</button>
+    <button class="tab-btn" onclick="showPage('synopsis')">Synopsis</button>
+    <a class="tab-btn" href="login.html">Deal Room &nearr;</a>
+  </div>
+</nav>
+
+<!-- ══════════════ HOME PAGE ══════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-glow-r"></div>
+    <canvas id="worldCanvas" class="world-dots" style="position:absolute;inset:0;width:100%;height:100%;opacity:0.15;pointer-events:none"></canvas>
+
+    <p class="hero-eyebrow">Steel &amp; Aire Soluciones</p>
+    <h1>Building wealth.<br><em>Crossing borders.</em><br>Powering the future.</h1>
+    <p class="hero-sub">A global capital and infrastructure firm deploying capital, building funds, and forging partnerships from the Pacific to the Americas — with presence on five sovereign territories.</p>
+    <div class="hero-actions">
+      <a href="#mission" class="btn-primary" onclick="showPage('home')">Our Mission</a>
+      <a href="#" class="btn-ghost" onclick="showPage('synopsis');return false">Read Synopsis</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">5<span> territories</span></div>
+        <div class="stat-label">Global Footprint</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3<span> sectors</span></div>
+        <div class="stat-label">Infrastructure Focus</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100<span>%</span></div>
+        <div class="stat-label">Tokenized Fund Target</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">∞<span></span></div>
+        <div class="stat-label">Wealth to Spread</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION -->
+  <section id="mission">
+    <div class="mission-inner">
+      <div>
+        <span class="section-tag">Our Mission</span>
+        <h2>Spreading wealth<br>and <em>abundance</em><br>across the world.</h2>
+        <div class="body-text">
+          <p>Steel &amp; Aire Soluciones exists for one purpose: to move capital where it creates the most impact. We connect institutional and private capital to transformational infrastructure projects — data centers, energy, and real assets — across the Americas and Pacific.</p>
+          <p>Our model is built on deep relationships: with lenders, with governments, with communities. Every deal we structure is a step toward a more equitable global economy.</p>
+        </div>
+      </div>
+      <div class="mission-quote">
+        "We don't just broker capital — we build the bridges that let prosperity cross borders."
+      </div>
+    </div>
+  </section>
+
+  <!-- GLOBAL PRESENCE -->
+  <section id="global">
+    <span class="section-tag">Global Presence</span>
+    <h2>Feet on the ground<br>where it <em>matters most.</em></h2>
+    <div class="regions">
+      <div class="region">
+        <div class="region-flag">🇸🇻</div>
+        <h4>El Salvador</h4>
+        <p>Active operations supporting emerging market development, digital infrastructure, and sovereign capital initiatives.</p>
+      </div>
+      <div class="region">
+        <div class="region-flag">🇪🇨</div>
+        <h4>Ecuador</h4>
+        <p>Regional hub for South American project origination, lender relationships, and cross-border capital structuring.</p>
+      </div>
+      <div class="region">
+        <div class="region-flag">🇺🇸</div>
+        <h4>United States</h4>
+        <p>Offices in Austin TX, Salt Lake City UT, and Honolulu HI — anchoring our domestic capital markets and government relations work.</p>
+      </div>
+      <div class="region">
+        <div class="region-flag">🌺</div>
+        <h4>Hawaii</h4>
+        <p>Pacific gateway office connecting US capital markets with Pacific Island partners and cross-Pacific infrastructure deals.</p>
+      </div>
+      <div class="region">
+        <div class="region-flag">🇫🇯</div>
+        <h4>Fiji</h4>
+        <p>Pacific Island infrastructure and energy development — building resilient systems for underserved communities.</p>
+      </div>
+      <div class="region">
+        <div class="region-flag">🇼🇸</div>
+        <h4>Samoa</h4>
+        <p>Community-focused development capital, renewable energy, and data infrastructure across the Samoan islands.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPITAL NETWORK -->
+  <section id="capital">
+    <span class="section-tag">Capital Network</span>
+    <h2>Connected to every<br>layer of the <em>capital stack.</em></h2>
+    <div class="capital-grid">
+      <div class="cap-card">
+        <div class="cap-icon">🏢</div>
+        <h4>Multifamily Funds</h4>
+        <p>Deep connections to institutional multifamily capital sources — including debt funds, DSCR lenders, and portfolio lenders active in emerging and established markets.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">👨‍👩‍👧‍👦</div>
+        <h4>Family Offices</h4>
+        <p>Long-standing relationships with family offices seeking direct investment in infrastructure, real assets, and tokenized vehicles with strong risk-adjusted returns.</p>
+      </div>
+      <div class="cap-card">
+        <div class="cap-icon">🏦</div>
+        <h4>Private Money Lenders</h4>
+        <p>A curated network of private and hard money lenders capable of deploying capital quickly across asset classes and geographies — including cross-border transactions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects-home">
+    <span class="section-tag">What We Build</span>
+    <h2>Infrastructure for<br>the <em>next century.</em></h2>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <span class="proj-tag">Energy</span>
+        <h3>Nuclear Energy</h3>
+        <p>We work with developers, governments, and capital partners on next-generation nuclear energy projects — from small modular reactors to full-scale plant financing — delivering reliable, clean baseload power to underserved regions.</p>
+      </div>
+      <div class="proj-card">
+        <span class="proj-tag">Technology</span>
+        <h3>Data Centers</h3>
+        <p>Originating and structuring capital for hyperscale and edge data center development across the Americas and Pacific. We connect sovereign and private capital to the digital infrastructure backbone the world needs.</p>
+      </div>
+      <div class="proj-card">
+        <span class="proj-tag">Finance</span>
+        <h3>Tokenized Fund</h3>
+        <p>Building the first fully tokenized investment fund in our network — bringing blockchain-native capital formation to real-world assets and opening global investment access to accredited and institutional participants.</p>
+      </div>
+      <div class="proj-card">
+        <span class="proj-tag">Real Assets</span>
+        <h3>Multifamily &amp; Real Estate</h3>
+        <p>Placing debt and equity capital across residential and commercial real estate — with a focus on markets where development creates measurable community wealth and long-term economic stability.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOKENIZED FUND -->
+  <section id="token">
+    <div class="token-inner">
+      <div>
+        <span class="section-tag">The Fund</span>
+        <h2>A fully <em>tokenized</em><br>investment fund.</h2>
+        <div class="body-text">
+          <p>Steel &amp; Aire is building a proprietary investment fund that is fully tokenized on-chain — enabling transparent, fractionalized, and globally accessible participation in real-world infrastructure assets.</p>
+          <p>This is not a crypto fund. It is a real-asset vehicle — data centers, energy, real estate — that uses blockchain technology to expand who can access institutional-grade returns. Accredited investors and institutional partners may apply to participate.</p>
+        </div>
+        <br/><br/>
+        <a href="mailto:admin@mpeakp.com" class="btn-primary">Express Interest</a>
+      </div>
+      <div class="token-metrics">
+        <div class="tok-metric">
+          <div class="tok-val">100<em>%</em></div>
+          <div class="tok-label">On-Chain Tokenized</div>
+          <div class="tok-sub">Full transparency and fractional ownership</div>
+        </div>
+        <div class="tok-metric">
+          <div class="tok-val">Real<em>-World</em></div>
+          <div class="tok-label">Asset Backed</div>
+          <div class="tok-sub">Infrastructure, energy, and real estate collateral</div>
+        </div>
+        <div class="tok-metric">
+          <div class="tok-val">Global<em>+</em></div>
+          <div class="tok-label">Investor Access</div>
+          <div class="tok-sub">Open to international accredited investors</div>
+        </div>
+        <div class="tok-metric">
+          <div class="tok-val">Multi<em>-asset</em></div>
+          <div class="tok-label">Diversified Portfolio</div>
+          <div class="tok-sub">Data centers, nuclear, multifamily, and more</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portfolio Allocation Chart -->
+    <div class="chart-sec cs-dk" style="margin-top:56px">
+      <div class="chart-duo">
+        <div style="width:240px;height:240px;flex-shrink:0">
+          <canvas id="allocChart"></canvas>
+        </div>
+        <div>
+          <span class="chart-sec-lbl">Target Portfolio Allocation</span>
+          <h3 class="chart-sec-h">How the fund is <em style="font-style:italic;color:var(--blue-light)">deployed</em></h3>
+          <p class="chart-sec-sub">Real-world infrastructure assets weighted by risk-adjusted return and development timeline.</p>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px"><span style="width:12px;height:12px;border-radius:50%;background:#1A3DB5;flex-shrink:0"></span><span style="font-size:0.78rem;color:rgba(255,255,255,0.6)"><strong style="color:var(--white)">35%</strong> — Nuclear Energy</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="width:12px;height:12px;border-radius:50%;background:#5a8aff;flex-shrink:0"></span><span style="font-size:0.78rem;color:rgba(255,255,255,0.6)"><strong style="color:var(--white)">30%</strong> — Data Centers</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="width:12px;height:12px;border-radius:50%;background:#2952cc;flex-shrink:0"></span><span style="font-size:0.78rem;color:rgba(255,255,255,0.6)"><strong style="color:var(--white)">25%</strong> — Multifamily Real Estate</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.18);flex-shrink:0"></span><span style="font-size:0.78rem;color:rgba(255,255,255,0.6)"><strong style="color:var(--white)">10%</strong> — Liquid Reserve</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GOVERNMENT -->
+  <section id="government">
+    <div class="gov-inner">
+      <div>
+        <span class="section-tag">Government &amp; Diplomacy</span>
+        <h2>Working with<br>governments and <em>diplomats.</em></h2>
+        <div class="body-text">
+          <p>Many of our most important projects require more than capital — they require trust, sovereignty, and alignment with national interests. Steel &amp; Aire works closely with government agencies, ministries, and diplomatic contacts across our operating regions to ensure that every project we bring forward has the sovereign backing it needs to succeed.</p>
+        </div>
+      </div>
+      <div class="gov-points">
+        <div class="gov-point">
+          <div class="gov-icon">🏛️</div>
+          <div>
+            <h5>Sovereign Relationships</h5>
+            <p>Direct engagement with government ministries and economic development agencies in El Salvador, Ecuador, Fiji, Samoa, and the US.</p>
+          </div>
+        </div>
+        <div class="gov-point">
+          <div class="gov-icon">🤝</div>
+          <div>
+            <h5>Diplomatic Networks</h5>
+            <p>Active relationships with diplomatic representatives who facilitate cross-border capital flows, regulatory alignment, and project approvals.</p>
+          </div>
+        </div>
+        <div class="gov-point">
+          <div class="gov-icon">📜</div>
+          <div>
+            <h5>Public-Private Structuring</h5>
+            <p>Expertise in structuring public-private partnerships that align government mandates with institutional investment objectives.</p>
+          </div>
+        </div>
+        <div class="gov-point">
+          <div class="gov-icon">🌐</div>
+          <div>
+            <h5>Policy Alignment</h5>
+            <p>We ensure every project we advance is compliant with local regulations and, wherever possible, advances national infrastructure goals.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact-section">
+    <h2>Ready to build<br>something <em>world-class?</em></h2>
+    <p class="contact-sub">Whether you're a lender, investor, government entity, or developer — we want to hear from you.</p>
+    <div class="contact-grid">
+      <div class="contact-box">
+        <strong>Email</strong>
+        <p><a href="mailto:admin@mpeakp.com" class="contact-email">admin@mpeakp.com</a></p>
+      </div>
+      <div class="contact-box">
+        <strong>US Offices</strong>
+        <p>Austin, Texas<br>Salt Lake City, Utah<br>Honolulu, Hawaii</p>
+      </div>
+      <div class="contact-box">
+        <strong>Global Operations</strong>
+        <p>El Salvador · Ecuador<br>Fiji · Samoa<br>Available Worldwide</p>
+      </div>
+    </div>
+    <a href="mailto:admin@mpeakp.com" class="btn-primary">Get In Touch</a>
+  </section>
+
+</div><!-- end home -->
+
+<!-- ══════════════ LENDERS PAGE ══════════════ -->
+<div id="page-lenders" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <p class="hero-eyebrow">Capital Partners</p>
+    <h1>Our <em>Lender</em> Network</h1>
+    <p class="hero-sub" style="color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.8;max-width:540px;margin-top:16px">We maintain active relationships across every tier of the lending ecosystem — from boutique private lenders to institutional debt funds with global mandates.</p>
+  </div>
+
+  <div class="tab-section mid">
+    <span class="section-tag">Lender Categories</span>
+    <h2>Who we work with</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <span class="card-tag">Debt Capital</span>
+        <h4>Multifamily Debt Funds</h4>
+        <p>Institutional funds specializing in multifamily bridge, DSCR, and permanent debt — active across the US and select international markets.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Private Credit</span>
+        <h4>Private Money Lenders</h4>
+        <p>Asset-backed lenders capable of fast deployment on residential, commercial, and infrastructure collateral. Relationships spanning the US, Latin America, and Pacific.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Ultra-High Net Worth</span>
+        <h4>Family Offices</h4>
+        <p>Multi-generational wealth vehicles seeking direct lending and equity co-investment. We match family office mandates to deals that fit their return profile and timeline.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Infrastructure</span>
+        <h4>Sovereign &amp; Development Capital</h4>
+        <p>Development finance institutions and sovereign wealth vehicles engaged in energy, data, and community infrastructure across our operating territories.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Bridge &amp; Hard Money</span>
+        <h4>Hard Money &amp; Bridge Lenders</h4>
+        <p>Short-term capital partners who move fast. We work with hard money lenders across the US who can close in days, not weeks, for time-sensitive acquisitions and construction.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Digital Finance</span>
+        <h4>Crypto &amp; Tokenized Credit</h4>
+        <p>Emerging lenders in the digital asset space providing on-chain credit facilities secured by real-world assets — aligned with our tokenized fund strategy.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-section dark">
+    <span class="section-tag">For Lenders</span>
+    <h2 style="color:var(--white)">Why partner with <em style="color:var(--blue-light)">Steel &amp; Aire?</em></h2>
+    <div class="cards-grid" style="margin-top:44px">
+      <div class="card dark-card">
+        <h4>Pre-Packaged Deals</h4>
+        <p>Every deal we present is fully underwritten and packaged before it hits your desk — minimizing back-and-forth and accelerating your decision process.</p>
+      </div>
+      <div class="card dark-card">
+        <h4>Global Deal Flow</h4>
+        <p>Access deal flow from six territories across three continents. We bring you opportunities you won't see through domestic channels alone.</p>
+      </div>
+      <div class="card dark-card">
+        <h4>Government-Backed Projects</h4>
+        <p>Many projects carry sovereign endorsement or public-private partnership structures that significantly de-risk the lending position.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Capital Stack + Deal Types Chart -->
+  <div class="tab-section" style="background:var(--offwhite)">
+    <span class="section-tag">Capital Structure</span>
+    <h2>Understanding the <em>capital stack</em></h2>
+    <p class="body-text" style="max-width:620px;margin-bottom:0">Where lenders sit in our typical deal structures — and what that means for risk, return, and priority of repayment.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:44px">
+      <!-- Capital Stack Visual -->
+      <div style="background:var(--white);border:1px solid var(--light-grey);padding:36px">
+        <h4 style="font-family:'Cormorant Garant',serif;font-size:1.2rem;color:var(--black);margin-bottom:24px">Typical Capital Stack</h4>
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <div style="background:#091a5e;color:white;padding:16px 20px;display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:3px">Common Equity</div><div style="font-family:'Cormorant Garant',serif;font-size:1rem;font-weight:600">Developer / Fund</div></div>
+            <div style="text-align:right"><div style="font-family:'Cormorant Garant',serif;font-size:1.4rem;font-weight:600;color:#5a8aff">15%</div><div style="font-size:0.62rem;color:rgba(255,255,255,0.4)">Highest risk / return</div></div>
+          </div>
+          <div style="background:#1A3DB5;color:white;padding:16px 20px;display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:3px">Preferred Equity</div><div style="font-family:'Cormorant Garant',serif;font-size:1rem;font-weight:600">Family Offices / HNW</div></div>
+            <div style="text-align:right"><div style="font-family:'Cormorant Garant',serif;font-size:1.4rem;font-weight:600;color:#a8c4ff">10%</div><div style="font-size:0.62rem;color:rgba(255,255,255,0.4)">12–18% pref return</div></div>
+          </div>
+          <div style="background:#2952cc;color:white;padding:16px 20px;display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:3px">Mezzanine Debt</div><div style="font-family:'Cormorant Garant',serif;font-size:1rem;font-weight:600">Debt Funds / Bridge</div></div>
+            <div style="text-align:right"><div style="font-family:'Cormorant Garant',serif;font-size:1.4rem;font-weight:600;color:#c8daff">15%</div><div style="font-size:0.62rem;color:rgba(255,255,255,0.4)">9–14% coupon</div></div>
+          </div>
+          <div style="background:var(--blue-light);color:var(--black-soft);padding:20px 20px;display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(0,0,0,0.45);margin-bottom:3px">Senior Debt</div><div style="font-family:'Cormorant Garant',serif;font-size:1rem;font-weight:600">Institutional / Private</div></div>
+            <div style="text-align:right"><div style="font-family:'Cormorant Garant',serif;font-size:1.6rem;font-weight:600;color:#091a5e">60%</div><div style="font-size:0.62rem;color:rgba(0,0,0,0.4)">First lien / lowest risk</div></div>
+          </div>
+        </div>
+        <p style="font-size:0.72rem;color:var(--mid-grey);margin-top:14px;line-height:1.6">Percentages shown are illustrative for a typical infrastructure deal. Actual structures vary by asset class and transaction.</p>
+      </div>
+      <!-- Deal Type Chart -->
+      <div style="background:var(--white);border:1px solid var(--light-grey);padding:36px">
+        <h4 style="font-family:'Cormorant Garant',serif;font-size:1.2rem;color:var(--black);margin-bottom:6px">Deal Flow by Asset Class</h4>
+        <p style="font-size:0.74rem;color:var(--mid-grey);margin-bottom:24px;line-height:1.5">Approximate distribution of active deal pipeline by sector.</p>
+        <div style="position:relative;height:220px">
+          <canvas id="dealFlowChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-section" style="background:var(--white);text-align:center;padding:80px 60px">
+    <h2>Interested in lending with us?</h2>
+    <p style="font-size:0.9rem;color:var(--mid-grey);margin:16px auto 36px;max-width:480px;line-height:1.7">Reach out to discuss your lending criteria. We'll match you to deals that fit your mandate.</p>
+    <a href="mailto:admin@mpeakp.com" class="btn-primary">Contact Our Capital Team</a>
+  </div>
+</div>
+
+<!-- ══════════════ BROKERS PAGE ══════════════ -->
+<div id="page-brokers" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <p class="hero-eyebrow">Broker Partners</p>
+    <h1>We <em>elevate</em><br>our broker partners.</h1>
+    <p class="hero-sub" style="color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.8;max-width:540px;margin-top:16px">Steel &amp; Aire works with a select network of brokers who share our commitment to creative capital solutions and cross-border deal-making.</p>
+  </div>
+
+  <div class="tab-section mid">
+    <span class="section-tag">Broker Program</span>
+    <h2>Built for <em>serious brokers.</em></h2>
+    <div class="cards-grid">
+      <div class="card">
+        <span class="card-tag">Referrals</span>
+        <h4>Referral Partnerships</h4>
+        <p>Send us your deals. We handle underwriting, lender placement, and closing — you earn a referral fee at closing with no additional work required.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Co-Brokerage</span>
+        <h4>Co-Broker Agreements</h4>
+        <p>Work alongside our team on complex transactions. We bring the capital relationships; you bring the deal and borrower relationship. Splits are transparent and agreed upfront.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">International</span>
+        <h4>Cross-Border Deals</h4>
+        <p>We specialize in transactions that cross jurisdictions — a capability most brokers don't have. If you have a deal that needs international capital or sovereign involvement, we're your partner.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Infrastructure</span>
+        <h4>Large-Scale Projects</h4>
+        <p>Data centers, energy, and infrastructure deals require specialized capital. We provide brokers access to lenders and funds that are specifically mandated for these asset classes.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-section dark">
+    <span class="section-tag">Broker Benefits</span>
+    <h2 style="color:var(--white)">What you get when you<br><em style="color:var(--blue-light)">work with us.</em></h2>
+    <div class="cards-grid">
+      <div class="card dark-card">
+        <h4>Access to 200+ Lenders</h4>
+        <p>Tap our curated network of private lenders, family offices, debt funds, and sovereign capital — without building those relationships yourself.</p>
+      </div>
+      <div class="card dark-card">
+        <h4>Government-Level Relationships</h4>
+        <p>For the right deals, we can involve diplomatic and government connections that unlock project approvals and sovereign guarantees.</p>
+      </div>
+      <div class="card dark-card">
+        <h4>Tokenized Deal Access</h4>
+        <p>Be among the first brokers to place deals into our fully tokenized fund — a first-mover advantage in a market that's just emerging.</p>
+      </div>
+      <div class="card dark-card">
+        <h4>Global Deal Flow</h4>
+        <p>Collaborate on deals originating in El Salvador, Ecuador, Fiji, and Samoa — territories where few US-based brokers have established relationships.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-section" style="background:var(--white);text-align:center;padding:80px 60px">
+    <h2>Ready to become a broker partner?</h2>
+    <p style="font-size:0.9rem;color:var(--mid-grey);margin:16px auto 36px;max-width:480px;line-height:1.7">Tell us about the types of deals you work on. We'll let you know if there's a fit.</p>
+    <a href="mailto:admin@mpeakp.com" class="btn-primary">Connect With Us</a>
+  </div>
+</div>
+
+<!-- ══════════════ PROJECTS PAGE ══════════════ -->
+<div id="page-projects" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <p class="hero-eyebrow">Project Types</p>
+    <h1>Infrastructure for<br>a <em>better world.</em></h1>
+    <p class="hero-sub" style="color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.8;max-width:540px;margin-top:16px">We finance and develop projects that create lasting economic value — across energy, technology, housing, and digital finance.</p>
+  </div>
+
+  <div class="tab-section mid">
+    <!-- Nuclear Image Banner -->
+    <div class="proj-banner" style="background:linear-gradient(135deg,#04060e 0%,#0D2680 55%,#1A3DB5 100%)">
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.1" viewBox="0 0 900 190" preserveAspectRatio="xMidYMid slice">
+        <circle cx="750" cy="95" r="130" fill="none" stroke="white" stroke-width="1"/>
+        <circle cx="750" cy="95" r="90" fill="none" stroke="white" stroke-width="1"/>
+        <circle cx="750" cy="95" r="50" fill="none" stroke="white" stroke-width="1"/>
+        <circle cx="750" cy="95" r="15" fill="white" opacity="0.4"/>
+        <ellipse cx="750" cy="95" rx="130" ry="50" fill="none" stroke="white" stroke-width="0.6" transform="rotate(30 750 95)"/>
+        <ellipse cx="750" cy="95" rx="130" ry="50" fill="none" stroke="white" stroke-width="0.6" transform="rotate(-30 750 95)"/>
+      </svg>
+      <div class="proj-banner-content">
+        <div class="proj-banner-eye">Energy Sector</div>
+        <div class="proj-banner-title">Nuclear Energy</div>
+      </div>
+    </div>
+    <span class="section-tag">Energy</span>
+    <h2><em>Nuclear</em> Energy</h2>
+    <div class="body-text" style="max-width:720px">
+      <p>Steel &amp; Aire is actively involved in the financing and development of nuclear energy projects — from small modular reactors (SMRs) to full-scale plant development. We believe nuclear is the only baseload energy source capable of delivering reliable, carbon-free power at the scale the world needs.</p>
+      <p>We work with developers, governments, and institutional capital partners to structure debt, equity, and hybrid financing for nuclear assets across North America, Latin America, and the Pacific Islands.</p>
+    </div>
+    <div class="cards-grid" style="margin-top:40px">
+      <div class="card">
+        <span class="card-tag">Development Stage</span>
+        <h4>Small Modular Reactors</h4>
+        <p>Next-generation SMR financing for remote communities and island grids — particularly relevant in Fiji, Samoa, and Pacific territories.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Infrastructure</span>
+        <h4>Grid-Scale Nuclear</h4>
+        <p>Large-scale plant development and refurbishment financing in partnership with government energy ministries and institutional investors.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Advisory</span>
+        <h4>Energy Policy &amp; Structuring</h4>
+        <p>Working with governments to develop the regulatory and capital frameworks needed to bring nuclear projects to financial close.</p>
+      </div>
+    </div>
+    <!-- Nuclear Sample Deal Templates -->
+    <div class="deal-section">
+      <div class="deal-section-lbl">Sample Deal Templates</div>
+      <div class="deal-grid">
+        <div class="deal-card">
+          <div class="deal-badge">Example</div>
+          <div class="deal-name">SMR — Pacific Island Grid</div>
+          <div class="dr"><span class="dk">Project Size</span><span class="dv hi">$320M</span></div>
+          <div class="dr"><span class="dk">Senior Debt</span><span class="dv">$200M (63%)</span></div>
+          <div class="dr"><span class="dk">Equity</span><span class="dv">$120M</span></div>
+          <div class="dr"><span class="dk">Term</span><span class="dv">25 years</span></div>
+          <div class="dr"><span class="dk">Gov. Sponsor</span><span class="dv gr">Yes — Fiji MoE</span></div>
+          <div class="dr"><span class="dk">Target IRR</span><span class="dv hi">14–18%</span></div>
+        </div>
+        <div class="deal-card">
+          <div class="deal-badge">Example</div>
+          <div class="deal-name">Grid-Scale Plant — Latin America</div>
+          <div class="dr"><span class="dk">Project Size</span><span class="dv hi">$1.2B</span></div>
+          <div class="dr"><span class="dk">Senior Debt</span><span class="dv">$780M (65%)</span></div>
+          <div class="dr"><span class="dk">Mezzanine</span><span class="dv">$180M</span></div>
+          <div class="dr"><span class="dk">Term</span><span class="dv">30 years</span></div>
+          <div class="dr"><span class="dk">Gov. Sponsor</span><span class="dv gr">Yes — Sovereign</span></div>
+          <div class="dr"><span class="dk">Target IRR</span><span class="dv hi">12–16%</span></div>
+        </div>
+        <div class="deal-card">
+          <div class="deal-badge">Example</div>
+          <div class="deal-name">Nuclear + Data Center Co-Location</div>
+          <div class="dr"><span class="dk">Project Size</span><span class="dv hi">$480M</span></div>
+          <div class="dr"><span class="dk">Debt Facility</span><span class="dv">$300M</span></div>
+          <div class="dr"><span class="dk">Fund Co-Invest</span><span class="dv">$180M</span></div>
+          <div class="dr"><span class="dk">Power Offtake</span><span class="dv gr">20-yr contract</span></div>
+          <div class="dr"><span class="dk">Structure</span><span class="dv">PPP</span></div>
+          <div class="dr"><span class="dk">Target IRR</span><span class="dv hi">17–22%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-section dark">
+    <!-- Data Center Image Banner -->
+    <div class="proj-banner" style="background:linear-gradient(135deg,#030508 0%,#04091f 50%,#091a5e 100%)">
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.1" viewBox="0 0 900 190" preserveAspectRatio="xMidYMid slice">
+        <g transform="translate(580,15)">
+          <rect x="0" y="0" width="280" height="22" fill="none" stroke="white" stroke-width="0.8"/>
+          <rect x="0" y="27" width="280" height="22" fill="none" stroke="white" stroke-width="0.8"/>
+          <rect x="0" y="54" width="280" height="22" fill="none" stroke="white" stroke-width="0.8"/>
+          <rect x="0" y="81" width="280" height="22" fill="none" stroke="white" stroke-width="0.8"/>
+          <rect x="0" y="108" width="280" height="22" fill="none" stroke="white" stroke-width="0.8"/>
+          <rect x="0" y="135" width="280" height="22" fill="none" stroke="white" stroke-width="0.8"/>
+          <rect x="240" y="3" width="12" height="16" fill="white" opacity="0.3"/>
+          <rect x="240" y="30" width="12" height="16" fill="white" opacity="0.3"/>
+          <rect x="240" y="57" width="12" height="16" fill="white" opacity="0.2"/>
+          <rect x="240" y="84" width="12" height="16" fill="white" opacity="0.3"/>
+          <rect x="240" y="111" width="12" height="16" fill="white" opacity="0.15"/>
+          <rect x="240" y="138" width="12" height="16" fill="white" opacity="0.3"/>
+        </g>
+      </svg>
+      <div class="proj-banner-content">
+        <div class="proj-banner-eye">Technology Sector</div>
+        <div class="proj-banner-title">Data Centers</div>
+      </div>
+    </div>
+    <span class="section-tag">Technology</span>
+    <h2 style="color:var(--white)"><em style="color:var(--blue-light)">Data Center</em> Development</h2>
+    <div class="body-text" style="color:rgba(255,255,255,0.45);max-width:720px">
+      <p>The world's demand for data infrastructure is accelerating. Steel &amp; Aire finances hyperscale, colocation, and edge data centers across the Americas and Pacific — connecting developers with the debt and equity capital needed to build.</p>
+    </div>
+    <div class="cards-grid" style="margin-top:40px">
+      <div class="card dark-card">
+        <span class="card-tag">Scale</span>
+        <h4>Hyperscale Facilities</h4>
+        <p>Large-scale data center campuses serving cloud providers and enterprises — requiring $100M+ capital structures involving debt, equity, and infrastructure funds.</p>
+      </div>
+      <div class="card dark-card">
+        <span class="card-tag">Pacific</span>
+        <h4>Edge &amp; Island Infrastructure</h4>
+        <p>Smaller, resilient data facilities for Pacific Island communities and emerging markets — bringing digital connectivity to underserved populations.</p>
+      </div>
+      <div class="card dark-card">
+        <span class="card-tag">Power</span>
+        <h4>Powered by Nuclear</h4>
+        <p>Where possible, we co-locate data centers with nuclear energy projects — creating vertically integrated, low-carbon compute infrastructure.</p>
+      </div>
+    </div>
+    <!-- Data Center Sample Deal Templates -->
+    <div class="deal-section ds-dark">
+      <div class="deal-section-lbl">Sample Deal Templates</div>
+      <div class="deal-grid">
+        <div class="deal-card dc-dk">
+          <div class="deal-badge">Example</div>
+          <div class="deal-name">Hyperscale Campus — El Salvador</div>
+          <div class="dr"><span class="dk">Total Cost</span><span class="dv hi">$220M</span></div>
+          <div class="dr"><span class="dk">Senior Debt</span><span class="dv">$143M (65%)</span></div>
+          <div class="dr"><span class="dk">Equity</span><span class="dv">$77M</span></div>
+          <div class="dr"><span class="dk">Lease Term</span><span class="dv gr">15-yr NNN</span></div>
+          <div class="dr"><span class="dk">Stabilized Cap Rate</span><span class="dv">6.8%</span></div>
+          <div class="dr"><span class="dk">Target IRR</span><span class="dv hi">18–24%</span></div>
+        </div>
+        <div class="deal-card dc-dk">
+          <div class="deal-badge">Example</div>
+          <div class="deal-name">Edge Facility — Pacific Islands</div>
+          <div class="dr"><span class="dk">Total Cost</span><span class="dv hi">$28M</span></div>
+          <div class="dr"><span class="dk">Senior Debt</span><span class="dv">$18M (64%)</span></div>
+          <div class="dr"><span class="dk">Equity</span><span class="dv">$10M</span></div>
+          <div class="dr"><span class="dk">Power Source</span><span class="dv gr">SMR / Solar</span></div>
+          <div class="dr"><span class="dk">Tenant</span><span class="dv">Govt. + Telco</span></div>
+          <div class="dr"><span class="dk">Target IRR</span><span class="dv hi">16–20%</span></div>
+        </div>
+        <div class="deal-card dc-dk">
+          <div class="deal-badge">Example</div>
+          <div class="deal-name">Colocation Facility — Austin, TX</div>
+          <div class="dr"><span class="dk">Total Cost</span><span class="dv hi">$85M</span></div>
+          <div class="dr"><span class="dk">Construction Loan</span><span class="dv">$60M</span></div>
+          <div class="dr"><span class="dk">Fund Co-Invest</span><span class="dv">$25M</span></div>
+          <div class="dr"><span class="dk">Pre-leased</span><span class="dv gr">70% at close</span></div>
+          <div class="dr"><span class="dk">Power Capacity</span><span class="dv">40 MW</span></div>
+          <div class="dr"><span class="dk">Target IRR</span><span class="dv hi">15–19%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-section mid">
+    <!-- Multifamily Image Banner -->
+    <div class="proj-banner" style="background:linear-gradient(135deg,#0D2680 0%,#2952cc 60%,#5a8aff 100%)">
+      <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.1" viewBox="0 0 900 190" preserveAspectRatio="xMidYMid slice">
+        <rect x="560" y="40" width="65" height="150" fill="white"/>
+        <rect x="560" y="55" width="65" height="135" fill="none" stroke="rgba(9,26,94,0.8)" stroke-width="1"/>
+        <line x1="592" y1="40" x2="592" y2="190" stroke="rgba(9,26,94,0.6)" stroke-width="0.8"/>
+        <rect x="634" y="70" width="90" height="120" fill="white" opacity="0.85"/>
+        <rect x="634" y="85" width="90" height="105" fill="none" stroke="rgba(9,26,94,0.8)" stroke-width="1"/>
+        <line x1="679" y1="70" x2="679" y2="190" stroke="rgba(9,26,94,0.6)" stroke-width="0.8"/>
+        <rect x="733" y="50" width="70" height="140" fill="white" opacity="0.9"/>
+        <rect x="733" y="65" width="70" height="125" fill="none" stroke="rgba(9,26,94,0.8)" stroke-width="1"/>
+        <line x1="768" y1="50" x2="768" y2="190" stroke="rgba(9,26,94,0.6)" stroke-width="0.8"/>
+        <rect x="812" y="80" width="88" height="110" fill="white" opacity="0.7"/>
+        <line x1="856" y1="80" x2="856" y2="190" stroke="rgba(9,26,94,0.6)" stroke-width="0.8"/>
+      </svg>
+      <div class="proj-banner-content">
+        <div class="proj-banner-eye">Real Assets</div>
+        <div class="proj-banner-title">Multifamily &amp; Real Estate</div>
+      </div>
+    </div>
+    <span class="section-tag">Real Assets</span>
+    <h2>Multifamily &amp; <em>Real Estate</em></h2>
+    <div class="cards-grid">
+      <div class="card">
+        <span class="card-tag">Residential</span>
+        <h4>Multifamily Development</h4>
+        <p>Originating debt and equity for multifamily housing — with a focus on affordable and workforce housing in markets where supply is critically short.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Portfolio</span>
+        <h4>Portfolio Lending</h4>
+        <p>DSCR, blanket loans, and portfolio refinancing for investors holding multiple properties — both domestic and international.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Bridge</span>
+        <h4>Bridge &amp; Construction</h4>
+        <p>Short-term capital for acquisition, renovation, and new construction — leveraging our hard money and private lender network for fast deployment.</p>
+      </div>
+    </div>
+    <!-- Multifamily Sample Deal Templates -->
+    <div class="deal-section">
+      <div class="deal-section-lbl">Sample Deal Templates</div>
+      <div class="deal-grid">
+        <div class="deal-card">
+          <div class="deal-badge">Example</div>
+          <div class="deal-name">200-Unit Workforce Housing</div>
+          <div class="dr"><span class="dk">Acq. + Reno</span><span class="dv hi">$28M</span></div>
+          <div class="dr"><span class="dk">Loan Amount</span><span class="dv">$21M (75% LTV)</span></div>
+          <div class="dr"><span class="dk">Rate</span><span class="dv">SOFR + 3.25%</span></div>
+          <div class="dr"><span class="dk">DSCR</span><span class="dv gr">1.32</span></div>
+          <div class="dr"><span class="dk">Location</span><span class="dv">Salt Lake City, UT</span></div>
+          <div class="dr"><span class="dk">Target IRR</span><span class="dv hi">11–15%</span></div>
+        </div>
+        <div class="deal-card">
+          <div class="deal-badge">Example</div>
+          <div class="deal-name">DSCR Portfolio Refi — 12 Properties</div>
+          <div class="dr"><span class="dk">Portfolio Value</span><span class="dv hi">$14M</span></div>
+          <div class="dr"><span class="dk">Loan Amount</span><span class="dv">$9.8M (70% LTV)</span></div>
+          <div class="dr"><span class="dk">Rate</span><span class="dv">7.25% Fixed</span></div>
+          <div class="dr"><span class="dk">DSCR</span><span class="dv gr">1.28</span></div>
+          <div class="dr"><span class="dk">Term</span><span class="dv">30 yr / 5 yr ARM</span></div>
+          <div class="dr"><span class="dk">Cash-Out</span><span class="dv hi">$2.1M</span></div>
+        </div>
+        <div class="deal-card">
+          <div class="deal-badge">Example</div>
+          <div class="deal-name">New Construction — Pacific Islands</div>
+          <div class="dr"><span class="dk">Build Cost</span><span class="dv hi">$8.5M</span></div>
+          <div class="dr"><span class="dk">Construction Loan</span><span class="dv">$6.4M (75%)</span></div>
+          <div class="dr"><span class="dk">Rate</span><span class="dv">10.5% I/O</span></div>
+          <div class="dr"><span class="dk">Units</span><span class="dv">48 units</span></div>
+          <div class="dr"><span class="dk">Term</span><span class="dv">18 months</span></div>
+          <div class="dr"><span class="dk">Target IRR</span><span class="dv hi">13–17%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Returns Comparison Chart -->
+  <div class="tab-section" style="background:var(--offwhite)">
+    <span class="section-tag">Performance</span>
+    <h2>How we <em>stack up</em></h2>
+    <p class="body-text" style="max-width:600px;margin-bottom:0">Target returns across Steel &amp; Aire asset classes compared to traditional benchmarks — illustrative projections, not a guarantee.</p>
+    <div class="chart-sec" style="margin-top:40px">
+      <span class="chart-sec-lbl">Target IRR Comparison</span>
+      <h3 class="chart-sec-h">Asset class return targets vs. benchmarks</h3>
+      <p class="chart-sec-sub">Based on internal underwriting and market comps. Actual returns may vary. All figures represent gross target IRR before fees.</p>
+      <div style="position:relative;height:320px">
+        <canvas id="returnsChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-section" style="background:var(--black);text-align:center;padding:80px 60px">
+    <h2 style="color:var(--white);max-width:600px;margin:0 auto 20px">Have a project that needs capital?</h2>
+    <p style="font-size:0.9rem;color:rgba(255,255,255,0.38);margin:0 auto 36px;max-width:480px;line-height:1.7">Tell us what you're building. We'll tell you how to fund it.</p>
+    <a href="mailto:admin@mpeakp.com" class="btn-primary">Submit Your Project</a>
+  </div>
+</div>
+
+<!-- ══════════════ EVENTS PAGE ══════════════ -->
+<div id="page-events" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <p class="hero-eyebrow">Events &amp; Gatherings</p>
+    <h1>Where <em>capital</em><br>meets vision.</h1>
+    <p class="hero-sub" style="color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.8;max-width:540px;margin-top:16px">Steel &amp; Aire hosts and participates in events that bring together investors, government leaders, and infrastructure developers across our global network.</p>
+  </div>
+
+  <div class="tab-section mid">
+    <span class="section-tag">Upcoming Events</span>
+    <h2>On the <em>calendar.</em></h2>
+    <div class="events-list">
+      <div class="event-item">
+        <div class="event-date">AUG<span>2026</span></div>
+        <div class="event-info">
+          <h4>Pacific Infrastructure Summit</h4>
+          <p>Bringing together capital partners, government ministers, and developers to explore data center and energy opportunities across Fiji and Samoa.</p>
+        </div>
+        <div class="event-loc">Honolulu, HI</div>
+      </div>
+      <div class="event-item">
+        <div class="event-date">SEP<span>2026</span></div>
+        <div class="event-info">
+          <h4>Tokenized Fund Investor Briefing</h4>
+          <p>Private presentation of the Steel &amp; Aire tokenized fund structure for accredited and institutional investors. Registration required.</p>
+        </div>
+        <div class="event-loc">Austin, TX</div>
+      </div>
+      <div class="event-item">
+        <div class="event-date">OCT<span>2026</span></div>
+        <div class="event-info">
+          <h4>Latin America Capital Forum</h4>
+          <p>Hosted in partnership with regional government partners in El Salvador and Ecuador — focused on cross-border infrastructure investment and sovereign capital.</p>
+        </div>
+        <div class="event-loc">San Salvador</div>
+      </div>
+      <div class="event-item">
+        <div class="event-date">NOV<span>2026</span></div>
+        <div class="event-info">
+          <h4>Nuclear Energy &amp; Data Center Deal Summit</h4>
+          <p>Closed-door summit connecting nuclear project developers with institutional lenders and government energy ministries. Invitation only.</p>
+        </div>
+        <div class="event-loc">Salt Lake City, UT</div>
+      </div>
+      <div class="event-item">
+        <div class="event-date">Q1<span>2027</span></div>
+        <div class="event-info">
+          <h4>Global Wealth &amp; Abundance Conference</h4>
+          <p>Our flagship annual gathering — bringing together our full network across all six territories for a multi-day forum on capital, infrastructure, and mission.</p>
+        </div>
+        <div class="event-loc">Apia, Samoa</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-section" style="background:var(--white);padding:80px 60px">
+    <span class="section-tag">Past Engagements</span>
+    <h2>Where we've <em>been.</em></h2>
+    <div class="cards-grid">
+      <div class="card">
+        <span class="card-tag">Government</span>
+        <h4>Diplomatic Roundtables</h4>
+        <p>Participation in government-hosted diplomatic roundtables in El Salvador and Ecuador focused on foreign direct investment and energy policy.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Finance</span>
+        <h4>Private Equity Conferences</h4>
+        <p>Attendance and presentation at US-based private equity and real estate capital conferences, including multifamily and infrastructure-focused events.</p>
+      </div>
+      <div class="card">
+        <span class="card-tag">Community</span>
+        <h4>Pacific Island Development Forums</h4>
+        <p>Working sessions with community leaders and regional government representatives in Fiji and Samoa on infrastructure needs and capital solutions.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-section" style="background:var(--black);text-align:center;padding:72px 60px">
+    <h2 style="color:var(--white)">Want to attend or <em style="color:var(--blue-light)">co-host an event?</em></h2>
+    <p style="font-size:0.9rem;color:rgba(255,255,255,0.38);margin:16px auto 36px;max-width:440px;line-height:1.7">We regularly co-host events with government and capital partners. Reach out to explore collaboration.</p>
+    <a href="mailto:admin@mpeakp.com" class="btn-primary">Event Inquiries</a>
+  </div>
+</div>
+
+<!-- ══════════════ SYNOPSIS PAGE ══════════════ -->
+<div id="page-synopsis" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <p class="hero-eyebrow">Company Synopsis</p>
+    <h1>The full <em>picture.</em></h1>
+    <p class="hero-sub" style="color:rgba(255,255,255,0.45);font-size:0.95rem;line-height:1.8;max-width:540px;margin-top:16px">A complete overview of who we are, what we do, and why we exist.</p>
+  </div>
+
+  <div class="tab-section" style="background:var(--white);padding:80px 60px">
+    <div class="synopsis-block">
+
+      <h3>Who We Are</h3>
+      <p>Steel &amp; Aire Soluciones is a global capital and infrastructure firm headquartered in the United States, with active operations across El Salvador, Ecuador, Hawaii, Fiji, and Samoa. We are a privately held company operating at the intersection of finance, government, and infrastructure development.</p>
+      <p>Our name reflects what we build: <em>Steel</em> — the physical infrastructure that holds economies together — and <em>Aire</em> — the invisible flows of capital, data, and energy that make modern life possible. <em>Soluciones</em> is our commitment to solutions, not problems, wherever we operate.</p>
+
+      <h3>Our Mission</h3>
+      <p>We exist to spread wealth and abundance across the world. This is not a marketing statement — it is the organizing principle behind every deal we structure, every relationship we build, and every territory we enter. We believe that access to capital is the single most powerful lever for economic development, and that our job is to pull that lever in places and for projects where it creates the most good.</p>
+      <p>Our ultimate goal is to build a fully tokenized investment fund that makes institutional-grade infrastructure returns accessible to a global base of investors — democratizing access to the kinds of deals that have historically been reserved for the ultra-wealthy.</p>
+
+      <h3>What We Do</h3>
+      <p>Steel &amp; Aire operates as a capital broker, fund manager, and project developer. We connect borrowers and developers with the right capital sources — drawing on our relationships with multifamily funds, family offices, private money lenders, and sovereign capital vehicles. We originate, package, and place debt and equity across four primary asset classes: nuclear energy, data centers, multifamily real estate, and tokenized fund instruments.</p>
+      <p>We also work closely with governments and diplomatic representatives in each of our operating territories — ensuring that our projects carry the sovereign alignment and regulatory clarity that institutional capital requires.</p>
+
+      <h3>Global Footprint</h3>
+      <p>Steel &amp; Aire has physical presence and active operations in six territories: the United States (Austin TX, Salt Lake City UT, and Honolulu HI), El Salvador, Ecuador, Fiji, and Samoa. Each territory represents a strategic node in our capital and deal network — connecting local opportunity with global capital.</p>
+      <p>Our Pacific presence is particularly distinctive. With offices in Hawaii and relationships in Fiji and Samoa, we are one of the few US-based capital firms with genuine feet on the ground across the Pacific Island region — a market that is dramatically underserved by traditional finance.</p>
+
+      <h3>Capital Network</h3>
+      <p>Our lender and capital partner network includes multifamily debt funds, family offices, private money lenders, hard money lenders, sovereign development institutions, and emerging digital asset credit facilities. We maintain active relationships across all tiers of the capital stack — from first-lien senior debt to mezzanine and preferred equity.</p>
+      <p>For brokers, we operate as a co-brokerage and referral partner, giving them access to capital sources and deal types they could not access independently. For lenders, we deliver pre-packaged, fully underwritten deal flow from a pipeline that spans six countries and multiple asset classes.</p>
+
+      <h3>The Tokenized Fund</h3>
+      <p>Our most ambitious initiative is the construction of a fully tokenized investment fund — a first-of-its-kind vehicle in our market. The fund will hold real-world assets (data centers, nuclear energy projects, multifamily real estate) and represent fractional ownership through blockchain-native tokens, enabling transparent, auditable, and globally accessible investment participation.</p>
+      <p>This is not speculative crypto exposure. It is real infrastructure, financed and developed by our team, wrapped in a digital ownership structure that removes the barriers — geography, accreditation complexity, high minimums — that have historically excluded most investors from this asset class. Accredited and institutional investors are invited to engage.</p>
+
+      <h3>Government &amp; Diplomatic Relations</h3>
+      <p>Steel &amp; Aire works directly with government ministries, economic development agencies, and diplomatic representatives across our operating territories. Our government relationships are not peripheral to our business — they are central to it. The types of projects we develop — nuclear energy, large-scale data infrastructure, community housing — require sovereign alignment, regulatory engagement, and, in many cases, direct government participation.</p>
+      <p>We are proud to serve as a bridge between private capital markets and public development goals, structuring public-private partnerships that align investor return objectives with national infrastructure priorities.</p>
+
+      <h3>Contact &amp; Offices</h3>
+      <p>Steel &amp; Aire Soluciones is reachable at <a href="mailto:admin@mpeakp.com" style="color:var(--blue)">admin@mpeakp.com</a>. Our US offices are located in Austin, Texas; Salt Lake City, Utah; and Honolulu, Hawaii. International operations are conducted from our teams in El Salvador, Ecuador, Fiji, and Samoa.</p>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Steel <span>&</span> Aire Soluciones</div>
+  <p>© 2026 Steel &amp; Aire Soluciones. All rights reserved. Capital placement and fund interests are available to accredited and institutional investors only. Not a licensed securities dealer.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  // Tab navigation
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    const tabs = ['home','lenders','brokers','projects','events','synopsis'];
+    const idx = tabs.indexOf(name);
+    document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // Animated dot grid for hero
+  (function(){
+    const canvas = document.getElementById('worldCanvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let w, h, dots = [];
+    function resize(){
+      w = canvas.width = canvas.offsetWidth;
+      h = canvas.height = canvas.offsetHeight;
+      dots = [];
+      const cols = Math.floor(w/28), rows = Math.floor(h/28);
+      for(let r=0;r<rows;r++){
+        for(let c=0;c<cols;c++){
+          if(Math.random()>0.45){
+            dots.push({
+              x: c*28+14, y: r*28+14,
+              a: Math.random(),
+              speed: 0.003+Math.random()*0.008
+            });
+          }
+        }
+      }
+    }
+    function draw(ts){
+      ctx.clearRect(0,0,w,h);
+      dots.forEach(d=>{
+        d.a += d.speed;
+        const alpha = (Math.sin(d.a)+1)/2 * 0.6 + 0.1;
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, 1.5, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(90,138,255,${alpha})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    requestAnimationFrame(draw);
+  })();
+
+  // ── CHARTS (init after Chart.js loads) ──
+  (function initCharts() {
+    if (typeof Chart === 'undefined') {
+      setTimeout(initCharts, 100);
+      return;
+    }
+
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.color = 'rgba(255,255,255,0.45)';
+
+    // Portfolio Allocation Donut
+    const allocCtx = document.getElementById('allocChart');
+    if (allocCtx) {
+      new Chart(allocCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Nuclear Energy', 'Data Centers', 'Multifamily RE', 'Liquid Reserve'],
+          datasets: [{
+            data: [35, 30, 25, 10],
+            backgroundColor: ['#1A3DB5', '#5a8aff', '#2952cc', 'rgba(255,255,255,0.15)'],
+            borderColor: ['#091a5e', '#091a5e', '#091a5e', '#091a5e'],
+            borderWidth: 3,
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          cutout: '68%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => ' ' + ctx.label + ': ' + ctx.parsed + '%'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    // Returns Comparison Bar Chart
+    const returnsCtx = document.getElementById('returnsChart');
+    if (returnsCtx) {
+      new Chart(returnsCtx, {
+        type: 'bar',
+        data: {
+          labels: ['S&P 500\n(10yr avg)', 'Core\nReal Estate', 'SA\nMultifamily', 'SA\nData Centers', 'SA\nNuclear', 'SA\nTokenized Fund'],
+          datasets: [{
+            label: 'Target Gross IRR (%)',
+            data: [10.5, 8.2, 13, 21, 16, 17],
+            backgroundColor: [
+              'rgba(107,122,153,0.6)',
+              'rgba(107,122,153,0.6)',
+              '#2952cc',
+              '#5a8aff',
+              '#1A3DB5',
+              '#0D2680'
+            ],
+            borderRadius: 2,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          indexAxis: 'x',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => ' ' + ctx.parsed.y + '%'
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(0,0,0,0.05)' },
+              ticks: { color: '#6b7a99', font: { size: 11 } }
+            },
+            y: {
+              grid: { color: 'rgba(0,0,0,0.05)' },
+              ticks: {
+                color: '#6b7a99',
+                callback: val => val + '%'
+              },
+              min: 0,
+              max: 28
+            }
+          }
+        }
+      });
+    }
+
+    // Deal Flow by Asset Class (Lenders page)
+    const dealFlowCtx = document.getElementById('dealFlowChart');
+    if (dealFlowCtx) {
+      new Chart(dealFlowCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Data Centers', 'Nuclear Energy', 'Multifamily RE', 'Tokenized Fund', 'Other Infra'],
+          datasets: [{
+            data: [32, 28, 24, 10, 6],
+            backgroundColor: ['#5a8aff', '#1A3DB5', '#2952cc', '#0D2680', 'rgba(107,122,153,0.5)'],
+            borderColor: ['#f5f8ff', '#f5f8ff', '#f5f8ff', '#f5f8ff', '#f5f8ff'],
+            borderWidth: 2,
+            hoverOffset: 5
+          }]
+        },
+        options: {
+          cutout: '60%',
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: {
+                color: '#6b7a99',
+                font: { size: 11 },
+                padding: 12,
+                usePointStyle: true,
+                pointStyleWidth: 8
+              }
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => ' ' + ctx.label + ': ' + ctx.parsed + '%'
+              }
+            }
+          }
+        }
+      });
+    }
+  })();
+</script>
+</body>
+</html>

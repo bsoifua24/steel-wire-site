@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Deal Room — Steel & Aire Soluciones</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --blue:#1A3DB5;--blue-dark:#0D2680;--blue-deep:#091a5e;
+      --blue-mid:#2952cc;--blue-light:#5a8aff;--blue-pale:#dce8ff;
+      --black:#08080f;--black-soft:#111118;--charcoal:#1c1c28;
+      --white:#ffffff;--offwhite:#f5f8ff;--mid-grey:#6b7a99;--light-grey:#e8edf8;
+      --green:#1f9d6b;--amber:#c98a1b;--red:#c44545;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:var(--offwhite);color:var(--black);overflow-x:hidden}
+
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--black);border-bottom:1px solid rgba(26,61,181,0.25)}
+    .nav-top{display:flex;justify-content:space-between;align-items:center;padding:0 60px;height:70px;gap:16px}
+    .nav-brand{text-decoration:none;display:flex;flex-direction:column;gap:2px;cursor:pointer}
+    .nav-brand-name{font-family:'Cormorant Garant',serif;font-size:1.3rem;font-weight:600;color:var(--white);letter-spacing:0.04em}
+    .nav-brand-name span{color:var(--blue-light)}
+    .nav-brand-sub{font-size:0.6rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--mid-grey)}
+    .nav-right{display:flex;align-items:center;gap:18px}
+    .nav-user{font-size:0.72rem;color:rgba(255,255,255,0.5);text-align:right;line-height:1.4}
+    .role-badge{display:inline-block;font-size:0.56rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--blue-light);border:1px solid rgba(90,138,255,0.4);padding:2px 8px;margin-left:8px}
+    .nav-cta{font-size:0.74rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);background:var(--blue);padding:10px 24px;text-decoration:none;border:none;cursor:pointer;transition:background 0.2s;font-family:'Inter',sans-serif}
+    .nav-cta:hover{background:var(--blue-mid)}
+    .nav-login{font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue-light);border:1px solid rgba(90,138,255,0.45);padding:8px 16px;text-decoration:none;transition:border-color 0.2s,color 0.2s}
+    .nav-login:hover{border-color:var(--blue-light);color:var(--white)}
+    .tab-bar{display:flex;align-items:center;gap:0;padding:0 60px;border-top:1px solid rgba(26,61,181,0.15);background:rgba(8,8,15,0.97);min-height:14px}
+    .tab-btn{font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);background:none;border:none;cursor:pointer;padding:14px 24px;position:relative;transition:color 0.2s;white-space:nowrap;font-family:'Inter',sans-serif}
+    .tab-btn::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--blue-light);transform:scaleX(0);transition:transform 0.25s}
+    .tab-btn:hover{color:rgba(255,255,255,0.75)}
+    .tab-btn.active{color:var(--white)}
+    .tab-btn.active::after{transform:scaleX(1)}
+
+    .page{display:none}
+    .page.active{display:block}
+
+    /* ── AUTH & CONFIG ── */
+    .auth-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--black);padding:130px 24px 60px;position:relative;overflow:hidden}
+    .auth-card{background:var(--black-soft);border:1px solid rgba(26,61,181,0.3);padding:52px 48px;max-width:440px;width:100%;position:relative}
+    .auth-card h2{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:300;color:var(--white);margin-bottom:8px}
+    .auth-card h2 em{font-style:italic;color:var(--blue-light)}
+    .auth-card .a-sub{font-size:0.8rem;color:rgba(255,255,255,0.4);line-height:1.7;margin-bottom:30px}
+    .auth-field{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+    .auth-field label{font-size:0.64rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.4)}
+    .auth-field input{font-family:'Inter',sans-serif;font-size:0.9rem;padding:13px 14px;border:1px solid rgba(255,255,255,0.12);background:var(--charcoal);color:var(--white);outline:none;transition:border-color 0.2s}
+    .auth-field input:focus{border-color:var(--blue-light)}
+    .auth-switch{font-size:0.76rem;color:rgba(255,255,255,0.35);margin-top:22px;text-align:center}
+    .auth-switch button{background:none;border:none;color:var(--blue-light);cursor:pointer;font-size:0.76rem;font-family:'Inter',sans-serif;text-decoration:underline}
+    .auth-msg{font-size:0.76rem;line-height:1.6;padding:12px 14px;margin-bottom:18px;display:none}
+    .auth-msg.err{display:block;background:rgba(196,69,69,0.12);color:#e08a8a;border-left:3px solid var(--red)}
+    .auth-msg.ok{display:block;background:rgba(31,157,107,0.12);color:#7fd0ae;border-left:3px solid var(--green)}
+    .config-card{max-width:620px}
+    .config-card ol{margin:18px 0 6px 20px;display:flex;flex-direction:column;gap:12px}
+    .config-card li{font-size:0.82rem;line-height:1.65;color:rgba(255,255,255,0.55)}
+    .config-card code{font-size:0.78rem;background:var(--charcoal);color:var(--blue-light);padding:2px 7px}
+    .hero-glow{position:absolute;top:10%;left:-10%;width:60vw;height:60vh;background:radial-gradient(ellipse,rgba(26,61,181,0.2) 0%,transparent 70%);pointer-events:none}
+
+    /* ── PAGE HERO ── */
+    .tab-page-hero{background:var(--black);padding:150px 60px 70px;position:relative;overflow:hidden}
+    .hero-eyebrow{font-size:0.7rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:var(--blue-light);margin-bottom:22px;position:relative;padding-left:40px}
+    .hero-eyebrow::before{content:'';position:absolute;left:0;top:50%;width:28px;height:1px;background:var(--blue)}
+    h1{font-family:'Cormorant Garant',serif;font-size:clamp(2.4rem,5vw,4rem);font-weight:300;line-height:1.08;color:var(--white);max-width:860px;margin-bottom:22px;position:relative}
+    h1 em{font-style:italic;color:var(--blue-light)}
+    .hero-sub{font-size:0.95rem;font-weight:300;line-height:1.8;color:rgba(255,255,255,0.48);max-width:560px;position:relative}
+
+    .section-tag{font-size:0.68rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;display:block}
+    h2{font-family:'Cormorant Garant',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:300;line-height:1.15;color:var(--black);margin-bottom:20px}
+    h2 em{font-style:italic;color:var(--blue)}
+    .tab-section{background:var(--white);padding:70px 60px}
+
+    .btn-primary{background:var(--blue);color:var(--white);font-size:0.76rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:14px 32px;text-decoration:none;border:none;cursor:pointer;transition:background 0.2s,transform 0.15s;display:inline-block;font-family:'Inter',sans-serif}
+    .btn-primary:hover{background:var(--blue-mid);transform:translateY(-1px)}
+    .btn-primary:disabled{opacity:0.5;cursor:wait;transform:none}
+    .btn-primary.wide{width:100%;text-align:center}
+    .btn-quiet{background:none;border:1px solid var(--light-grey);color:var(--mid-grey);font-size:0.7rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:9px 18px;cursor:pointer;transition:border-color 0.2s,color 0.2s;font-family:'Inter',sans-serif}
+    .btn-quiet:hover{border-color:var(--blue);color:var(--blue)}
+    .btn-danger:hover{border-color:var(--red);color:var(--red)}
+
+    /* ── DASH / DEALS ── */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:40px}
+    .stat-box{background:var(--charcoal);padding:30px 28px;border-top:2px solid transparent;transition:border-color 0.3s}
+    .stat-box:hover{border-top-color:var(--blue-light)}
+    .stat-box .num{font-family:'Cormorant Garant',serif;font-size:2.4rem;font-weight:600;color:var(--white);line-height:1;margin-bottom:6px}
+    .stat-box .num em{font-style:normal;color:var(--blue-light)}
+    .stat-box .lbl{font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+
+    .deal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2px;margin-top:40px}
+    .deal-card{background:var(--offwhite);padding:34px 30px;border:none;border-bottom:3px solid transparent;cursor:pointer;transition:border-color 0.25s,box-shadow 0.25s;text-align:left;font-family:'Inter',sans-serif;width:100%}
+    .deal-card:hover{border-bottom-color:var(--blue);box-shadow:0 4px 24px rgba(26,61,181,0.1)}
+    .deal-card .dc-type{font-size:0.62rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;display:block}
+    .deal-card h4{font-family:'Cormorant Garant',serif;font-size:1.35rem;font-weight:600;color:var(--black);margin-bottom:6px}
+    .deal-card .dc-amt{font-size:0.82rem;color:var(--mid-grey);margin-bottom:18px}
+    .deal-card .dc-phase{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid-grey);margin-bottom:8px}
+    .prog-track{height:3px;background:var(--light-grey);position:relative}
+    .prog-fill{position:absolute;left:0;top:0;bottom:0;background:var(--blue);transition:width 0.4s}
+    .dc-meta{display:flex;justify-content:space-between;margin-top:10px;font-size:0.7rem;color:var(--mid-grey)}
+
+    .empty-state{margin-top:40px;background:var(--offwhite);border:1px dashed #c5d2ee;padding:60px 40px;text-align:center;max-width:680px}
+    .empty-state h4{font-family:'Cormorant Garant',serif;font-size:1.5rem;font-weight:400;color:var(--black);margin-bottom:10px}
+    .empty-state p{font-size:0.85rem;color:var(--mid-grey);margin-bottom:24px;line-height:1.7}
+
+    /* ── FORMS ── */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px}
+    .form-field{display:flex;flex-direction:column;gap:8px}
+    .form-field.full{grid-column:1/-1}
+    .form-field label{font-size:0.66rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--mid-grey)}
+    .form-field input,.form-field select,.form-field textarea{font-family:'Inter',sans-serif;font-size:0.88rem;padding:13px 14px;border:1px solid var(--light-grey);background:var(--white);color:var(--black);outline:none;transition:border-color 0.2s}
+    .form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--blue)}
+
+    /* ── DEAL DETAIL ── */
+    .deal-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:20px}
+    .phase-rail{display:flex;margin-top:44px;border-top:1px solid rgba(26,61,181,0.2)}
+    .phase-stop{flex:1;padding:22px 18px 0;border:none;border-right:1px solid rgba(26,61,181,0.12);cursor:pointer;background:none;text-align:left;font-family:'Inter',sans-serif;position:relative;transition:background 0.2s}
+    .phase-stop:last-child{border-right:none}
+    .phase-stop::before{content:'';position:absolute;top:-1px;left:0;right:0;height:2px;background:var(--blue-light);transform:scaleX(0);transform-origin:left;transition:transform 0.3s}
+    .phase-stop.done::before{transform:scaleX(1);background:var(--blue)}
+    .phase-stop.current::before{transform:scaleX(1)}
+    .phase-stop .ph-num{font-family:'Cormorant Garant',serif;font-size:1.5rem;font-weight:600;color:rgba(255,255,255,0.25);line-height:1;margin-bottom:4px}
+    .phase-stop.done .ph-num,.phase-stop.current .ph-num{color:var(--blue-light)}
+    .phase-stop .ph-name{font-size:0.64rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);padding-bottom:18px;display:block}
+    .phase-stop.current .ph-name{color:var(--white)}
+    .phase-stop:not(.locked):hover{background:rgba(26,61,181,0.08)}
+    .phase-stop.locked{cursor:default}
+
+    .doc-group{margin-top:48px}
+    .doc-group-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--light-grey);padding-bottom:12px;margin-bottom:2px}
+    .doc-group-head h3{font-family:'Cormorant Garant',serif;font-size:1.4rem;font-weight:600;color:var(--black)}
+    .doc-group-head span{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mid-grey)}
+    .doc-row{display:grid;grid-template-columns:1fr 130px 110px auto;gap:18px;align-items:center;padding:16px 18px;background:var(--offwhite);border-left:3px solid transparent;margin-bottom:2px;transition:border-color 0.2s,background 0.2s}
+    .doc-row:hover{border-left-color:var(--blue);background:var(--blue-pale)}
+    .doc-row .d-name{font-size:0.86rem;font-weight:500;color:var(--black)}
+    .doc-row .d-sub{font-size:0.72rem;color:var(--mid-grey);margin-top:2px}
+    .pill{font-size:0.6rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:5px 10px;display:inline-block;text-align:center}
+    .pill.needed{background:#f3e6e6;color:var(--red)}
+    .pill.uploaded{background:#f0e9d8;color:var(--amber)}
+    .pill.review{background:var(--blue-pale);color:var(--blue)}
+    .pill.approved{background:#e0f0e8;color:var(--green)}
+    .pill.phase{background:var(--light-grey);color:var(--mid-grey)}
+    .doc-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+    .file-chip{font-size:0.7rem;color:var(--blue);margin-top:4px;display:block}
+    .file-chip a{color:inherit}
+    .file-chip .by{color:var(--mid-grey)}
+
+    .notes-box{background:var(--offwhite);border-left:3px solid var(--blue);padding:24px;margin-top:44px;max-width:760px}
+    .notes-box h4{font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;margin-bottom:10px}
+    .notes-box textarea{width:100%;font-family:'Inter',sans-serif;font-size:0.85rem;padding:12px;border:1px solid var(--light-grey);background:var(--white);outline:none;resize:vertical}
+    .notes-box .n-hint{font-size:0.68rem;color:var(--mid-grey);margin-top:8px}
+
+    .modal-back{position:fixed;inset:0;background:rgba(8,8,15,0.7);z-index:300;display:none;align-items:flex-start;justify-content:center;padding:90px 24px 40px;overflow-y:auto}
+    .modal-back.open{display:flex}
+    .modal{background:var(--white);max-width:680px;width:100%;padding:48px}
+    .modal h3{font-family:'Cormorant Garant',serif;font-size:1.8rem;font-weight:400;margin-bottom:6px}
+    .modal .m-sub{font-size:0.82rem;color:var(--mid-grey);margin-bottom:8px}
+    .modal-actions{display:flex;gap:14px;margin-top:32px;justify-content:flex-end}
+
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--black);color:var(--white);font-size:0.78rem;padding:13px 26px;z-index:400;opacity:0;transition:transform 0.3s,opacity 0.3s;border-left:3px solid var(--blue-light);max-width:90vw}
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+    .toast.error{border-left-color:var(--red)}
+
+    .loading-veil{position:fixed;inset:0;background:var(--black);z-index:500;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-size:0.78rem;letter-spacing:0.18em;text-transform:uppercase}
+
+    footer{background:#05050a;padding:36px 60px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(26,61,181,0.15)}
+    .footer-brand{font-family:'Cormorant Garant',serif;font-size:1rem;font-weight:600;color:rgba(255,255,255,0.4);letter-spacing:0.04em}
+    .footer-brand span{color:var(--blue-light)}
+    footer p{font-size:0.7rem;color:rgba(255,255,255,0.18);max-width:500px;text-align:right;line-height:1.6}
+
+    @media(max-width:900px){
+      .nav-top{padding:0 20px}
+      .nav-user{display:none}
+      .tab-bar{padding:0 8px;overflow-x:auto}
+      .tab-btn{padding:12px 14px;font-size:0.66rem}
+      .tab-page-hero,.tab-section{padding-left:24px;padding-right:24px}
+      .stats-row{grid-template-columns:1fr 1fr}
+      .form-grid{grid-template-columns:1fr}
+      .doc-row{grid-template-columns:1fr;gap:10px}
+      .doc-actions{justify-content:flex-start}
+      .phase-rail{flex-wrap:wrap}
+      .phase-stop{flex:1 1 33%}
+      .auth-card{padding:38px 28px}
+      footer{flex-direction:column;gap:14px;padding:28px 24px}
+      footer p{text-align:center}
+    }
+    @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* ── FUNDING TOOLS ── */
+  .tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-bottom:32px}
+  .tool-card{background:var(--charcoal);border:1px solid rgba(90,138,255,0.15);border-radius:8px;padding:22px 20px;cursor:pointer;text-align:left;transition:border-color .2s,background .2s;color:var(--white)}
+  .tool-card:hover{border-color:var(--blue-light);background:rgba(26,61,181,0.12)}
+  .tool-card.active-tool{border-color:var(--blue-light);background:rgba(26,61,181,0.18)}
+  .tool-card.disabled{opacity:.45;cursor:default}
+  .tool-icon{font-size:1.6rem;margin-bottom:10px}
+  .tool-name{font-size:.88rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--white);margin-bottom:6px}
+  .tool-desc{font-size:.78rem;color:var(--mid-grey);line-height:1.5}
+  .su-workspace{background:var(--black-soft);border:1px solid rgba(26,61,181,0.2);border-radius:10px;padding:28px;margin-bottom:24px}
+  .su-workspace-title{font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-light);margin-bottom:18px}
+  .su-dropzone{border:2px dashed rgba(90,138,255,0.3);border-radius:8px;padding:36px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;margin-bottom:18px}
+  .su-dropzone:hover,.su-dropzone.drag-over{border-color:var(--blue-light);background:rgba(26,61,181,0.1)}
+  .su-dropzone input{display:none}
+  .su-dropzone p{color:var(--mid-grey);font-size:.85rem;margin-top:8px}
+  .su-drop-icon{font-size:2rem;margin-bottom:8px}
+  .su-file-name{font-size:.85rem;font-weight:600;color:var(--blue-light);margin-top:8px}
+  .su-status{font-size:.8rem;padding:8px 14px;border-radius:5px;margin-bottom:14px;display:none}
+  .su-status.show{display:block}
+  .su-status.ok{background:rgba(31,157,107,.15);color:#4ecca3;border:1px solid rgba(31,157,107,.3)}
+  .su-status.parsing{background:rgba(26,61,181,.15);color:var(--blue-light);border:1px solid rgba(26,61,181,.3)}
+  .su-status.warn{background:rgba(201,138,27,.12);color:#f0b84a;border:1px solid rgba(201,138,27,.3)}
+  .su-status.error{background:rgba(196,69,69,.12);color:#f07070;border:1px solid rgba(196,69,69,.3)}
+  .su-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 22px;margin-bottom:18px}
+  .su-form-full{grid-column:1/-1}
+  .su-section-lbl{grid-column:1/-1;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue-light);border-bottom:1px solid rgba(90,138,255,.2);padding-bottom:5px;margin-top:6px}
+  .su-label{font-size:.75rem;font-weight:600;color:var(--mid-grey);text-transform:uppercase;letter-spacing:.04em;display:block;margin-bottom:4px}
+  .su-input{width:100%;padding:8px 11px;background:rgba(255,255,255,.05);border:1.5px solid rgba(90,138,255,.2);border-radius:5px;color:var(--white);font-family:'Inter',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s}
+  .su-input:focus{border-color:var(--blue-light)}
+  .su-input::placeholder{color:rgba(255,255,255,.2)}
+  .su-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .su-result{display:none;margin-top:24px}
+  .su-result-head{margin-bottom:20px}
+  .su-result-head h3{font-family:'Cormorant Garant',serif;font-size:1.4rem;font-weight:600;color:var(--white);margin-bottom:14px}
+  .su-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .su-metric{background:var(--charcoal);border:1px solid rgba(90,138,255,.15);border-radius:7px;padding:14px 16px}
+  .sm-lbl{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mid-grey);margin-bottom:5px}
+  .sm-val{display:block;font-size:1.1rem;font-weight:600;color:var(--blue-light)}
+  .su-tables{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}
+  @media(max-width:700px){.su-tables{grid-template-columns:1fr}.su-metrics{grid-template-columns:1fr 1fr}.su-form-grid{grid-template-columns:1fr}}
+  .su-table{width:100%;border-collapse:collapse;background:var(--charcoal);border-radius:8px;overflow:hidden;font-size:.82rem}
+  .su-table thead tr{background:rgba(26,61,181,.6)}
+  .su-table thead th{color:rgba(255,255,255,.85);font-size:.7rem;font-weight:600;padding:9px 12px;text-align:left;letter-spacing:.06em;text-transform:uppercase}
+  .su-table thead th:not(:first-child){text-align:right}
+  .su-table tbody tr:nth-child(even){background:rgba(255,255,255,.03)}
+  .su-table tbody td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.05);color:var(--white)}
+  .su-table tbody td:not(:first-child){text-align:right}
+  .su-table tfoot tr{background:rgba(26,61,181,.35);border-top:1px solid rgba(90,138,255,.4)}
+  .su-table tfoot td{padding:9px 12px;font-weight:700;color:var(--white)}
+  .su-table tfoot td:not(:first-child){text-align:right}
+  .su-table .zero{color:rgba(255,255,255,.25)}
+  .su-balance{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--charcoal);border-radius:8px;padding:16px 20px;margin-top:18px;border:1px solid rgba(90,138,255,.15)}
+  .su-bal-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mid-grey)}
+  .su-bal-value{font-size:1rem;font-weight:700}
+  .su-bal-sep{color:var(--mid-grey)}
+  .su-balance.balanced .su-bal-value:first-of-type{color:#4ecca3}
+  .su-balance.surplus .su-bal-value:first-of-type{color:#f0b84a}
+  .su-balance.shortfall .su-bal-value:first-of-type{color:#f07070}
+  </style>
+</head>
+<body>
+
+<div class="loading-veil" id="veil">Connecting&hellip;</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-top">
+    <a class="nav-brand" onclick="route('home')">
+      <div class="nav-brand-name">Steel <span>&</span> Aire Soluciones</div>
+      <div class="nav-brand-sub">Deal Room &middot; Capital Raise Portal</div>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-login" style="font-size:0.7rem">Main Site</a>
+      <div class="nav-user" id="nav-user" style="display:none"></div>
+      <button class="nav-cta" id="nav-auth-btn" style="display:none" onclick="signOut()">Sign Out</button>
+    </div>
+  </div>
+  <div class="tab-bar" id="tab-bar"></div>
+</nav>
+
+<!-- ══════ CONFIG SCREEN (shown until Supabase keys are pasted in) ══════ -->
+<div id="page-config" class="page">
+  <div class="auth-page">
+    <div class="hero-glow"></div>
+    <div class="auth-card config-card">
+      <h2>One step from <em>live.</em></h2>
+      <p class="a-sub">This portal is built and ready — it just needs to be pointed at your Supabase project. A five-minute, one-time setup:</p>
+      <ol>
+        <li>Create a free project at <code>supabase.com</code> and run <code>schema.sql</code> in the SQL Editor (full walkthrough in <code>SETUP-GUIDE.md</code>).</li>
+        <li>In Supabase, open <code>Settings &rarr; API</code> and copy the <strong>Project URL</strong> and the <strong>anon public</strong> key.</li>
+        <li>Open this HTML file in any text editor, find the two lines near the bottom marked <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code>, and paste your values between the quotes.</li>
+        <li>Save and reload. The login screen appears — sign up, then run the one-line SQL in the guide to make your account the admin.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ AUTH ══════ -->
+<div id="page-auth" class="page">
+  <div class="auth-page">
+    <div class="hero-glow"></div>
+    <div class="auth-card">
+      <h2 id="auth-title">Sign <em>in.</em></h2>
+      <p class="a-sub" id="auth-sub">Access your deal rooms and document checklists.</p>
+      <div class="auth-msg" id="auth-msg"></div>
+      <div class="auth-field" id="field-name" style="display:none">
+        <label for="a-name">Full name</label>
+        <input id="a-name" autocomplete="name" placeholder="Your name"/>
+      </div>
+      <div class="auth-field">
+        <label for="a-email">Email</label>
+        <input id="a-email" type="email" autocomplete="email" placeholder="you@company.com"/>
+      </div>
+      <div class="auth-field">
+        <label for="a-pass">Password</label>
+        <input id="a-pass" type="password" autocomplete="current-password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"/>
+      </div>
+      <button class="btn-primary wide" id="auth-go" onclick="submitAuth()">Sign In</button>
+      <div class="auth-switch" id="auth-switch">
+        New here? <button onclick="setAuthMode('signup')">Create an account</button>
+        &nbsp;&middot;&nbsp; <button onclick="forgotPassword()">Forgot password?</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ ADMIN DASHBOARD ══════ -->
+<div id="page-dash" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">Admin Dashboard</div>
+    <h1>The state of <em>every raise.</em></h1>
+    <div class="stats-row" id="dash-stats"></div>
+  </div>
+  <div class="tab-section">
+    <div class="deal-head">
+      <div><span class="section-tag">All Deal Rooms</span><h2 style="margin-bottom:0">Every deal, <em>every borrower.</em></h2></div>
+      <button class="btn-primary" onclick="openNewDeal()">+ New Deal Room</button>
+    </div>
+    <div id="dash-deals"></div>
+  </div>
+</div>
+
+<!-- ══════ BORROWER HOME ══════ -->
+<div id="page-borrower" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">Your Portal</div>
+    <h1>Your deals.<br>Your <em>documents.</em></h1>
+    <p class="hero-sub">Each deal below has a checklist of what's needed for your raise. Upload documents against each item — your Steel &amp; Aire team reviews everything from there.</p>
+  </div>
+  <div class="tab-section">
+    <span class="section-tag">Your Deal Rooms</span>
+    <h2>Active <em>raises.</em></h2>
+    <div id="borrower-deals"></div>
+  </div>
+</div>
+
+<!-- ══════ DEAL DETAIL (shared; renders per role) ══════ -->
+<div id="page-detail" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow" id="dd-type">Deal Room</div>
+    <h1 id="dd-name">&mdash;</h1>
+    <p class="hero-sub" id="dd-sub"></p>
+    <div class="phase-rail" id="dd-phases"></div>
+  </div>
+  <div class="tab-section">
+    <div class="deal-head">
+      <div><span class="section-tag" id="dd-phase-tag">Checklist</span><h2 style="margin-bottom:0">Document <em>checklist.</em></h2></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn-quiet" onclick="route('home')">&larr; Back</button>
+        <button class="btn-quiet" onclick="refresh()">Refresh</button>
+        <button class="btn-quiet" id="dd-filter" onclick="toggleFilter()">Show: Current Phase</button>
+        <button class="btn-quiet" id="dd-packet" onclick="exportPacket()" style="display:none">Packet Summary</button>
+        <button class="btn-quiet btn-danger" id="dd-delete" onclick="deleteDeal()" style="display:none">Delete Deal</button>
+      </div>
+    </div>
+    <div id="dd-checklist"></div>
+    <div class="notes-box" id="dd-notes" style="display:none">
+      <h4>Internal notes <span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey)">&middot; admin only</span></h4>
+      <textarea id="notes-text" rows="3" placeholder="Lender targets, timing, sticking points — borrowers can never see this."></textarea>
+      <div style="margin-top:12px"><button class="btn-quiet" onclick="saveNotes()">Save Notes</button></div>
+      <div class="n-hint">Stored in an admin-only table; the database refuses these rows to any non-admin account.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ NEW DEAL MODAL (admin) ══════ -->
+<div class="modal-back" id="modal-new">
+  <div class="modal">
+    <h3>New deal room</h3>
+    <p class="m-sub">The standard lender checklist loads automatically. Assign a borrower so it appears in their portal.</p>
+    <div class="form-grid">
+      <div class="form-field full"><label for="f-name">Deal name</label><input id="f-name" placeholder="e.g. Riverside Multifamily — 124 Units"/></div>
+      <div class="form-field"><label for="f-type">Asset type</label>
+        <select id="f-type">
+          <option>Multifamily</option><option>Data Center</option><option>Nuclear / Energy</option>
+          <option>Industrial</option><option>Mixed-Use</option><option>Hospitality</option><option>Land / Development</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-field"><label for="f-amt">Raise amount</label><input id="f-amt" placeholder="e.g. $12,500,000"/></div>
+      <div class="form-field"><label for="f-borrower">Assign borrower</label><select id="f-borrower"><option value="">Unassigned (assign later)</option></select></div>
+      <div class="form-field"><label for="f-phase">Starting phase</label>
+        <select id="f-phase">
+          <option value="0">1 — Intake</option><option value="1">2 — Soft Quote</option>
+          <option value="2">3 — Term Sheet</option><option value="3">4 — Underwriting</option><option value="4">5 — Closing</option>
+        </select>
+      </div>
+      <div class="form-field full"><label for="f-notes">Internal notes (admin only)</label><textarea id="f-notes" rows="2" placeholder="Optional — never visible to borrowers"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-quiet" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" id="create-btn" onclick="createDeal()">Create Deal Room</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="file-input" style="display:none" multiple/>
+<div class="toast" id="toast"></div>
+
+<footer>
+  <div class="footer-brand">Steel <span>&</span> Aire Soluciones — Deal Room</div>
+  <p>Confidential capital raise documentation portal. Access is logged. Documents are visible only to their owner and the Steel &amp; Aire team.</p>
+</footer>
+
+<script>
+/* ═══════════════ CONFIGURATION — paste your two Supabase values here ═══════════════ */
+const SUPABASE_URL      = 'https://plihqeruhlwclqloagjn.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_g8isUhYtzSYZhXHpKSU0Kg_qL4e_XuG';
+/* ════════════════════════════════════════════════════════════════════════════════════ */
+
+const PHASES = ['Intake','Soft Quote','Term Sheet','Underwriting','Closing'];
+const STATUSES = ['needed','uploaded','review','approved'];
+const STATUS_LABEL = {needed:'Needed', uploaded:'Uploaded', review:'In Review', approved:'Approved'};
+
+const CHECKLIST_TEMPLATE = [
+  {group:'Sponsor & Borrower', items:[
+    {name:'Personal Financial Statement (PFS)', sub:'Current, signed and dated', phase:0},
+    {name:'Personal Tax Returns', sub:'Most recent 2–3 years, all schedules', phase:3},
+    {name:'Schedule of Real Estate Owned (REO)', sub:'All properties, debt, and equity', phase:0},
+    {name:'Entity Documents', sub:'Articles, operating agreement, EIN letter', phase:2},
+    {name:'Credit Authorization', sub:'Signed authorization for credit pull', phase:1},
+    {name:'Sponsor Bio / Track Record', sub:'Prior deals, exits, references', phase:0},
+    {name:'Bank / Liquidity Statements', sub:'Most recent 2–3 months', phase:3},
+  ]},
+  {group:'Property & Operations', items:[
+    {name:'Current Rent Roll', sub:'As of this month, unit-level detail', phase:0},
+    {name:'T-12 Operating Statement', sub:'Trailing 12 months income & expenses', phase:1},
+    {name:'Pro Forma', sub:'Stabilized projections with assumptions', phase:1},
+    {name:'CapEx / Renovation Budget', sub:'Scope, cost, and timeline', phase:2},
+    {name:'Leases & Estoppels', sub:'Commercial leases or sample residential lease', phase:3},
+    {name:'Property Photos / Condition Report', sub:'Interior, exterior, deferred maintenance', phase:1},
+  ]},
+  {group:'Valuation & Market', items:[
+    {name:'Broker Price Opinion (BPO)', sub:'Recent BPO with comps', phase:1},
+    {name:'Appraisal', sub:'Lender-ordered or recent third-party', phase:3},
+    {name:'Market Comps / Survey', sub:'Sales and rent comparables', phase:1},
+    {name:'Environmental Report (Phase I)', sub:'If required by lender or asset type', phase:3},
+  ]},
+  {group:'Deal & Capital', items:[
+    {name:'Executive Summary / OM', sub:'Deal narrative for lender review', phase:0},
+    {name:'Sources & Uses', sub:'Full capital stack breakdown', phase:1},
+    {name:'Purchase Agreement / PSA', sub:'Executed contract, if acquisition', phase:2},
+    {name:'Title Commitment', sub:'Preliminary title report', phase:4},
+    {name:'Insurance Binder / Quote', sub:'Evidence of coverage at close', phase:4},
+  ]},
+];
+
+/* ───────── STATE ───────── */
+let supa = null, me = null, profile = null;
+let deals = [], borrowers = [];
+let currentDealId = null, filterCurrentPhase = true;
+let authMode = 'signin', pendingUpload = null, booted = false, recovering = false;
+const isAdmin = () => profile && profile.role === 'admin';
+
+/* ───────── PASSWORD RESET ───────── */
+async function forgotPassword(){
+  const email = document.getElementById('a-email').value.trim();
+  if(!email){ authMsg('Type your email in the box above first, then click "Forgot password?" again.'); return; }
+  const {error} = await supa.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.href.split('#')[0].split('?')[0],
+  });
+  if(error){ authMsg(error.message); return; }
+  authMsg('Recovery email sent to ' + email + '. Open it and click the link — it will bring you back here to set a new password.', true);
+}
+
+function showNewPass(){
+  showOnly('page-auth');
+  document.getElementById('auth-title').innerHTML = 'Set a new <em>password.</em>';
+  document.getElementById('auth-sub').textContent = 'You followed a recovery link. Choose a new password below — at least 8 characters.';
+  document.getElementById('field-name').style.display = 'none';
+  document.getElementById('a-email').parentElement.style.display = 'none';
+  document.getElementById('a-pass').value = '';
+  const btn = document.getElementById('auth-go');
+  btn.textContent = 'Save New Password';
+  btn.onclick = saveNewPassword;
+  document.getElementById('auth-switch').innerHTML = '';
+  authMsg('');
+}
+
+async function saveNewPassword(){
+  const password = document.getElementById('a-pass').value;
+  if(password.length < 8){ authMsg('Password must be at least 8 characters.'); return; }
+  const btn = document.getElementById('auth-go'); btn.disabled = true;
+  const {error} = await supa.auth.updateUser({password});
+  btn.disabled = false;
+  if(error){ authMsg(error.message); return; }
+  recovering = false;
+  history.replaceState(null, '', window.location.pathname);
+  /* restore the form for next time, then go straight into the portal */
+  document.getElementById('a-email').parentElement.style.display = 'flex';
+  btn.onclick = submitAuth;
+  authMsg('Password updated — signing you in\u2026', true);
+  const {data} = await supa.auth.getSession();
+  if(data && data.session && data.session.user){ booted = true; await boot(data.session.user); }
+  else { setAuthMode('signin'); authMsg('Password updated. Sign in with it now.', true); }
+}
+
+/* ───────── BOOT ───────── */
+const configured = !SUPABASE_URL.includes('PASTE') && !SUPABASE_ANON_KEY.includes('PASTE');
+
+window.addEventListener('DOMContentLoaded', initApp);
+
+async function initApp(){
+  if(!configured){ veil(false); showOnly('page-config'); return; }
+
+  /* Safety net: never let the page hang on "Connecting…" — after 12s,
+     whatever happened, show the login screen with a useful message. */
+  const failsafe = setTimeout(()=>{
+    if(document.getElementById('veil').style.display !== 'none'){
+      veil(false); showOnly('page-auth');
+      authMsg('Taking longer than usual to connect. Check your internet and try signing in — or reload the page.');
+    }
+  }, 8000);
+
+  /* Load the Supabase library, retrying from a second source if the first fails */
+  const ok = await ensureLibrary();
+  if(!ok){
+    clearTimeout(failsafe);
+    veil(false); showOnly('page-auth');
+    authMsg('Could not load the connection library. Check your internet connection and reload the page.');
+    return;
+  }
+
+  /* If the user arrived from a password-recovery email, the link adds
+     #type=recovery to the address — show the new-password form, not the app. */
+  if(window.location.hash.includes('type=recovery')) recovering = true;
+
+  supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  supa.auth.onAuthStateChange(async (event, session) => {
+    clearTimeout(failsafe);
+    if(event === 'PASSWORD_RECOVERY') recovering = true;
+    if(session && session.user){
+      if(recovering){ me = session.user; veil(false); showNewPass(); return; }
+      if(!booted || (me && me.id !== session.user.id)){ booted = true; await boot(session.user); }
+    } else if(event === 'SIGNED_OUT' || !session){
+      booted = false; me = null; profile = null; deals = [];
+      renderNav(); veil(false); showOnly('page-auth');
+    }
+  });
+
+  /* Belt and suspenders: don't rely only on the event — ask directly. */
+  try{
+    const {data} = await supa.auth.getSession();
+    clearTimeout(failsafe);
+    if(data && data.session && data.session.user){
+      if(recovering){ me = data.session.user; veil(false); showNewPass(); }
+      else if(!booted){ booted = true; await boot(data.session.user); }
+    } else if(!booted && !recovering){
+      veil(false); showOnly('page-auth');
+    } else if(recovering && !(data && data.session)){
+      veil(false); showOnly('page-auth');
+      authMsg('That recovery link has expired or was already used. Type your email and click "Forgot password?" to get a fresh one.');
+    }
+  }catch(e){
+    clearTimeout(failsafe);
+    veil(false); showOnly('page-auth');
+    authMsg('Connection problem: ' + (e.message||'unknown') + '. Reload and try again.');
+  }
+}
+
+/* Wait for the supabase-js library; if the primary CDN failed, inject a
+   fallback copy from a second CDN and wait up to ~8 seconds total. */
+function ensureLibrary(){
+  return new Promise(resolve=>{
+    if(window.supabase && window.supabase.createClient){ resolve(true); return; }
+    let waited = 0, injected = false;
+    const tick = setInterval(()=>{
+      if(window.supabase && window.supabase.createClient){ clearInterval(tick); resolve(true); return; }
+      waited += 250;
+      if(waited >= 2000 && !injected){
+        injected = true;
+        const s = document.createElement('script');
+        s.src = 'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js';
+        document.head.appendChild(s);
+      }
+      if(waited >= 8000){ clearInterval(tick); resolve(false); }
+    }, 250);
+  });
+}
+
+async function boot(user){
+  me = user;
+  veil(true, 'Loading your portal\u2026');
+  try{
+    /* profile row is created by a DB trigger at signup; retry once if it races us */
+    let p = await supa.from('profiles').select('*').eq('id', user.id).maybeSingle();
+    if(!p.data){ await new Promise(r=>setTimeout(r,1200));
+      p = await supa.from('profiles').select('*').eq('id', user.id).maybeSingle(); }
+    profile = p.data || {id:user.id, role:'borrower', full_name:''};
+    renderNav();
+    await refresh(false);
+  }catch(e){
+    profile = {id:user.id, role:'borrower', full_name:me.email||''};
+    renderNav();
+    toast('Could not load portal data: '+(e.message||'connection error')+'. Try refreshing.', true);
+  }finally{
+    veil(false);
+    route('home');
+  }
+}
+
+async function signOut(){ await supa.auth.signOut(); }
+
+/* ───────── AUTH UI ───────── */
+function setAuthMode(m){
+  authMode = m;
+  const signup = m==='signup';
+  document.getElementById('auth-title').innerHTML = signup ? 'Create your <em>account.</em>' : 'Sign <em>in.</em>';
+  document.getElementById('auth-sub').textContent = signup
+    ? 'Borrower accounts see only their own deals and uploads.'
+    : 'Access your deal rooms and document checklists.';
+  document.getElementById('field-name').style.display = signup ? 'flex' : 'none';
+  document.getElementById('auth-go').textContent = signup ? 'Create Account' : 'Sign In';
+  document.getElementById('auth-switch').innerHTML = signup
+    ? 'Already have an account? <button onclick="setAuthMode(\'signin\')">Sign in</button>'
+    : 'New here? <button onclick="setAuthMode(\'signup\')">Create an account</button> &nbsp;&middot;&nbsp; <button onclick="forgotPassword()">Forgot password?</button>';
+  authMsg('');
+}
+function authMsg(text, ok){
+  const el = document.getElementById('auth-msg');
+  el.textContent = text; el.className = 'auth-msg' + (text ? (ok?' ok':' err') : '');
+}
+async function submitAuth(){
+  const email = document.getElementById('a-email').value.trim();
+  const password = document.getElementById('a-pass').value;
+  if(!email || !password){ authMsg('Enter your email and password.'); return; }
+  const btn = document.getElementById('auth-go'); btn.disabled = true;
+  try{
+    if(authMode === 'signup'){
+      const full_name = document.getElementById('a-name').value.trim();
+      const {data, error} = await supa.auth.signUp({email, password, options:{data:{full_name}}});
+      if(error) throw error;
+      if(!data.session){ authMsg('Account created — check your email to confirm, then sign in.', true); setAuthMode('signin'); }
+    } else {
+      const {error} = await supa.auth.signInWithPassword({email, password});
+      if(error) throw error;
+    }
+  }catch(e){ authMsg(e.message || 'Could not sign in.'); }
+  btn.disabled = false;
+}
+document.getElementById('a-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') submitAuth(); });
+
+/* ───────── DATA ───────── */
+async function refresh(toastIt = true){
+  const q = await supa.from('deals')
+    .select('*, checklist_items(*), documents(*), borrower:profiles(full_name, company)')
+    .order('created_at', {ascending:false});
+  if(q.error){ err(q.error); return; }
+  deals = q.data || [];
+  deals.forEach(d => d.checklist_items.sort((a,b)=>a.sort_order-b.sort_order));
+  if(isAdmin()){
+    const b = await supa.from('profiles').select('id, full_name, company').neq('role','admin').order('full_name');
+    borrowers = b.data || [];
+  }
+  rerenderCurrent();
+  if(toastIt) toast('Up to date.');
+}
+
+function rerenderCurrent(){
+  const active = document.querySelector('.page.active');
+  if(!active) return;
+  if(active.id==='page-dash') renderDash();
+  if(active.id==='page-borrower') renderBorrowerHome();
+  if(active.id==='page-detail') renderDetail();
+}
+
+/* ───────── ROUTING / NAV ───────── */
+function showOnly(id){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0});
+}
+function route(where){
+  if(!profile){ showOnly(configured?'page-auth':'page-config'); return; }
+  if(where==='home') showOnly(isAdmin() ? 'page-dash' : 'page-borrower');
+  if(where==='detail') showOnly('page-detail');
+  if(where==='funding') showOnly('page-funding');
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.r===where || (where!=='detail'&&where!=='funding'&&b.dataset.r==='home')));
+  rerenderCurrent();
+}
+function renderNav(){
+  const bar = document.getElementById('tab-bar');
+  const userEl = document.getElementById('nav-user');
+  const btn = document.getElementById('nav-auth-btn');
+  if(!profile){ bar.innerHTML=''; userEl.style.display='none'; btn.style.display='none'; return; }
+  bar.innerHTML = isAdmin()
+    ? '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Dashboard</button><button class="tab-btn" data-r="funding" onclick="route(\'funding\')">Funding Tools</button>'
+    : '<button class="tab-btn active" data-r="home" onclick="route(\'home\')">Your Deals</button>';
+  userEl.innerHTML = esc(profile.full_name || me.email) +
+    '<span class="role-badge">' + esc(profile.role) + '</span>';
+  userEl.style.display = 'block';
+  btn.style.display = 'inline-block';
+}
+
+/* ───────── HELPERS ───────── */
+function esc(s){const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML}
+function deal(id){return deals.find(d=>d.id===id)}
+function docStats(d){
+  const items = d.checklist_items || [];
+  const approved = items.filter(i=>i.status==='approved').length;
+  return {total:items.length, approved, pct: items.length? Math.round(approved/items.length*100):0};
+}
+function docsForItem(d, itemId){ return (d.documents||[]).filter(x=>x.item_id===itemId); }
+function toast(msg, isErr){
+  const t=document.getElementById('toast'); t.textContent=msg;
+  t.className='toast show'+(isErr?' error':'');
+  clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),3000);
+}
+function err(e){ console.error(e); toast(e.message || 'Something went wrong.', true); }
+function veil(on, text){
+  const v=document.getElementById('veil');
+  if(text) v.textContent=text;
+  v.style.display = on?'flex':'none';
+}
+
+/* ───────── DASHBOARD (admin) ───────── */
+function renderDash(){
+  let totDocs=0, totApproved=0, totUploaded=0;
+  deals.forEach(d=>{
+    (d.checklist_items||[]).forEach(i=>{ totDocs++;
+      if(i.status==='approved') totApproved++;
+      if(i.status==='uploaded'||i.status==='review') totUploaded++; });
+  });
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat-box"><div class="num">${deals.length}</div><div class="lbl">Deal Rooms</div></div>
+    <div class="stat-box"><div class="num"><em>${totApproved}</em></div><div class="lbl">Documents Approved</div></div>
+    <div class="stat-box"><div class="num">${totUploaded}</div><div class="lbl">Awaiting Review</div></div>
+    <div class="stat-box"><div class="num">${totDocs-totApproved}</div><div class="lbl">Items Outstanding</div></div>`;
+  document.getElementById('dash-deals').innerHTML = dealCards(true);
+}
+function renderBorrowerHome(){
+  document.getElementById('borrower-deals').innerHTML = dealCards(false);
+}
+function dealCards(admin){
+  if(!deals.length){
+    return admin
+      ? `<div class="empty-state"><h4>No deal rooms yet</h4><p>Create the first room and assign a borrower — the standard lender checklist loads automatically.</p><button class="btn-primary" onclick="openNewDeal()">Create a Deal Room</button></div>`
+      : `<div class="empty-state"><h4>No deals yet</h4><p>Your deal rooms appear here as soon as the Steel &amp; Aire team sets up your raise. If you're expecting one, reach out to your contact.</p></div>`;
+  }
+  return `<div class="deal-grid">` + deals.map(d=>{
+    const s=docStats(d);
+    const who = d.borrower ? (d.borrower.full_name || d.borrower.company || '') : (admin?'Unassigned':'');
+    return `<button class="deal-card" onclick="openDeal('${d.id}')">
+      <span class="dc-type">${esc(d.asset_type)}</span>
+      <h4>${esc(d.name)}</h4>
+      <div class="dc-amt">${esc(d.raise_amount||'—')}${who? ' &middot; '+esc(who):''}</div>
+      <div class="dc-phase">Phase ${d.phase+1} — ${PHASES[d.phase]}</div>
+      <div class="prog-track"><div class="prog-fill" style="width:${s.pct}%"></div></div>
+      <div class="dc-meta"><span>${s.approved}/${s.total} approved</span><span>${s.pct}%</span></div>
+    </button>`;
+  }).join('') + `</div>`;
+}
+
+/* ───────── CREATE / DELETE (admin) ───────── */
+function openNewDeal(){
+  const sel = document.getElementById('f-borrower');
+  sel.innerHTML = '<option value="">Unassigned (assign later)</option>' +
+    borrowers.map(b=>`<option value="${b.id}">${esc(b.full_name||'(no name)')}${b.company?' — '+esc(b.company):''}</option>`).join('');
+  document.getElementById('modal-new').classList.add('open');
+}
+function closeModal(){ document.getElementById('modal-new').classList.remove('open'); }
+
+async function createDeal(){
+  const name = document.getElementById('f-name').value.trim();
+  if(!name){ toast('Give the deal a name to continue.', true); return; }
+  const btn = document.getElementById('create-btn'); btn.disabled = true;
+  try{
+    const {data:d, error} = await supa.from('deals').insert({
+      name,
+      asset_type: document.getElementById('f-type').value,
+      raise_amount: document.getElementById('f-amt').value.trim() || null,
+      borrower_id: document.getElementById('f-borrower').value || null,
+      phase: parseInt(document.getElementById('f-phase').value,10),
+    }).select().single();
+    if(error) throw error;
+    let sort = 0;
+    const rows = [];
+    CHECKLIST_TEMPLATE.forEach(g=>g.items.forEach(it=>rows.push({
+      deal_id:d.id, group_name:g.group, doc_name:it.name, doc_sub:it.sub, phase:it.phase, sort_order:sort++,
+    })));
+    const ci = await supa.from('checklist_items').insert(rows);
+    if(ci.error) throw ci.error;
+    const notes = document.getElementById('f-notes').value.trim();
+    if(notes){ await supa.from('deal_private').upsert({deal_id:d.id, notes}); }
+    ['f-name','f-amt','f-notes'].forEach(id=>document.getElementById(id).value='');
+    closeModal();
+    await refresh(false);
+    toast('Deal room created.');
+    openDeal(d.id);
+  }catch(e){ err(e); }
+  btn.disabled = false;
+}
+
+async function deleteDeal(){
+  const d = deal(currentDealId); if(!d || !isAdmin()) return;
+  if(!confirm('Delete "'+d.name+'", its checklist, and its document records? Files in storage are kept until removed in Supabase.')) return;
+  const {error} = await supa.from('deals').delete().eq('id', d.id);
+  if(error){ err(error); return; }
+  await refresh(false);
+  toast('Deal room deleted.');
+  route('home');
+}
+
+/* ───────── DEAL DETAIL ───────── */
+async function openDeal(id){
+  currentDealId = id;
+  renderDetail();
+  route('detail');
+  if(isAdmin()){
+    const n = await supa.from('deal_private').select('notes').eq('deal_id', id).maybeSingle();
+    document.getElementById('notes-text').value = (n.data && n.data.notes) || '';
+  }
+}
+
+function renderDetail(){
+  const d = deal(currentDealId); if(!d) return;
+  const admin = isAdmin();
+  const s = docStats(d);
+  document.getElementById('dd-type').textContent = d.asset_type + (d.raise_amount? ' · '+d.raise_amount : '');
+  document.getElementById('dd-name').innerHTML = esc(d.name);
+  const who = d.borrower ? (d.borrower.full_name || d.borrower.company) : (admin?'No borrower assigned yet':'');
+  document.getElementById('dd-sub').textContent =
+    (who? who+' · ' : '') + s.approved+' of '+s.total+' documents approved';
+  document.getElementById('dd-phases').innerHTML = PHASES.map((p,i)=>`
+    <button class="phase-stop ${i<d.phase?'done':''} ${i===d.phase?'current':''} ${admin?'':'locked'}"
+      ${admin?`onclick="setPhase(${i})" title="Set phase"`:'tabindex="-1"'}>
+      <div class="ph-num">${i+1}</div><span class="ph-name">${p}</span>
+    </button>`).join('');
+  document.getElementById('dd-phase-tag').textContent = 'Phase '+(d.phase+1)+' — '+PHASES[d.phase];
+  document.getElementById('dd-filter').textContent = filterCurrentPhase? 'Show: Current Phase' : 'Show: Full Checklist';
+  document.getElementById('dd-delete').style.display = admin? 'inline-block':'none';
+  document.getElementById('dd-packet').style.display = admin? 'inline-block':'none';
+  document.getElementById('dd-notes').style.display = admin? 'block':'none';
+  renderChecklist(d);
+}
+
+async function setPhase(i){
+  if(!isAdmin()) return;
+  const d = deal(currentDealId); if(!d) return;
+  const {error} = await supa.from('deals').update({phase:i}).eq('id', d.id);
+  if(error){ err(error); return; }
+  d.phase = i; renderDetail();
+  toast('Phase set to '+PHASES[i]+'.');
+}
+function toggleFilter(){ filterCurrentPhase=!filterCurrentPhase; renderDetail(); }
+
+function renderChecklist(d){
+  const admin = isAdmin();
+  const groups = {};
+  d.checklist_items.forEach(it=>{ (groups[it.group_name] = groups[it.group_name]||[]).push(it); });
+  document.getElementById('dd-checklist').innerHTML = Object.entries(groups).map(([gname, items])=>{
+    const visible = items.filter(it=> !filterCurrentPhase || it.phase<=d.phase);
+    if(!visible.length) return '';
+    const done = visible.filter(it=>it.status==='approved').length;
+    return `<div class="doc-group">
+      <div class="doc-group-head"><h3>${esc(gname)}</h3><span>${done}/${visible.length} approved</span></div>
+      ${visible.map(it=>{
+        const files = docsForItem(d, it.id);
+        return `<div class="doc-row">
+          <div>
+            <div class="d-name">${esc(it.doc_name)}</div>
+            <div class="d-sub">${esc(it.doc_sub||'')}</div>
+            ${files.map(f=>`<span class="file-chip">📎 <a href="#" onclick="downloadFile('${f.id}');return false">${esc(f.file_name)}</a> (${fmtSize(f.file_size)}) <span class="by">— ${esc((f.created_at||'').slice(0,10))}</span></span>`).join('')}
+          </div>
+          <span class="pill phase">Phase ${it.phase+1}+</span>
+          ${admin
+            ? `<button class="pill ${it.status}" style="border:none;cursor:pointer;font-family:'Inter',sans-serif" onclick="cycleStatus('${it.id}')" title="Click to advance status">${STATUS_LABEL[it.status]}</button>`
+            : `<span class="pill ${it.status}">${STATUS_LABEL[it.status]}</span>`}
+          <div class="doc-actions">
+            <button class="btn-quiet" onclick="pickFile('${it.id}')">Upload</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+}
+
+async function cycleStatus(itemId){
+  if(!isAdmin()) return;
+  const d = deal(currentDealId); if(!d) return;
+  const it = d.checklist_items.find(x=>x.id===itemId); if(!it) return;
+  const next = STATUSES[(STATUSES.indexOf(it.status)+1)%STATUSES.length];
+  const {error} = await supa.from('checklist_items').update({status:next}).eq('id', itemId);
+  if(error){ err(error); return; }
+  it.status = next; renderDetail();
+}
+
+async function saveNotes(){
+  if(!isAdmin()) return;
+  const {error} = await supa.from('deal_private')
+    .upsert({deal_id: currentDealId, notes: document.getElementById('notes-text').value, updated_at: new Date().toISOString()});
+  if(error){ err(error); return; }
+  toast('Notes saved.');
+}
+
+/* ───────── FILES ───────── */
+function pickFile(itemId){
+  pendingUpload = itemId;
+  document.getElementById('file-input').click();
+}
+document.getElementById('file-input').addEventListener('change', async (e)=>{
+  const d = deal(currentDealId); if(!d || !pendingUpload) return;
+  const itemId = pendingUpload; pendingUpload = null;
+  veil(true, 'Uploading\u2026');
+  try{
+    for(const f of e.target.files){
+      const path = `${d.id}/${itemId}/${Date.now()}-${f.name.replace(/[^a-zA-Z0-9._-]+/g,'_')}`;
+      const up = await supa.storage.from('deal-files').upload(path, f);
+      if(up.error) throw up.error;
+      const ins = await supa.from('documents').insert({
+        item_id:itemId, deal_id:d.id, uploaded_by:me.id,
+        file_name:f.name, file_size:f.size, storage_path:path,
+      });
+      if(ins.error) throw ins.error;
+    }
+    toast('Document uploaded.');
+    await refresh(false);
+  }catch(ex){ err(ex); }
+  e.target.value = '';
+  veil(false);
+});
+
+async function downloadFile(docId){
+  const d = deal(currentDealId); if(!d) return;
+  const f = (d.documents||[]).find(x=>x.id===docId); if(!f) return;
+  const {data, error} = await supa.storage.from('deal-files').createSignedUrl(f.storage_path, 60);
+  if(error){ err(error); return; }
+  window.open(data.signedUrl, '_blank');
+}
+
+function fmtSize(b){ if(!b) return '—'; return b>1048576 ? (b/1048576).toFixed(1)+' MB' : Math.max(1,Math.round(b/1024))+' KB'; }
+
+/* ───────── LENDER PACKET (admin) ───────── */
+function exportPacket(){
+  const d = deal(currentDealId); if(!d) return;
+  const s = docStats(d);
+  let out = [];
+  out.push('STEEL & AIRE SOLUCIONES — LENDER PACKET SUMMARY');
+  out.push('================================================');
+  out.push('Deal:        '+d.name);
+  out.push('Asset Type:  '+d.asset_type);
+  out.push('Raise:       '+(d.raise_amount||'—'));
+  if(d.borrower) out.push('Sponsor:     '+(d.borrower.full_name||d.borrower.company||''));
+  out.push('Phase:       '+(d.phase+1)+' of 5 — '+PHASES[d.phase]);
+  out.push('Progress:    '+s.approved+' of '+s.total+' documents approved ('+s.pct+'%)');
+  out.push('Generated:   '+new Date().toISOString().slice(0,10));
+  const groups = {};
+  d.checklist_items.forEach(it=>{ (groups[it.group_name]=groups[it.group_name]||[]).push(it); });
+  Object.entries(groups).forEach(([g, items])=>{
+    out.push(''); out.push(g.toUpperCase()); out.push('-'.repeat(g.length));
+    items.forEach(it=>{
+      out.push('['+STATUS_LABEL[it.status].toUpperCase()+'] '+it.doc_name+'  (required from Phase '+(it.phase+1)+')');
+      docsForItem(d, it.id).forEach(f=>out.push('         \u2022 '+f.file_name+' \u2014 '+fmtSize(f.file_size)+' \u2014 '+(f.created_at||'').slice(0,10)));
+    });
+  });
+  out.push(''); out.push('Confidential — Steel & Aire Soluciones Deal Room');
+  const blob = new Blob([out.join('\n')], {type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = d.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'-lender-packet.txt';
+  a.click();
+}
+
+document.getElementById('modal-new').addEventListener('click', e=>{ if(e.target.id==='modal-new') closeModal(); });
+
+/* ───────── FUNDING TOOLS ───────── */
+const SU_LABEL_MAP = [
+  [/senior\s+loan|loan\s+commit/i,'seniorLoan'],
+  [/pace\s+financ|pace\s+loan/i,'pace'],
+  [/sponsor.?s?\s+equity|borrower.?s?\s+equity|owner\s+equity/i,'equity'],
+  [/mezzanine|mezz/i,'mezz'],
+  [/other\s+source/i,'otherSources'],
+  [/land\s*[-–]\s*equity|land\s+equity|land\s+as.?is|land\s+acqui/i,'land'],
+  [/builder.?s?\s+capital|capital\s+payoff|debt\s+payoff|current\s+debt/i,'debtPayoff'],
+  [/arch|engineer|design\s+fee/i,'archEng'],
+  [/permit|entitle/i,'permits'],
+  [/legal/i,'legal'],
+  [/developer\s+fee|dev\s+fee/i,'devFee'],
+  [/construction.+hard|hard\s+cost/i,'hardCosts'],
+  [/pre.?dev|indirect|soft\s+cost/i,'softCosts'],
+  [/closing\s+cost/i,'closingCosts'],
+  [/lender\s+fee/i,'lenderFee'],
+  [/broker\s+fee/i,'brokerFee'],
+  [/senior.+interest\s+reserve|interest\s+reserve/i,'intReserve'],
+  [/pace.+interest|pace.+reserve/i,'paceReserve'],
+  [/contingency/i,'contingency'],
+  [/valuation|appraised|market\s+value|as.?complete/i,'valuation'],
+];
+function suMatchField(lbl){ for(const[p,f] of SU_LABEL_MAP){ if(p.test(lbl)) return f; } return null; }
+function suCleanNum(v){ if(v==null) return 0; if(typeof v==='number') return v; return parseFloat(String(v).replace(/[$,\s]/g,'').replace(/\((\d+\.?\d*)\)/,'-$1'))||0; }
+function newSU(){ return {propertyName:'',phaseLabel:'Phase 1',seniorLoan:0,pace:0,equity:0,mezz:0,otherSources:0,debtPayoff:0,land:0,archEng:0,permits:0,legal:0,devFee:0,softCosts:0,hardCosts:0,closingCosts:0,lenderFee:0,brokerFee:0,intReserve:0,paceReserve:0,contingency:0,valuation:0}; }
+let suData = newSU();
+
+function parseExcelSU(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      try{
+        const wb=XLSX.read(e.target.result,{type:'binary'});
+        const d=newSU(); d.propertyName=file.name.replace(/\.(xlsx?|pdf)$/i,'');
+        for(const sn of wb.SheetNames){
+          const ws=wb.Sheets[sn];
+          const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:null});
+          for(const row of rows){
+            for(let i=0;i<row.length;i++){
+              const cell=row[i];
+              if(typeof cell!=='string'||cell.trim().length<3) continue;
+              const field=suMatchField(cell.trim());
+              if(!field) continue;
+              for(let j=i+1;j<row.length;j++){
+                const num=suCleanNum(row[j]);
+                if(Math.abs(num)>100){ if(Math.abs(num)>Math.abs(d[field])) d[field]=num; break; }
+              }
+            }
+          }
+        }
+        res(d);
+      }catch(ex){rej(ex);}
+    };
+    r.onerror=rej; r.readAsBinaryString(file);
+  });
+}
+
+function computeSU(d){
+  const softTotal=d.archEng+d.permits+d.legal+d.devFee+d.softCosts;
+  const sources=[['Senior / Construction Loan',d.seniorLoan],['PACE Financing',d.pace],["Sponsor's Equity",d.equity],['Mezzanine / Bridge',d.mezz],['Other Sources',d.otherSources]];
+  const uses=[["Builder's Capital / Debt Payoff",d.debtPayoff],['Land / As-Is Value',d.land],['Pre-Development / Indirect Costs',softTotal],['Construction – Hard Costs',d.hardCosts],['Closing Costs',d.closingCosts],['Lender Fee',d.lenderFee],['Broker Fee',d.brokerFee],['Senior – Interest Reserve',d.intReserve],['PACE – Interest Reserve & Costs',d.paceReserve],['Contingency',d.contingency]];
+  const totalSources=sources.reduce((a,[,v])=>a+v,0);
+  const totalUses=uses.reduce((a,[,v])=>a+v,0);
+  return{sources,uses,totalSources,totalUses,balance:totalSources-totalUses};
+}
+
+function suFmt$(n){return'$'+n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
+function suFmtPct(n,t){return t?(n/t*100).toFixed(1)+'%':'—';}
+
+function suGetNum(id){ const el=document.getElementById(id); const v=(el?.value||'').trim(); return v?parseFloat(v.replace(/[$,]/g,''))||0:null; }
+function suGetStr(id){ const el=document.getElementById(id); return(el?.value||'').trim()||null; }
+
+function applySUOverrides(){
+  const ov={propertyName:suGetStr('su-prop-name'),phaseLabel:suGetStr('su-phase'),seniorLoan:suGetNum('su-senior-loan'),pace:suGetNum('su-pace'),equity:suGetNum('su-equity'),mezz:suGetNum('su-mezz'),debtPayoff:suGetNum('su-debt-payoff'),land:suGetNum('su-land'),hardCosts:suGetNum('su-hard-costs'),closingCosts:suGetNum('su-closing'),lenderFee:suGetNum('su-lender-fee'),brokerFee:suGetNum('su-broker-fee'),intReserve:suGetNum('su-int-reserve'),contingency:suGetNum('su-contingency'),valuation:suGetNum('su-valuation')};
+  for(const[k,v] of Object.entries(ov)){ if(v!==null) suData[k]=v; }
+}
+
+function renderSUResult(){
+  applySUOverrides();
+  const c=computeSU(suData);
+  const el=document.getElementById('su-result');
+  const ltc=suData.seniorLoan&&c.totalUses?(suData.seniorLoan/c.totalUses*100).toFixed(1)+'%':'—';
+  const ltv=suData.seniorLoan&&suData.valuation?(suData.seniorLoan/suData.valuation*100).toFixed(1)+'%':'—';
+  const balClass=Math.abs(c.balance)<1?'balanced':c.balance>0?'surplus':'shortfall';
+  const balTxt=Math.abs(c.balance)<1?'✓ Balanced':(c.balance>0?'▲ Surplus: ':'▼ Shortfall: ')+suFmt$(Math.abs(c.balance));
+  el.style.display='block';
+  el.innerHTML=`
+    <div class="su-result-head">
+      <h3>${esc(suData.propertyName||'Untitled')}${suData.phaseLabel?' &middot; '+esc(suData.phaseLabel):''}</h3>
+      <div class="su-metrics">
+        <div class="su-metric"><span class="sm-lbl">Total Sources</span><span class="sm-val">${suFmt$(c.totalSources)}</span></div>
+        <div class="su-metric"><span class="sm-lbl">Total Uses</span><span class="sm-val">${suFmt$(c.totalUses)}</span></div>
+        <div class="su-metric"><span class="sm-lbl">LTC</span><span class="sm-val">${ltc}</span></div>
+        <div class="su-metric"><span class="sm-lbl">LTV</span><span class="sm-val">${ltv}</span></div>
+      </div>
+    </div>
+    <div class="su-tables">
+      <table class="su-table">
+        <thead><tr><th>Sources of Funds</th><th>Amount</th><th>%</th></tr></thead>
+        <tbody>${c.sources.map(([l,v])=>`<tr><td>${l}</td><td class="${v?'':'zero'}">${v?suFmt$(v):'—'}</td><td class="${v?'':'zero'}">${suFmtPct(v,c.totalSources)}</td></tr>`).join('')}</tbody>
+        <tfoot><tr><td>Total Sources</td><td>${suFmt$(c.totalSources)}</td><td>100.0%</td></tr></tfoot>
+      </table>
+      <table class="su-table">
+        <thead><tr><th>Uses of Funds</th><th>Amount</th><th>%</th></tr></thead>
+        <tbody>${c.uses.map(([l,v])=>`<tr><td>${l}</td><td class="${v?'':'zero'}">${v?suFmt$(v):'—'}</td><td class="${v?'':'zero'}">${suFmtPct(v,c.totalUses)}</td></tr>`).join('')}</tbody>
+        <tfoot><tr><td>Total Uses</td><td>${suFmt$(c.totalUses)}</td><td>100.0%</td></tr></tfoot>
+      </table>
+    </div>
+    <div class="su-balance ${balClass}">
+      <span class="su-bal-label">Balance</span><span class="su-bal-value">${balTxt}</span>
+      ${suData.valuation?`<span class="su-bal-sep">·</span><span class="su-bal-label">As-Complete Value</span><span class="su-bal-value">${suFmt$(suData.valuation)}</span>`:''}
+    </div>
+    <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="downloadSUExcel()">⬇ Download Excel</button>
+      <button class="btn-quiet" onclick="suReset()">Reset</button>
+    </div>`;
+}
+
+function downloadSUExcel(){
+  applySUOverrides();
+  const c=computeSU(suData);
+  const wb=XLSX.utils.book_new();
+  const rows=[
+    ['CAPITAL STACK – SOURCES & USES','','',''],
+    [suData.propertyName||'',suData.phaseLabel||'','',''],
+    [],
+    ['','SOURCES OF FUNDS','',''],
+    ['#','Description','Amount','%'],
+    ...c.sources.map(([l,v],i)=>[i+1,l,v||0,c.totalSources?v/c.totalSources:0]),
+    ['','TOTAL SOURCES',c.totalSources,1],
+    [],
+    ['','USES OF FUNDS','',''],
+    ['#','Description','Amount','%'],
+    ...c.uses.map(([l,v],i)=>[i+1,l,v||0,c.totalUses?v/c.totalUses:0]),
+    ['','TOTAL USES',c.totalUses,1],
+    [],
+    ['','KEY METRICS','',''],
+    ['','As-Complete Valuation',suData.valuation||0,''],
+    ['','Loan-to-Cost (LTC)',suData.seniorLoan&&c.totalUses?suData.seniorLoan/c.totalUses:0,'LTC'],
+    ['','Loan-to-Value (LTV)',suData.seniorLoan&&suData.valuation?suData.seniorLoan/suData.valuation:0,'LTV'],
+    [],
+    ['','Sources – Uses Balance',c.balance,''],
+  ];
+  const ws=XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols']=[{wch:5},{wch:38},{wch:18},{wch:10}];
+  XLSX.utils.book_append_sheet(wb,ws,'Capital Stack');
+  XLSX.writeFile(wb,(suData.propertyName||'Sources-Uses').replace(/[^a-z0-9]+/gi,'-')+'-SU.xlsx');
+}
+
+function populateSUFields(d){
+  const set=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.value=v;};
+  set('su-prop-name',d.propertyName); set('su-phase',d.phaseLabel);
+  if(d.seniorLoan) set('su-senior-loan',Math.round(d.seniorLoan));
+  if(d.pace) set('su-pace',Math.round(d.pace));
+  if(d.equity) set('su-equity',Math.round(d.equity));
+  if(d.mezz) set('su-mezz',Math.round(d.mezz));
+  if(d.debtPayoff) set('su-debt-payoff',Math.round(d.debtPayoff));
+  if(d.land) set('su-land',Math.round(d.land));
+  if(d.hardCosts) set('su-hard-costs',Math.round(d.hardCosts));
+  if(d.closingCosts) set('su-closing',Math.round(d.closingCosts));
+  if(d.lenderFee) set('su-lender-fee',Math.round(d.lenderFee));
+  if(d.brokerFee) set('su-broker-fee',Math.round(d.brokerFee));
+  if(d.intReserve) set('su-int-reserve',Math.round(d.intReserve));
+  if(d.contingency) set('su-contingency',Math.round(d.contingency));
+  if(d.valuation) set('su-valuation',Math.round(d.valuation));
+}
+
+async function handleSUFile(file){
+  if(!file) return;
+  const ext=file.name.split('.').pop().toLowerCase();
+  const status=document.getElementById('su-file-status');
+  status.textContent='Parsing '+file.name+'…';
+  status.className='su-status show parsing';
+  try{
+    if(ext==='xlsx'||ext==='xls'){
+      suData=await parseExcelSU(file);
+      populateSUFields(suData);
+      status.textContent='Parsed: '+file.name;
+      status.className='su-status show ok';
+      renderSUResult();
+    }else{
+      status.textContent='PDF upload noted — fill in the fields below and click Generate.';
+      status.className='su-status show warn';
+      suData=newSU();
+      suData.propertyName=file.name.replace(/\.pdf$/i,'');
+      document.getElementById('su-prop-name').value=suData.propertyName;
+    }
+  }catch(ex){
+    status.textContent='Could not parse: '+ex.message;
+    status.className='su-status show error';
+  }
+}
+
+function suReset(){
+  suData=newSU();
+  ['su-prop-name','su-phase','su-senior-loan','su-pace','su-equity','su-mezz','su-debt-payoff','su-land','su-hard-costs','su-closing','su-lender-fee','su-broker-fee','su-int-reserve','su-contingency','su-valuation'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const s=document.getElementById('su-file-status'); s.textContent=''; s.className='su-status';
+  const r=document.getElementById('su-result'); r.style.display='none'; r.innerHTML='';
+  document.getElementById('su-file-input').value='';
+  document.getElementById('su-file-name').textContent='';
+}
+
+(function(){
+  document.addEventListener('DOMContentLoaded',()=>{
+    const dz=document.getElementById('su-dropzone');
+    if(!dz) return;
+    dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over');});
+    dz.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+    dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag-over');const f=e.dataTransfer.files[0];if(f){document.getElementById('su-file-name').textContent=f.name;handleSUFile(f);}});
+  });
+})();
+</script>
+
+<!-- ── FUNDING TOOLS PAGE ── -->
+<div id="page-funding" class="page">
+  <div class="page-inner">
+    <div class="section-head">
+      <h2>Funding Tools</h2>
+      <p class="section-sub">Generate structured financial documents for any property or deal.</p>
+    </div>
+
+    <div class="tool-grid">
+      <button class="tool-card active-tool" onclick="">
+        <div class="tool-icon">⚡</div>
+        <div class="tool-name">Sources &amp; Uses</div>
+        <div class="tool-desc">Build a capital stack S&amp;U sheet from any Excel or PDF file</div>
+      </button>
+      <div class="tool-card disabled">
+        <div class="tool-icon">📋</div>
+        <div class="tool-name">Deal Summary</div>
+        <div class="tool-desc">Coming soon</div>
+      </div>
+      <div class="tool-card disabled">
+        <div class="tool-icon">📈</div>
+        <div class="tool-name">Return Analysis</div>
+        <div class="tool-desc">Coming soon</div>
+      </div>
+    </div>
+
+    <!-- S&U WORKSPACE -->
+    <div class="su-workspace">
+      <div class="su-workspace-title">Sources &amp; Uses Generator</div>
+
+      <!-- Drop zone -->
+      <div class="su-dropzone" id="su-dropzone" onclick="document.getElementById('su-file-input').click()">
+        <input type="file" id="su-file-input" accept=".xlsx,.xls,.pdf"
+               onchange="document.getElementById('su-file-name').textContent=this.files[0]?.name||'';handleSUFile(this.files[0])">
+        <div class="su-drop-icon">📂</div>
+        <p>Drop an Excel or PDF file here, or click to browse</p>
+        <p style="font-size:.75rem;color:rgba(255,255,255,.25);margin-top:4px">Supports .xlsx · .xls · .pdf</p>
+        <div class="su-file-name" id="su-file-name"></div>
+      </div>
+
+      <div class="su-status" id="su-file-status"></div>
+
+      <!-- Override / manual entry form -->
+      <div class="su-form-grid">
+        <div class="su-section-lbl">Property</div>
+        <div class="su-form-full">
+          <label class="su-label">Property / Project Name</label>
+          <input class="su-input" id="su-prop-name" type="text" placeholder="e.g. Ark Onteora">
+        </div>
+        <div>
+          <label class="su-label">Phase Label</label>
+          <input class="su-input" id="su-phase" type="text" placeholder="Phase 1">
+        </div>
+
+        <div class="su-section-lbl">Sources of Funds</div>
+        <div><label class="su-label">Senior / Construction Loan ($)</label><input class="su-input" id="su-senior-loan" type="text" placeholder="14,119,350"></div>
+        <div><label class="su-label">PACE Financing ($)</label><input class="su-input" id="su-pace" type="text" placeholder="0"></div>
+        <div><label class="su-label">Sponsor's Equity ($)</label><input class="su-input" id="su-equity" type="text" placeholder="10,652,920"></div>
+        <div><label class="su-label">Mezzanine / Bridge ($)</label><input class="su-input" id="su-mezz" type="text" placeholder="0"></div>
+
+        <div class="su-section-lbl">Uses of Funds</div>
+        <div><label class="su-label">Builder's Capital / Debt Payoff ($)</label><input class="su-input" id="su-debt-payoff" type="text" placeholder="4,293,861"></div>
+        <div><label class="su-label">Land / As-Is Value ($)</label><input class="su-input" id="su-land" type="text" placeholder="7,750,000"></div>
+        <div><label class="su-label">Construction Hard Costs ($)</label><input class="su-input" id="su-hard-costs" type="text" placeholder="9,594,584"></div>
+        <div><label class="su-label">Closing Costs ($)</label><input class="su-input" id="su-closing" type="text" placeholder="109,995"></div>
+        <div><label class="su-label">Lender Fee ($)</label><input class="su-input" id="su-lender-fee" type="text" placeholder="150,000"></div>
+        <div><label class="su-label">Broker Fee ($)</label><input class="su-input" id="su-broker-fee" type="text" placeholder="150,000"></div>
+        <div><label class="su-label">Senior Interest Reserve ($)</label><input class="su-input" id="su-int-reserve" type="text" placeholder="850,349"></div>
+        <div><label class="su-label">Contingency ($)</label><input class="su-input" id="su-contingency" type="text" placeholder="0"></div>
+
+        <div class="su-section-lbl">Valuation</div>
+        <div><label class="su-label">As-Complete Appraised Value ($)</label><input class="su-input" id="su-valuation" type="text" placeholder="27,000,000"></div>
+      </div>
+
+      <div class="su-actions">
+        <button class="btn-primary" onclick="renderSUResult()">Generate S&amp;U</button>
+        <button class="btn-quiet" onclick="suReset()">Reset</button>
+      </div>
+
+      <div class="su-result" id="su-result"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
