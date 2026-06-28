@@ -610,6 +610,88 @@
   .broker-submit-box h3{font-family:'Cormorant Garant',serif;font-size:1.55rem;font-weight:400;margin-bottom:8px;color:var(--black)}
   .broker-submit-box .bs-intro{font-size:0.85rem;color:var(--mid-grey);margin-bottom:28px;line-height:1.7}
   @media(max-width:900px){.broker-stats{grid-template-columns:1fr 1fr}}
+
+  /* ══════════════════════════════════════════════════════
+     DEAL INTELLIGENCE — Score, Likelihood, Pipeline
+  ══════════════════════════════════════════════════════ */
+  .intel-section{padding:48px 60px;background:var(--white);border-top:1px solid var(--light-grey)}
+  .intel-section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+  .intel-tabs{display:flex;gap:0;border-bottom:2px solid var(--light-grey);margin-bottom:36px}
+  .intel-tab{font-size:0.7rem;font-weight:600;letter-spacing:0.13em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;padding:11px 22px;cursor:pointer;color:var(--mid-grey);transition:color 0.2s,border-color 0.2s;font-family:'Inter',sans-serif}
+  .intel-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+  .intel-pane{display:none}.intel-pane.active{display:block}
+
+  /* Score layout */
+  .score-layout{display:grid;grid-template-columns:220px 1fr;gap:52px;align-items:start}
+  .gauge-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+  .gauge-circle{position:relative;width:180px;height:180px;flex-shrink:0}
+  .gauge-circle svg{display:block}
+  .gauge-track{fill:none;stroke:var(--light-grey);stroke-width:16}
+  .gauge-fill{fill:none;stroke-width:16;stroke-linecap:round;transition:stroke-dashoffset 1.3s cubic-bezier(.4,0,.2,1),stroke 0.5s}
+  .gauge-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+  .gauge-pct{font-family:'Cormorant Garant',serif;font-size:2.6rem;font-weight:600;line-height:1;color:var(--black)}
+  .gauge-lbl{font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase}
+
+  /* Likelihood meter */
+  .lm-wrap{width:180px}
+  .lm-title{font-size:0.62rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey);margin-bottom:10px}
+  .lm-track{height:10px;border-radius:5px;background:linear-gradient(to right,#c44545 0%,#d4702a 25%,#c98a1b 50%,#1f9d6b 75%,#1a3db5 100%);position:relative}
+  .lm-marker{position:absolute;top:-5px;width:20px;height:20px;background:white;border:3px solid #333;border-radius:50%;transform:translateX(-50%);transition:left 1.3s cubic-bezier(.4,0,.2,1),border-color 0.5s;box-shadow:0 2px 8px rgba(0,0,0,0.18)}
+  .lm-zone-labels{display:flex;justify-content:space-between;margin-top:7px}
+  .lm-zlbl{font-size:0.5rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--mid-grey)}
+  .lm-current-label{text-align:center;margin-top:10px;font-size:0.72rem;font-weight:600;color:var(--black)}
+
+  /* Factor bars */
+  .factors-list{display:flex;flex-direction:column;gap:22px}
+  .factor-row{display:flex;flex-direction:column;gap:6px}
+  .factor-head{display:flex;justify-content:space-between;align-items:baseline}
+  .factor-name{font-size:0.78rem;font-weight:600;color:var(--black)}
+  .factor-pts{font-size:0.7rem;color:var(--mid-grey)}
+  .factor-bar{height:7px;background:var(--light-grey);border-radius:4px;overflow:hidden}
+  .factor-fill{height:100%;border-radius:4px;transition:width 1.1s ease;background:var(--blue)}
+  .factor-desc{font-size:0.68rem;color:var(--mid-grey);line-height:1.45}
+
+  /* Recommendations */
+  .recs-list{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+  .rec-item{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;border-left:3px solid}
+  .rec-item.crit{border-color:var(--red);background:rgba(196,69,69,0.05)}
+  .rec-item.warn{border-color:var(--amber);background:rgba(201,138,27,0.05)}
+  .rec-item.good{border-color:var(--green);background:rgba(31,157,107,0.05)}
+  .rec-icon{font-size:1.1rem;flex-shrink:0;line-height:1.4}
+  .rec-body{font-size:0.81rem;line-height:1.6;color:var(--black)}
+  .rec-body strong{font-weight:600}
+  .rec-empty{font-size:0.85rem;color:var(--mid-grey);padding:20px 0}
+
+  /* Pipeline page */
+  .pipeline-grid{display:flex;flex-direction:column;gap:3px;margin-top:8px}
+  .pipe-row{display:grid;grid-template-columns:1fr 120px 180px 160px 90px;align-items:center;gap:16px;padding:18px 24px;background:var(--white);border-bottom:1px solid var(--light-grey);cursor:pointer;transition:background 0.15s}
+  .pipe-row:hover{background:var(--offwhite)}
+  .pipe-row-head{font-size:0.62rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey);padding:10px 24px 8px;border-bottom:2px solid var(--light-grey);display:grid;grid-template-columns:1fr 120px 180px 160px 90px;gap:16px}
+  .pipe-deal-name{font-size:0.9rem;font-weight:600;color:var(--black)}
+  .pipe-deal-meta{font-size:0.72rem;color:var(--mid-grey);margin-top:2px}
+  .pipe-phase-tag{font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);background:rgba(26,61,181,0.08);padding:3px 10px;display:inline-block}
+  .pipe-mini-bar{height:6px;background:var(--light-grey);border-radius:3px;overflow:hidden;margin-top:5px}
+  .pipe-mini-fill{height:100%;border-radius:3px}
+  .pipe-score-badge{display:inline-flex;align-items:center;gap:8px}
+  .pipe-pct{font-family:'Cormorant Garant',serif;font-size:1.5rem;font-weight:600}
+  .pipe-likelihood{font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:3px 9px;border-radius:2px}
+  .pl-low{color:#c44545;background:rgba(196,69,69,0.1)}
+  .pl-developing{color:#d4702a;background:rgba(212,112,42,0.1)}
+  .pl-moderate{color:#b07a00;background:rgba(201,138,27,0.1)}
+  .pl-strong{color:#1f9d6b;background:rgba(31,157,107,0.1)}
+  .pl-very-likely{color:#1a3db5;background:rgba(26,61,181,0.1)}
+  .pipe-sort-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .pipe-sort-btn{font-size:0.66rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border:1px solid var(--light-grey);background:none;color:var(--mid-grey);padding:6px 14px;cursor:pointer;font-family:'Inter',sans-serif;transition:border-color 0.2s,color 0.2s}
+  .pipe-sort-btn.active{border-color:var(--blue);color:var(--blue)}
+
+  @media(max-width:900px){
+    .score-layout{grid-template-columns:1fr}
+    .gauge-wrap{flex-direction:row;align-items:center;gap:28px}
+    .intel-section{padding:36px 24px}
+    .pipe-row,.pipe-row-head{grid-template-columns:1fr 80px 90px}
+    .pipe-row>:nth-child(3),.pipe-row-head>:nth-child(3){display:none}
+    .pipe-row>:nth-child(5),.pipe-row-head>:nth-child(5){display:none}
+  }
   </style>
 </head>
 <body>
@@ -1053,6 +1135,54 @@
       <div class="activity-list" id="dd-activity-list" style="margin-top:20px"></div>
     </div>
   </div>
+
+  <!-- ── DEAL INTELLIGENCE PANEL ── -->
+  <div class="intel-section" id="dd-intel">
+    <div class="intel-section-head">
+      <div>
+        <span class="section-tag">Deal Intelligence</span>
+        <h2 style="margin-bottom:0;font-size:1.6rem">Funding <em>likelihood.</em></h2>
+      </div>
+    </div>
+    <div class="intel-tabs">
+      <button class="intel-tab active" onclick="switchIntelTab('score',this)">Score Breakdown</button>
+      <button class="intel-tab" onclick="switchIntelTab('recs',this)">Next Steps</button>
+    </div>
+    <div class="intel-pane active" id="intel-pane-score">
+      <div class="score-layout">
+        <div class="gauge-wrap">
+          <div class="gauge-circle">
+            <svg width="180" height="180" viewBox="0 0 180 180">
+              <circle class="gauge-track" cx="90" cy="90" r="74"/>
+              <circle class="gauge-fill" id="gauge-fill-arc" cx="90" cy="90" r="74"
+                stroke-dasharray="464.96" stroke-dashoffset="464.96"
+                transform="rotate(-90 90 90)"/>
+            </svg>
+            <div class="gauge-center">
+              <div class="gauge-pct" id="gauge-pct-num">—</div>
+              <div class="gauge-lbl" id="gauge-lbl-text" style="color:var(--mid-grey)">Loading</div>
+            </div>
+          </div>
+          <div class="lm-wrap">
+            <div class="lm-title">Funding Likelihood</div>
+            <div class="lm-track">
+              <div class="lm-marker" id="lm-marker" style="left:0%"></div>
+            </div>
+            <div class="lm-zone-labels">
+              <span class="lm-zlbl">Low</span>
+              <span class="lm-zlbl">Mod</span>
+              <span class="lm-zlbl">High</span>
+            </div>
+            <div class="lm-current-label" id="lm-current-label"></div>
+          </div>
+        </div>
+        <div class="factors-list" id="intel-factors"></div>
+      </div>
+    </div>
+    <div class="intel-pane" id="intel-pane-recs">
+      <div class="recs-list" id="intel-recs"></div>
+    </div>
+  </div>
   <div class="tab-section" style="background:var(--offwhite);border-top:2px solid var(--light-grey)">
     <div class="msg-section">
       <h4>Messages <span style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-family:'Inter',sans-serif;color:var(--mid-grey);font-weight:400">&middot; Deal thread</span></h4>
@@ -1062,6 +1192,24 @@
         <button class="btn-primary" onclick="sendMessage()">Send</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ══════ PIPELINE INTELLIGENCE (admin) ══════ -->
+<div id="page-pipeline" class="page">
+  <div class="tab-page-hero">
+    <div class="hero-glow"></div>
+    <div class="hero-eyebrow">Deal Intelligence</div>
+    <h1>Funding <em>pipeline.</em></h1>
+    <p class="hero-sub">Every active deal ranked by funding likelihood — driven by document completeness, phase advancement, and submission quality.</p>
+  </div>
+  <div class="tab-section">
+    <div class="pipe-sort-bar">
+      <button class="pipe-sort-btn active" id="ps-score" onclick="pipeSort('score',this)">Sort: Highest Score</button>
+      <button class="pipe-sort-btn" id="ps-phase" onclick="pipeSort('phase',this)">Sort: Phase</button>
+      <button class="pipe-sort-btn" id="ps-name" onclick="pipeSort('name',this)">Sort: Name</button>
+    </div>
+    <div id="pipeline-content"></div>
   </div>
 </div>
 
@@ -2018,6 +2166,7 @@ function rerenderCurrent(){
   if(active.id==='page-detail')        renderDetail();
   if(active.id==='page-onboarding')    obRefreshBoard();
   if(active.id==='page-tracker')       trkRenderDashboard();
+  if(active.id==='page-pipeline')       renderPipeline();
   if(active.id==='page-review-queue')  renderReviewQueue();
   if(active.id==='page-lender')        renderLenderHome();
   if(active.id==='page-broker')        renderBrokerHome();
@@ -2042,6 +2191,7 @@ function route(where){
   if(where==='tracker')       { showOnly('page-tracker'); trkRenderDashboard(); }
   if(where==='videos')        showOnly('page-videos');
   if(where==='faq')           showOnly('page-faq');
+  if(where==='pipeline')       { showOnly('page-pipeline'); renderPipeline(); }
   if(where==='review-queue')  { showOnly('page-review-queue'); renderReviewQueue(); }
   if(where==='lender')        { showOnly('page-lender'); renderLenderHome(); }
   if(where==='broker')        { showOnly('page-broker'); renderBrokerHome(); }
@@ -2061,7 +2211,7 @@ function renderNav(){
   if(isAdmin()){
     const n = getPendingDocCount();
     const badge = n ? `<span class="rq-badge">${n}</span>` : '';
-    tabs = T('home','Dashboard') + T('review-queue','Review Queue'+badge) + T('onboarding','CRM') + T('tracker','Tracker');
+    tabs = T('home','Dashboard') + T('pipeline','Pipeline') + T('review-queue','Review Queue'+badge) + T('onboarding','CRM') + T('tracker','Tracker');
   } else if(isLender()){
     tabs = T('home','Deal Flow') + T('faq','FAQ');
   } else if(isBroker()){
@@ -2223,6 +2373,7 @@ async function openDeal(id){
   currentMessages = []; currentActivity = [];
   renderDetail();
   route('detail');
+  setTimeout(renderIntel, 80);
   loadMessagesAndActivity(id);
   if(isAdmin()){
     const n = await supa.from('deal_private').select('notes').eq('deal_id', id).maybeSingle();
@@ -3884,6 +4035,243 @@ document.addEventListener('click',function(e){
   const back=document.getElementById('trk-modal-back');
   if(e.target===back)trkCloseAdd();
 });
+
+/* ═══════════════════════════════════════════════════════════════════
+   DEAL INTELLIGENCE ENGINE
+   Score (0–100) = 5 weighted factors:
+     A. Current-phase doc approval    35 pts
+     B. Overall checklist progress    20 pts
+     C. Phase advancement             20 pts
+     D. Deal profile completeness     15 pts
+     E. Submission quality            10 pts
+═══════════════════════════════════════════════════════════════════ */
+function computeDealScore(d){
+  const items = d.checklist_items || [];
+  const phase = d.phase || 0;
+
+  // A — docs approved in the current phase
+  const phaseItems    = items.filter(it => it.phase === phase);
+  const phaseApproved = phaseItems.filter(it => it.status === 'approved').length;
+  const A = phaseItems.length ? Math.round((phaseApproved / phaseItems.length) * 35) : 0;
+
+  // B — overall approved across all phases
+  const totalApproved = items.filter(it => it.status === 'approved').length;
+  const B = items.length ? Math.round((totalApproved / items.length) * 20) : 0;
+
+  // C — phase advancement (0→4 maps to 0→20 in 5-pt steps)
+  const C = phase * 5;
+
+  // D — deal profile fields
+  let D = 0;
+  if(d.raise_amount && d.raise_amount.trim()) D += 4;
+  if(d.asset_type   && d.asset_type !== 'Other') D += 3;
+  if(d.borrower_id) D += 4;
+  if(d.asset_class) D += 4;
+
+  // E — submission quality
+  const hasAnyActivity = items.some(it => it.status !== 'needed');
+  const revisions      = items.filter(it => it.status === 'needed' && it.revision_note).length;
+  let E = 0;
+  if(hasAnyActivity) E += 5;
+  if(revisions === 0) E += 5;
+
+  const total = Math.min(100, A + B + C + D + E);
+  return {
+    total,
+    components:[
+      {label:'Current Phase Documents', score:A, max:35,
+       desc: phaseItems.length ? `${phaseApproved} of ${phaseItems.length} Phase ${phase+1} docs approved` : 'No checklist items for this phase yet'},
+      {label:'Overall Checklist Progress', score:B, max:20,
+       desc:`${totalApproved} of ${items.length} total items approved`},
+      {label:'Phase Advancement', score:C, max:20,
+       desc:`Phase ${phase+1} of 5 — ${PHASES[phase]}`},
+      {label:'Deal Profile', score:D, max:15,
+       desc:'Raise amount, asset type, borrower assigned, asset class'},
+      {label:'Submission Quality', score:E, max:10,
+       desc: revisions > 0 ? `${revisions} revision request${revisions>1?'s':''} outstanding` : 'No outstanding revision requests'},
+    ]
+  };
+}
+
+function likelihoodMeta(score){
+  if(score >= 81) return {label:'Very Likely',  cls:'pl-very-likely', color:'#1a3db5', pct: score};
+  if(score >= 66) return {label:'Strong',        cls:'pl-strong',      color:'#1f9d6b', pct: score};
+  if(score >= 46) return {label:'Moderate',      cls:'pl-moderate',    color:'#b07a00', pct: score};
+  if(score >= 21) return {label:'Developing',    cls:'pl-developing',  color:'#d4702a', pct: score};
+  return               {label:'Low',             cls:'pl-low',         color:'#c44545', pct: score};
+}
+
+function factorFillColor(score, max){
+  const r = score / max;
+  if(r >= 0.75) return '#1f9d6b';
+  if(r >= 0.45) return '#c98a1b';
+  return '#c44545';
+}
+
+/* ── Render the intel panel for the current open deal ── */
+function renderIntel(){
+  const d = deal(currentDealId); if(!d) return;
+  const result = computeDealScore(d);
+  const meta   = likelihoodMeta(result.total);
+  const circ   = 2 * Math.PI * 74; // circumference for r=74
+
+  // Gauge
+  const arc = document.getElementById('gauge-fill-arc');
+  if(arc){
+    const offset = circ * (1 - result.total / 100);
+    arc.style.strokeDasharray  = circ;
+    arc.style.strokeDashoffset = circ; // start at 0
+    arc.style.stroke = meta.color;
+    requestAnimationFrame(()=>{ arc.style.strokeDashoffset = offset; });
+  }
+  const numEl = document.getElementById('gauge-pct-num');
+  if(numEl){ numEl.textContent = result.total + '%'; numEl.style.color = meta.color; }
+  const lblEl = document.getElementById('gauge-lbl-text');
+  if(lblEl){ lblEl.textContent = meta.label; lblEl.style.color = meta.color; }
+
+  // Meter marker (position 0–100% maps to 0–100% of track)
+  const marker = document.getElementById('lm-marker');
+  if(marker){
+    marker.style.left = result.total + '%';
+    marker.style.borderColor = meta.color;
+  }
+  const curLbl = document.getElementById('lm-current-label');
+  if(curLbl){
+    curLbl.innerHTML = `<span style="color:${meta.color};font-weight:700">${result.total}% — ${meta.label}</span>`;
+  }
+
+  // Factor bars
+  const fEl = document.getElementById('intel-factors');
+  if(fEl){
+    fEl.innerHTML = result.components.map(c=>`
+      <div class="factor-row">
+        <div class="factor-head">
+          <span class="factor-name">${c.label}</span>
+          <span class="factor-pts">${c.score} / ${c.max} pts</span>
+        </div>
+        <div class="factor-bar">
+          <div class="factor-fill" style="width:${Math.round(c.score/c.max*100)}%;background:${factorFillColor(c.score,c.max)}"></div>
+        </div>
+        <div class="factor-desc">${c.desc}</div>
+      </div>`).join('');
+  }
+
+  // Recommendations
+  renderRecs(d, result);
+}
+
+function renderRecs(d, result){
+  const items = d.checklist_items || [];
+  const phase = d.phase || 0;
+  const recs  = [];
+
+  // Critical: current-phase docs still needed
+  const phaseNeeded = items.filter(it => it.phase === phase && it.status === 'needed');
+  if(phaseNeeded.length){
+    recs.push({type:'crit', icon:'⚠', text:`<strong>${phaseNeeded.length} required document${phaseNeeded.length>1?'s':''} still needed in Phase ${phase+1} (${PHASES[phase]}).</strong> Lenders cannot review an incomplete package — upload these first: <em>${phaseNeeded.slice(0,3).map(i=>i.doc_name).join(', ')}${phaseNeeded.length>3?'…':''}</em>`});
+  }
+
+  // Revision requests outstanding
+  const revisions = items.filter(it => it.status === 'needed' && it.revision_note);
+  if(revisions.length){
+    recs.push({type:'crit', icon:'↩', text:`<strong>${revisions.length} revision request${revisions.length>1?'s':''} outstanding.</strong> Documents have been sent back — address these before the package can advance: <em>${revisions.slice(0,2).map(i=>i.doc_name).join(', ')}${revisions.length>2?'…':''}</em>`});
+  }
+
+  // Missing profile fields
+  if(!d.raise_amount || !d.raise_amount.trim()){
+    recs.push({type:'warn', icon:'$', text:`<strong>Raise amount not set.</strong> Add the target loan amount so lenders can evaluate deal size against their deployment targets.`});
+  }
+  if(!d.asset_class){
+    recs.push({type:'warn', icon:'⬡', text:`<strong>Asset class not mapped.</strong> The deal type hasn't been matched to a structured lender category — this affects document requirements and lender matching.`});
+  }
+
+  // Docs in review
+  const inReview = items.filter(it => it.status === 'uploaded' || it.status === 'review');
+  if(inReview.length){
+    recs.push({type:'good', icon:'⏳', text:`<strong>${inReview.length} document${inReview.length>1?'s are':' is'} under review.</strong> Your team is actively reviewing submissions — no action needed. Expect status updates within 1–3 business days.`});
+  }
+
+  // All current phase docs approved
+  const phaseDone = items.filter(it=>it.phase===phase&&it.status==='approved').length;
+  const phaseTotal = items.filter(it=>it.phase===phase).length;
+  if(phaseTotal > 0 && phaseDone === phaseTotal && phase < 4){
+    recs.push({type:'good', icon:'✓', text:`<strong>Phase ${phase+1} documents are complete.</strong> Your package is ready to advance to Phase ${phase+2} — ${PHASES[phase+1]}. Your Steel & Aire team will reach out with next steps.`});
+  }
+
+  // High score encouragement
+  if(result.total >= 80){
+    recs.push({type:'good', icon:'★', text:`<strong>Institutional-grade package.</strong> Your deal scores in the top tier. Lenders reviewing packages at this completeness level close at significantly higher rates.`});
+  }
+
+  const el = document.getElementById('intel-recs');
+  if(!el) return;
+  if(!recs.length){
+    el.innerHTML = `<div class="rec-empty">Keep submitting documents — recommendations will appear as your package builds.</div>`;
+    return;
+  }
+  el.innerHTML = recs.map(r=>`
+    <div class="rec-item ${r.type}">
+      <div class="rec-icon">${r.icon}</div>
+      <div class="rec-body">${r.text}</div>
+    </div>`).join('');
+}
+
+function switchIntelTab(pane, btn){
+  document.querySelectorAll('.intel-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.intel-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('intel-pane-'+pane).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ── Admin Pipeline View ── */
+let pipeCurrentSort = 'score';
+function renderPipeline(){
+  const el = document.getElementById('pipeline-content');
+  if(!el) return;
+  if(!deals.length){
+    el.innerHTML = `<div class="empty-state"><h4>No deals yet</h4><p>Create deal rooms from the Dashboard — they'll appear here with full scoring.</p></div>`;
+    return;
+  }
+  const scored = deals.map(d=>({d, result:computeDealScore(d)}));
+  if(pipeCurrentSort==='score') scored.sort((a,b)=>b.result.total-a.result.total);
+  else if(pipeCurrentSort==='phase') scored.sort((a,b)=>b.d.phase-a.d.phase);
+  else scored.sort((a,b)=>(a.d.name||'').localeCompare(b.d.name||''));
+
+  el.innerHTML = `
+    <div class="pipe-row-head">
+      <div>Deal</div><div>Phase</div><div>Checklist</div><div>Funding Score</div><div></div>
+    </div>
+    <div class="pipeline-grid">
+      ${scored.map(({d,result})=>{
+        const meta = likelihoodMeta(result.total);
+        const s    = docStats(d);
+        const who  = d.borrower ? (d.borrower.full_name || d.borrower.company || '') : 'Unassigned';
+        return `<div class="pipe-row" onclick="openDeal('${d.id}')">
+          <div>
+            <div class="pipe-deal-name">${esc(d.name)}</div>
+            <div class="pipe-deal-meta">${esc(d.asset_type)}${d.raise_amount?' · '+esc(d.raise_amount):''}${who?' · '+esc(who):''}</div>
+          </div>
+          <div><span class="pipe-phase-tag">Ph. ${d.phase+1} — ${PHASES[d.phase]}</span></div>
+          <div>
+            <div style="font-size:0.78rem;font-weight:600">${s.approved}/${s.total} approved</div>
+            <div class="pipe-mini-bar"><div class="pipe-mini-fill" style="width:${s.pct}%;background:${factorFillColor(s.approved,s.total||1)}"></div></div>
+          </div>
+          <div class="pipe-score-badge">
+            <span class="pipe-pct" style="color:${meta.color}">${result.total}%</span>
+            <span class="pipe-likelihood ${meta.cls}">${meta.label}</span>
+          </div>
+          <div style="font-size:0.7rem;color:var(--mid-grey)">View →</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
+function pipeSort(by, btn){
+  pipeCurrentSort = by;
+  document.querySelectorAll('.pipe-sort-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPipeline();
+}
 
 /* share link (same format as onboarding.html — opens in that page) */
 function trkCopyShare(){
