@@ -1075,7 +1075,7 @@
       <div class="form-field"><label for="f-type">Asset type</label>
         <select id="f-type">
           <option>Multifamily</option><option>Data Center</option><option>Nuclear / Energy</option>
-          <option>Industrial</option><option>Mixed-Use</option><option>Hospitality</option><option>Land / Development</option><option>Other</option>
+          <option>Hard Money / Bridge</option><option>Industrial</option><option>Mixed-Use</option><option>Hospitality</option><option>Land / Development</option><option>Other</option>
         </select>
       </div>
       <div class="form-field"><label for="f-amt">Raise amount</label><input id="f-amt" placeholder="e.g. $12,500,000"/></div>
@@ -1762,12 +1762,24 @@ const CHECKLIST_TEMPLATE = [
   ]},
 ];
 
+/* ───────── ASSET CLASS MAP ─────────
+   Maps the UI display text (f-type select value) to the Postgres enum value
+   stored in deals.asset_class and used to query asset_class_requirements.
+   Types not listed here get asset_class = null and fall back to CHECKLIST_TEMPLATE. */
+const ASSET_CLASS_MAP = {
+  'Multifamily':        'multifamily',
+  'Data Center':        'data_center',
+  'Hard Money / Bridge':'hard_money',
+  'Nuclear / Energy':   'nuclear',
+};
+
 /* ───────── STATE ───────── */
 let supa = null, me = null, profile = null;
 let deals = [], borrowers = [];
 let currentDealId = null, filterCurrentPhase = true;
 let currentMessages = [], currentActivity = [];
 let authMode = 'signin', pendingUpload = null, booted = false, recovering = false;
+let lenderPartner = null;
 const isAdmin  = () => profile && profile.role === 'admin';
 const isLender = () => profile && profile.role === 'lender';
 const isBroker = () => profile && profile.role === 'broker';
@@ -1913,6 +1925,10 @@ async function boot(user){
     profile = p.data || {id:user.id, role:'borrower', full_name:''};
     if(profile && !profile.email && me.email) await supa.from('profiles').update({email:me.email}).eq('id',me.id);
     if(EMAILJS_PUBLIC_KEY) emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});
+    if(profile && profile.role === 'lender'){
+      const {data:cp} = await supa.from('capital_partners').select('*').eq('user_id', user.id).maybeSingle();
+      if(cp){ lenderPartner = cp; populateLenderProfileForm(cp); }
+    }
     renderNav();
     await withTimeout(refresh(false), 6000);
   }catch(e){
@@ -2133,21 +2149,19 @@ async function createDeal(){
   if(!name){ toast('Give the deal a name to continue.', true); return; }
   const btn = document.getElementById('create-btn'); btn.disabled = true;
   try{
+    const assetTypeText = document.getElementById('f-type').value;
+    const assetClass = ASSET_CLASS_MAP[assetTypeText] || null;
+    const startPhase = parseInt(document.getElementById('f-phase').value, 10);
     const {data:d, error} = await supa.from('deals').insert({
       name,
-      asset_type: document.getElementById('f-type').value,
-      raise_amount: document.getElementById('f-amt').value.trim() || null,
-      borrower_id: document.getElementById('f-borrower').value || null,
-      phase: parseInt(document.getElementById('f-phase').value,10),
+      asset_type:     assetTypeText,
+      asset_class:    assetClass,
+      raise_amount:   document.getElementById('f-amt').value.trim() || null,
+      borrower_id:    document.getElementById('f-borrower').value || null,
+      phase:          startPhase,
     }).select().single();
     if(error) throw error;
-    let sort = 0;
-    const rows = [];
-    CHECKLIST_TEMPLATE.forEach(g=>g.items.forEach(it=>rows.push({
-      deal_id:d.id, group_name:g.group, doc_name:it.name, doc_sub:it.sub, phase:it.phase, sort_order:sort++,
-    })));
-    const ci = await supa.from('checklist_items').insert(rows);
-    if(ci.error) throw ci.error;
+    await seedChecklistFromDB(d.id, assetClass);
     const notes = document.getElementById('f-notes').value.trim();
     if(notes){ await supa.from('deal_private').upsert({deal_id:d.id, notes}); }
     ['f-name','f-amt','f-notes'].forEach(id=>document.getElementById(id).value='');
@@ -2159,11 +2173,36 @@ async function createDeal(){
   btn.disabled = false;
 }
 
-async function seedChecklist(dealId){
-  let sort = 0; const rows = [];
-  CHECKLIST_TEMPLATE.forEach(g=>g.items.forEach(it=>rows.push({
-    deal_id:dealId, group_name:g.group, doc_name:it.name, doc_sub:it.sub, phase:it.phase, sort_order:sort++
-  })));
+/* Seed checklist_items from asset_class_requirements in the DB.
+   Falls back to the hardcoded CHECKLIST_TEMPLATE if the DB has no rows
+   for this asset class (safe during schema rollout before seed runs). */
+async function seedChecklistFromDB(dealId, assetClass){
+  let rows = [];
+  if(assetClass){
+    const {data:reqs, error} = await supa
+      .from('asset_class_requirements')
+      .select('*')
+      .eq('asset_class', assetClass)
+      .order('phase').order('sort_order');
+    if(!error && reqs && reqs.length > 0){
+      rows = reqs.map((r, i) => ({
+        deal_id:        dealId,
+        group_name:     r.group_name,
+        doc_name:       r.doc_name,
+        doc_sub:        r.doc_sub,
+        phase:          r.phase,
+        sort_order:     i,
+        status:         'needed',
+        requirement_id: r.id,
+      }));
+    }
+  }
+  if(!rows.length){
+    let sort = 0;
+    CHECKLIST_TEMPLATE.forEach(g=>g.items.forEach(it=>rows.push({
+      deal_id:dealId, group_name:g.group, doc_name:it.name, doc_sub:it.sub, phase:it.phase, sort_order:sort++,
+    })));
+  }
   const ci = await supa.from('checklist_items').insert(rows);
   if(ci.error) throw ci.error;
 }
@@ -2231,7 +2270,12 @@ async function setPhase(i){
   const {error} = await supa.from('deals').update({phase:i}).eq('id', d.id);
   if(error){ err(error); return; }
   d.phase = i; renderDetail();
-  logActivity(d.id, `Phase advanced to Phase ${i+1} — ${PHASES[i]}`);
+  const note = `Phase set to Phase ${i+1} — ${PHASES[i]}`;
+  supa.from('phase_history').insert({
+    deal_id: d.id, from_phase: prevPhase, to_phase: i,
+    transitioned_by: me?.id, note,
+  });
+  logActivity(d.id, note);
   toast('Phase set to '+PHASES[i]+'.');
   if(i > prevPhase && d.borrower && d.borrower.email) sendPhaseEmail(d, i);
 }
@@ -2672,18 +2716,47 @@ function lenderFilter(btn, type){
     </div>`;
   }).join('');
 }
-function saveLenderProfile(){
+async function saveLenderProfile(){
   const data = {
-    types: document.getElementById('lp-types')?.value||'',
-    size:  document.getElementById('lp-size')?.value||'',
-    ltv:   document.getElementById('lp-ltv')?.value||'',
+    types:     document.getElementById('lp-types')?.value||'',
+    size:      document.getElementById('lp-size')?.value||'',
+    ltv:       document.getElementById('lp-ltv')?.value||'',
     structure: document.getElementById('lp-structure')?.value||'',
-    geo:   document.getElementById('lp-geo')?.value||'',
-    dscr:  document.getElementById('lp-dscr')?.value||''
+    geo:       document.getElementById('lp-geo')?.value||'',
+    dscr:      document.getElementById('lp-dscr')?.value||''
   };
   localStorage.setItem('sa_lender_profile', JSON.stringify(data));
+
+  /* Also persist to capital_partners table so the admin can see it
+     and so the mandate survives a cleared browser. */
+  const splitTrim = s => s ? s.split(',').map(x=>x.trim()).filter(Boolean) : null;
+  const dbRecord = {
+    firm_name:     profile?.company || profile?.full_name || me?.email || 'Unknown Firm',
+    contact_name:  profile?.full_name  || null,
+    contact_email: profile?.email || me?.email || null,
+    asset_classes: splitTrim(data.types),
+    structures:    splitTrim(data.structure),
+    geographies:   splitTrim(data.geo),
+    max_ltv:       data.ltv ? parseFloat(data.ltv.replace(/[^0-9.]/g,'')) || null : null,
+    notes:         data.size || data.dscr
+                     ? [data.size&&`Size range: ${data.size}`, data.dscr&&`Min DSCR: ${data.dscr}`].filter(Boolean).join(' · ')
+                     : null,
+    user_id:       me?.id,
+    updated_at:    new Date().toISOString(),
+  };
+  try{
+    if(lenderPartner?.id){
+      await supa.from('capital_partners').update(dbRecord).eq('id', lenderPartner.id);
+    } else {
+      const {data:p, error} = await supa.from('capital_partners').insert(dbRecord).select().single();
+      if(!error && p) lenderPartner = p;
+    }
+  }catch(e){ console.warn('capital_partners write failed:', e.message); }
+
   toast('Lending criteria saved.');
 }
+
+/* Load lender profile — localStorage first (instant), then DB overrides on boot. */
 (function loadLenderProfile(){
   try{
     const d = JSON.parse(localStorage.getItem('sa_lender_profile')||'{}');
@@ -2694,6 +2767,15 @@ function saveLenderProfile(){
     if(d.dscr)  document.getElementById('lp-dscr')?.setAttribute('value',d.dscr);
   }catch(e){}
 })();
+
+/* Populate lender profile form from a capital_partners DB record. */
+function populateLenderProfileForm(p){
+  const set = (id, val) => { const el = document.getElementById(id); if(el && val) el.value = val; };
+  if(p.asset_classes) set('lp-types', p.asset_classes.join(', '));
+  if(p.structures)    set('lp-structure', p.structures.join(', '));
+  if(p.geographies)   set('lp-geo', p.geographies.join(', '));
+  if(p.max_ltv)       set('lp-ltv', p.max_ltv + '%');
+}
 
 /* ───────── BROKER PORTAL ───────── */
 function renderBrokerHome(){
