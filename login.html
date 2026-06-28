@@ -696,6 +696,164 @@
   .btn-del{background:none;border:none;cursor:pointer;font-size:0.72rem;color:var(--mid-grey);padding:4px 8px;font-family:'Inter',sans-serif;transition:color 0.2s;white-space:nowrap}
   .btn-del:hover{color:var(--red)}
 
+  /* ══════════════════════════════════════════════════════
+     CRM — Supabase-backed client relationship manager
+  ══════════════════════════════════════════════════════ */
+  .crm-stats-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin-bottom:28px}
+  .crm-stat{background:var(--charcoal);padding:20px 22px;border-top:2px solid transparent;transition:border-color 0.2s}
+  .crm-stat:hover{border-top-color:var(--blue-light)}
+  .crm-stat .num{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:600;color:var(--white)}
+  .crm-stat .num em{color:var(--blue-light)}
+  .crm-stat .lbl{font-size:0.6rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-top:4px}
+  .crm-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;gap:12px;flex-wrap:wrap}
+  .crm-search{font-family:'Inter',sans-serif;font-size:0.82rem;padding:9px 14px;border:1px solid var(--light-grey);background:var(--white);color:var(--black);outline:none;min-width:220px;transition:border-color 0.2s}
+  .crm-search:focus{border-color:var(--blue)}
+  .crm-actions{display:flex;gap:8px;align-items:center}
+
+  /* Pipeline kanban */
+  .crm-kanban{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:start;overflow-x:auto;padding-bottom:8px}
+  .crm-col{background:var(--offwhite);min-height:200px}
+  .crm-col-hdr{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:2px solid var(--light-grey);position:sticky;top:0;background:var(--offwhite)}
+  .crm-col-name{font-size:0.66rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--black)}
+  .crm-col-count{font-size:0.72rem;background:var(--light-grey);color:var(--mid-grey);padding:1px 7px;border-radius:10px;font-weight:600}
+  .crm-cards{padding:8px;display:flex;flex-direction:column;gap:6px}
+  .crm-card{background:var(--white);padding:14px;cursor:pointer;border-left:3px solid var(--light-grey);transition:border-color 0.2s,box-shadow 0.15s}
+  .crm-card:hover{border-left-color:var(--blue);box-shadow:0 2px 10px rgba(26,61,181,0.09)}
+  .crm-card-name{font-size:0.84rem;font-weight:600;color:var(--black);margin-bottom:2px}
+  .crm-card-meta{font-size:0.7rem;color:var(--mid-grey);margin-bottom:8px;line-height:1.4}
+  .crm-card-footer{display:flex;justify-content:space-between;align-items:center}
+  .crm-health{display:inline-flex;align-items:center;gap:5px;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 7px}
+  .ch-green{color:#1f9d6b;background:rgba(31,157,107,0.1)}
+  .ch-amber{color:#b07a00;background:rgba(201,138,27,0.1)}
+  .ch-red{color:#c44545;background:rgba(196,69,69,0.1)}
+  .ch-blue{color:#1a3db5;background:rgba(26,61,181,0.1)}
+  .crm-followup-tag{font-size:0.6rem;color:var(--mid-grey)}
+  .crm-followup-tag.overdue{color:var(--red);font-weight:600}
+  .crm-priority-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+  .prio-urgent{background:#c44545}
+  .prio-high{background:#d4702a}
+  .prio-normal{background:#1f9d6b}
+  .prio-low{background:#aaa}
+
+  /* Client list table */
+  .crm-table{width:100%;border-collapse:collapse}
+  .crm-table th{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey);padding:10px 14px;border-bottom:2px solid var(--light-grey);text-align:left;white-space:nowrap}
+  .crm-table td{padding:13px 14px;border-bottom:1px solid var(--light-grey);vertical-align:middle}
+  .crm-table tr{cursor:pointer;transition:background 0.1s}
+  .crm-table tr:hover td{background:var(--offwhite)}
+  .crm-name-cell{font-size:0.88rem;font-weight:600;color:var(--black)}
+  .crm-sub-cell{font-size:0.72rem;color:var(--mid-grey);margin-top:2px}
+  .crm-stage-pill{font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;background:rgba(26,61,181,0.08);color:var(--blue)}
+  .crm-stage-pill.st-prospect{background:rgba(107,122,153,0.1);color:var(--mid-grey)}
+  .crm-stage-pill.st-closing{background:rgba(31,157,107,0.1);color:#1f9d6b}
+  .crm-stage-pill.st-closed{background:rgba(31,157,107,0.15);color:#177a53}
+  .crm-stage-pill.st-paused{background:rgba(196,69,69,0.08);color:var(--red)}
+
+  /* Task list */
+  .crm-task-list{display:flex;flex-direction:column;gap:3px}
+  .crm-task-item{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;background:var(--white);padding:13px 16px;border-bottom:1px solid var(--light-grey)}
+  .crm-task-check{width:18px;height:18px;border:2px solid var(--light-grey);border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s,border-color 0.15s}
+  .crm-task-check:hover{border-color:var(--blue)}
+  .crm-task-title{font-size:0.85rem;font-weight:600;color:var(--black)}
+  .crm-task-meta{font-size:0.7rem;color:var(--mid-grey);margin-top:2px}
+  .crm-task-due{font-size:0.7rem;font-weight:600;white-space:nowrap}
+  .crm-task-due.overdue{color:var(--red)}
+  .crm-task-due.today{color:var(--amber)}
+  .crm-task-due.future{color:var(--mid-grey)}
+
+  /* Activity feed */
+  .crm-feed{display:flex;flex-direction:column;gap:0}
+  .crm-feed-item{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--light-grey)}
+  .crm-feed-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0;margin-top:1px}
+  .act-call{background:rgba(26,61,181,0.1);color:#1a3db5}
+  .act-email{background:rgba(31,157,107,0.1);color:#1f9d6b}
+  .act-meeting{background:rgba(201,138,27,0.1);color:#b07a00}
+  .act-note{background:rgba(107,122,153,0.1);color:#6b7a99}
+  .act-system{background:var(--light-grey);color:var(--mid-grey)}
+  .crm-feed-body{flex:1}
+  .crm-feed-subject{font-size:0.84rem;font-weight:600;color:var(--black)}
+  .crm-feed-detail{font-size:0.78rem;color:var(--mid-grey);margin-top:2px;line-height:1.5}
+  .crm-feed-when{font-size:0.68rem;color:var(--mid-grey);white-space:nowrap;margin-top:3px}
+  .crm-feed-contact{font-size:0.68rem;color:var(--blue);margin-top:1px}
+
+  /* CRM client detail modal */
+  .crm-modal{max-width:780px;max-height:88vh;display:flex;flex-direction:column;padding:0;overflow:hidden}
+  .crm-modal-hdr{padding:28px 32px 0;background:var(--black);flex-shrink:0}
+  .crm-modal-name{font-family:'Cormorant Garant',serif;font-size:1.8rem;font-weight:300;color:var(--white);margin-bottom:4px}
+  .crm-modal-meta{font-size:0.78rem;color:rgba(255,255,255,0.45);margin-bottom:16px;line-height:1.5}
+  .crm-modal-tabs{display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,0.1)}
+  .crm-modal-tab{font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;padding:11px 20px;cursor:pointer;color:rgba(255,255,255,0.4);transition:color 0.2s,border-color 0.2s;font-family:'Inter',sans-serif}
+  .crm-modal-tab.active{color:var(--white);border-bottom-color:var(--blue-light)}
+  .crm-modal-body{flex:1;overflow-y:auto;padding:24px 32px}
+  .crm-modal-footer{padding:16px 32px;border-top:1px solid var(--light-grey);display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap}
+
+  .crm-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+  .crm-info-field{display:flex;flex-direction:column;gap:4px}
+  .crm-info-label{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey)}
+  .crm-info-value{font-size:0.85rem;color:var(--black)}
+  .crm-info-value select,.crm-info-value input{font-family:'Inter',sans-serif;font-size:0.82rem;padding:7px 10px;border:1px solid var(--light-grey);background:var(--white);color:var(--black);outline:none;width:100%;transition:border-color 0.2s}
+  .crm-info-value select:focus,.crm-info-value input:focus{border-color:var(--blue)}
+  .crm-section-title{font-size:0.62rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--mid-grey);margin:20px 0 10px}
+  .crm-log-bar{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+  .crm-log-btn{font-size:0.66rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;background:none;border:1px solid var(--light-grey);color:var(--mid-grey);padding:6px 12px;cursor:pointer;font-family:'Inter',sans-serif;transition:border-color 0.2s,color 0.2s}
+  .crm-log-btn:hover,.crm-log-btn.sel{border-color:var(--blue);color:var(--blue);background:rgba(26,61,181,0.05)}
+  .crm-log-compose{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+  .crm-log-compose textarea{font-family:'Inter',sans-serif;font-size:0.84rem;padding:10px 12px;border:1px solid var(--light-grey);resize:vertical;min-height:70px;outline:none;transition:border-color 0.2s}
+  .crm-log-compose textarea:focus{border-color:var(--blue)}
+  .crm-modal-activity{display:flex;flex-direction:column;gap:0}
+  .crm-act-item{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--light-grey);align-items:flex-start}
+  .crm-act-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;flex-shrink:0}
+  .crm-act-body{flex:1}
+  .crm-act-text{font-size:0.82rem;color:var(--black);line-height:1.5}
+  .crm-act-when{font-size:0.66rem;color:var(--mid-grey);margin-top:2px}
+  .crm-tasks-list{display:flex;flex-direction:column;gap:6px}
+  .crm-task-row{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--light-grey);background:var(--offwhite)}
+  .crm-task-row.done{opacity:0.5}
+  .crm-task-row input[type=checkbox]{margin-top:3px;cursor:pointer;flex-shrink:0}
+  .crm-task-info{flex:1}
+  .crm-task-info .t-title{font-size:0.84rem;font-weight:600;color:var(--black)}
+  .crm-task-info .t-meta{font-size:0.7rem;color:var(--mid-grey);margin-top:2px}
+  .crm-add-task{display:flex;gap:8px;margin-top:10px}
+  .crm-add-task input{flex:1;font-family:'Inter',sans-serif;font-size:0.82rem;padding:8px 12px;border:1px solid var(--light-grey);outline:none;transition:border-color 0.2s}
+  .crm-add-task input:focus{border-color:var(--blue)}
+
+  /* Lender matching panel */
+  .lender-match-section{padding:40px 60px;background:var(--white);border-top:1px solid var(--light-grey)}
+  .lender-match-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;margin-top:16px}
+  .lm-card{padding:18px 20px;border:1px solid var(--light-grey);transition:border-color 0.2s}
+  .lm-card:hover{border-color:var(--blue)}
+  .lm-card-firm{font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
+  .lm-card-criteria{font-size:0.76rem;color:var(--mid-grey);line-height:1.55}
+  .lm-card-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+  .lm-tag{font-size:0.58rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 7px;background:rgba(26,61,181,0.07);color:var(--blue)}
+  .lm-no-match{font-size:0.85rem;color:var(--mid-grey);padding:16px 0}
+
+  /* Doc expiry section */
+  .expiry-section{padding:40px 60px;background:var(--offwhite);border-top:1px solid var(--light-grey)}
+  .expiry-list{display:flex;flex-direction:column;gap:4px;margin-top:16px}
+  .expiry-row{display:grid;grid-template-columns:1fr 120px 110px 90px;gap:12px;align-items:center;padding:12px 16px;background:var(--white);border-left:3px solid}
+  .expiry-row.exp-ok{border-color:var(--green)}
+  .expiry-row.exp-warn{border-color:var(--amber)}
+  .expiry-row.exp-expired{border-color:var(--red)}
+  .expiry-doc-name{font-size:0.84rem;font-weight:600;color:var(--black)}
+  .expiry-doc-sub{font-size:0.7rem;color:var(--mid-grey);margin-top:2px}
+  .expiry-badge{font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px}
+  .eb-ok{color:#1f9d6b;background:rgba(31,157,107,0.1)}
+  .eb-warn{color:#b07a00;background:rgba(201,138,27,0.1)}
+  .eb-expired{color:var(--red);background:rgba(196,69,69,0.1)}
+  .eb-none{color:var(--mid-grey);background:var(--light-grey)}
+  .expiry-set-btn{font-size:0.66rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;background:none;border:1px solid var(--light-grey);color:var(--mid-grey);padding:5px 10px;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;transition:border-color 0.2s,color 0.2s}
+  .expiry-set-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+  @media(max-width:900px){
+    .crm-kanban{grid-template-columns:repeat(3,260px)}
+    .crm-stats-bar{grid-template-columns:repeat(3,1fr)}
+    .crm-info-grid{grid-template-columns:1fr}
+    .lender-match-section,.expiry-section{padding:28px 20px}
+    .expiry-row{grid-template-columns:1fr 80px auto}
+    .expiry-row>:nth-child(3){display:none}
+  }
+
   /* ── Reassign borrower ── */
   .reassign-inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
   .reassign-inline select{font-family:'Inter',sans-serif;font-size:0.8rem;padding:7px 10px;border:1px solid var(--light-grey);background:var(--white);color:var(--black);outline:none;min-width:200px}
@@ -1160,6 +1318,22 @@
     </div>
   </div>
 
+  <!-- ── LENDER MATCHING ── -->
+  <div class="lender-match-section" id="dd-lender-match" style="display:none">
+    <span class="section-tag">Lender Network</span>
+    <h2 style="margin-bottom:4px;font-size:1.6rem">Matched <em>lenders.</em></h2>
+    <p style="font-size:0.82rem;color:var(--mid-grey);margin-bottom:0">Capital partners whose mandate aligns with this deal's asset class and size.</p>
+    <div class="lender-match-grid" id="dd-lender-match-grid"></div>
+  </div>
+
+  <!-- ── DOC EXPIRY ── -->
+  <div class="expiry-section" id="dd-expiry" style="display:none">
+    <span class="section-tag">Document Freshness</span>
+    <h2 style="margin-bottom:4px;font-size:1.6rem">Expiry <em>tracker.</em></h2>
+    <p style="font-size:0.82rem;color:var(--mid-grey);margin-bottom:0">Time-sensitive documents must remain current. Set the issue date to track expiry.</p>
+    <div class="expiry-list" id="dd-expiry-list"></div>
+  </div>
+
   <!-- ── ALL DOCUMENTS ── -->
   <div class="alldocs-section" id="dd-alldocs">
     <span class="section-tag">Submitted Files</span>
@@ -1603,81 +1777,92 @@
   </div>
 </div>
 
-<!-- ══════ CLIENT ONBOARDING TRACKER (admin) ══════ -->
+<!-- ══════ CRM (admin) — Supabase-backed ══════ -->
 <div id="page-onboarding" class="page">
-  <div class="tab-page-hero">
+  <div class="tab-page-hero" style="background:var(--black)">
     <div class="hero-glow"></div>
-    <div class="hero-eyebrow">Team Tools</div>
-    <h1>Client Onboarding <em>Tracker.</em></h1>
-    <p class="hero-sub">Manage prospect pipeline and team workflows with Kanban boards. Track interested borrowers, assign tasks, and monitor team workload.</p>
+    <div class="hero-eyebrow">Client Relationship Manager</div>
+    <h1>Your <em>pipeline.</em></h1>
+    <p class="hero-sub">Every client in one place — linked to their deal room, scored by health, with activity logs, tasks, and follow-up scheduling.</p>
   </div>
-  <div class="tab-section" style="background:var(--white)">
-    <div style="max-width:1400px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+  <div class="tab-section" style="background:var(--black-soft);padding-top:32px;padding-bottom:0">
+    <div class="crm-stats-bar" id="crm-stats-bar"></div>
+  </div>
+  <div class="tab-section">
+    <div class="crm-toolbar">
+      <div class="ob-view-tabs">
+        <button class="ob-view-tab active" onclick="crmSwitchView('pipeline',this)">Pipeline</button>
+        <button class="ob-view-tab" onclick="crmSwitchView('clients',this)">Clients</button>
+        <button class="ob-view-tab" onclick="crmSwitchView('tasks',this)">Tasks</button>
+        <button class="ob-view-tab" onclick="crmSwitchView('activity',this)">Activity</button>
+      </div>
+      <div class="crm-actions">
+        <input class="crm-search" id="crm-search" placeholder="Search clients…" oninput="crmRender()"/>
+        <button class="btn-primary" onclick="crmOpenAddContact()">+ Add Client</button>
+      </div>
+    </div>
+    <div id="crm-pipeline-view"><div class="crm-kanban" id="crm-kanban"></div></div>
+    <div id="crm-clients-view" style="display:none"><div style="overflow-x:auto"><table class="crm-table"><thead><tr><th>Client</th><th>Stage</th><th>Deal</th><th>Health</th><th>Follow-up</th><th>Assigned</th><th></th></tr></thead><tbody id="crm-clients-tbody"></tbody></table><div id="crm-clients-empty" style="display:none;padding:40px;text-align:center;color:var(--mid-grey)">No clients yet — add your first client above.</div></div></div>
+    <div id="crm-tasks-view" style="display:none"><div id="crm-tasks-head" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><span style="font-size:0.78rem;color:var(--mid-grey)" id="crm-tasks-count"></span><label style="display:flex;align-items:center;gap:6px;font-size:0.76rem;color:var(--mid-grey);cursor:pointer"><input type="checkbox" id="crm-show-done" onchange="crmRenderTasks()"> Show completed</label></div><div class="crm-task-list" id="crm-task-list"></div></div>
+    <div id="crm-activity-view" style="display:none"><div class="crm-feed" id="crm-feed"></div></div>
+  </div>
+</div>
+
+<!-- ══════ CRM — CLIENT DETAIL MODAL ══════ -->
+<div class="modal-back" id="crm-contact-modal">
+  <div class="modal crm-modal">
+    <div class="crm-modal-hdr">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
-          <div class="ob-view-tabs">
-            <button class="ob-view-tab active" onclick="obSwitchView('board')">Board View</button>
-            <button class="ob-view-tab" onclick="obSwitchView('team')">Team View</button>
-            <button class="ob-view-tab" onclick="obSwitchView('prospects')">Prospects</button>
-            <button class="ob-view-tab" onclick="obSwitchView('deals')" id="ob-deals-tab">Deal Review</button>
-          </div>
+          <div class="crm-modal-name" id="crmd-name">—</div>
+          <div class="crm-modal-meta" id="crmd-meta"></div>
         </div>
-        <button class="btn-primary" onclick="obOpenCreateTask()">+ New Task</button>
+        <button onclick="crmCloseContact()" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:1.2rem;cursor:pointer;padding:4px;line-height:1">✕</button>
       </div>
-
-      <!-- BOARD VIEW -->
-      <div id="ob-board-view" class="ob-board">
-        <div class="kanban-board">
-          <div class="kanban-col">
-            <div class="kanban-col-header">Backlog<span class="kanban-col-count" id="col-count-backlog">0</span></div>
-            <div class="kanban-cards" id="col-backlog" data-status="backlog"></div>
-          </div>
-          <div class="kanban-col">
-            <div class="kanban-col-header">In Progress<span class="kanban-col-count" id="col-count-in_progress">0</span></div>
-            <div class="kanban-cards" id="col-in_progress" data-status="in_progress"></div>
-          </div>
-          <div class="kanban-col">
-            <div class="kanban-col-header">In Review<span class="kanban-col-count" id="col-count-in_review">0</span></div>
-            <div class="kanban-cards" id="col-in_review" data-status="in_review"></div>
-          </div>
-          <div class="kanban-col">
-            <div class="kanban-col-header">Done<span class="kanban-col-count" id="col-count-done">0</span></div>
-            <div class="kanban-cards" id="col-done" data-status="done"></div>
-          </div>
+      <div class="crm-modal-tabs">
+        <button class="crm-modal-tab active" onclick="crmDetailTab('overview',this)">Overview</button>
+        <button class="crm-modal-tab" onclick="crmDetailTab('activity',this)">Activity</button>
+        <button class="crm-modal-tab" onclick="crmDetailTab('tasks',this)">Tasks</button>
+      </div>
+    </div>
+    <div class="crm-modal-body">
+      <!-- Overview -->
+      <div id="crmd-pane-overview">
+        <div class="crm-info-grid" id="crmd-info-grid"></div>
+        <div id="crmd-deal-link"></div>
+        <div class="crm-section-title">Notes</div>
+        <textarea id="crmd-notes" rows="4" style="width:100%;font-family:'Inter',sans-serif;font-size:0.83rem;padding:10px 12px;border:1px solid var(--light-grey);resize:vertical;outline:none" placeholder="General notes about this client…"></textarea>
+      </div>
+      <!-- Activity -->
+      <div id="crmd-pane-activity" style="display:none">
+        <div class="crm-section-title">Log an Interaction</div>
+        <div class="crm-log-bar" id="crmd-log-bar">
+          <button class="crm-log-btn sel" data-type="note" onclick="crmSelectLogType(this)">📝 Note</button>
+          <button class="crm-log-btn" data-type="call" onclick="crmSelectLogType(this)">📞 Call</button>
+          <button class="crm-log-btn" data-type="email" onclick="crmSelectLogType(this)">✉ Email</button>
+          <button class="crm-log-btn" data-type="meeting" onclick="crmSelectLogType(this)">🤝 Meeting</button>
         </div>
+        <div class="crm-log-compose">
+          <textarea id="crmd-log-text" placeholder="What happened? What was discussed?"></textarea>
+          <div><button class="btn-primary" onclick="crmLogActivity()">Save</button></div>
+        </div>
+        <div class="crm-section-title">History</div>
+        <div class="crm-modal-activity" id="crmd-activity-list"></div>
       </div>
-
-      <!-- TEAM VIEW -->
-      <div id="ob-team-view" class="team-view" style="display:none">
-        <div id="team-members-list"></div>
-      </div>
-
-      <!-- DEAL REVIEW VIEW -->
-      <div id="ob-deals-view" style="display:none">
-        <div class="dr-summary" id="dr-summary"></div>
-        <div class="dr-table-wrap">
-          <table class="dr-table">
-            <thead><tr>
-              <th>Deal</th><th>Borrower</th><th>Phase</th>
-              <th>Awaiting Review</th><th>Progress</th><th></th>
-            </tr></thead>
-            <tbody id="dr-tbody"></tbody>
-          </table>
-          <div id="dr-empty" style="display:none;padding:40px;text-align:center;color:var(--mid-grey);font-size:0.88rem">
-            No deals yet — create one from the Dashboard.
-          </div>
+      <!-- Tasks -->
+      <div id="crmd-pane-tasks" style="display:none">
+        <div class="crm-tasks-list" id="crmd-task-list"></div>
+        <div class="crm-add-task" style="margin-top:14px">
+          <input id="crmd-new-task" placeholder="Add a task…" onkeydown="if(event.key==='Enter')crmAddTask()"/>
+          <input type="date" id="crmd-task-due" style="font-family:'Inter',sans-serif;font-size:0.8rem;padding:8px 10px;border:1px solid var(--light-grey);outline:none"/>
+          <button class="btn-primary" onclick="crmAddTask()">Add</button>
         </div>
       </div>
-
-      <!-- PROSPECTS VIEW -->
-      <div id="ob-prospects-view" class="prospects-view" style="display:none">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
-          <h3 style="font-family:Cormorant Garant,serif;font-size:1.4rem;font-weight:600;color:var(--black)">Interested Borrowers</h3>
-          <button class="btn-primary" onclick="obOpenCreateProspect()">+ Add Prospect</button>
-        </div>
-        <div id="prospects-list" class="prospect-list"></div>
-      </div>
-
+    </div>
+    <div class="crm-modal-footer">
+      <button class="btn-primary" onclick="crmSaveContact()">Save Changes</button>
+      <button class="btn-quiet" onclick="crmCloseContact()">Close</button>
+      <button class="btn-quiet btn-danger" onclick="crmDeleteContact()" style="margin-left:auto">Delete Client</button>
     </div>
   </div>
 </div>
@@ -2104,6 +2289,7 @@ async function boot(user){
     profile = p.data || {id:user.id, role:'borrower', full_name:''};
     if(profile && !profile.email && me.email) await supa.from('profiles').update({email:me.email}).eq('id',me.id);
     if(EMAILJS_PUBLIC_KEY) emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});
+    if(isAdmin()) await crmLoad();
     if(profile && profile.role === 'lender'){
       const {data:cp} = await supa.from('capital_partners').select('*').eq('user_id', user.id).maybeSingle();
       if(cp){ lenderPartner = cp; populateLenderProfileForm(cp); }
@@ -2195,7 +2381,7 @@ function rerenderCurrent(){
   if(active.id==='page-dash')          renderDash();
   if(active.id==='page-borrower')      renderBorrowerHome();
   if(active.id==='page-detail')        renderDetail();
-  if(active.id==='page-onboarding')    obRefreshBoard();
+  if(active.id==='page-onboarding')    { crmLoad().then(crmRender); }
   if(active.id==='page-tracker')       trkRenderDashboard();
   if(active.id==='page-pipeline')       renderPipeline();
   if(active.id==='page-review-queue')  renderReviewQueue();
@@ -2462,6 +2648,8 @@ function renderDetail(){
   else document.getElementById('dd-checklist').innerHTML = renderVault(d);
   renderAllDocs(d);
   setTimeout(renderIntel, 80);
+  renderLenderMatch(d);
+  renderDocExpiry(d);
 }
 
 async function setPhase(i){
@@ -3544,6 +3732,552 @@ function chatMatch(input){
     if(score > bestScore){ bestScore = score; best = qa; }
   }
   return (best && bestScore > 0) ? best.a : CHAT_FALLBACK;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CRM — Supabase-backed client relationship manager
+   Tables: crm_contacts, crm_activities, crm_tasks
+   Run crm-schema.sql in Supabase before using.
+═══════════════════════════════════════════════════════════════════ */
+let crmContacts = [], crmTasks = [], crmRecentActivity = [], crmAdmins = [];
+let crmCurrentId = null, crmCurrentActivities = [], crmCurrentTasks = [];
+let crmLogType = 'note', crmView = 'pipeline';
+let crmAllLenders = [];
+
+const CRM_STAGES = [
+  {key:'prospect',   label:'Prospects'},
+  {key:'onboarding', label:'Onboarding'},
+  {key:'collecting', label:'Collecting Docs'},
+  {key:'reviewing',  label:'Under Review'},
+  {key:'marketing',  label:'Lender Marketing'},
+];
+const CRM_STAGE_LABELS = {
+  prospect:'Prospect', onboarding:'Onboarding', collecting:'Collecting',
+  reviewing:'In Review', marketing:'Marketing', term_sheet:'Term Sheet',
+  closing:'Closing', closed:'Closed', paused:'Paused'
+};
+const CRM_PRIORITY_LABELS = {low:'Low', normal:'Normal', high:'High', urgent:'Urgent'};
+const CRM_SOURCE_LABELS = {direct:'Direct', referral:'Referral', website:'Website', conference:'Conference', cold:'Cold Outreach'};
+const ACT_ICONS = {call:'📞', email:'✉', meeting:'🤝', note:'📝', doc_uploaded:'📎', phase_advanced:'⬆', task_completed:'✓', system:'⚙'};
+const ACT_CSS   = {call:'act-call', email:'act-email', meeting:'act-meeting', note:'act-note',
+                   doc_uploaded:'act-system', phase_advanced:'act-system', task_completed:'act-email', system:'act-system'};
+
+async function crmLoad(){
+  if(!isAdmin()) return;
+  try{
+    const [cr, tr, ar, lr] = await Promise.all([
+      supa.from('crm_contacts').select('*, deal:deals(id,name,phase,asset_type,raise_amount,checklist_items(*))').order('created_at',{ascending:false}),
+      supa.from('crm_tasks').select('*, contact:crm_contacts(full_name)').order('due_date',{ascending:true}),
+      supa.from('crm_activities').select('*, contact:crm_contacts(full_name)').order('activity_date',{ascending:false}).limit(60),
+      supa.from('capital_partners').select('*'),
+    ]);
+    crmContacts      = cr.data  || [];
+    crmTasks         = tr.data  || [];
+    crmRecentActivity= ar.data  || [];
+    crmAllLenders    = lr.data  || [];
+    const adm = await supa.from('profiles').select('id,full_name,email').eq('role','admin');
+    crmAdmins = adm.data || [];
+  }catch(e){ console.warn('CRM load failed:',e.message); }
+}
+
+function crmRefresh(){ crmLoad().then(crmRender); }
+
+function crmRender(){
+  crmRenderStats();
+  if(crmView==='pipeline')  crmRenderPipeline();
+  else if(crmView==='clients') crmRenderClients();
+  else if(crmView==='tasks')   crmRenderTasks();
+  else if(crmView==='activity') crmRenderFeed();
+}
+
+function crmFilter(){
+  const q = (document.getElementById('crm-search')?.value||'').toLowerCase();
+  if(!q) return crmContacts;
+  return crmContacts.filter(c=>
+    (c.full_name||'').toLowerCase().includes(q) ||
+    (c.company||'').toLowerCase().includes(q) ||
+    (c.email||'').toLowerCase().includes(q)
+  );
+}
+
+function crmSwitchView(v, btn){
+  crmView = v;
+  document.querySelectorAll('.ob-view-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  ['pipeline','clients','tasks','activity'].forEach(name=>{
+    const el = document.getElementById('crm-'+name+'-view');
+    if(el) el.style.display = name===v ? '' : 'none';
+  });
+  crmRender();
+}
+
+/* ── Stats bar ── */
+function crmRenderStats(){
+  const el = document.getElementById('crm-stats-bar'); if(!el) return;
+  const contacts = crmContacts;
+  const active   = contacts.filter(c=>!['closed','paused'].includes(c.stage)).length;
+  const closing  = contacts.filter(c=>c.stage==='closing'||c.stage==='term_sheet').length;
+  const today    = new Date().toISOString().slice(0,10);
+  const overdue  = crmTasks.filter(t=>!t.completed && t.due_date && t.due_date < today).length;
+  const followups= contacts.filter(c=>c.next_followup && c.next_followup <= today).length;
+  el.innerHTML = `
+    <div class="crm-stat"><div class="num">${contacts.length}</div><div class="lbl">Total Clients</div></div>
+    <div class="crm-stat"><div class="num"><em>${active}</em></div><div class="lbl">Active</div></div>
+    <div class="crm-stat"><div class="num">${closing}</div><div class="lbl">Near Closing</div></div>
+    <div class="crm-stat"><div class="num ${overdue?'num':''}" style="${overdue?'color:#e08a8a':''}">${overdue}</div><div class="lbl">Overdue Tasks</div></div>
+    <div class="crm-stat"><div class="num ${followups?'':''}" style="${followups?'color:#e08a8a':''}">${followups}</div><div class="lbl">Follow-ups Due</div></div>`;
+}
+
+/* ── Pipeline kanban ── */
+function crmRenderPipeline(){
+  const el = document.getElementById('crm-kanban'); if(!el) return;
+  const contacts = crmFilter();
+  el.innerHTML = CRM_STAGES.map(stage=>{
+    const cards = contacts.filter(c=>c.stage===stage.key);
+    return `<div class="crm-col">
+      <div class="crm-col-hdr">
+        <span class="crm-col-name">${stage.label}</span>
+        <span class="crm-col-count">${cards.length}</span>
+      </div>
+      <div class="crm-cards">
+        ${cards.map(c=>crmCardHTML(c)).join('') || `<div style="padding:12px;font-size:0.74rem;color:var(--mid-grey)">Empty</div>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function crmCardHTML(c){
+  const health = crmHealthMeta(c);
+  const today  = new Date().toISOString().slice(0,10);
+  const fuClass= c.next_followup && c.next_followup <= today ? 'overdue' : '';
+  const fuText = c.next_followup ? (c.next_followup <= today ? '⚠ Follow-up overdue' : '↻ '+c.next_followup) : '';
+  return `<div class="crm-card" onclick="crmOpenContact('${c.id}')">
+    <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:6px">
+      <div class="crm-priority-dot prio-${c.priority||'normal'}" style="margin-top:5px"></div>
+      <div style="flex:1">
+        <div class="crm-card-name">${esc(c.full_name)}</div>
+        <div class="crm-card-meta">${c.company?esc(c.company)+'<br>':''}${c.deal?'Deal: '+esc(c.deal.name):''}</div>
+      </div>
+    </div>
+    <div class="crm-card-footer">
+      <span class="crm-health ${health.cls}">${health.score}% ${health.label}</span>
+      ${fuText?`<span class="crm-followup-tag ${fuClass}">${fuText}</span>`:''}
+    </div>
+  </div>`;
+}
+
+/* ── Clients table ── */
+function crmRenderClients(){
+  const tbody = document.getElementById('crm-clients-tbody');
+  const empty = document.getElementById('crm-clients-empty');
+  if(!tbody) return;
+  const contacts = crmFilter();
+  if(!contacts.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  const today = new Date().toISOString().slice(0,10);
+  tbody.innerHTML = contacts.map(c=>{
+    const health = crmHealthMeta(c);
+    const stageKey = c.stage||'prospect';
+    const fuClass = c.next_followup && c.next_followup<=today ? 'style="color:var(--red);font-weight:600"' : '';
+    const assignee = crmAdmins.find(a=>a.id===c.assigned_to);
+    return `<tr onclick="crmOpenContact('${c.id}')">
+      <td><div class="crm-name-cell">${esc(c.full_name)}</div><div class="crm-sub-cell">${c.company?esc(c.company):''}${c.email?' · '+esc(c.email):''}</div></td>
+      <td><span class="crm-stage-pill st-${stageKey}">${CRM_STAGE_LABELS[stageKey]||stageKey}</span></td>
+      <td style="font-size:0.8rem;color:var(--mid-grey)">${c.deal?esc(c.deal.name):'—'}</td>
+      <td><span class="crm-health ${health.cls}">${health.score}%</span></td>
+      <td><span ${fuClass} style="font-size:0.78rem">${c.next_followup||'—'}</span></td>
+      <td style="font-size:0.78rem;color:var(--mid-grey)">${assignee?esc(assignee.full_name||assignee.email):'—'}</td>
+      <td><button class="btn-quiet" onclick="event.stopPropagation();crmOpenContact('${c.id}')">Open →</button></td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── Tasks view ── */
+function crmRenderTasks(){
+  const el = document.getElementById('crm-task-list'); if(!el) return;
+  const showDone = document.getElementById('crm-show-done')?.checked;
+  const today = new Date().toISOString().slice(0,10);
+  let tasks = crmTasks.filter(t=>showDone || !t.completed);
+  const countEl = document.getElementById('crm-tasks-count');
+  if(countEl) countEl.textContent = `${crmTasks.filter(t=>!t.completed).length} open tasks`;
+  if(!tasks.length){ el.innerHTML=`<div style="padding:24px 0;color:var(--mid-grey);font-size:0.85rem">No open tasks — add tasks from a client's detail view.</div>`; return; }
+  el.innerHTML = tasks.map(t=>{
+    let dueClass='future', dueLabel=t.due_date||'';
+    if(t.due_date){ if(t.due_date<today) dueClass='overdue'; else if(t.due_date===today) dueClass='today'; }
+    return `<div class="crm-task-item">
+      <div class="crm-task-check" onclick="crmToggleTask('${t.id}',${!t.completed})" title="${t.completed?'Mark incomplete':'Mark complete'}">
+        ${t.completed?'✓':''}
+      </div>
+      <div>
+        <div class="crm-task-title" style="${t.completed?'text-decoration:line-through;opacity:0.5':''}">${esc(t.title)}</div>
+        <div class="crm-task-meta">${t.contact?esc(t.contact.full_name):''}${t.description?' — '+esc(t.description):''}</div>
+      </div>
+      <div class="crm-task-due ${dueClass}">${dueLabel}</div>
+      <button class="btn-quiet" onclick="crmOpenContact('${t.contact_id}')">Client →</button>
+    </div>`;
+  }).join('');
+}
+
+/* ── Activity feed ── */
+function crmRenderFeed(){
+  const el = document.getElementById('crm-feed'); if(!el) return;
+  if(!crmRecentActivity.length){ el.innerHTML=`<div style="padding:24px 0;color:var(--mid-grey)">No activity logged yet.</div>`; return; }
+  el.innerHTML = crmRecentActivity.map(a=>`
+    <div class="crm-feed-item">
+      <div class="crm-feed-icon ${ACT_CSS[a.activity_type]||'act-note'}">${ACT_ICONS[a.activity_type]||'📝'}</div>
+      <div class="crm-feed-body">
+        <div class="crm-feed-subject">${esc(a.subject||a.activity_type)}</div>
+        <div class="crm-feed-detail">${esc(a.body||'')}</div>
+        ${a.contact?`<div class="crm-feed-contact">${esc(a.contact.full_name)}</div>`:''}
+        <div class="crm-feed-when">${fmtAgo(a.activity_date)}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── Health score ── */
+function crmHealthMeta(c){
+  let score = 0;
+  if(c.deal && c.deal.checklist_items){
+    const ds = computeDealScore(c.deal);
+    score = Math.round(ds.total * 0.7);
+  } else { score = 30; }
+  const today = new Date().toISOString().slice(0,10);
+  const myTasks = crmTasks.filter(t=>t.contact_id===c.id && !t.completed);
+  const overdue = myTasks.filter(t=>t.due_date && t.due_date<today).length;
+  if(!overdue) score = Math.min(100, score + 15);
+  else score = Math.max(0, score - overdue*10);
+  if(c.next_followup && c.next_followup>=today) score = Math.min(100, score+15);
+  score = Math.round(score);
+  const cls = score>=75?'ch-blue':score>=55?'ch-green':score>=35?'ch-amber':'ch-red';
+  const label = score>=75?'Excellent':score>=55?'Good':score>=35?'Needs Work':'At Risk';
+  return {score, cls, label};
+}
+
+/* ── Add contact ── */
+async function crmOpenAddContact(){
+  crmCurrentId = null; crmCurrentActivities = []; crmCurrentTasks = [];
+  crmPopulateModal({full_name:'', email:'', phone:'', company:'', source:'direct', stage:'prospect', priority:'normal', next_followup:'', followup_note:'', assigned_to:'', notes:'', deal_id:''});
+  document.getElementById('crm-contact-modal').classList.add('open');
+  crmDetailTab('overview', document.querySelector('.crm-modal-tab'));
+}
+
+async function crmOpenContact(id){
+  crmCurrentId = id;
+  const c = crmContacts.find(x=>x.id===id); if(!c) return;
+  const [ar, tr] = await Promise.all([
+    supa.from('crm_activities').select('*').eq('contact_id',id).order('activity_date',{ascending:false}),
+    supa.from('crm_tasks').select('*').eq('contact_id',id).order('due_date',{ascending:true}),
+  ]);
+  crmCurrentActivities = ar.data||[];
+  crmCurrentTasks = tr.data||[];
+  crmPopulateModal(c);
+  document.getElementById('crm-contact-modal').classList.add('open');
+  crmDetailTab('overview', document.querySelector('.crm-modal-tab'));
+}
+
+function crmPopulateModal(c){
+  document.getElementById('crmd-name').textContent = c.full_name || 'New Client';
+  document.getElementById('crmd-meta').textContent = [c.company, c.email, c.phone].filter(Boolean).join(' · ');
+  document.getElementById('crmd-notes').value = c.notes||'';
+
+  const stageOptions = Object.entries(CRM_STAGE_LABELS).map(([k,v])=>`<option value="${k}" ${c.stage===k?'selected':''}>${v}</option>`).join('');
+  const prioOptions  = Object.entries(CRM_PRIORITY_LABELS).map(([k,v])=>`<option value="${k}" ${(c.priority||'normal')===k?'selected':''}>${v}</option>`).join('');
+  const srcOptions   = Object.entries(CRM_SOURCE_LABELS).map(([k,v])=>`<option value="${k}" ${(c.source||'direct')===k?'selected':''}>${v}</option>`).join('');
+  const adminOptions = crmAdmins.map(a=>`<option value="${a.id}" ${c.assigned_to===a.id?'selected':''}>${esc(a.full_name||a.email)}</option>`).join('');
+  const dealOptions  = deals.map(d=>`<option value="${d.id}" ${c.deal_id===d.id?'selected':''}>${esc(d.name)}</option>`).join('');
+
+  document.getElementById('crmd-info-grid').innerHTML = `
+    <div class="crm-info-field"><div class="crm-info-label">Full Name</div><div class="crm-info-value"><input id="crmd-f-name" value="${esc(c.full_name||'')}"/></div></div>
+    <div class="crm-info-field"><div class="crm-info-label">Company</div><div class="crm-info-value"><input id="crmd-f-company" value="${esc(c.company||'')}"/></div></div>
+    <div class="crm-info-field"><div class="crm-info-label">Email</div><div class="crm-info-value"><input id="crmd-f-email" type="email" value="${esc(c.email||'')}"/></div></div>
+    <div class="crm-info-field"><div class="crm-info-label">Phone</div><div class="crm-info-value"><input id="crmd-f-phone" value="${esc(c.phone||'')}"/></div></div>
+    <div class="crm-info-field"><div class="crm-info-label">Stage</div><div class="crm-info-value"><select id="crmd-f-stage">${stageOptions}</select></div></div>
+    <div class="crm-info-field"><div class="crm-info-label">Priority</div><div class="crm-info-value"><select id="crmd-f-priority">${prioOptions}</select></div></div>
+    <div class="crm-info-field"><div class="crm-info-label">Source</div><div class="crm-info-value"><select id="crmd-f-source">${srcOptions}</select></div></div>
+    <div class="crm-info-field"><div class="crm-info-label">Assigned To</div><div class="crm-info-value"><select id="crmd-f-assigned"><option value="">Unassigned</option>${adminOptions}</select></div></div>
+    <div class="crm-info-field"><div class="crm-info-label">Follow-up Date</div><div class="crm-info-value"><input id="crmd-f-followup" type="date" value="${c.next_followup||''}"/></div></div>
+    <div class="crm-info-field"><div class="crm-info-label">Follow-up Note</div><div class="crm-info-value"><input id="crmd-f-fu-note" value="${esc(c.followup_note||'')}"/></div></div>
+    <div class="crm-info-field" style="grid-column:1/-1"><div class="crm-info-label">Linked Deal Room</div><div class="crm-info-value"><select id="crmd-f-deal"><option value="">— None —</option>${dealOptions}</select></div></div>`;
+
+  document.getElementById('crmd-deal-link').innerHTML = c.deal_id
+    ? `<button class="btn-quiet" style="margin-top:8px" onclick="crmCloseContact();openDeal('${c.deal_id}')">→ Open Deal Room: ${esc(c.deal?.name||'')}</button>`
+    : '';
+
+  crmRenderContactActivity();
+  crmRenderContactTasks();
+}
+
+function crmDetailTab(tab, btn){
+  ['overview','activity','tasks'].forEach(t=>{
+    const el=document.getElementById('crmd-pane-'+t);
+    if(el) el.style.display=t===tab?'':'none';
+  });
+  document.querySelectorAll('.crm-modal-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+}
+
+function crmRenderContactActivity(){
+  const el=document.getElementById('crmd-activity-list'); if(!el) return;
+  if(!crmCurrentActivities.length){ el.innerHTML=`<div style="padding:16px 0;color:var(--mid-grey);font-size:0.82rem">No activity logged yet.</div>`; return; }
+  el.innerHTML = crmCurrentActivities.map(a=>`
+    <div class="crm-act-item">
+      <div class="crm-act-icon ${ACT_CSS[a.activity_type]||'act-note'}">${ACT_ICONS[a.activity_type]||'📝'}</div>
+      <div class="crm-act-body">
+        <div class="crm-act-text">${a.subject?`<strong>${esc(a.subject)}</strong> — `:''}${esc(a.body||'')}</div>
+        <div class="crm-act-when">${fmtAgo(a.activity_date)}</div>
+      </div>
+    </div>`).join('');
+}
+
+function crmRenderContactTasks(){
+  const el=document.getElementById('crmd-task-list'); if(!el) return;
+  if(!crmCurrentTasks.length){ el.innerHTML=`<div style="padding:12px 0;color:var(--mid-grey);font-size:0.82rem">No tasks yet.</div>`; return; }
+  const today=new Date().toISOString().slice(0,10);
+  el.innerHTML = crmCurrentTasks.map(t=>`
+    <div class="crm-task-row ${t.completed?'done':''}">
+      <input type="checkbox" ${t.completed?'checked':''} onchange="crmToggleTask('${t.id}',this.checked,true)"/>
+      <div class="crm-task-info">
+        <div class="t-title">${esc(t.title)}</div>
+        <div class="t-meta">${t.due_date?'Due: '+t.due_date:''}</div>
+      </div>
+      <button class="btn-del" onclick="crmDeleteTask('${t.id}')">✕</button>
+    </div>`).join('');
+}
+
+function crmSelectLogType(btn){
+  document.querySelectorAll('.crm-log-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  crmLogType = btn.dataset.type;
+}
+
+async function crmLogActivity(){
+  if(!crmCurrentId) return;
+  const body = document.getElementById('crmd-log-text')?.value.trim();
+  if(!body){ toast('Write something before saving.',true); return; }
+  const c = crmContacts.find(x=>x.id===crmCurrentId);
+  const {data, error} = await supa.from('crm_activities').insert({
+    contact_id: crmCurrentId,
+    deal_id: c?.deal_id||null,
+    activity_type: crmLogType,
+    subject: CRM_STAGE_LABELS[crmLogType]||crmLogType,
+    body, logged_by: me?.id,
+  }).select().single();
+  if(error){ err(error); return; }
+  document.getElementById('crmd-log-text').value='';
+  crmCurrentActivities.unshift(data);
+  crmRenderContactActivity();
+  toast('Activity logged.');
+}
+
+async function crmAddTask(){
+  if(!crmCurrentId) return;
+  const title = document.getElementById('crmd-new-task')?.value.trim();
+  if(!title){ toast('Enter a task title.',true); return; }
+  const due = document.getElementById('crmd-task-due')?.value||null;
+  const c = crmContacts.find(x=>x.id===crmCurrentId);
+  const {data,error} = await supa.from('crm_tasks').insert({
+    contact_id:crmCurrentId, deal_id:c?.deal_id||null,
+    title, due_date:due, created_by:me?.id,
+  }).select().single();
+  if(error){ err(error); return; }
+  document.getElementById('crmd-new-task').value='';
+  if(document.getElementById('crmd-task-due')) document.getElementById('crmd-task-due').value='';
+  crmCurrentTasks.push(data);
+  crmCurrentTasks.sort((a,b)=>(a.due_date||'9')>(b.due_date||'9')?1:-1);
+  crmRenderContactTasks();
+  crmTasks.push(data);
+  toast('Task added.');
+}
+
+async function crmToggleTask(id, completed, inModal=false){
+  const {error} = await supa.from('crm_tasks').update({
+    completed, completed_at: completed ? new Date().toISOString() : null
+  }).eq('id',id);
+  if(error){ err(error); return; }
+  const t = crmTasks.find(x=>x.id===id);
+  if(t){ t.completed=completed; t.completed_at=completed?new Date().toISOString():null; }
+  const ct = crmCurrentTasks.find(x=>x.id===id);
+  if(ct){ ct.completed=completed; }
+  if(inModal) crmRenderContactTasks();
+  else crmRenderTasks();
+}
+
+async function crmDeleteTask(id){
+  if(!confirm('Delete this task?')) return;
+  const {error} = await supa.from('crm_tasks').delete().eq('id',id);
+  if(error){ err(error); return; }
+  crmCurrentTasks = crmCurrentTasks.filter(t=>t.id!==id);
+  crmTasks = crmTasks.filter(t=>t.id!==id);
+  crmRenderContactTasks();
+  toast('Task deleted.');
+}
+
+async function crmSaveContact(){
+  const row = {
+    full_name:   document.getElementById('crmd-f-name')?.value.trim()||'',
+    company:     document.getElementById('crmd-f-company')?.value.trim()||null,
+    email:       document.getElementById('crmd-f-email')?.value.trim()||null,
+    phone:       document.getElementById('crmd-f-phone')?.value.trim()||null,
+    stage:       document.getElementById('crmd-f-stage')?.value||'prospect',
+    priority:    document.getElementById('crmd-f-priority')?.value||'normal',
+    source:      document.getElementById('crmd-f-source')?.value||'direct',
+    assigned_to: document.getElementById('crmd-f-assigned')?.value||null,
+    next_followup: document.getElementById('crmd-f-followup')?.value||null,
+    followup_note: document.getElementById('crmd-f-fu-note')?.value.trim()||null,
+    deal_id:     document.getElementById('crmd-f-deal')?.value||null,
+    notes:       document.getElementById('crmd-notes')?.value.trim()||null,
+    updated_at:  new Date().toISOString(),
+  };
+  if(!row.full_name){ toast('Name is required.',true); return; }
+  let error;
+  if(crmCurrentId){
+    ({error} = await supa.from('crm_contacts').update(row).eq('id',crmCurrentId));
+  } else {
+    const r = await supa.from('crm_contacts').insert(row).select().single();
+    error = r.error;
+    if(!error) crmCurrentId = r.data.id;
+  }
+  if(error){ err(error); return; }
+  toast('Client saved.');
+  crmCloseContact();
+  crmRefresh();
+}
+
+async function crmDeleteContact(){
+  if(!crmCurrentId || !confirm('Delete this client and all their activity? This cannot be undone.')) return;
+  const {error} = await supa.from('crm_contacts').delete().eq('id',crmCurrentId);
+  if(error){ err(error); return; }
+  toast('Client deleted.');
+  crmCloseContact();
+  crmRefresh();
+}
+
+function crmCloseContact(){
+  document.getElementById('crm-contact-modal').classList.remove('open');
+  crmCurrentId = null;
+}
+
+document.addEventListener('click',e=>{
+  if(e.target.id==='crm-contact-modal') crmCloseContact();
+});
+
+/* ── Date helpers ── */
+function fmtAgo(iso){
+  if(!iso) return '';
+  const d = new Date(iso), now = new Date();
+  const mins = Math.round((now-d)/60000);
+  if(mins<2)  return 'Just now';
+  if(mins<60) return mins+'m ago';
+  const hrs = Math.round(mins/60);
+  if(hrs<24)  return hrs+'h ago';
+  return d.toISOString().slice(0,10);
+}
+
+/* ═════════════════════════════════════════════════════════
+   LENDER MATCHING — surfaces capital_partners matches on deal detail
+═════════════════════════════════════════════════════════ */
+function renderLenderMatch(d){
+  const sec  = document.getElementById('dd-lender-match'); if(!sec) return;
+  const grid = document.getElementById('dd-lender-match-grid'); if(!grid) return;
+  if(!crmAllLenders.length){ sec.style.display='none'; return; }
+  sec.style.display='block';
+  const dealClass = (d.asset_class||'').toLowerCase();
+  const matches = crmAllLenders.filter(l=>{
+    if(!l.asset_classes?.length) return true;
+    return l.asset_classes.some(ac=>ac.toLowerCase()===dealClass || dealClass.includes(ac.toLowerCase()) || ac.toLowerCase().includes(dealClass));
+  });
+  if(!matches.length){
+    grid.innerHTML=`<div class="lm-no-match">No lenders in the network have a mandate matching <strong>${esc(d.asset_type)}</strong> yet. Add lenders via the lender portal or capital_partners table.</div>`;
+    return;
+  }
+  grid.innerHTML = matches.map(l=>`
+    <div class="lm-card">
+      <div class="lm-card-firm">${esc(l.firm_name||'Unnamed Firm')}</div>
+      <div class="lm-card-criteria">
+        ${l.min_loan||l.max_loan?`Size: ${l.min_loan?'$'+l.min_loan:'—'} – ${l.max_loan?'$'+l.max_loan:'—'}<br>`:''}
+        ${l.max_ltv?'Max LTV: '+l.max_ltv+'%<br>':''}
+        ${l.min_dscr?'Min DSCR: '+l.min_dscr+'x<br>':''}
+        ${l.target_geographies?.length?'Geo: '+l.target_geographies.join(', '):''}
+      </div>
+      ${l.asset_classes?.length?`<div class="lm-card-tags">${l.asset_classes.map(t=>`<span class="lm-tag">${esc(t)}</span>`).join('')}</div>`:''}
+    </div>`).join('');
+}
+
+/* ═════════════════════════════════════════════════════════
+   DOCUMENT EXPIRY TRACKING
+═════════════════════════════════════════════════════════ */
+const DOC_EXPIRY_RULES = {
+  'Personal Financial Statement (PFS)':          90,
+  'Bank / Liquidity Statements':                 90,
+  'Current Rent Roll':                           90,
+  'T-12 Operating Statement':                   365,
+  'Appraisal':                                  365,
+  'Broker Price Opinion (BPO)':                 180,
+  'Environmental Report (Phase I)':             365,
+  'Title Commitment':                           180,
+  'Insurance Binder / Quote':                   365,
+  'Credit Authorization':                       120,
+};
+
+let docExpiryData = {};
+
+async function loadDocExpiry(dealId){
+  const {data} = await supa.from('doc_expiry').select('*').eq('deal_id', dealId);
+  docExpiryData = {};
+  (data||[]).forEach(r=>{ docExpiryData[r.item_id] = r; });
+}
+
+async function renderDocExpiry(d){
+  const sec = document.getElementById('dd-expiry'); if(!sec) return;
+  const el  = document.getElementById('dd-expiry-list'); if(!el) return;
+  const timeItems = (d.checklist_items||[]).filter(it=>DOC_EXPIRY_RULES[it.doc_name]);
+  if(!timeItems.length){ sec.style.display='none'; return; }
+  sec.style.display='block';
+  await loadDocExpiry(d.id);
+  const today = new Date();
+  el.innerHTML = timeItems.map(it=>{
+    const rule = DOC_EXPIRY_RULES[it.doc_name];
+    const exp  = docExpiryData[it.id];
+    let rowClass='exp-ok', badge='', badgeCls='eb-none', issued='', daysLeft='';
+    if(exp && exp.issued_date){
+      const issDate = new Date(exp.issued_date);
+      const expDate = new Date(issDate); expDate.setDate(expDate.getDate()+rule);
+      const diff    = Math.round((expDate-today)/86400000);
+      issued = exp.issued_date;
+      if(diff<0){
+        rowClass='exp-expired'; badge='EXPIRED '+Math.abs(diff)+'d ago'; badgeCls='eb-expired'; daysLeft='EXPIRED';
+      } else if(diff<=30){
+        rowClass='exp-warn'; badge='Expires in '+diff+'d'; badgeCls='eb-warn'; daysLeft=diff+'d left';
+      } else {
+        badge='Valid · '+diff+'d left'; badgeCls='eb-ok';
+      }
+    } else {
+      badge='Not tracked'; badgeCls='eb-none';
+    }
+    return `<div class="expiry-row ${rowClass}">
+      <div>
+        <div class="expiry-doc-name">${esc(it.doc_name)}</div>
+        <div class="expiry-doc-sub">Must be current within ${rule} days of issue</div>
+      </div>
+      <div style="font-size:0.78rem;color:var(--mid-grey)">${issued||'—'}</div>
+      <span class="expiry-badge ${badgeCls}">${badge}</span>
+      <button class="expiry-set-btn" onclick="setExpiryDate('${it.id}','${d.id}','${esc(it.doc_name)}')">Set Date</button>
+    </div>`;
+  }).join('');
+}
+
+async function setExpiryDate(itemId, dealId, docName){
+  const date = prompt(`Issue date for "${docName}" (YYYY-MM-DD):`);
+  if(!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)){ toast('Enter a valid date (YYYY-MM-DD).',true); return; }
+  const rule = DOC_EXPIRY_RULES[docName]||90;
+  const {error} = await supa.from('doc_expiry').upsert({
+    deal_id:dealId, item_id:itemId, doc_name:docName,
+    issued_date:date, expiry_days:rule,
+  },{onConflict:'item_id'});
+  if(error){ err(error); return; }
+  toast('Expiry date saved.');
+  const d = deal(currentDealId);
+  if(d) renderDocExpiry(d);
 }
 
 /* ─────────────────────────────────────────
