@@ -684,6 +684,22 @@
   .pipe-sort-btn{font-size:0.66rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border:1px solid var(--light-grey);background:none;color:var(--mid-grey);padding:6px 14px;cursor:pointer;font-family:'Inter',sans-serif;transition:border-color 0.2s,color 0.2s}
   .pipe-sort-btn.active{border-color:var(--blue);color:var(--blue)}
 
+  /* ── All Documents view ── */
+  .alldocs-section{padding:40px 60px;background:var(--offwhite);border-top:1px solid var(--light-grey)}
+  .alldocs-list{display:flex;flex-direction:column;gap:3px;margin-top:20px}
+  .alldoc-row{display:grid;grid-template-columns:1fr 160px 120px auto;align-items:center;gap:16px;background:var(--white);padding:14px 20px;border-bottom:1px solid var(--light-grey)}
+  .alldoc-name{font-size:0.86rem;font-weight:600;color:var(--black)}
+  .alldoc-item{font-size:0.72rem;color:var(--mid-grey);margin-top:2px}
+  .alldoc-meta{font-size:0.72rem;color:var(--mid-grey)}
+  .alldoc-head{font-size:0.6rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid-grey);padding:8px 20px;display:grid;grid-template-columns:1fr 160px 120px auto;gap:16px;border-bottom:2px solid var(--light-grey)}
+  .alldoc-empty{font-size:0.85rem;color:var(--mid-grey);padding:28px 0;text-align:center}
+  .btn-del{background:none;border:none;cursor:pointer;font-size:0.72rem;color:var(--mid-grey);padding:4px 8px;font-family:'Inter',sans-serif;transition:color 0.2s;white-space:nowrap}
+  .btn-del:hover{color:var(--red)}
+
+  /* ── Reassign borrower ── */
+  .reassign-inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}
+  .reassign-inline select{font-family:'Inter',sans-serif;font-size:0.8rem;padding:7px 10px;border:1px solid var(--light-grey);background:var(--white);color:var(--black);outline:none;min-width:200px}
+
   @media(max-width:900px){
     .score-layout{grid-template-columns:1fr}
     .gauge-wrap{flex-direction:row;align-items:center;gap:28px}
@@ -691,6 +707,9 @@
     .pipe-row,.pipe-row-head{grid-template-columns:1fr 80px 90px}
     .pipe-row>:nth-child(3),.pipe-row-head>:nth-child(3){display:none}
     .pipe-row>:nth-child(5),.pipe-row-head>:nth-child(5){display:none}
+    .alldoc-row,.alldoc-head{grid-template-columns:1fr 90px auto}
+    .alldoc-row>:nth-child(3),.alldoc-head>:nth-child(3){display:none}
+    .alldocs-section{padding:28px 20px}
   }
   </style>
 </head>
@@ -912,7 +931,8 @@
     <div class="hero-eyebrow">Lender Portal</div>
     <h1>Curated <em>deal flow.</em></h1>
     <p class="hero-sub">Deals below are pre-screened by the Steel &amp; Aire team. Set your lending criteria once and we match accordingly.</p>
-    <div class="lf-bar" style="margin-top:28px">
+    <div style="margin-top:20px"><button class="btn-quiet" style="color:rgba(255,255,255,0.5);border-color:rgba(255,255,255,0.15)" onclick="route('home')">&larr; Back to Deal Flow</button></div>
+    <div class="lf-bar" style="margin-top:20px">
       <button class="lf-btn active" data-t="" onclick="lenderFilter(this,'')">All Types</button>
       <button class="lf-btn" data-t="Multifamily" onclick="lenderFilter(this,'Multifamily')">Multifamily</button>
       <button class="lf-btn" data-t="Industrial" onclick="lenderFilter(this,'Industrial')">Industrial</button>
@@ -1112,7 +1132,11 @@
   </div>
   <div class="tab-section">
     <div class="deal-head">
-      <div><span class="section-tag" id="dd-phase-tag">Checklist</span><h2 style="margin-bottom:0">Document <em>checklist.</em></h2></div>
+      <div>
+        <span class="section-tag" id="dd-phase-tag">Checklist</span>
+        <h2 style="margin-bottom:0">Document <em>checklist.</em></h2>
+        <div id="dd-reassign" style="display:none;margin-top:10px"></div>
+      </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <button class="btn-quiet" onclick="route('home')">&larr; Back</button>
         <button class="btn-quiet" onclick="refresh()">Refresh</button>
@@ -1134,6 +1158,13 @@
       <h2 style="margin-bottom:0;font-size:1.6rem">What's <em>happened.</em></h2>
       <div class="activity-list" id="dd-activity-list" style="margin-top:20px"></div>
     </div>
+  </div>
+
+  <!-- ── ALL DOCUMENTS ── -->
+  <div class="alldocs-section" id="dd-alldocs">
+    <span class="section-tag">Submitted Files</span>
+    <h2 style="margin-bottom:0;font-size:1.6rem">All <em>documents.</em></h2>
+    <div id="dd-alldocs-list"></div>
   </div>
 
   <!-- ── DEAL INTELLIGENCE PANEL ── -->
@@ -2373,7 +2404,6 @@ async function openDeal(id){
   currentMessages = []; currentActivity = [];
   renderDetail();
   route('detail');
-  setTimeout(renderIntel, 80);
   loadMessagesAndActivity(id);
   if(isAdmin()){
     const n = await supa.from('deal_private').select('notes').eq('deal_id', id).maybeSingle();
@@ -2400,6 +2430,24 @@ function renderDetail(){
   document.getElementById('dd-delete').style.display = admin? 'inline-block':'none';
   document.getElementById('dd-packet').style.display = admin? 'inline-block':'none';
   document.getElementById('dd-notes').style.display = admin? 'block':'none';
+
+  /* Reassign borrower (admin only) */
+  const reassignEl = document.getElementById('dd-reassign');
+  if(admin && reassignEl){
+    const current = d.borrower ? (d.borrower.full_name || d.borrower.company || d.borrower.email || '—') : 'Unassigned';
+    reassignEl.style.display = 'block';
+    reassignEl.innerHTML = `<div class="reassign-inline">
+      <span style="font-size:0.72rem;color:var(--mid-grey)">Borrower: <strong style="color:var(--black)">${esc(current)}</strong></span>
+      <select id="reassign-select" style="font-family:'Inter',sans-serif;font-size:0.78rem;padding:6px 10px;border:1px solid var(--light-grey);background:var(--white);color:var(--black);outline:none">
+        <option value="">— Unassigned —</option>
+        ${borrowers.map(b=>`<option value="${b.id}" ${d.borrower_id===b.id?'selected':''}>${esc(b.full_name||'(no name)')}${b.company?' — '+esc(b.company):''}</option>`).join('')}
+      </select>
+      <button class="btn-quiet" onclick="saveBorrowerAssignment()">Save</button>
+    </div>`;
+  } else if(reassignEl){ reassignEl.style.display='none'; }
+
+  /* All documents list */
+  renderAllDocs(d);
   if(!admin){
     const phase = d.phase;
     const attention = (d.checklist_items||[]).filter(it=>it.phase<=phase&&it.status==='needed').length;
@@ -2412,6 +2460,8 @@ function renderDetail(){
   } else { document.getElementById('dd-banner').innerHTML = ''; }
   if(admin) renderChecklist(d);
   else document.getElementById('dd-checklist').innerHTML = renderVault(d);
+  renderAllDocs(d);
+  setTimeout(renderIntel, 80);
 }
 
 async function setPhase(i){
@@ -2451,13 +2501,13 @@ function renderChecklist(d){
             <div class="d-name">${esc(it.doc_name)}</div>
             <div class="d-sub">${esc(it.doc_sub||'')}</div>
             ${it.revision_note&&it.status==='needed'?`<div style="margin-top:5px;font-size:0.72rem;color:var(--red)">&#9888; Revision requested: ${esc(it.revision_note)}</div>`:''}
-            ${files.length?`<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px">${files.map(f=>`<span class="file-chip">📎 <a href="#" onclick="downloadFile('${f.id}');return false">${esc(f.file_name)}</a> <span class="by">(${fmtSize(f.file_size)}) ${esc((f.created_at||'').slice(0,10))}</span></span>`).join('')}</div>`:''}
+            ${files.length?`<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px">${files.map(f=>`<span class="file-chip">📎 <a href="#" onclick="downloadFile('${f.id}');return false">${esc(f.file_name)}</a> <span class="by">(${fmtSize(f.file_size)}) ${esc((f.created_at||'').slice(0,10))}</span><button class="btn-del" onclick="deleteFile('${f.id}','${f.storage_path.replace(/'/g,"\\'")}')">✕</button></span>`).join('')}</div>`:''}
           </div>
           <span class="pill phase">Phase ${it.phase+1}+</span>
           <span class="pill ${it.status}">${STATUS_LABEL[it.status]}</span>
           <div class="doc-actions">
             ${DOCUMENT_PREVIEWS[it.doc_name]?`<button class="btn-quiet" onclick="showPreview(${JSON.stringify(it.doc_name)})">View Template</button>`:''}
-            ${admin&&!isApproved?`<button class="btn-quiet" onclick="pickFile('${it.id}')">Upload</button>`:`<button class="btn-quiet" onclick="pickFile('${it.id}')">Upload</button>`}
+            <button class="btn-quiet" onclick="pickFile('${it.id}')">Upload</button>
             ${canAct?`<button class="btn-approve" onclick="approveDoc('${it.id}')">✓ Approve</button>`:''}
             ${isApproved&&admin?`<button class="btn-revise" onclick="openRevision('${it.id}')">↩ Revision</button>`:''}
             ${canAct?`<button class="btn-revise" onclick="openRevision('${it.id}')">↩ Revision</button>`:''}
@@ -2609,6 +2659,11 @@ document.getElementById('file-input').addEventListener('change', async (e)=>{
     }
     const uploadedItem = (d.checklist_items||[]).find(x=>x.id===itemId);
     const docLabel = uploadedItem ? uploadedItem.doc_name : 'a document';
+    /* Borrower upload → auto-advance status to 'uploaded' so it's visible */
+    if(!isAdmin() && uploadedItem && uploadedItem.status === 'needed'){
+      await supa.from('checklist_items').update({status:'uploaded'}).eq('id', itemId);
+      uploadedItem.status = 'uploaded';
+    }
     sendUploadEmail(d, docLabel);
     logActivity(d.id, `Document uploaded: ${docLabel}`);
     toast('Document uploaded.');
@@ -2624,6 +2679,70 @@ async function downloadFile(docId){
   const {data, error} = await supa.storage.from('deal-files').createSignedUrl(f.storage_path, 60);
   if(error){ err(error); return; }
   window.open(data.signedUrl, '_blank');
+}
+
+async function deleteFile(docId, storagePath){
+  if(!confirm('Remove this file? This cannot be undone.')) return;
+  const d = deal(currentDealId); if(!d) return;
+  veil(true,'Removing file…');
+  try{
+    await supa.storage.from('deal-files').remove([storagePath]);
+    const {error} = await supa.from('documents').delete().eq('id', docId);
+    if(error) throw error;
+    /* If no more files remain for that checklist item and status is 'uploaded', revert to 'needed' */
+    const doc = (d.documents||[]).find(x=>x.id===docId);
+    if(doc){
+      const remaining = (d.documents||[]).filter(x=>x.item_id===doc.item_id && x.id!==docId);
+      if(!remaining.length){
+        const item = (d.checklist_items||[]).find(x=>x.id===doc.item_id);
+        if(item && item.status==='uploaded'){
+          await supa.from('checklist_items').update({status:'needed'}).eq('id', item.id);
+        }
+      }
+    }
+    toast('File removed.');
+    await refresh(false);
+  }catch(ex){ err(ex); }
+  veil(false);
+}
+
+async function saveBorrowerAssignment(){
+  const d = deal(currentDealId); if(!d || !isAdmin()) return;
+  const sel = document.getElementById('reassign-select'); if(!sel) return;
+  const newId = sel.value || null;
+  const {error} = await supa.from('deals').update({borrower_id: newId}).eq('id', d.id);
+  if(error){ err(error); return; }
+  toast('Borrower assigned.');
+  await refresh(false);
+  renderDetail();
+}
+
+function renderAllDocs(d){
+  const el = document.getElementById('dd-alldocs-list'); if(!el) return;
+  const docs = d.documents || [];
+  if(!docs.length){
+    el.innerHTML = `<div class="alldoc-empty">No files submitted yet — documents will appear here as soon as they are uploaded.</div>`;
+    return;
+  }
+  const sorted = [...docs].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+  el.innerHTML = `
+    <div class="alldoc-head">
+      <div>File</div><div>Checklist Item</div><div>Uploaded</div><div></div>
+    </div>
+    <div class="alldocs-list">
+      ${sorted.map(f=>{
+        const item = (d.checklist_items||[]).find(i=>i.id===f.item_id);
+        return `<div class="alldoc-row">
+          <div>
+            <div class="alldoc-name"><a href="#" onclick="downloadFile('${f.id}');return false">&#128206; ${esc(f.file_name)}</a></div>
+            <div class="alldoc-item">${fmtSize(f.file_size)}</div>
+          </div>
+          <div class="alldoc-meta">${item ? esc(item.doc_name) : '—'}</div>
+          <div class="alldoc-meta">${(f.created_at||'').slice(0,10)}</div>
+          <div><button class="btn-del" onclick="deleteFile('${f.id}','${(f.storage_path||'').replace(/'/g,"\\'")}')">✕ Remove</button></div>
+        </div>`;
+      }).join('')}
+    </div>`;
 }
 
 function fmtSize(b){ if(!b) return '—'; return b>1048576 ? (b/1048576).toFixed(1)+' MB' : Math.max(1,Math.round(b/1024))+' KB'; }
@@ -2821,7 +2940,7 @@ function renderVault(d){
                 <div class="vault-item-name">${esc(it.doc_name)}</div>
                 <div class="vault-item-sub">${esc(it.doc_sub||'')}</div>
                 ${it.revision_note&&it.status==='needed'?`<div class="vault-revision">&#9888; ${esc(it.revision_note)}</div>`:''}
-                ${files.length?`<div class="vault-item-files">${files.map(f=>`<span class="file-chip">&#128206; <a href="#" onclick="downloadFile('${f.id}');return false">${esc(f.file_name)}</a></span>`).join('')}</div>`:''}
+                ${files.length?`<div class="vault-item-files">${files.map(f=>`<span class="file-chip">&#128206; <a href="#" onclick="downloadFile('${f.id}');return false">${esc(f.file_name)}</a><button class="btn-del" onclick="deleteFile('${f.id}','${f.storage_path.replace(/'/g,"\\'")}')">✕ Remove</button></span>`).join('')}</div>`:''}
               </div>
               <span class="pill ${it.status}">${STATUS_LABEL[it.status]}</span>
               <div class="vault-actions">
