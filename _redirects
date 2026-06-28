@@ -1,6 +1,6 @@
-/portal       /login.html       301
-/deal-room    /login.html       301
-/dealroom     /login.html       301
-/login        /login.html       301
-/onboarding   /onboarding.html  301
-/tracker      /onboarding.html  301
+/portal                              /login.html   301
+/deal-room                           /login.html   301
+/dealroom                            /login.html   301
+/steel-aire-deal-room-live.html      /login.html   301
+/steel-aire-deal-room-live-2.html    /login.html   301
+/steel-aire-deal-room-live-3.html    /login.html   301
