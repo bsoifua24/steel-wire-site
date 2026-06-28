@@ -137,10 +137,6 @@ VALUES
 -- [ASSUMPTION] §48C energy community credit included; remove if not applicable.
 -- ─────────────────────────────────────────────────────────────────────────
 
-INSERT INTO asset_class_requirements
-  (asset_class, phase, group_name, doc_name, doc_sub, required, sort_order, notes)
-VALUES
-
 -- ── Phase 0: Intake ──
 ('data_center', 0, 'Sponsor & Developer',
   'Company / Developer Profile', 'Firm background, data center portfolio, key personnel, prior delivered projects',
@@ -285,10 +281,6 @@ VALUES
 -- Typical close: 7–21 days from executed term sheet.
 -- ─────────────────────────────────────────────────────────────────────────
 
-INSERT INTO asset_class_requirements
-  (asset_class, phase, group_name, doc_name, doc_sub, required, sort_order, notes)
-VALUES
-
 -- ── Phase 0: Intake ──
 ('hard_money', 0, 'Borrower',
   'Personal Financial Statement (PFS)', 'Current within 90 days, signed and dated',
@@ -400,10 +392,6 @@ VALUES
 --   both SMR and renewable/grid-scale, consider splitting into two asset classes —
 --   the regulatory pathways diverge sharply (NRC vs. FERC/NEPA).
 -- ─────────────────────────────────────────────────────────────────────────
-
-INSERT INTO asset_class_requirements
-  (asset_class, phase, group_name, doc_name, doc_sub, required, sort_order, notes)
-VALUES
 
 -- ── Phase 0: Intake ──
 ('nuclear', 0, 'Sponsor & Developer',
