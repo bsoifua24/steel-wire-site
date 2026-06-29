@@ -484,17 +484,18 @@ nav#fp-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(8,8,1
   <div class="fp-modal">
     <button class="modal-close" onclick="closeSettings()">✕</button>
     <div class="modal-title">Fund <em style="font-style:italic;color:var(--blue-light)">settings.</em></div>
-    <div class="modal-sub">These figures appear in dashboard calculations. Stored in your browser — we'll move these to the database in the next build.</div>
+    <div class="modal-sub">These figures are saved to the database and shared across all team members.</div>
     <div class="field-grid">
       <div class="fp-field full"><div class="fp-label">Fund Name</div><input class="fp-input" id="s-name" placeholder="Steel & Aire Fund I"/></div>
-      <div class="fp-field"><div class="fp-label">Target Fund Size ($)</div><input class="fp-input" id="s-aum" type="number" placeholder="250000000"/></div>
-      <div class="fp-field"><div class="fp-label">Target IRR (%)</div><input class="fp-input" id="s-irr" type="number" placeholder="18"/></div>
-      <div class="fp-field"><div class="fp-label">Capital Committed ($)</div><input class="fp-input" id="s-committed" type="number" placeholder="75000000"/></div>
-      <div class="fp-field"><div class="fp-label">Capital Deployed ($)</div><input class="fp-input" id="s-deployed" type="number" placeholder="42000000"/></div>
+      <div class="fp-field"><div class="fp-label">Target Fund Size ($)</div><input class="fp-input" id="s-aum" type="number" placeholder="10000000000"/></div>
+      <div class="fp-field"><div class="fp-label">Capital Committed ($)</div><input class="fp-input" id="s-committed" type="number" placeholder="50000000"/></div>
+      <div class="fp-field"><div class="fp-label">Capital Deployed ($)</div><input class="fp-input" id="s-deployed" type="number" placeholder="10000000"/></div>
       <div class="fp-field"><div class="fp-label">Capital Returned ($)</div><input class="fp-input" id="s-returned" type="number" placeholder="0"/></div>
-      <div class="fp-field"><div class="fp-label">Target Equity Multiple</div><input class="fp-input" id="s-multiple" type="number" step="0.1" placeholder="1.8"/></div>
+      <div class="fp-field"><div class="fp-label">Target IRR Min (%)</div><input class="fp-input" id="s-irr" type="number" placeholder="15"/></div>
+      <div class="fp-field"><div class="fp-label">Target IRR Max (%)</div><input class="fp-input" id="s-irr-max" type="number" placeholder="25"/></div>
+      <div class="fp-field"><div class="fp-label">Target Equity Multiple</div><input class="fp-input" id="s-multiple" type="number" step="0.1" placeholder="2.0"/></div>
       <div class="fp-field full"><div class="fp-label">Alert Email (for stale deal notifications)</div><input class="fp-input" id="s-alert-email" type="email" placeholder="admin@steelaire.com"/></div>
-      <div class="fp-field full"><div class="fp-label">Fund Strategy</div><input class="fp-input" id="s-strategy" placeholder="e.g. Value-add CRE across Sunbelt markets"/></div>
+      <div class="fp-field full"><div class="fp-label">Fund Strategy</div><input class="fp-input" id="s-strategy" placeholder="e.g. Private capital placement across institutional real estate"/></div>
     </div>
     <div class="modal-actions">
       <button class="btn btn-primary" onclick="saveSettings()">Save</button>
@@ -582,6 +583,7 @@ async function init(user){
     }
     document.getElementById('nav-user').textContent = profile.full_name || user.email;
     await loadAll();
+    await seedFundSettingsIfEmpty();
     hideVeil();
     document.getElementById('fp-nav').style.display='block';
     document.getElementById('page-app').style.display='block';
@@ -661,6 +663,30 @@ async function loadAll(){
   fundSettings = (fs.data||{});
   phaseHistory = (ph.data||[]);
   deals.forEach(d=>{ if(d.checklist_items) d.checklist_items.sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)); });
+}
+
+async function seedFundSettingsIfEmpty(){
+  // If no settings row exists yet OR target_aum is 0, write the baseline values
+  if(fundSettings.target_aum && fundSettings.target_aum > 0) return;
+  const defaults = {
+    fund_name:      'Steel & Aire Fund I',
+    target_aum:     10000000000,
+    committed:      50000000,
+    deployed:       10000000,
+    returned:       0,
+    target_irr:     15,
+    target_irr_max: 25,
+    target_multiple:0,
+    updated_at:     new Date().toISOString(),
+    updated_by:     me?.id,
+  };
+  let result;
+  if(fundSettings.id){
+    result = await supa.from('fund_settings').update(defaults).eq('id',fundSettings.id).select().maybeSingle();
+  } else {
+    result = await supa.from('fund_settings').insert(defaults).select().maybeSingle();
+  }
+  if(result?.data) fundSettings = result.data;
 }
 
 async function doRefresh(){
@@ -965,13 +991,14 @@ function renderLenders(){
 ══════════════════════════════════════════════════════════════ */
 function openSettings(){
   const s=fundSettings;
-  document.getElementById('s-name').value        = s.fund_name||'';
-  document.getElementById('s-aum').value         = s.target_aum||'';
-  document.getElementById('s-irr').value         = s.target_irr||'';
-  document.getElementById('s-committed').value   = s.committed||'';
-  document.getElementById('s-deployed').value    = s.deployed||'';
-  document.getElementById('s-returned').value    = s.returned||'';
-  document.getElementById('s-multiple').value    = s.target_multiple||'';
+  document.getElementById('s-name').value        = s.fund_name||'Steel & Aire Fund I';
+  document.getElementById('s-aum').value         = s.target_aum||10000000000;
+  document.getElementById('s-irr').value         = s.target_irr||15;
+  document.getElementById('s-irr-max').value     = s.target_irr_max||25;
+  document.getElementById('s-committed').value   = s.committed||50000000;
+  document.getElementById('s-deployed').value    = s.deployed||10000000;
+  document.getElementById('s-returned').value    = s.returned||0;
+  document.getElementById('s-multiple').value    = s.target_multiple||0;
   document.getElementById('s-alert-email').value = s.alert_email||'';
   document.getElementById('s-strategy').value    = s.fund_strategy||'';
   document.getElementById('settings-modal').classList.add('open');
@@ -981,6 +1008,7 @@ async function saveSettings(){
     fund_name:       document.getElementById('s-name').value.trim()||'Steel & Aire Fund I',
     target_aum:      +document.getElementById('s-aum').value||0,
     target_irr:      +document.getElementById('s-irr').value||0,
+    target_irr_max:  +document.getElementById('s-irr-max').value||0,
     committed:       +document.getElementById('s-committed').value||0,
     deployed:        +document.getElementById('s-deployed').value||0,
     returned:        +document.getElementById('s-returned').value||0,
@@ -1028,7 +1056,7 @@ function renderDeployment(){
     {label:'Committed',    val:fmtAmt(comm)+' ('+commPct+'%)', color:'#5a8aff'},
     {label:'Deployed',     val:fmtAmt(dep)+' ('+depPct+'% of committed)', color:'#2ec98a'},
     {label:'Returned',     val:fmtAmt(ret),  color:ret?'var(--gold)':'rgba(255,255,255,0.2)'},
-    {label:'Target IRR',   val:s.target_irr?s.target_irr+'%':'—', color:'rgba(255,255,255,0.5)'},
+    {label:'Target IRR',   val:s.target_irr?(s.target_irr_max&&s.target_irr_max!==s.target_irr?s.target_irr+'% – '+s.target_irr_max+'%':s.target_irr+'%'):'—', color:'rgba(255,255,255,0.6)'},
     {label:'Target Multiple',val:s.target_multiple?s.target_multiple+'x':'—', color:'rgba(255,255,255,0.5)'},
   ].map(k=>`<div style="text-align:right"><div style="font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:600;color:${k.color}">${k.val}</div><div style="font-size:0.54rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-top:2px">${k.label}</div></div>`).join('');
 

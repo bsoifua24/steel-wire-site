@@ -145,3 +145,18 @@ CREATE INDEX IF NOT EXISTS idx_distributions_lp ON distributions(lp_investment_i
 --    then UPDATE profiles SET role='lp' WHERE email='...';
 --    then INSERT a row into lp_investments for that profile_id.
 -- 3. The LP can then sign in at lp-portal.html to view their account.
+
+-- ── FUND SETTINGS SEED (run after initial schema) ─────────────────────
+-- Adds IRR range support and sets the initial fund figures.
+ALTER TABLE fund_settings ADD COLUMN IF NOT EXISTS target_irr_max NUMERIC(5,2) DEFAULT 0;
+
+UPDATE fund_settings SET
+  fund_name      = 'Steel & Aire Fund I',
+  target_aum     = 10000000000,
+  committed      = 50000000,
+  deployed       = 10000000,
+  returned       = 0,
+  target_irr     = 15,
+  target_irr_max = 25,
+  updated_at     = now()
+WHERE true;

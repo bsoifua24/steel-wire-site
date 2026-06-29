@@ -402,7 +402,7 @@ function renderFundOverview(){
     {num:fmtAmt(tgt),   lbl:'Target Fund Size'},
     {num:fmtAmt(comm),  lbl:'Total Committed'},
     {num:fmtAmt(dep),   lbl:'Capital Deployed'},
-    {num:s.target_irr?s.target_irr+'%':'—', lbl:'Target IRR'},
+    {num:s.target_irr?(s.target_irr_max&&s.target_irr_max!==s.target_irr?s.target_irr+'% – '+s.target_irr_max+'%':s.target_irr+'%'):'—', lbl:'Target IRR'},
     {num:s.target_multiple?s.target_multiple+'x':'—', lbl:'Target Multiple'},
   ];
   el.innerHTML=cells.map(c=>`<div class="lp-fund-cell"><div class="lf-num">${c.num}</div><div class="lf-lbl">${c.lbl}</div></div>`).join('');
