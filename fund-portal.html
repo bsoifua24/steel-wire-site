@@ -583,7 +583,7 @@ async function init(user){
     }
     document.getElementById('nav-user').textContent = profile.full_name || user.email;
     await loadAll();
-    await seedFundSettingsIfEmpty();
+    try{ await seedFundSettingsIfEmpty(); }catch(e){ console.warn('Fund settings seed skipped (run fund-schema.sql):',e.message); }
     hideVeil();
     document.getElementById('fp-nav').style.display='block';
     document.getElementById('page-app').style.display='block';
@@ -629,10 +629,12 @@ async function signOut(){
 }
 
 function showSignIn(){
-  document.getElementById('page-signin').style.display='block';
+  document.getElementById('page-signin').style.display='flex';
   document.getElementById('page-denied').style.display='none';
   document.getElementById('page-app').style.display='none';
   document.getElementById('fp-nav').style.display='none';
+  const btn = document.getElementById('si-btn');
+  if(btn){ btn.disabled=false; btn.textContent='Sign In to Fund Portal'; }
   setTimeout(()=>document.getElementById('si-email')?.focus(),100);
 }
 function showDenied(msg){
@@ -646,23 +648,30 @@ function hideVeil(){ const v=document.getElementById('veil'); v.classList.add('h
    DATA
 ══════════════════════════════════════════════════════════════ */
 async function loadAll(){
-  const [dr,cr,tr,ar,lr,fs,ph] = await Promise.all([
+  // Core tables (always exist)
+  const [dr,cr,tr,ar,lr] = await Promise.all([
     supa.from('deals').select('*, checklist_items(*), borrower:profiles(full_name,company)').order('created_at',{ascending:false}),
     supa.from('crm_contacts').select('*').order('created_at',{ascending:false}),
     supa.from('crm_tasks').select('*, contact:crm_contacts(full_name)').eq('completed',false).order('due_date',{ascending:true}),
     supa.from('crm_activities').select('*, contact:crm_contacts(full_name)').order('activity_date',{ascending:false}).limit(40),
     supa.from('capital_partners').select('*').order('created_at',{ascending:false}),
-    supa.from('fund_settings').select('*').maybeSingle(),
-    supa.from('phase_history').select('*, deal:deals(name,asset_type)').order('entered_at',{ascending:true}),
   ]);
-  deals        = (dr.data||[]);
-  crmContacts  = (cr.data||[]);
-  crmTasks     = (tr.data||[]);
-  crmActivity  = (ar.data||[]);
-  lenders      = (lr.data||[]);
-  fundSettings = (fs.data||{});
-  phaseHistory = (ph.data||[]);
+  deals       = (dr.data||[]);
+  crmContacts = (cr.data||[]);
+  crmTasks    = (tr.data||[]);
+  crmActivity = (ar.data||[]);
+  lenders     = (lr.data||[]);
   deals.forEach(d=>{ if(d.checklist_items) d.checklist_items.sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)); });
+
+  // Optional tables (require fund-schema.sql — fail gracefully if not run yet)
+  try{
+    const fs = await supa.from('fund_settings').select('*').maybeSingle();
+    fundSettings = fs.data||{};
+  }catch(e){ fundSettings={}; }
+  try{
+    const ph = await supa.from('phase_history').select('*, deal:deals(name,asset_type)').order('entered_at',{ascending:true});
+    phaseHistory = ph.data||[];
+  }catch(e){ phaseHistory=[]; }
 }
 
 async function seedFundSettingsIfEmpty(){
