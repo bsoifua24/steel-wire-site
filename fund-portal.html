@@ -6,377 +6,476 @@
   <title>Fund Intelligence — Steel & Aire Soluciones</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --blue:#1A3DB5;--blue-dark:#0D2680;--blue-deep:#091a5e;
-      --blue-mid:#2952cc;--blue-light:#5a8aff;--blue-pale:#dce8ff;
-      --black:#08080f;--black-soft:#111118;--charcoal:#1c1c28;--charcoal2:#22223a;
-      --white:#ffffff;--offwhite:#f5f8ff;--mid-grey:#6b7a99;--light-grey:#e8edf8;
-      --green:#1f9d6b;--amber:#c98a1b;--red:#c44545;--gold:#d4a847;
-    }
-    html{scroll-behavior:smooth}
-    body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;min-height:100vh}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1A3DB5;--blue-dark:#0D2680;--blue-deep:#091a5e;
+  --blue-mid:#2952cc;--blue-light:#5a8aff;--blue-pale:#dce8ff;
+  --black:#08080f;--black-soft:#0d0d1a;--charcoal:#1c1c28;--charcoal2:#252538;
+  --white:#fff;--offwhite:#f5f8ff;--mid-grey:#6b7a99;
+  --green:#1f9d6b;--green-bright:#2ec98a;--amber:#c98a1b;--red:#c44545;--gold:#d4a847;
+  --border:rgba(255,255,255,0.07);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;min-height:100vh}
 
-    /* ── VEIL ── */
-    #veil{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:16px}
-    .veil-logo{font-family:'Cormorant Garant',serif;font-size:1.8rem;font-weight:300;color:var(--white);letter-spacing:0.06em}
-    .veil-logo span{color:var(--blue-light)}
-    .veil-sub{font-size:0.66rem;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:rgba(255,255,255,0.25)}
-    .veil-bar{width:160px;height:2px;background:var(--charcoal);margin-top:8px;overflow:hidden;position:relative}
-    .veil-bar::after{content:'';position:absolute;left:-40%;width:40%;height:100%;background:var(--blue-light);animation:sweep 1.2s ease-in-out infinite}
-    @keyframes sweep{to{left:140%}}
+/* ── VEIL ── */
+#veil{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:18px;transition:opacity 0.4s}
+#veil.hidden{opacity:0;pointer-events:none}
+.veil-logo{font-family:'Cormorant Garant',serif;font-size:1.9rem;font-weight:300;color:var(--white);letter-spacing:0.06em}
+.veil-logo span{color:var(--blue-light)}
+.veil-sub{font-size:0.62rem;font-weight:600;letter-spacing:0.26em;text-transform:uppercase;color:rgba(255,255,255,0.2)}
+.veil-bar{width:180px;height:1px;background:var(--charcoal);margin-top:4px;overflow:hidden;position:relative}
+.veil-bar::after{content:'';position:absolute;left:-40%;width:40%;height:100%;background:var(--blue-light);animation:sweep 1.2s ease-in-out infinite}
+@keyframes sweep{to{left:140%}}
 
-    /* ── ACCESS DENIED ── */
-    #access-denied{display:none;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:40px}
-    #access-denied h2{font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:300;color:var(--white)}
-    #access-denied p{font-size:0.88rem;color:rgba(255,255,255,0.4);max-width:420px;line-height:1.7}
+/* ── SIGN IN PAGE ── */
+#page-signin{display:none;min-height:100vh;position:relative;overflow:hidden}
+.signin-bg{position:absolute;inset:0;background:linear-gradient(135deg,#070714 0%,#0c1230 50%,#070714 100%)}
+.signin-glow{position:absolute;top:-10%;left:-5%;width:70vw;height:80vh;background:radial-gradient(ellipse,rgba(26,61,181,0.18) 0%,transparent 65%);pointer-events:none}
+.signin-glow2{position:absolute;bottom:-10%;right:-5%;width:50vw;height:60vh;background:radial-gradient(ellipse,rgba(90,138,255,0.09) 0%,transparent 65%);pointer-events:none}
+.signin-wrap{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 24px}
+.signin-card{width:100%;max-width:420px}
+.signin-brand{text-align:center;margin-bottom:48px}
+.signin-brand-name{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:300;color:var(--white);letter-spacing:0.04em;margin-bottom:6px}
+.signin-brand-name span{color:var(--blue-light)}
+.signin-brand-sub{font-size:0.6rem;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:4px}
+.signin-brand-rule{width:48px;height:1px;background:var(--blue);margin:16px auto 0}
+.signin-heading{font-family:'Cormorant Garant',serif;font-size:1.55rem;font-weight:300;color:var(--white);margin-bottom:4px;text-align:center}
+.signin-sub{font-size:0.74rem;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:32px;line-height:1.6}
+.signin-field{margin-bottom:16px}
+.signin-label{font-size:0.58rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3);display:block;margin-bottom:8px}
+.signin-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'Inter',sans-serif;font-size:0.9rem;padding:13px 16px;outline:none;transition:border-color 0.2s,background 0.2s;-webkit-appearance:none}
+.signin-input:focus{border-color:var(--blue-light);background:rgba(90,138,255,0.06)}
+.signin-input::placeholder{color:rgba(255,255,255,0.2)}
+.signin-btn{width:100%;padding:14px;background:var(--blue);border:none;color:var(--white);font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:background 0.2s,transform 0.15s;position:relative;overflow:hidden}
+.signin-btn:hover{background:var(--blue-mid)}
+.signin-btn:active{transform:scale(0.99)}
+.signin-btn:disabled{opacity:0.6;cursor:not-allowed}
+.signin-err{background:rgba(196,69,69,0.12);border:1px solid rgba(196,69,69,0.3);color:#e08a8a;font-size:0.76rem;padding:10px 14px;margin-top:12px;display:none;line-height:1.5}
+.signin-footer{text-align:center;margin-top:40px;font-size:0.68rem;color:rgba(255,255,255,0.15);line-height:1.7}
+.signin-dots{display:flex;justify-content:center;gap:6px;margin-top:40px}
+.signin-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.12)}
+.signin-dot.active{background:var(--blue)}
 
-    /* ── NAV ── */
-    nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(8,8,15,0.96);border-bottom:1px solid rgba(26,61,181,0.2);backdrop-filter:blur(10px)}
-    .nav-inner{display:flex;justify-content:space-between;align-items:center;padding:0 48px;height:64px}
-    .nav-brand{font-family:'Cormorant Garant',serif;font-size:1.15rem;font-weight:600;color:var(--white);letter-spacing:0.04em;text-decoration:none}
-    .nav-brand span{color:var(--blue-light)}
-    .nav-badge{font-size:0.55rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;background:rgba(26,61,181,0.25);color:var(--blue-light);border:1px solid rgba(90,138,255,0.3);padding:3px 10px;margin-left:14px;vertical-align:middle}
-    .nav-right{display:flex;align-items:center;gap:16px}
-    .nav-user{font-size:0.7rem;color:rgba(255,255,255,0.4)}
-    .nav-btn{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);padding:7px 16px;cursor:pointer;font-family:'Inter',sans-serif;transition:border-color 0.2s,color 0.2s}
-    .nav-btn:hover{border-color:var(--blue-light);color:var(--white)}
-    .nav-btn-primary{background:var(--blue);border-color:var(--blue);color:var(--white)}
-    .nav-btn-primary:hover{background:var(--blue-mid);border-color:var(--blue-mid)}
-    .nav-refresh{background:none;border:none;color:rgba(255,255,255,0.3);cursor:pointer;font-size:0.9rem;padding:6px;transition:color 0.2s}
-    .nav-refresh:hover{color:var(--white)}
+/* ── ACCESS DENIED ── */
+#page-denied{display:none;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;gap:14px;text-align:center;padding:40px}
+#page-denied h2{font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:300}
+#page-denied p{font-size:0.84rem;color:rgba(255,255,255,0.4);max-width:380px;line-height:1.7}
 
-    /* ── HERO ── */
-    .fp-hero{padding:120px 48px 60px;background:linear-gradient(180deg,#0c1020 0%,var(--black) 100%);position:relative;overflow:hidden;border-bottom:1px solid rgba(26,61,181,0.15)}
-    .fp-hero-glow{position:absolute;top:-20%;left:-5%;width:70vw;height:80vh;background:radial-gradient(ellipse,rgba(26,61,181,0.14) 0%,transparent 65%);pointer-events:none}
-    .fp-hero-glow2{position:absolute;top:10%;right:-10%;width:50vw;height:60vh;background:radial-gradient(ellipse,rgba(90,138,255,0.06) 0%,transparent 65%);pointer-events:none}
-    .fp-eyebrow{font-size:0.62rem;font-weight:600;letter-spacing:0.26em;text-transform:uppercase;color:var(--blue-light);margin-bottom:16px;position:relative;padding-left:36px}
-    .fp-eyebrow::before{content:'';position:absolute;left:0;top:50%;width:24px;height:1px;background:var(--blue)}
-    .fp-title{font-family:'Cormorant Garant',serif;font-size:clamp(2.4rem,4vw,3.8rem);font-weight:300;line-height:1.06;color:var(--white);margin-bottom:14px}
-    .fp-title em{font-style:italic;color:var(--blue-light)}
-    .fp-sub{font-size:0.85rem;color:rgba(255,255,255,0.35);line-height:1.7;max-width:520px}
-    .fp-date{position:absolute;bottom:28px;right:48px;font-size:0.68rem;color:rgba(255,255,255,0.2);letter-spacing:0.08em;font-variant-numeric:tabular-nums}
+/* ── NAV ── */
+nav#fp-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(8,8,15,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);display:none}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:0 40px;height:60px}
+.nav-brand{font-family:'Cormorant Garant',serif;font-size:1.1rem;font-weight:600;color:var(--white);letter-spacing:0.04em;text-decoration:none}
+.nav-brand span{color:var(--blue-light)}
+.nav-badge{font-size:0.52rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;background:rgba(26,61,181,0.2);color:var(--blue-light);border:1px solid rgba(90,138,255,0.25);padding:3px 10px;margin-left:12px;vertical-align:middle}
+.nav-right{display:flex;align-items:center;gap:14px}
+.nav-user{font-size:0.68rem;color:rgba(255,255,255,0.35)}
+.nav-alert-btn{position:relative;background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:1rem;padding:6px;transition:color 0.2s}
+.nav-alert-btn:hover{color:var(--white)}
+.nav-alert-badge{position:absolute;top:2px;right:2px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid var(--black)}
+.nav-btn{font-size:0.66rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.45);padding:7px 16px;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+.nav-btn:hover{border-color:var(--blue-light);color:var(--white)}
+.nav-btn-primary{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.nav-btn-primary:hover{background:var(--blue-mid);border-color:var(--blue-mid)}
+.nav-refresh{background:none;border:none;color:rgba(255,255,255,0.25);cursor:pointer;font-size:1rem;padding:6px;transition:color 0.2s;font-family:inherit}
+.nav-refresh:hover{color:var(--white)}
 
-    /* ── STATS BAR ── */
-    .fp-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(26,61,181,0.12);margin:0;border-bottom:1px solid rgba(26,61,181,0.15)}
-    .fp-stat{background:var(--black-soft);padding:28px 32px;position:relative;overflow:hidden;transition:background 0.2s}
-    .fp-stat:hover{background:#141420}
-    .fp-stat::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--blue);transform:scaleX(0);transition:transform 0.3s;transform-origin:left}
-    .fp-stat:hover::after{transform:scaleX(1)}
-    .fp-stat-num{font-family:'Cormorant Garant',serif;font-size:2.4rem;font-weight:600;color:var(--white);line-height:1;margin-bottom:6px}
-    .fp-stat-num.accent{color:var(--blue-light)}
-    .fp-stat-num.gold{color:var(--gold)}
-    .fp-stat-num.green{color:#2ec98a}
-    .fp-stat-lbl{font-size:0.6rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.28)}
-    .fp-stat-delta{font-size:0.68rem;color:var(--green);margin-top:4px}
-    .fp-stat-delta.neg{color:var(--red)}
+/* ── APP SHELL ── */
+#page-app{display:none;padding-top:60px}
 
-    /* ── CONTENT GRID ── */
-    .fp-content{display:grid;grid-template-columns:1fr 380px;gap:2px;background:rgba(26,61,181,0.08);padding:0}
-    .fp-col{display:flex;flex-direction:column;gap:2px}
-    .fp-panel{background:var(--black-soft);padding:32px}
-    .fp-panel-title{font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:20px;display:flex;align-items:center;gap:10px}
-    .fp-panel-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.06)}
-    .fp-section-head{font-family:'Cormorant Garant',serif;font-size:1.55rem;font-weight:300;color:var(--white);margin-bottom:4px;line-height:1.1}
-    .fp-section-head em{font-style:italic;color:var(--blue-light)}
+/* ── HERO ── */
+.fp-hero{padding:56px 40px 44px;background:linear-gradient(180deg,#0c1020 0%,var(--black) 100%);position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.fp-hero-glow{position:absolute;top:-20%;left:-5%;width:70vw;height:80vh;background:radial-gradient(ellipse,rgba(26,61,181,0.12) 0%,transparent 65%);pointer-events:none}
+.fp-eyebrow{font-size:0.58rem;font-weight:700;letter-spacing:0.28em;text-transform:uppercase;color:var(--blue-light);margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.fp-eyebrow::before{content:'';width:20px;height:1px;background:var(--blue)}
+.fp-title{font-family:'Cormorant Garant',serif;font-size:clamp(2rem,3.5vw,3.2rem);font-weight:300;line-height:1.06;color:var(--white);margin-bottom:6px}
+.fp-title em{font-style:italic;color:var(--blue-light)}
+.fp-hero-row{display:flex;justify-content:space-between;align-items:flex-end}
+.fp-sub{font-size:0.78rem;color:rgba(255,255,255,0.28);line-height:1.7;max-width:480px}
+.fp-hero-date{font-size:0.64rem;color:rgba(255,255,255,0.18);letter-spacing:0.1em;text-align:right;line-height:1.8}
 
-    /* ── CHARTS ── */
-    .chart-wrap{position:relative;width:100%}
-    .chart-wrap canvas{max-height:260px}
-    .donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
-    .donut-num{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:600;color:var(--white);line-height:1}
-    .donut-lbl{font-size:0.56rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:3px}
+/* ── ALERT BAR ── */
+#alert-bar{background:#1a0808;border-bottom:1px solid rgba(196,69,69,0.25);padding:10px 40px;display:none;gap:12px;align-items:center;flex-wrap:wrap}
+.alert-bar-label{font-size:0.58rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);flex-shrink:0}
+.alert-chip{font-size:0.72rem;color:rgba(255,255,255,0.6);background:rgba(196,69,69,0.1);border:1px solid rgba(196,69,69,0.2);padding:3px 10px;cursor:default}
+.alert-chip.warn{background:rgba(201,138,27,0.1);border-color:rgba(201,138,27,0.2);color:rgba(255,255,255,0.6)}
 
-    /* ── DEPLOYMENT GAUGE ── */
-    .gauge-section{text-align:center;padding-bottom:8px}
-    .gauge-svg-wrap{position:relative;width:220px;height:120px;margin:0 auto 16px}
-    .gauge-value{position:absolute;bottom:0;left:50%;transform:translateX(-50%);text-align:center}
-    .gauge-num{font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--white);line-height:1}
-    .gauge-sub{font-size:0.58rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:2px}
-    .gauge-target{font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:8px}
+/* ── STATS BAR ── */
+.fp-stats{display:grid;grid-template-columns:repeat(5,1fr);background:var(--black-soft);border-bottom:1px solid var(--border)}
+.fp-stat{padding:24px 28px;border-right:1px solid var(--border);cursor:default;transition:background 0.2s;position:relative}
+.fp-stat:last-child{border-right:none}
+.fp-stat:hover{background:#111120}
+.fp-stat-eyebrow{font-size:0.54rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-bottom:8px}
+.fp-stat-num{font-family:'Cormorant Garant',serif;font-size:2.2rem;font-weight:600;color:var(--white);line-height:1;margin-bottom:4px;transition:color 0.3s}
+.fp-stat-sub{font-size:0.66rem;color:rgba(255,255,255,0.28);line-height:1.4}
+.fp-stat-indicator{position:absolute;bottom:0;left:0;right:0;height:2px;transform:scaleX(0);transition:transform 0.3s;transform-origin:left}
+.fp-stat:hover .fp-stat-indicator{transform:scaleX(1)}
 
-    /* ── PHASE TABLE ── */
-    .phase-table{width:100%;border-collapse:collapse;margin-top:4px}
-    .phase-table td{padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.8rem}
-    .phase-table tr:last-child td{border-bottom:none}
-    .ph-name{color:rgba(255,255,255,0.55);width:130px}
-    .ph-bar-wrap{padding:0 12px}
-    .ph-bar{height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden}
-    .ph-fill{height:100%;border-radius:3px;transition:width 1s ease}
-    .ph-count{color:rgba(255,255,255,0.3);font-size:0.7rem;text-align:right;min-width:40px}
-    .ph-amt{color:rgba(255,255,255,0.22);font-size:0.68rem;text-align:right;min-width:70px}
+/* ── MAIN GRID ── */
+.fp-grid{display:grid;grid-template-columns:1fr 360px;gap:0;background:var(--border)}
+.fp-col{display:flex;flex-direction:column;gap:1px}
 
-    /* ── DEAL GRID ── */
-    .deal-grid-section{padding:32px 48px;background:var(--black-soft)}
-    .fp-deal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px;margin-top:20px}
-    .fp-deal-card{background:#0d0d1a;padding:22px 24px;border-left:3px solid rgba(255,255,255,0.06);cursor:pointer;transition:border-color 0.2s,background 0.15s;position:relative;overflow:hidden}
-    .fp-deal-card:hover{background:#12121f;border-left-color:var(--blue)}
-    .fp-deal-card::before{content:'';position:absolute;top:0;right:0;width:60px;height:60px;border-radius:50%;opacity:0.04;pointer-events:none}
-    .fd-type{font-size:0.58rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--blue-light);margin-bottom:6px}
-    .fd-name{font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:600;color:var(--white);margin-bottom:2px;line-height:1.15}
-    .fd-borrower{font-size:0.72rem;color:rgba(255,255,255,0.3);margin-bottom:14px}
-    .fd-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
-    .fd-metric{display:flex;flex-direction:column;gap:2px}
-    .fd-metric-num{font-size:1.1rem;font-weight:600;color:var(--white);font-family:'Cormorant Garant',serif}
-    .fd-metric-lbl{font-size:0.56rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.22)}
-    .fd-phase-bar{height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;margin-bottom:6px}
-    .fd-phase-fill{height:100%;border-radius:2px}
-    .fd-phase-tag{font-size:0.6rem;color:rgba(255,255,255,0.28);letter-spacing:0.06em}
-    .fd-score-badge{position:absolute;top:16px;right:16px;font-size:0.68rem;font-weight:700;padding:3px 9px;border-radius:2px}
+/* ── PANELS ── */
+.fp-panel{background:var(--black-soft);padding:28px 32px}
+.fp-panel-sm{padding:22px 28px}
+.panel-label{font-size:0.54rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.panel-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.panel-title{font-family:'Cormorant Garant',serif;font-size:1.35rem;font-weight:300;color:var(--white);margin-bottom:4px;line-height:1.1}
+.panel-title em{font-style:italic;color:var(--blue-light)}
+.panel-sub{font-size:0.72rem;color:rgba(255,255,255,0.25);line-height:1.6;margin-bottom:16px}
 
-    /* ── ACTIVITY FEED ── */
-    .fp-feed{display:flex;flex-direction:column;gap:0}
-    .fp-feed-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);align-items:flex-start}
-    .fp-feed-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0}
-    .fp-feed-body{flex:1}
-    .fp-feed-text{font-size:0.78rem;color:rgba(255,255,255,0.6);line-height:1.4}
-    .fp-feed-when{font-size:0.64rem;color:rgba(255,255,255,0.2);margin-top:3px}
-    .fp-feed-contact{font-size:0.64rem;color:var(--blue-light)}
+/* ── PHASE TABLE ── */
+.phase-row{display:grid;grid-template-columns:110px 1fr 50px 80px;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)}
+.phase-row:last-child{border-bottom:none}
+.ph-name{font-size:0.72rem;color:rgba(255,255,255,0.45)}
+.ph-bar{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+.ph-fill{height:100%;border-radius:2px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+.ph-count{font-size:0.68rem;color:rgba(255,255,255,0.28);text-align:right}
+.ph-amt{font-size:0.66rem;color:rgba(255,255,255,0.2);text-align:right}
 
-    /* ── TASKS PANEL ── */
-    .fp-task-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
-    .fp-task-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
-    .fp-task-title{font-size:0.8rem;color:rgba(255,255,255,0.7);line-height:1.4}
-    .fp-task-meta{font-size:0.66rem;color:rgba(255,255,255,0.28);margin-top:2px}
-    .fp-task-due{font-size:0.66rem;font-weight:600;margin-left:auto;white-space:nowrap;padding-left:8px}
-    .due-overdue{color:var(--red)}
-    .due-today{color:var(--amber)}
-    .due-future{color:rgba(255,255,255,0.25)}
+/* ── FUND RING ── */
+.fund-ring-wrap{display:flex;flex-direction:column;align-items:center;padding:8px 0 16px}
+.fund-ring-svg{width:180px;height:180px;overflow:visible}
+.fund-ring-track{fill:none;stroke:rgba(255,255,255,0.06);stroke-width:16}
+.fund-ring-fill{fill:none;stroke-width:16;stroke-linecap:round;transition:stroke-dashoffset 1.6s cubic-bezier(0.4,0,0.2,1)}
+.fund-ring-text-num{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:600;fill:var(--white);text-anchor:middle;dominant-baseline:middle}
+.fund-ring-text-lbl{font-size:0.6rem;fill:rgba(255,255,255,0.28);text-anchor:middle;dominant-baseline:middle;font-family:'Inter',sans-serif;font-weight:600;letter-spacing:0.1em;text-transform:uppercase}
+.fund-ring-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;width:100%;margin-top:16px;background:var(--border)}
+.fund-ring-stat{background:var(--black-soft);padding:12px 16px;text-align:center}
+.frs-num{font-family:'Cormorant Garant',serif;font-size:1.4rem;font-weight:600;color:var(--white)}
+.frs-lbl{font-size:0.54rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-top:2px}
 
-    /* ── FOLLOWUP PANEL ── */
-    .fp-followup{display:flex;flex-direction:column;gap:8px}
-    .fp-fu-item{display:flex;gap:10px;align-items:center;padding:10px 12px;background:rgba(255,255,255,0.03);border-left:2px solid var(--amber)}
-    .fp-fu-name{font-size:0.82rem;font-weight:600;color:var(--white);flex:1}
-    .fp-fu-note{font-size:0.7rem;color:rgba(255,255,255,0.35)}
-    .fp-fu-date{font-size:0.68rem;font-weight:600;color:var(--amber);white-space:nowrap}
+/* ── DONUT CHART ── */
+.donut-wrap{position:relative;width:160px;height:160px;flex-shrink:0}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none}
+.donut-num{font-family:'Cormorant Garant',serif;font-size:1.8rem;font-weight:600;color:var(--white);line-height:1}
+.donut-lbl{font-size:0.54rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-top:2px}
 
-    /* ── LEGEND ── */
-    .chart-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .legend-item{display:flex;align-items:center;gap:6px;font-size:0.68rem;color:rgba(255,255,255,0.45)}
-    .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+/* ── ASSET LEGEND ── */
+.asset-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);cursor:default}
+.asset-row:last-child{border-bottom:none}
+.asset-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.asset-name{font-size:0.76rem;color:rgba(255,255,255,0.55);flex:1}
+.asset-count{font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.35)}
+.asset-pct{font-size:0.66rem;color:rgba(255,255,255,0.2);min-width:36px;text-align:right}
 
-    /* ── SETTINGS MODAL ── */
-    .modal-back{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;display:none;align-items:center;justify-content:center;padding:24px}
-    .modal-back.open{display:flex}
-    .fp-modal{background:var(--charcoal);padding:36px 40px;max-width:520px;width:100%}
-    .fp-modal h3{font-family:'Cormorant Garant',serif;font-size:1.6rem;font-weight:300;color:var(--white);margin-bottom:6px}
-    .fp-modal p{font-size:0.8rem;color:rgba(255,255,255,0.4);margin-bottom:24px;line-height:1.6}
-    .fp-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
-    .fp-field label{font-size:0.6rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
-    .fp-field input{font-family:'Inter',sans-serif;font-size:0.88rem;padding:11px 13px;background:#2a2a3a;border:1px solid rgba(255,255,255,0.12);color:var(--white);outline:none;transition:border-color 0.2s}
-    .fp-field input:focus{border-color:var(--blue-light)}
-    .fp-modal-actions{display:flex;gap:10px;margin-top:24px}
+/* ── VELOCITY CHART ── */
+.vel-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.vel-label{font-size:0.68rem;color:rgba(255,255,255,0.4);width:72px;flex-shrink:0}
+.vel-bar-track{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.vel-bar-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.vel-count{font-size:0.68rem;font-weight:600;color:rgba(255,255,255,0.35);min-width:28px;text-align:right}
 
-    /* ── BUTTONS ── */
-    .btn-fp{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:11px 24px;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:background 0.2s,transform 0.15s}
-    .btn-fp:hover{transform:translateY(-1px)}
-    .btn-fp-primary{background:var(--blue);color:var(--white)}
-    .btn-fp-primary:hover{background:var(--blue-mid)}
-    .btn-fp-quiet{background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5)}
-    .btn-fp-quiet:hover{border-color:var(--blue-light);color:var(--white)}
+/* ── TASKS ── */
+.task-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)}
+.task-item:last-child{border-bottom:none}
+.task-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.task-body{flex:1}
+.task-title{font-size:0.78rem;color:rgba(255,255,255,0.7);line-height:1.4}
+.task-meta{font-size:0.64rem;color:rgba(255,255,255,0.25);margin-top:2px}
+.task-due{font-size:0.64rem;font-weight:600;white-space:nowrap;padding-left:8px;margin-top:2px}
+.due-over{color:var(--red)}
+.due-today{color:var(--amber)}
+.due-soon{color:rgba(255,255,255,0.3)}
 
-    /* ── TOAST ── */
-    #fp-toast{position:fixed;bottom:28px;right:28px;background:var(--charcoal);color:var(--white);font-size:0.8rem;padding:12px 20px;border-left:3px solid var(--green);transform:translateY(60px);opacity:0;transition:transform 0.3s,opacity 0.3s;z-index:800;pointer-events:none}
-    #fp-toast.show{transform:translateY(0);opacity:1}
+/* ── FOLLOW-UPS ── */
+.fu-item{padding:10px 14px;border-left:2px solid var(--amber);background:rgba(201,138,27,0.05);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.fu-name{font-size:0.8rem;font-weight:600;color:var(--white)}
+.fu-note{font-size:0.66rem;color:rgba(255,255,255,0.32);margin-top:2px}
+.fu-date{font-size:0.66rem;font-weight:700;color:var(--amber);white-space:nowrap;margin-left:12px}
 
-    /* ── MISC ── */
-    .empty-msg{font-size:0.82rem;color:rgba(255,255,255,0.2);padding:20px 0;text-align:center}
-    .pulse{animation:pulse 2s ease-in-out infinite}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+/* ── DEAL GRID ── */
+.deal-section{padding:28px 40px;background:var(--black-soft);border-top:1px solid var(--border)}
+.section-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px}
+.fp-deal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--border)}
+.deal-card{background:#0a0a17;padding:20px 22px;cursor:pointer;transition:background 0.15s;border-left:2px solid transparent;position:relative}
+.deal-card:hover{background:#10101e;border-left-color:var(--blue)}
+.dc-badge{position:absolute;top:14px;right:14px;font-size:0.62rem;font-weight:700;padding:3px 8px}
+.dc-type{font-size:0.56rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--blue-light);margin-bottom:5px}
+.dc-name{font-family:'Cormorant Garant',serif;font-size:1.15rem;font-weight:600;color:var(--white);margin-bottom:2px;line-height:1.2;padding-right:60px}
+.dc-borrower{font-size:0.68rem;color:rgba(255,255,255,0.28);margin-bottom:14px}
+.dc-metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.dc-metric-num{font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;color:var(--white)}
+.dc-metric-lbl{font-size:0.52rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-top:1px}
+.dc-bar{height:2px;background:rgba(255,255,255,0.06);border-radius:1px;overflow:hidden;margin-bottom:5px}
+.dc-bar-fill{height:100%;border-radius:1px}
+.dc-phase{font-size:0.58rem;color:rgba(255,255,255,0.25);letter-spacing:0.06em}
 
-    @media(max-width:1100px){
-      .fp-content{grid-template-columns:1fr}
-      .fp-stats{grid-template-columns:repeat(3,1fr)}
-      .fp-deal-grid{grid-template-columns:repeat(2,1fr)}
-      .nav-inner{padding:0 24px}
-      .fp-hero{padding:100px 24px 48px}
-      .deal-grid-section{padding:24px}
-    }
-    @media(max-width:680px){
-      .fp-stats{grid-template-columns:1fr 1fr}
-      .fp-deal-grid{grid-template-columns:1fr}
-    }
+/* ── ACTIVITY FEED ── */
+.activity-section{display:grid;grid-template-columns:1fr 340px;gap:1px;background:var(--border);border-top:1px solid var(--border)}
+.feed-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.feed-item:last-child{border-bottom:none}
+.feed-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0}
+.feed-body{flex:1}
+.feed-contact{font-size:0.62rem;color:var(--blue-light);margin-bottom:2px;font-weight:600;letter-spacing:0.04em}
+.feed-text{font-size:0.76rem;color:rgba(255,255,255,0.55);line-height:1.4}
+.feed-when{font-size:0.62rem;color:rgba(255,255,255,0.18);margin-top:3px}
+
+/* ── LENDER CARDS ── */
+.lender-card{padding:12px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start}
+.lender-card:last-child{border-bottom:none}
+.lender-icon{width:32px;height:32px;background:rgba(26,61,181,0.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:var(--blue-light);flex-shrink:0;font-weight:700}
+.lender-name{font-size:0.8rem;font-weight:600;color:rgba(255,255,255,0.8)}
+.lender-meta{font-size:0.66rem;color:rgba(255,255,255,0.25);margin-top:2px;line-height:1.5}
+.lender-tag{display:inline-block;font-size:0.56rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:rgba(26,61,181,0.15);color:var(--blue-light);padding:2px 7px;margin:3px 2px 0 0}
+
+/* ── SETTINGS MODAL ── */
+.modal-back{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px)}
+.modal-back.open{display:flex}
+.fp-modal{background:var(--charcoal);border:1px solid rgba(255,255,255,0.08);padding:40px;max-width:540px;width:100%;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:rgba(255,255,255,0.3);font-size:1.2rem;cursor:pointer;padding:4px 8px;transition:color 0.2s}
+.modal-close:hover{color:var(--white)}
+.modal-title{font-family:'Cormorant Garant',serif;font-size:1.6rem;font-weight:300;color:var(--white);margin-bottom:4px}
+.modal-sub{font-size:0.76rem;color:rgba(255,255,255,0.35);margin-bottom:28px;line-height:1.6}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fp-field{display:flex;flex-direction:column;gap:6px}
+.fp-field.full{grid-column:1/-1}
+.fp-label{font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+.fp-input{font-family:'Inter',sans-serif;font-size:0.86rem;padding:11px 13px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--white);outline:none;transition:border-color 0.2s,background 0.2s;-webkit-appearance:none}
+.fp-input:focus{border-color:var(--blue-light);background:rgba(90,138,255,0.05)}
+.modal-actions{display:flex;gap:10px;margin-top:28px}
+
+/* ── BUTTONS ── */
+.btn{font-size:0.7rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:11px 22px;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+.btn-primary{background:var(--blue);color:var(--white)}
+.btn-primary:hover{background:var(--blue-mid)}
+.btn-quiet{background:transparent;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.45)}
+.btn-quiet:hover{border-color:rgba(255,255,255,0.3);color:var(--white)}
+.btn-link{background:none;border:none;color:var(--blue-light);font-size:0.72rem;font-weight:600;cursor:pointer;padding:0;font-family:'Inter',sans-serif;text-decoration:none}
+.btn-link:hover{color:var(--white)}
+
+/* ── EMPTY / MISC ── */
+.empty{font-size:0.78rem;color:rgba(255,255,255,0.2);padding:16px 0;text-align:center;line-height:1.6}
+.divider{height:1px;background:var(--border);margin:16px 0}
+#fp-toast{position:fixed;bottom:24px;right:24px;background:var(--charcoal);border:1px solid rgba(255,255,255,0.1);border-left:3px solid var(--green);color:var(--white);font-size:0.78rem;padding:11px 18px;transform:translateY(50px);opacity:0;transition:all 0.28s;z-index:800;pointer-events:none;max-width:320px}
+#fp-toast.show{transform:translateY(0);opacity:1}
+.palette{--p0:#1A3DB5;--p1:#5a8aff;--p2:#1f9d6b;--p3:#c98a1b;--p4:#c44545;--p5:#8b5cf6;--p6:#0ea5e9}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){.fp-grid{grid-template-columns:1fr}.fp-stats{grid-template-columns:repeat(3,1fr)}.activity-section{grid-template-columns:1fr}.nav-inner{padding:0 20px}.fp-hero{padding:44px 20px 32px}.deal-section{padding:20px}}
+@media(max-width:680px){.fp-stats{grid-template-columns:1fr 1fr}.fp-deal-grid{grid-template-columns:1fr}}
   </style>
 </head>
-<body>
+<body class="palette">
 
+<!-- LOADING VEIL -->
 <div id="veil">
   <div class="veil-logo">Steel <span>&</span> Aire Soluciones</div>
   <div class="veil-sub">Fund Intelligence Portal</div>
   <div class="veil-bar"></div>
 </div>
 
-<div id="access-denied">
-  <h2>Access <em style="font-style:italic;color:var(--blue-light)">restricted.</em></h2>
-  <p>This portal is for Steel & Aire team members only. Sign in with an authorized account.</p>
-  <a href="login.html" class="btn-fp btn-fp-primary" style="display:inline-block;margin-top:8px;text-decoration:none">Sign In</a>
+<!-- SIGN IN PAGE -->
+<div id="page-signin">
+  <div class="signin-bg"></div>
+  <div class="signin-glow"></div>
+  <div class="signin-glow2"></div>
+  <div class="signin-wrap">
+    <div class="signin-card">
+      <div class="signin-brand">
+        <div class="signin-brand-name">Steel <span>&</span> Aire Soluciones</div>
+        <div class="signin-brand-sub">Fund Intelligence Portal</div>
+        <div class="signin-brand-rule"></div>
+      </div>
+      <div class="signin-heading">Team access</div>
+      <div class="signin-sub">Sign in with your Steel & Aire admin credentials to access the fund dashboard.</div>
+      <div class="signin-field">
+        <label class="signin-label" for="si-email">Email address</label>
+        <input class="signin-input" id="si-email" type="email" placeholder="you@steelaire.com" autocomplete="email"/>
+      </div>
+      <div class="signin-field">
+        <label class="signin-label" for="si-pass">Password</label>
+        <input class="signin-input" id="si-pass" type="password" placeholder="••••••••" autocomplete="current-password"/>
+      </div>
+      <button class="signin-btn" id="si-btn" onclick="signIn()">Sign In to Fund Portal</button>
+      <div class="signin-err" id="si-err"></div>
+      <div class="signin-footer">
+        Authorized team members only.<br>
+        Access to this portal is logged and monitored.
+      </div>
+      <div class="signin-dots">
+        <div class="signin-dot active"></div>
+        <div class="signin-dot"></div>
+        <div class="signin-dot"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div id="app" style="display:none">
+<!-- ACCESS DENIED -->
+<div id="page-denied">
+  <h2>Access <em style="font-style:italic;color:var(--blue-light)">restricted.</em></h2>
+  <p id="denied-msg">This portal requires a Steel & Aire admin account.</p>
+  <button class="btn btn-quiet" style="margin-top:16px" onclick="showSignIn()">← Back to Sign In</button>
+</div>
 
 <!-- NAV -->
-<nav>
+<nav id="fp-nav">
   <div class="nav-inner">
     <div style="display:flex;align-items:center">
       <a href="index.html" class="nav-brand">Steel <span>&</span> Aire</a>
       <span class="nav-badge">Fund Intelligence</span>
     </div>
     <div class="nav-right">
-      <button class="nav-refresh" onclick="loadAll(true)" title="Refresh data">↻</button>
+      <button class="nav-refresh" onclick="doRefresh()" title="Refresh">↻</button>
+      <button class="nav-alert-btn" onclick="openSettings()" title="Alerts">🔔<span class="nav-alert-badge" id="alert-badge" style="display:none"></span></button>
       <span class="nav-user" id="nav-user"></span>
       <button class="nav-btn" onclick="openSettings()">⚙ Settings</button>
       <a href="login.html" class="nav-btn nav-btn-primary">Deal Room</a>
+      <button class="nav-btn" onclick="signOut()" style="border-color:transparent;color:rgba(255,255,255,0.25)">Sign Out</button>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
-<div class="fp-hero">
-  <div class="fp-hero-glow"></div>
-  <div class="fp-hero-glow2"></div>
-  <div class="fp-eyebrow">Internal Dashboard</div>
-  <h1 class="fp-title">Fund <em>intelligence.</em></h1>
-  <p class="fp-sub">Live metrics across the full capital placement pipeline — deals, document velocity, team activity, and lender network at a glance.</p>
-  <div class="fp-date" id="fp-date"></div>
-</div>
+<!-- MAIN APP -->
+<div id="page-app">
 
-<!-- STATS BAR -->
-<div class="fp-stats" id="fp-stats"></div>
+  <!-- ALERT BAR -->
+  <div id="alert-bar"></div>
 
-<!-- MAIN CONTENT GRID -->
-<div class="fp-content">
-
-  <!-- LEFT COLUMN -->
-  <div class="fp-col">
-
-    <!-- Pipeline by Phase -->
-    <div class="fp-panel">
-      <div class="fp-panel-title">Capital Pipeline</div>
-      <div class="fp-section-head">Deals by <em>phase.</em></div>
-      <p style="font-size:0.76rem;color:rgba(255,255,255,0.28);margin-bottom:20px;margin-top:4px">Value and deal count per raise stage.</p>
-      <table class="phase-table" id="phase-table"></table>
-    </div>
-
-    <!-- Asset Class Mix -->
-    <div class="fp-panel" style="display:grid;grid-template-columns:1fr 200px;gap:32px;align-items:center">
+  <!-- HERO -->
+  <div class="fp-hero">
+    <div class="fp-hero-glow"></div>
+    <div class="fp-eyebrow">Internal Dashboard</div>
+    <div class="fp-hero-row">
       <div>
-        <div class="fp-panel-title">Allocation</div>
-        <div class="fp-section-head">Asset class <em>mix.</em></div>
-        <p style="font-size:0.76rem;color:rgba(255,255,255,0.28);margin:6px 0 16px">Capital by deal type across the active pipeline.</p>
-        <div class="chart-legend" id="asset-legend"></div>
+        <h1 class="fp-title">Fund <em>intelligence.</em></h1>
+        <p class="fp-sub">Live metrics across capital placement, deal pipeline, CRM activity, and lender network.</p>
       </div>
-      <div>
-        <div class="chart-wrap" style="position:relative">
-          <canvas id="asset-chart" style="max-height:200px"></canvas>
+      <div class="fp-hero-date" id="fp-date"></div>
+    </div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="fp-stats" id="fp-stats"></div>
+
+  <!-- MAIN GRID -->
+  <div class="fp-grid" style="background:var(--border);gap:1px">
+    <div class="fp-col">
+
+      <!-- Pipeline by Phase -->
+      <div class="fp-panel">
+        <div class="panel-label">Capital Pipeline</div>
+        <div class="panel-title">Deals by <em>phase.</em></div>
+        <div class="panel-sub">Active deal count and capital value per raise stage.</div>
+        <div id="phase-list"></div>
+      </div>
+
+      <!-- Asset Mix + Donut -->
+      <div class="fp-panel" style="display:flex;gap:28px;align-items:flex-start">
+        <div style="flex:1">
+          <div class="panel-label">Allocation</div>
+          <div class="panel-title">Asset class <em>mix.</em></div>
+          <div style="margin-top:16px" id="asset-legend"></div>
+        </div>
+        <div class="donut-wrap" style="flex-shrink:0">
+          <canvas id="asset-chart"></canvas>
           <div class="donut-center">
-            <div class="donut-num" id="asset-total">—</div>
+            <div class="donut-num" id="donut-total">0</div>
             <div class="donut-lbl">Deals</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Document velocity -->
-    <div class="fp-panel">
-      <div class="fp-panel-title">Document Velocity</div>
-      <div class="fp-section-head">Submission <em>activity.</em></div>
-      <p style="font-size:0.76rem;color:rgba(255,255,255,0.28);margin:6px 0 20px">Status breakdown across all active deal checklists.</p>
-      <div style="margin-top:4px">
-        <canvas id="velocity-chart" style="max-height:180px"></canvas>
+      <!-- Document Velocity -->
+      <div class="fp-panel">
+        <div class="panel-label">Document Velocity</div>
+        <div class="panel-title">Checklist <em>status.</em></div>
+        <div class="panel-sub">Document completion breakdown across all active deals.</div>
+        <div id="vel-list" style="margin-top:4px"></div>
       </div>
+
     </div>
 
-  </div>
+    <div class="fp-col">
 
-  <!-- RIGHT COLUMN -->
-  <div class="fp-col">
-
-    <!-- Deployment gauge -->
-    <div class="fp-panel gauge-section">
-      <div class="fp-panel-title">Deployment</div>
-      <div class="fp-section-head" style="margin-bottom:20px">Pipeline <em>depth.</em></div>
-      <div class="gauge-svg-wrap">
-        <svg width="220" height="120" viewBox="0 0 220 120">
-          <path d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="18" stroke-linecap="round"/>
-          <path id="gauge-arc" d="M 20 110 A 90 90 0 0 1 200 110" fill="none" stroke="url(#gaugeGrad)" stroke-width="18" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="283"/>
-          <defs>
-            <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#1A3DB5"/>
-              <stop offset="100%" stop-color="#5a8aff"/>
-            </linearGradient>
-          </defs>
-        </svg>
-        <div class="gauge-value">
-          <div class="gauge-num" id="gauge-num">—</div>
-          <div class="gauge-sub">Avg Score</div>
+      <!-- Fund Health Ring -->
+      <div class="fp-panel fp-panel-sm" style="text-align:center">
+        <div class="panel-label">Portfolio Health</div>
+        <div class="panel-title" style="margin-bottom:16px">Deal <em>score.</em></div>
+        <div class="fund-ring-wrap">
+          <svg class="fund-ring-svg" viewBox="0 0 180 180">
+            <defs>
+              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1A3DB5"/>
+                <stop offset="100%" stop-color="#5a8aff"/>
+              </linearGradient>
+            </defs>
+            <circle class="fund-ring-track" cx="90" cy="90" r="72"/>
+            <circle id="ring-fill" class="fund-ring-fill" cx="90" cy="90" r="72" stroke="url(#ringGrad)"
+              stroke-dasharray="452.4" stroke-dashoffset="452.4" transform="rotate(-90 90 90)"/>
+            <text class="fund-ring-text-num" id="ring-num" x="90" y="86">—</text>
+            <text class="fund-ring-text-lbl" x="90" y="108">avg score</text>
+          </svg>
+          <div class="fund-ring-stats" id="ring-stats"></div>
         </div>
       </div>
-      <div class="gauge-target" id="gauge-target"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px" id="deploy-mini-stats"></div>
+
+      <!-- Open Tasks -->
+      <div class="fp-panel fp-panel-sm">
+        <div class="panel-label">Team Workload</div>
+        <div class="panel-title" style="margin-bottom:14px">Open <em>tasks.</em></div>
+        <div id="task-list"></div>
+      </div>
+
+      <!-- Follow-ups -->
+      <div class="fp-panel fp-panel-sm">
+        <div class="panel-label">Follow-up Queue</div>
+        <div class="panel-title" style="margin-bottom:14px">Due <em>today.</em></div>
+        <div id="fu-list"></div>
+      </div>
+
     </div>
+  </div>
 
-    <!-- Open Tasks -->
-    <div class="fp-panel">
-      <div class="fp-panel-title">Team Workload</div>
-      <div class="fp-section-head" style="margin-bottom:16px">Open <em>tasks.</em></div>
-      <div id="task-list"></div>
+  <!-- DEAL GRID -->
+  <div class="deal-section">
+    <div class="section-header">
+      <div>
+        <div style="font-size:0.56rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:8px">Live Deals</div>
+        <div class="panel-title">Active <em>deal rooms.</em></div>
+      </div>
+      <a href="login.html" class="btn btn-quiet">Open Deal Room →</a>
     </div>
+    <div class="fp-deal-grid" id="deal-grid"></div>
+  </div>
 
-    <!-- Follow-ups due -->
-    <div class="fp-panel">
-      <div class="fp-panel-title">Follow-up Queue</div>
-      <div class="fp-section-head" style="margin-bottom:16px">Due <em>today.</em></div>
-      <div class="fp-followup" id="followup-list"></div>
+  <!-- ACTIVITY + LENDERS -->
+  <div class="activity-section">
+    <div class="fp-panel" style="background:#090914">
+      <div class="panel-label">CRM Activity</div>
+      <div class="panel-title" style="margin-bottom:16px">Recent <em>interactions.</em></div>
+      <div id="activity-feed"></div>
     </div>
-
-  </div>
-</div>
-
-<!-- DEAL GRID -->
-<div class="deal-grid-section">
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4px">
-    <div>
-      <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:8px">Live Deals</div>
-      <div class="fp-section-head">Active <em>deal rooms.</em></div>
+    <div class="fp-panel" style="background:#090914">
+      <div class="panel-label">Lender Network</div>
+      <div class="panel-title" style="margin-bottom:16px">Capital <em>partners.</em></div>
+      <div id="lender-list"></div>
     </div>
-    <a href="login.html" class="btn-fp btn-fp-quiet">Open Deal Room →</a>
   </div>
-  <div class="fp-deal-grid" id="fp-deal-grid"></div>
-</div>
 
-<!-- ACTIVITY FEED -->
-<div style="display:grid;grid-template-columns:1fr 380px;gap:2px;background:rgba(26,61,181,0.08);padding:0">
-  <div class="fp-panel" style="background:#0b0b16">
-    <div class="fp-panel-title">CRM Activity</div>
-    <div class="fp-section-head" style="margin-bottom:16px">Recent <em>interactions.</em></div>
-    <div class="fp-feed" id="fp-activity-feed"></div>
-  </div>
-  <div class="fp-panel" style="background:#0b0b16">
-    <div class="fp-panel-title">Lender Network</div>
-    <div class="fp-section-head" style="margin-bottom:16px">Capital <em>partners.</em></div>
-    <div id="lender-list"></div>
-  </div>
-</div>
-
-</div><!-- /app -->
+</div><!-- /page-app -->
 
 <!-- SETTINGS MODAL -->
 <div class="modal-back" id="settings-modal">
   <div class="fp-modal">
-    <h3>Fund <em style="font-style:italic;color:var(--blue-light)">settings.</em></h3>
-    <p>Configure your fund parameters. These are used in dashboard calculations and are stored locally in your browser.</p>
-    <div class="fp-field"><label>Fund Name</label><input id="s-fund-name" placeholder="e.g. Steel & Aire Fund I"/></div>
-    <div class="fp-field"><label>Target Fund Size ($)</label><input id="s-target-aum" placeholder="e.g. 250000000"/></div>
-    <div class="fp-field"><label>Capital Committed ($)</label><input id="s-committed" placeholder="e.g. 75000000"/></div>
-    <div class="fp-field"><label>Capital Deployed ($)</label><input id="s-deployed" placeholder="e.g. 42000000"/></div>
-    <div class="fp-field"><label>Target IRR (%)</label><input id="s-target-irr" placeholder="e.g. 18"/></div>
-    <div class="fp-modal-actions">
-      <button class="btn-fp btn-fp-primary" onclick="saveSettings()">Save Settings</button>
-      <button class="btn-fp btn-fp-quiet" onclick="closeSettings()">Cancel</button>
+    <button class="modal-close" onclick="closeSettings()">✕</button>
+    <div class="modal-title">Fund <em style="font-style:italic;color:var(--blue-light)">settings.</em></div>
+    <div class="modal-sub">These figures appear in dashboard calculations. Stored in your browser — we'll move these to the database in the next build.</div>
+    <div class="field-grid">
+      <div class="fp-field full"><div class="fp-label">Fund Name</div><input class="fp-input" id="s-name" placeholder="Steel & Aire Fund I"/></div>
+      <div class="fp-field"><div class="fp-label">Target Fund Size ($)</div><input class="fp-input" id="s-aum" type="number" placeholder="250000000"/></div>
+      <div class="fp-field"><div class="fp-label">Target IRR (%)</div><input class="fp-input" id="s-irr" type="number" placeholder="18"/></div>
+      <div class="fp-field"><div class="fp-label">Capital Committed ($)</div><input class="fp-input" id="s-committed" type="number" placeholder="75000000"/></div>
+      <div class="fp-field"><div class="fp-label">Capital Deployed ($)</div><input class="fp-input" id="s-deployed" type="number" placeholder="42000000"/></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+      <button class="btn btn-quiet" onclick="closeSettings()">Cancel</button>
     </div>
   </div>
 </div>
@@ -384,264 +483,293 @@
 <div id="fp-toast"></div>
 
 <script>
-/* ── CONFIG — paste your same Supabase credentials from login.html ── */
-const SUPABASE_URL     = 'https://plihqeruhlwclqloagjn.supabase.co';
-const SUPABASE_ANON_KEY= 'sb_publishable_g8isUhYtzSYZhXHpKSU0Kg_qL4e_XuG';
-
-/* ── CONSTANTS (mirrored from login.html) ── */
+/* ══════════════════════════════════════════════════════════════
+   CONFIGURATION
+══════════════════════════════════════════════════════════════ */
+const SUPABASE_URL      = 'https://plihqeruhlwclqloagjn.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_g8isUhYtzSYZhXHpKSU0Kg_qL4e_XuG';
 const PHASES = ['Intake','Soft Quote','Term Sheet','Underwriting','Closing'];
+const PALETTE = ['#1A3DB5','#5a8aff','#1f9d6b','#c98a1b','#c44545','#8b5cf6','#0ea5e9'];
+const ACT_ICONS = {call:'📞',email:'✉',meeting:'🤝',note:'📝',doc_uploaded:'📎',phase_advanced:'⬆',system:'⚙'};
+const ACT_BG = {call:'rgba(26,61,181,0.25)',email:'rgba(31,157,107,0.25)',meeting:'rgba(201,138,27,0.25)',note:'rgba(107,122,153,0.2)',doc_uploaded:'rgba(90,138,255,0.2)',phase_advanced:'rgba(46,201,138,0.2)',system:'rgba(107,122,153,0.12)'};
 
-/* ── STATE ── */
-let supa = null, me = null, profile = null;
-let deals = [], crmContacts = [], crmTasks = [], crmActivity = [], lenders = [];
-
-/* ── INIT ── */
+/* ══════════════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════════════ */
+let supa, me, profile;
+let deals=[], crmContacts=[], crmTasks=[], crmActivity=[], lenders=[];
 let booted = false;
+let assetChartInst = null;
 
-function waitForSupabase(){
-  return new Promise(resolve=>{
-    if(window.supabase && window.supabase.createClient){ resolve(); return; }
-    const t = setInterval(()=>{
-      if(window.supabase && window.supabase.createClient){ clearInterval(t); resolve(); }
-    }, 50);
-    setTimeout(()=>{
-      clearInterval(t);
+/* ══════════════════════════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════════════════════════ */
+function waitForLib(){
+  return new Promise(res=>{
+    if(window.supabase?.createClient){ res(); return; }
+    const t=setInterval(()=>{ if(window.supabase?.createClient){ clearInterval(t); res(); }},60);
+    setTimeout(()=>{ clearInterval(t);
       if(!window.supabase){
-        const s = document.createElement('script');
-        s.src = 'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js';
-        s.onload = resolve;
-        document.head.appendChild(s);
+        const s=document.createElement('script');
+        s.src='https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js';
+        s.onload=res; document.head.appendChild(s);
       }
-    }, 2000);
+    },2500);
   });
 }
 
 window.addEventListener('DOMContentLoaded', async ()=>{
-  document.getElementById('fp-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  try {
-    await waitForSupabase();
+  updateDate();
+  try{
+    await waitForLib();
     supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     supa.auth.onAuthStateChange(async (event, session)=>{
       if(session?.user){
-        if(!booted){ booted = true; await init(session.user); }
+        if(!booted){ booted=true; await init(session.user); }
       } else {
-        booted = false;
-        veil(false);
-        showAccessDenied();
+        booted=false; me=null; profile=null;
+        hideVeil(); showSignIn();
       }
     });
 
-    const {data} = await supa.auth.getSession();
-    if(data?.session?.user){
-      if(!booted){ booted = true; await init(data.session.user); }
+    const {data:{session}} = await supa.auth.getSession();
+    if(session?.user){
+      if(!booted){ booted=true; await init(session.user); }
     } else if(!booted){
-      veil(false);
-      showAccessDenied();
+      hideVeil(); showSignIn();
     }
-  } catch(e) {
-    console.error('Fund portal init error:', e);
-    veil(false);
-    showAccessDenied('Failed to connect. Check your Supabase credentials and try again.');
+  }catch(e){
+    console.error('Boot error:',e);
+    hideVeil(); showSignIn();
   }
 });
 
 async function init(user){
-  try {
+  try{
     me = user;
     const {data:p} = await supa.from('profiles').select('*').eq('id',user.id).maybeSingle();
     profile = p;
     if(!profile || profile.role !== 'admin'){
-      veil(false);
-      showAccessDenied('This portal is for Steel & Aire team members only.');
+      hideVeil(); showDenied('Your account does not have fund portal access. Contact your administrator.');
       return;
     }
     document.getElementById('nav-user').textContent = profile.full_name || user.email;
-    await loadAll(false);
-    veil(false);
-    document.getElementById('app').style.display = 'block';
+    await loadAll();
+    hideVeil();
+    document.getElementById('fp-nav').style.display='block';
+    document.getElementById('page-app').style.display='block';
     renderAll();
-  } catch(e) {
-    console.error('Init error:', e);
-    veil(false);
-    showAccessDenied('Something went wrong loading the portal. Check console for details.');
+  }catch(e){
+    console.error('Init error:',e);
+    hideVeil(); showSignIn();
+    toast('Connection error — please try signing in again.');
   }
 }
 
-async function loadAll(showToast=false){
-  const [dr, cr, tr, ar, lr] = await Promise.all([
+/* ══════════════════════════════════════════════════════════════
+   AUTH
+══════════════════════════════════════════════════════════════ */
+async function signIn(){
+  const email = document.getElementById('si-email').value.trim();
+  const pass  = document.getElementById('si-pass').value;
+  const btn   = document.getElementById('si-btn');
+  const errEl = document.getElementById('si-err');
+  errEl.style.display='none';
+  if(!email||!pass){ errEl.textContent='Please enter your email and password.'; errEl.style.display='block'; return; }
+  btn.disabled=true; btn.textContent='Signing in…';
+  try{
+    const {data,error} = await supa.auth.signInWithPassword({email,pass:undefined,password:pass});
+    if(error) throw error;
+    // onAuthStateChange will handle the rest
+  }catch(e){
+    btn.disabled=false; btn.textContent='Sign In to Fund Portal';
+    errEl.textContent = e.message||'Sign in failed. Check your credentials.';
+    errEl.style.display='block';
+  }
+}
+
+document.addEventListener('keydown',e=>{ if(e.key==='Enter' && document.getElementById('page-signin').style.display!=='none') signIn(); });
+
+async function signOut(){
+  await supa.auth.signOut();
+  booted=false;
+  document.getElementById('fp-nav').style.display='none';
+  document.getElementById('page-app').style.display='none';
+  document.getElementById('si-btn').textContent='Sign In to Fund Portal';
+  showSignIn();
+}
+
+function showSignIn(){
+  document.getElementById('page-signin').style.display='block';
+  document.getElementById('page-denied').style.display='none';
+  document.getElementById('page-app').style.display='none';
+  document.getElementById('fp-nav').style.display='none';
+  setTimeout(()=>document.getElementById('si-email')?.focus(),100);
+}
+function showDenied(msg){
+  document.getElementById('page-signin').style.display='none';
+  document.getElementById('page-denied').style.display='flex';
+  if(msg) document.getElementById('denied-msg').textContent=msg;
+}
+function hideVeil(){ const v=document.getElementById('veil'); v.classList.add('hidden'); setTimeout(()=>v.style.display='none',400); }
+
+/* ══════════════════════════════════════════════════════════════
+   DATA
+══════════════════════════════════════════════════════════════ */
+async function loadAll(){
+  const [dr,cr,tr,ar,lr] = await Promise.all([
     supa.from('deals').select('*, checklist_items(*), borrower:profiles(full_name,company)').order('created_at',{ascending:false}),
     supa.from('crm_contacts').select('*').order('created_at',{ascending:false}),
     supa.from('crm_tasks').select('*, contact:crm_contacts(full_name)').eq('completed',false).order('due_date',{ascending:true}),
     supa.from('crm_activities').select('*, contact:crm_contacts(full_name)').order('activity_date',{ascending:false}).limit(40),
     supa.from('capital_partners').select('*').order('created_at',{ascending:false}),
   ]);
-  deals       = dr.data || [];
-  crmContacts = cr.data || [];
-  crmTasks    = tr.data || [];
-  crmActivity = ar.data || [];
-  lenders     = lr.data || [];
-  deals.forEach(d=>{ if(d.checklist_items) d.checklist_items.sort((a,b)=>a.sort_order-b.sort_order); });
-  if(showToast){ renderAll(); fpToast('Data refreshed.'); }
+  deals       = (dr.data||[]);
+  crmContacts = (cr.data||[]);
+  crmTasks    = (tr.data||[]);
+  crmActivity = (ar.data||[]);
+  lenders     = (lr.data||[]);
+  deals.forEach(d=>{ if(d.checklist_items) d.checklist_items.sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)); });
 }
 
+async function doRefresh(){
+  const btn=document.querySelector('.nav-refresh');
+  if(btn){btn.style.opacity='0.4';btn.style.pointerEvents='none';}
+  await loadAll(); renderAll();
+  toast('Dashboard refreshed.');
+  if(btn){btn.style.opacity='';btn.style.pointerEvents='';}
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RENDER ORCHESTRATOR
+══════════════════════════════════════════════════════════════ */
 function renderAll(){
+  renderAlerts();
   renderStats();
-  renderPhaseTable();
-  renderAssetChart();
-  renderVelocityChart();
-  renderGauge();
-  renderTaskList();
+  renderPhase();
+  renderAsset();
+  renderVelocity();
+  renderRing();
+  renderTasks();
   renderFollowups();
-  renderDealGrid();
-  renderActivityFeed();
+  renderDeals();
+  renderFeed();
   renderLenders();
 }
 
-/* ── SETTINGS ── */
-function getSettings(){
-  try{ return JSON.parse(localStorage.getItem('sa_fund_settings'))||{}; }catch{ return {}; }
-}
-function openSettings(){
-  const s=getSettings();
-  document.getElementById('s-fund-name').value    = s.fundName||'';
-  document.getElementById('s-target-aum').value   = s.targetAum||'';
-  document.getElementById('s-committed').value     = s.committed||'';
-  document.getElementById('s-deployed').value      = s.deployed||'';
-  document.getElementById('s-target-irr').value    = s.targetIrr||'';
-  document.getElementById('settings-modal').classList.add('open');
-}
-function saveSettings(){
-  const s={
-    fundName:   document.getElementById('s-fund-name').value.trim(),
-    targetAum:  parseFloat(document.getElementById('s-target-aum').value)||0,
-    committed:  parseFloat(document.getElementById('s-committed').value)||0,
-    deployed:   parseFloat(document.getElementById('s-deployed').value)||0,
-    targetIrr:  parseFloat(document.getElementById('s-target-irr').value)||0,
-  };
-  localStorage.setItem('sa_fund_settings', JSON.stringify(s));
-  closeSettings(); renderAll(); fpToast('Settings saved.');
-}
-function closeSettings(){ document.getElementById('settings-modal').classList.remove('open'); }
-document.getElementById('settings-modal').addEventListener('click',e=>{ if(e.target.id==='settings-modal') closeSettings(); });
+/* ══════════════════════════════════════════════════════════════
+   ALERT BAR
+══════════════════════════════════════════════════════════════ */
+function renderAlerts(){
+  const bar = document.getElementById('alert-bar');
+  const badge = document.getElementById('alert-badge');
+  const today = new Date().toISOString().slice(0,10);
+  const alerts = [];
 
-/* ── HELPERS ── */
-function parseAmt(s){
-  if(!s) return 0;
-  return parseFloat(s.replace(/[^0-9.]/g,''))||0;
-}
-function fmtAmt(n){
-  if(!n) return '—';
-  if(n>=1e9) return '$'+(n/1e9).toFixed(1)+'B';
-  if(n>=1e6) return '$'+(n/1e6).toFixed(1)+'M';
-  if(n>=1e3) return '$'+(n/1e3).toFixed(0)+'K';
-  return '$'+n.toFixed(0);
-}
-function fmtAgo(iso){
-  if(!iso) return '';
-  const d=new Date(iso),now=new Date();
-  const mins=Math.round((now-d)/60000);
-  if(mins<2) return 'just now';
-  if(mins<60) return mins+'m ago';
-  const hrs=Math.round(mins/60);
-  if(hrs<24) return hrs+'h ago';
-  return d.toISOString().slice(0,10);
-}
-function computeDealScore(d){
-  const items=d.checklist_items||[], phase=d.phase||0;
-  const phaseItems=items.filter(i=>i.phase===phase);
-  const phaseApproved=phaseItems.filter(i=>i.status==='approved').length;
-  const A=phaseItems.length?Math.round(phaseApproved/phaseItems.length*35):0;
-  const totalApproved=items.filter(i=>i.status==='approved').length;
-  const B=items.length?Math.round(totalApproved/items.length*20):0;
-  const C=phase*5;
-  let D=0;
-  if(d.raise_amount) D+=4; if(d.asset_type&&d.asset_type!=='Other') D+=3;
-  if(d.borrower_id) D+=4; if(d.asset_class) D+=4;
-  const hasAct=items.some(i=>i.status!=='needed');
-  const revs=items.filter(i=>i.status==='needed'&&i.revision_note).length;
-  const E=(hasAct?5:0)+(revs===0?5:0);
-  return Math.min(100, A+B+C+D+E);
-}
-function scoreColor(s){ return s>=75?'#5a8aff':s>=55?'#2ec98a':s>=35?'#c98a1b':'#c44545'; }
-function scoreBg(s){ return s>=75?'rgba(90,138,255,0.15)':s>=55?'rgba(46,201,138,0.15)':s>=35?'rgba(201,138,27,0.15)':'rgba(196,69,69,0.15)'; }
-function scoreLabel(s){ return s>=75?'Prime':s>=55?'Strong':s>=35?'Moderate':'Developing'; }
-
-function animateNum(el, target, prefix='', suffix='', dur=1200){
-  const start=performance.now();
-  (function tick(now){
-    const t=Math.min(1,(now-start)/dur);
-    const ease=1-Math.pow(1-t,3);
-    const val=Math.round(target*ease);
-    el.textContent=prefix+(val>=1e9?(val/1e9).toFixed(1)+'B':val>=1e6?(val/1e6).toFixed(1)+'M':val.toLocaleString())+suffix;
-    if(t<1) requestAnimationFrame(tick);
-  })(start);
-}
-
-/* ── STATS BAR ── */
-function renderStats(){
-  const s=getSettings();
-  const el=document.getElementById('fp-stats'); if(!el) return;
-  const totalPipeline=deals.reduce((a,d)=>a+parseAmt(d.raise_amount),0);
-  const avgScore=deals.length?Math.round(deals.reduce((a,d)=>a+computeDealScore(d),0)/deals.length):0;
-  const pending=(d=>d.checklist_items?.filter(i=>i.status==='uploaded'||i.status==='review').length||0);
-  const totalPending=deals.reduce((a,d)=>a+pending(d),0);
-  const prospects=crmContacts.filter(c=>c.stage==='prospect').length;
-  el.innerHTML=`
-    <div class="fp-stat"><div class="fp-stat-num accent" id="sn-deals">${deals.length}</div><div class="fp-stat-lbl">Active Deals</div></div>
-    <div class="fp-stat"><div class="fp-stat-num gold" id="sn-pipeline">—</div><div class="fp-stat-lbl">Capital in Pipeline</div></div>
-    <div class="fp-stat"><div class="fp-stat-num green" id="sn-score">${avgScore}%</div><div class="fp-stat-lbl">Avg Deal Score</div></div>
-    <div class="fp-stat"><div class="fp-stat-num ${totalPending?'accent':''}" id="sn-pending">${totalPending}</div><div class="fp-stat-lbl">Docs Awaiting Review</div></div>
-    <div class="fp-stat"><div class="fp-stat-num" id="sn-prospects">${crmContacts.length}</div><div class="fp-stat-lbl">CRM Clients (${prospects} prospects)</div></div>`;
-  setTimeout(()=>{
-    const pEl=document.getElementById('sn-pipeline');
-    if(pEl) animateNum(pEl, totalPipeline, '$');
-  },100);
-}
-
-/* ── PHASE TABLE ── */
-function renderPhaseTable(){
-  const el=document.getElementById('phase-table'); if(!el) return;
-  const phases=PHASES.map((name,i)=>{
-    const phDeals=deals.filter(d=>d.phase===i);
-    const total=phDeals.reduce((a,d)=>a+parseAmt(d.raise_amount),0);
-    return {name, count:phDeals.length, total};
+  const overdueTasks = crmTasks.filter(t=>t.due_date && t.due_date<today);
+  const overdueFollowups = crmContacts.filter(c=>c.next_followup && c.next_followup<today);
+  const docsInReview = deals.reduce((a,d)=>a+(d.checklist_items||[]).filter(i=>i.status==='uploaded').length,0);
+  const stuckDeals = deals.filter(d=>{
+    if(!d.updated_at) return false;
+    const days = Math.round((new Date()-new Date(d.updated_at))/86400000);
+    return days>14;
   });
-  const maxCount=Math.max(1,...phases.map(p=>p.count));
-  const colors=['#2952cc','#3b6de8','#5a8aff','#1f9d6b','#2ec98a'];
-  el.innerHTML=phases.map((p,i)=>`
-    <tr>
-      <td class="ph-name">Ph.${i+1} — ${p.name}</td>
-      <td class="ph-bar-wrap"><div class="ph-bar"><div class="ph-fill" style="width:${Math.round(p.count/maxCount*100)}%;background:${colors[i]}"></div></div></td>
-      <td class="ph-count">${p.count} deal${p.count!==1?'s':''}</td>
-      <td class="ph-amt">${fmtAmt(p.total)}</td>
-    </tr>`).join('');
+
+  if(overdueTasks.length) alerts.push({text:`${overdueTasks.length} overdue task${overdueTasks.length>1?'s':''}`,type:'err'});
+  if(overdueFollowups.length) alerts.push({text:`${overdueFollowups.length} follow-up${overdueFollowups.length>1?'s':''} overdue`,type:'err'});
+  if(docsInReview) alerts.push({text:`${docsInReview} doc${docsInReview>1?'s':''} awaiting review`,type:'warn'});
+  if(stuckDeals.length) alerts.push({text:`${stuckDeals.length} deal${stuckDeals.length>1?'s':''} inactive 14+ days`,type:'warn'});
+
+  if(!alerts.length){ bar.style.display='none'; badge.style.display='none'; return; }
+  badge.style.display='block';
+  bar.style.display='flex';
+  bar.innerHTML=`<div class="alert-bar-label">⚠ Attention</div>`
+    +alerts.map(a=>`<div class="alert-chip ${a.type==='warn'?'warn':''}">${a.text}</div>`).join('');
 }
 
-/* ── ASSET CHART ── */
-let assetChartInst=null;
-function renderAssetChart(){
-  const el=document.getElementById('asset-chart'); if(!el) return;
+/* ══════════════════════════════════════════════════════════════
+   STATS BAR
+══════════════════════════════════════════════════════════════ */
+function renderStats(){
+  const el=document.getElementById('fp-stats'); if(!el) return;
+  const s=getSettings();
+  const pipeline=deals.reduce((a,d)=>a+parseAmt(d.raise_amount),0);
+  const avg=deals.length?Math.round(deals.reduce((a,d)=>a+score(d),0)/deals.length):0;
+  const pending=deals.reduce((a,d)=>a+(d.checklist_items||[]).filter(i=>i.status==='uploaded').length,0);
+  const today=new Date().toISOString().slice(0,10);
+  const fueDue=crmContacts.filter(c=>c.next_followup&&c.next_followup<=today).length;
+
+  const stats=[
+    {label:'Active Deals',    value:deals.length,      sub:'across all phases',    color:'var(--blue-light)',  ind:'var(--blue)'},
+    {label:'Capital Pipeline',value:fmtAmt(pipeline),  sub:'total raise amount',   color:'var(--gold)',        ind:'var(--amber)'},
+    {label:'Avg Deal Score',  value:avg+'%',            sub:scoreLabel(avg),        color:scoreColor(avg),      ind:scoreColor(avg)},
+    {label:'Docs in Review',  value:pending,            sub:'awaiting admin review',color:pending?'var(--red)':'rgba(255,255,255,0.7)', ind:'var(--red)'},
+    {label:'CRM Clients',     value:crmContacts.length, sub:fueDue+' follow-up'+(fueDue!==1?'s':'')+' due', color:'rgba(255,255,255,0.85)', ind:'var(--green)'},
+  ];
+
+  el.innerHTML=stats.map(s=>`
+    <div class="fp-stat">
+      <div class="fp-stat-eyebrow">${s.label}</div>
+      <div class="fp-stat-num" style="color:${s.color}">${s.value}</div>
+      <div class="fp-stat-sub">${s.sub}</div>
+      <div class="fp-stat-indicator" style="background:${s.ind}"></div>
+    </div>`).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PHASE LIST
+══════════════════════════════════════════════════════════════ */
+function renderPhase(){
+  const el=document.getElementById('phase-list'); if(!el) return;
+  const colors=['#1A3DB5','#2952cc','#5a8aff','#1f9d6b','#2ec98a'];
+  const phData=PHASES.map((name,i)=>{
+    const ph=deals.filter(d=>d.phase===i);
+    return {name,count:ph.length,amt:ph.reduce((a,d)=>a+parseAmt(d.raise_amount),0)};
+  });
+  const maxC=Math.max(1,...phData.map(p=>p.count));
+  el.innerHTML=phData.map((p,i)=>`
+    <div class="phase-row">
+      <div class="ph-name">Ph.${i+1} — ${p.name}</div>
+      <div class="ph-bar"><div class="ph-fill" style="width:${Math.round(p.count/maxC*100)}%;background:${colors[i]}"></div></div>
+      <div class="ph-count">${p.count}</div>
+      <div class="ph-amt">${fmtAmt(p.amt)}</div>
+    </div>`).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ASSET DONUT
+══════════════════════════════════════════════════════════════ */
+function renderAsset(){
+  const canvas=document.getElementById('asset-chart');
+  const legend=document.getElementById('asset-legend');
+  const total=document.getElementById('donut-total');
+  if(!canvas) return;
   const groups={};
   deals.forEach(d=>{ const k=d.asset_type||'Other'; groups[k]=(groups[k]||0)+1; });
   const labels=Object.keys(groups), data=Object.values(groups);
-  const palette=['#1A3DB5','#5a8aff','#1f9d6b','#c98a1b','#c44545','#2952cc','#2ec98a'];
-  const colors=labels.map((_,i)=>palette[i%palette.length]);
-  document.getElementById('asset-total').textContent=deals.length;
-  const legend=document.getElementById('asset-legend');
-  if(legend) legend.innerHTML=labels.map((l,i)=>`<div class="legend-item"><div class="legend-dot" style="background:${colors[i]}"></div>${l} (${groups[l]})</div>`).join('');
+  const colors=labels.map((_,i)=>PALETTE[i%PALETTE.length]);
+  if(total) total.textContent=deals.length;
+  if(legend) legend.innerHTML=labels.map((l,i)=>`
+    <div class="asset-row">
+      <div class="asset-dot" style="background:${colors[i]}"></div>
+      <div class="asset-name">${l}</div>
+      <div class="asset-count">${groups[l]}</div>
+      <div class="asset-pct">${deals.length?Math.round(groups[l]/deals.length*100)+'%':'—'}</div>
+    </div>`).join('');
   if(assetChartInst) assetChartInst.destroy();
-  assetChartInst=new Chart(el,{
+  assetChartInst=new Chart(canvas,{
     type:'doughnut',
-    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:4}]},
+    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:6}]},
     options:{cutout:'68%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.label+': '+ctx.parsed}}},animation:{duration:1000}}
   });
 }
 
-/* ── VELOCITY CHART ── */
-let velChartInst=null;
-function renderVelocityChart(){
-  const el=document.getElementById('velocity-chart'); if(!el) return;
+/* ══════════════════════════════════════════════════════════════
+   VELOCITY BARS
+══════════════════════════════════════════════════════════════ */
+function renderVelocity(){
+  const el=document.getElementById('vel-list'); if(!el) return;
   let needed=0,uploaded=0,review=0,approved=0;
   deals.forEach(d=>(d.checklist_items||[]).forEach(i=>{
     if(i.status==='needed') needed++;
@@ -649,154 +777,204 @@ function renderVelocityChart(){
     else if(i.status==='review') review++;
     else if(i.status==='approved') approved++;
   }));
-  if(velChartInst) velChartInst.destroy();
-  velChartInst=new Chart(el,{
-    type:'bar',
-    data:{
-      labels:['Needed','Uploaded','In Review','Approved'],
-      datasets:[{data:[needed,uploaded,review,approved],backgroundColor:['rgba(107,122,153,0.6)','rgba(90,138,255,0.7)','rgba(201,138,27,0.7)','rgba(31,157,107,0.8)'],borderRadius:2,borderSkipped:false}]
-    },
-    options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'rgba(255,255,255,0.3)',font:{size:11}}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'rgba(255,255,255,0.3)',font:{size:11}}}},animation:{duration:900}}
-  });
+  const total=needed+uploaded+review+approved||1;
+  const rows=[
+    {label:'Needed',   val:needed,   color:'rgba(107,122,153,0.5)'},
+    {label:'Uploaded', val:uploaded, color:'rgba(90,138,255,0.7)'},
+    {label:'In Review',val:review,   color:'rgba(201,138,27,0.8)'},
+    {label:'Approved', val:approved, color:'rgba(31,157,107,0.85)'},
+  ];
+  el.innerHTML=rows.map(r=>`
+    <div class="vel-row">
+      <div class="vel-label">${r.label}</div>
+      <div class="vel-bar-track"><div class="vel-bar-fill" style="width:${Math.round(r.val/total*100)}%;background:${r.color}"></div></div>
+      <div class="vel-count">${r.val}</div>
+    </div>`).join('');
 }
 
-/* ── DEPLOYMENT GAUGE ── */
-function renderGauge(){
-  const scores=deals.map(d=>computeDealScore(d));
+/* ══════════════════════════════════════════════════════════════
+   HEALTH RING
+══════════════════════════════════════════════════════════════ */
+function renderRing(){
+  const ring=document.getElementById('ring-fill');
+  const num=document.getElementById('ring-num');
+  const stats=document.getElementById('ring-stats');
+  if(!ring) return;
+  const scores=deals.map(d=>score(d));
   const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length):0;
-  const arc=document.getElementById('gauge-arc');
-  const totalLen=283;
-  if(arc){ setTimeout(()=>{ arc.style.strokeDashoffset=totalLen*(1-avg/100); arc.style.transition='stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1)'; },100); }
-  const numEl=document.getElementById('gauge-num');
-  if(numEl){ numEl.textContent=avg+'%'; numEl.style.color=scoreColor(avg); }
-  const tgt=document.getElementById('gauge-target');
-  if(tgt) tgt.textContent=scoreLabel(avg)+' — average deal health across all '+deals.length+' active deals';
-  const s=getSettings();
-  const mini=document.getElementById('deploy-mini-stats');
-  if(mini){
-    const highScorers=deals.filter(d=>computeDealScore(d)>=70).length;
-    mini.innerHTML=`
-      <div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03)">
-        <div style="font-family:'Cormorant Garant',serif;font-size:1.4rem;font-weight:600;color:#2ec98a">${highScorers}</div>
-        <div style="font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-top:4px">High Score (70%+)</div>
-      </div>
-      <div style="text-align:center;padding:12px;background:rgba(255,255,255,0.03)">
-        <div style="font-family:'Cormorant Garant',serif;font-size:1.4rem;font-weight:600;color:#c44545">${deals.length-highScorers}</div>
-        <div style="font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-top:4px">Needs Attention</div>
-      </div>`;
+  const circ=452.4;
+  setTimeout(()=>{ ring.style.strokeDashoffset=circ*(1-avg/100); },120);
+  if(num){ num.textContent=avg+'%'; num.style.fill=scoreColor(avg); }
+  if(stats){
+    const prime=scores.filter(s=>s>=75).length;
+    const atRisk=scores.filter(s=>s<35).length;
+    const today=new Date().toISOString().slice(0,10);
+    const overdue=crmTasks.filter(t=>t.due_date&&t.due_date<today).length;
+    stats.innerHTML=`
+      <div class="fund-ring-stat"><div class="frs-num" style="color:#2ec98a">${prime}</div><div class="frs-lbl">Prime (75%+)</div></div>
+      <div class="fund-ring-stat"><div class="frs-num" style="color:var(--red)">${atRisk}</div><div class="frs-lbl">At Risk</div></div>
+      <div class="fund-ring-stat"><div class="frs-num" style="color:var(--amber)">${overdue}</div><div class="frs-lbl">Overdue Tasks</div></div>
+      <div class="fund-ring-stat"><div class="frs-num">${lenders.length}</div><div class="frs-lbl">Lenders on File</div></div>`;
   }
 }
 
-/* ── TASKS ── */
-function renderTaskList(){
+/* ══════════════════════════════════════════════════════════════
+   TASKS
+══════════════════════════════════════════════════════════════ */
+function renderTasks(){
   const el=document.getElementById('task-list'); if(!el) return;
   const today=new Date().toISOString().slice(0,10);
-  const top=crmTasks.slice(0,8);
-  if(!top.length){ el.innerHTML=`<div class="empty-msg">No open tasks.</div>`; return; }
+  const top=crmTasks.slice(0,6);
+  if(!top.length){ el.innerHTML=`<div class="empty">No open tasks.</div>`; return; }
   el.innerHTML=top.map(t=>{
-    let cls='due-future',dueLabel=t.due_date||'';
-    if(t.due_date){ if(t.due_date<today){cls='due-overdue';}else if(t.due_date===today){cls='due-today';dueLabel='Today';} }
-    const contact=t.contact?.full_name||'';
-    return `<div class="fp-task-item">
-      <div class="fp-task-dot" style="background:${cls==='due-overdue'?'#c44545':cls==='due-today'?'#c98a1b':'rgba(255,255,255,0.2)'}"></div>
-      <div style="flex:1">
-        <div class="fp-task-title">${esc(t.title)}</div>
-        ${contact?`<div class="fp-task-meta">${esc(contact)}</div>`:''}
+    let cls='due-soon', dot='rgba(255,255,255,0.15)', dl=t.due_date||'';
+    if(t.due_date){
+      if(t.due_date<today){cls='due-over';dot='var(--red)';dl='Overdue';}
+      else if(t.due_date===today){cls='due-today';dot='var(--amber)';dl='Today';}
+    }
+    return `<div class="task-item">
+      <div class="task-dot" style="background:${dot}"></div>
+      <div class="task-body">
+        <div class="task-title">${esc(t.title)}</div>
+        ${t.contact?`<div class="task-meta">${esc(t.contact.full_name)}</div>`:''}
       </div>
-      <div class="fp-task-due ${cls}">${dueLabel}</div>
+      <div class="task-due ${cls}">${dl}</div>
     </div>`;
   }).join('');
 }
 
-/* ── FOLLOW-UPS ── */
+/* ══════════════════════════════════════════════════════════════
+   FOLLOW-UPS
+══════════════════════════════════════════════════════════════ */
 function renderFollowups(){
-  const el=document.getElementById('followup-list'); if(!el) return;
+  const el=document.getElementById('fu-list'); if(!el) return;
   const today=new Date().toISOString().slice(0,10);
   const due=crmContacts.filter(c=>c.next_followup&&c.next_followup<=today).slice(0,5);
-  if(!due.length){ el.innerHTML=`<div class="empty-msg">No follow-ups due today.</div>`; return; }
+  if(!due.length){ el.innerHTML=`<div class="empty">No follow-ups due today.</div>`; return; }
   el.innerHTML=due.map(c=>`
-    <div class="fp-fu-item">
-      <div style="flex:1">
-        <div class="fp-fu-name">${esc(c.full_name)}</div>
-        ${c.followup_note?`<div class="fp-fu-note">${esc(c.followup_note)}</div>`:''}
+    <div class="fu-item">
+      <div>
+        <div class="fu-name">${esc(c.full_name)}</div>
+        ${c.followup_note?`<div class="fu-note">${esc(c.followup_note)}</div>`:''}
       </div>
-      <div class="fp-fu-date">${c.next_followup===today?'Today':c.next_followup}</div>
+      <div class="fu-date">${c.next_followup===today?'Today':c.next_followup}</div>
     </div>`).join('');
 }
 
-/* ── DEAL GRID ── */
-function renderDealGrid(){
-  const el=document.getElementById('fp-deal-grid'); if(!el) return;
-  if(!deals.length){ el.innerHTML=`<div class="empty-msg" style="grid-column:1/-1">No active deals — create deal rooms in the Deal Room portal.</div>`; return; }
+/* ══════════════════════════════════════════════════════════════
+   DEAL GRID
+══════════════════════════════════════════════════════════════ */
+function renderDeals(){
+  const el=document.getElementById('deal-grid'); if(!el) return;
+  if(!deals.length){ el.innerHTML=`<div class="empty" style="grid-column:1/-1;padding:32px 0">No active deals — create deal rooms in the Deal Room portal.</div>`; return; }
+  const phColors=['#1A3DB5','#2952cc','#5a8aff','#1f9d6b','#2ec98a'];
   el.innerHTML=deals.map(d=>{
-    const score=computeDealScore(d);
+    const s=score(d);
     const items=d.checklist_items||[];
     const approved=items.filter(i=>i.status==='approved').length;
     const pct=items.length?Math.round(approved/items.length*100):0;
-    const borrower=d.borrower?(d.borrower.full_name||d.borrower.company||''):'Unassigned';
-    const phaseColors=['#2952cc','#3b6de8','#5a8aff','#1f9d6b','#2ec98a'];
-    return `<div class="fp-deal-card" onclick="window.open('login.html','_blank')">
-      <div class="fd-score-badge" style="color:${scoreColor(score)};background:${scoreBg(score)}">${score}% ${scoreLabel(score)}</div>
-      <div class="fd-type">${esc(d.asset_type||'—')}</div>
-      <div class="fd-name">${esc(d.name)}</div>
-      <div class="fd-borrower">${esc(borrower)}${d.raise_amount?' · '+esc(d.raise_amount):''}</div>
-      <div class="fd-metrics">
-        <div class="fd-metric"><div class="fd-metric-num">${d.phase+1}/5</div><div class="fd-metric-lbl">Phase</div></div>
-        <div class="fd-metric"><div class="fd-metric-num">${approved}</div><div class="fd-metric-lbl">Approved</div></div>
-        <div class="fd-metric"><div class="fd-metric-num">${pct}%</div><div class="fd-metric-lbl">Complete</div></div>
+    const bname=(d.borrower?.full_name||d.borrower?.company||'Unassigned');
+    return `<div class="deal-card" onclick="window.open('login.html','_blank')">
+      <div class="dc-badge" style="color:${scoreColor(s)};background:${scoreBg(s)}">${s}%</div>
+      <div class="dc-type">${esc(d.asset_type||'Deal')}</div>
+      <div class="dc-name">${esc(d.name)}</div>
+      <div class="dc-borrower">${esc(bname)}${d.raise_amount?' · '+esc(d.raise_amount):''}</div>
+      <div class="dc-metrics">
+        <div><div class="dc-metric-num">${(d.phase||0)+1}/5</div><div class="dc-metric-lbl">Phase</div></div>
+        <div><div class="dc-metric-num">${approved}</div><div class="dc-metric-lbl">Approved</div></div>
+        <div><div class="dc-metric-num">${pct}%</div><div class="dc-metric-lbl">Complete</div></div>
       </div>
-      <div class="fd-phase-bar"><div class="fd-phase-fill" style="width:${(d.phase/4*100)}%;background:${phaseColors[d.phase]}"></div></div>
-      <div class="fd-phase-tag">Phase ${d.phase+1} — ${PHASES[d.phase]}</div>
+      <div class="dc-bar"><div class="dc-bar-fill" style="width:${((d.phase||0)/4*100)}%;background:${phColors[d.phase||0]}"></div></div>
+      <div class="dc-phase">${PHASES[d.phase||0]}</div>
     </div>`;
   }).join('');
 }
 
-/* ── ACTIVITY FEED ── */
-const ACT_ICONS={call:'📞',email:'✉',meeting:'🤝',note:'📝',doc_uploaded:'📎',phase_advanced:'⬆',system:'⚙'};
-const ACT_COLORS={call:'rgba(26,61,181,0.3)',email:'rgba(31,157,107,0.3)',meeting:'rgba(201,138,27,0.3)',note:'rgba(107,122,153,0.25)',doc_uploaded:'rgba(90,138,255,0.2)',phase_advanced:'rgba(46,201,138,0.2)',system:'rgba(107,122,153,0.15)'};
-function renderActivityFeed(){
-  const el=document.getElementById('fp-activity-feed'); if(!el) return;
-  if(!crmActivity.length){ el.innerHTML=`<div class="empty-msg">No CRM activity yet.</div>`; return; }
+/* ══════════════════════════════════════════════════════════════
+   ACTIVITY FEED
+══════════════════════════════════════════════════════════════ */
+function renderFeed(){
+  const el=document.getElementById('activity-feed'); if(!el) return;
+  if(!crmActivity.length){ el.innerHTML=`<div class="empty">No CRM activity logged yet.</div>`; return; }
   el.innerHTML=crmActivity.slice(0,12).map(a=>`
-    <div class="fp-feed-item">
-      <div class="fp-feed-icon" style="background:${ACT_COLORS[a.activity_type]||ACT_COLORS.system}">${ACT_ICONS[a.activity_type]||'📝'}</div>
-      <div class="fp-feed-body">
-        ${a.contact?`<div class="fp-feed-contact">${esc(a.contact.full_name)}</div>`:''}
-        <div class="fp-feed-text">${a.subject?`<strong>${esc(a.subject)}</strong> — `:'' }${esc(a.body||'')}</div>
-        <div class="fp-feed-when">${fmtAgo(a.activity_date)}</div>
+    <div class="feed-item">
+      <div class="feed-icon" style="background:${ACT_BG[a.activity_type]||ACT_BG.system}">${ACT_ICONS[a.activity_type]||'📝'}</div>
+      <div class="feed-body">
+        ${a.contact?`<div class="feed-contact">${esc(a.contact.full_name)}</div>`:''}
+        <div class="feed-text">${a.subject?`<strong>${esc(a.subject)}</strong> — `:''}${esc(a.body||'')}</div>
+        <div class="feed-when">${fmtAgo(a.activity_date)}</div>
       </div>
     </div>`).join('');
 }
 
-/* ── LENDER LIST ── */
+/* ══════════════════════════════════════════════════════════════
+   LENDERS
+══════════════════════════════════════════════════════════════ */
 function renderLenders(){
   const el=document.getElementById('lender-list'); if(!el) return;
-  if(!lenders.length){ el.innerHTML=`<div class="empty-msg">No lenders on file yet.</div>`; return; }
+  if(!lenders.length){ el.innerHTML=`<div class="empty">No capital partners on file yet.</div>`; return; }
   el.innerHTML=lenders.slice(0,8).map(l=>`
-    <div style="padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;gap:12px;align-items:flex-start">
-      <div style="width:32px;height:32px;background:rgba(26,61,181,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;color:var(--blue-light)">L</div>
+    <div class="lender-card">
+      <div class="lender-icon">${(l.firm_name||'?')[0].toUpperCase()}</div>
       <div style="flex:1">
-        <div style="font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.8)">${esc(l.firm_name||'Unnamed')}</div>
-        <div style="font-size:0.68rem;color:rgba(255,255,255,0.28);margin-top:2px;line-height:1.5">
-          ${l.asset_classes?.length?l.asset_classes.join(', '):''}
-          ${l.min_loan||l.max_loan?' · '+fmtAmt(l.min_loan)+'–'+fmtAmt(l.max_loan):''}
+        <div class="lender-name">${esc(l.firm_name||'Unnamed')}</div>
+        <div class="lender-meta">
+          ${l.min_loan||l.max_loan?fmtAmt(l.min_loan)+' – '+fmtAmt(l.max_loan)+'<br>':''}
+          ${l.max_ltv?'Max LTV '+l.max_ltv+'%':''} ${l.min_dscr?'· DSCR '+l.min_dscr+'x':''}
         </div>
+        ${l.asset_classes?.length?`<div style="margin-top:4px">${l.asset_classes.map(t=>`<span class="lender-tag">${esc(t)}</span>`).join('')}</div>`:''}
       </div>
     </div>`).join('');
-  if(lenders.length>8) el.innerHTML+=`<div style="padding:10px 0;font-size:0.72rem;color:rgba(255,255,255,0.25);text-align:center">+${lenders.length-8} more lenders in network</div>`;
 }
 
-/* ── UTILS ── */
-function veil(on){ document.getElementById('veil').style.display=on?'flex':'none'; }
-function showAccessDenied(msg){
-  document.getElementById('access-denied').style.display='flex';
-  if(msg){ const p=document.querySelector('#access-denied p'); if(p) p.textContent=msg; }
+/* ══════════════════════════════════════════════════════════════
+   SETTINGS
+══════════════════════════════════════════════════════════════ */
+function getSettings(){ try{ return JSON.parse(localStorage.getItem('sa_fund_v2'))||{}; }catch{ return {}; } }
+function openSettings(){
+  const s=getSettings();
+  document.getElementById('s-name').value      = s.fundName||'';
+  document.getElementById('s-aum').value       = s.targetAum||'';
+  document.getElementById('s-irr').value       = s.targetIrr||'';
+  document.getElementById('s-committed').value = s.committed||'';
+  document.getElementById('s-deployed').value  = s.deployed||'';
+  document.getElementById('settings-modal').classList.add('open');
 }
-function fpToast(msg){
-  const t=document.getElementById('fp-toast'); t.textContent=msg;
-  t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),3000);
+function saveSettings(){
+  localStorage.setItem('sa_fund_v2', JSON.stringify({
+    fundName:  document.getElementById('s-name').value.trim(),
+    targetAum: +document.getElementById('s-aum').value||0,
+    targetIrr: +document.getElementById('s-irr').value||0,
+    committed: +document.getElementById('s-committed').value||0,
+    deployed:  +document.getElementById('s-deployed').value||0,
+  }));
+  closeSettings(); renderAll(); toast('Settings saved.');
 }
-function esc(s){ const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML; }
+function closeSettings(){ document.getElementById('settings-modal').classList.remove('open'); }
+document.getElementById('settings-modal').addEventListener('click',e=>{ if(e.target.id==='settings-modal') closeSettings(); });
+
+/* ══════════════════════════════════════════════════════════════
+   SCORING + HELPERS
+══════════════════════════════════════════════════════════════ */
+function score(d){
+  const items=d.checklist_items||[], ph=d.phase||0;
+  const phItems=items.filter(i=>i.phase===ph);
+  const A=phItems.length?Math.round(phItems.filter(i=>i.status==='approved').length/phItems.length*35):0;
+  const B=items.length?Math.round(items.filter(i=>i.status==='approved').length/items.length*20):0;
+  const C=ph*5;
+  let D=0; if(d.raise_amount) D+=4; if(d.asset_type&&d.asset_type!=='Other') D+=3; if(d.borrower_id) D+=4; if(d.asset_class) D+=4;
+  const E=(items.some(i=>i.status!=='needed')?5:0)+(items.filter(i=>i.status==='needed'&&i.revision_note).length===0?5:0);
+  return Math.min(100,A+B+C+D+E);
+}
+function scoreColor(s){ return s>=75?'#5a8aff':s>=55?'#2ec98a':s>=35?'#c98a1b':'#c44545'; }
+function scoreBg(s){ return s>=75?'rgba(90,138,255,0.14)':s>=55?'rgba(46,201,138,0.14)':s>=35?'rgba(201,138,27,0.14)':'rgba(196,69,69,0.14)'; }
+function scoreLabel(s){ return s>=75?'Prime':s>=55?'Strong':s>=35?'Moderate':'Developing'; }
+function parseAmt(s){ if(!s) return 0; return parseFloat(s.replace(/[^0-9.]/g,''))||0; }
+function fmtAmt(n){ if(!n) return '—'; if(n>=1e9) return '$'+(n/1e9).toFixed(1)+'B'; if(n>=1e6) return '$'+(n/1e6).toFixed(1)+'M'; if(n>=1e3) return '$'+(n/1e3).toFixed(0)+'K'; return '$'+n; }
+function fmtAgo(iso){ if(!iso) return ''; const d=new Date(iso),now=new Date(),m=Math.round((now-d)/60000); if(m<2) return 'just now'; if(m<60) return m+'m ago'; const h=Math.round(m/60); if(h<24) return h+'h ago'; return d.toISOString().slice(0,10); }
+function esc(s){ const d=document.createElement('div'); d.textContent=s==null?'':String(s); return d.innerHTML; }
+function updateDate(){ const el=document.getElementById('fp-date'); if(el) el.innerHTML=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})+'<br>'+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}); }
+function toast(msg){ const t=document.getElementById('fp-toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),3200); }
 </script>
 </body>
 </html>
