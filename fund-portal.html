@@ -385,8 +385,8 @@
 
 <script>
 /* ── CONFIG — paste your same Supabase credentials from login.html ── */
-const SUPABASE_URL     = 'PASTE_YOUR_SUPABASE_URL_HERE';
-const SUPABASE_ANON_KEY= 'PASTE_YOUR_SUPABASE_ANON_KEY_HERE';
+const SUPABASE_URL     = 'https://plihqeruhlwclqloagjn.supabase.co';
+const SUPABASE_ANON_KEY= 'sb_publishable_g8isUhYtzSYZhXHpKSU0Kg_qL4e_XuG';
 
 /* ── CONSTANTS (mirrored from login.html) ── */
 const PHASES = ['Intake','Soft Quote','Term Sheet','Underwriting','Closing'];
@@ -429,7 +429,9 @@ async function loadAll(showToast=false){
     supa.from('crm_activities').select('*, contact:crm_contacts(full_name)').order('activity_date',{ascending:false}).limit(40),
     supa.from('capital_partners').select('*').order('created_at',{ascending:false}),
   ]);
-  deals        = dr.data  || [];
+  deals        = dr.data  || []; const SUPABASE_URL      = https://plihqeruhlwclqloagjn.supabase.co;
+const SUPABASE_ANON_KEY = sb_publishable_g8isUhYtzSYZhXHpKSU0Kg_qL4e_XuG;
+
   crmContacts  = cr.data  || [];
   crmTasks     = tr.data  || [];
   crmActivity  = ar.data  || [];
