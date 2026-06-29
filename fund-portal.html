@@ -353,6 +353,18 @@ nav#fp-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(8,8,1
   <!-- STATS BAR -->
   <div class="fp-stats" id="fp-stats"></div>
 
+  <!-- DEPLOYMENT BAR -->
+  <div id="deploy-bar" style="display:none;background:#0b0b18;border-bottom:1px solid var(--border);padding:24px 40px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px">
+      <div>
+        <div style="font-size:0.54rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:6px">Capital Deployment</div>
+        <div id="deploy-fund-name" style="font-family:'Cormorant Garant',serif;font-size:1.25rem;font-weight:300;color:var(--white)">Fund I</div>
+      </div>
+      <div id="deploy-kpis" style="display:flex;gap:32px"></div>
+    </div>
+    <div id="deploy-bars"></div>
+  </div>
+
   <!-- MAIN GRID -->
   <div class="fp-grid" style="background:var(--border);gap:1px">
     <div class="fp-col">
@@ -444,6 +456,13 @@ nav#fp-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(8,8,1
     <div class="fp-deal-grid" id="deal-grid"></div>
   </div>
 
+  <!-- DEAL TIMELINE -->
+  <div id="timeline-section" style="padding:28px 40px;background:#090914;border-top:1px solid var(--border);display:none">
+    <div style="font-size:0.54rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:8px">Deal Lifecycle</div>
+    <div style="font-family:'Cormorant Garant',serif;font-size:1.35rem;font-weight:300;color:var(--white);margin-bottom:20px">Phase <em style="font-style:italic;color:var(--blue-light)">timeline.</em></div>
+    <div id="timeline-list"></div>
+  </div>
+
   <!-- ACTIVITY + LENDERS -->
   <div class="activity-section">
     <div class="fp-panel" style="background:#090914">
@@ -472,6 +491,10 @@ nav#fp-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(8,8,1
       <div class="fp-field"><div class="fp-label">Target IRR (%)</div><input class="fp-input" id="s-irr" type="number" placeholder="18"/></div>
       <div class="fp-field"><div class="fp-label">Capital Committed ($)</div><input class="fp-input" id="s-committed" type="number" placeholder="75000000"/></div>
       <div class="fp-field"><div class="fp-label">Capital Deployed ($)</div><input class="fp-input" id="s-deployed" type="number" placeholder="42000000"/></div>
+      <div class="fp-field"><div class="fp-label">Capital Returned ($)</div><input class="fp-input" id="s-returned" type="number" placeholder="0"/></div>
+      <div class="fp-field"><div class="fp-label">Target Equity Multiple</div><input class="fp-input" id="s-multiple" type="number" step="0.1" placeholder="1.8"/></div>
+      <div class="fp-field full"><div class="fp-label">Alert Email (for stale deal notifications)</div><input class="fp-input" id="s-alert-email" type="email" placeholder="admin@steelaire.com"/></div>
+      <div class="fp-field full"><div class="fp-label">Fund Strategy</div><input class="fp-input" id="s-strategy" placeholder="e.g. Value-add CRE across Sunbelt markets"/></div>
     </div>
     <div class="modal-actions">
       <button class="btn btn-primary" onclick="saveSettings()">Save</button>
@@ -498,8 +521,11 @@ const ACT_BG = {call:'rgba(26,61,181,0.25)',email:'rgba(31,157,107,0.25)',meetin
 ══════════════════════════════════════════════════════════════ */
 let supa, me, profile;
 let deals=[], crmContacts=[], crmTasks=[], crmActivity=[], lenders=[];
+let fundSettings = {}, phaseHistory = [];
 let booted = false;
 let assetChartInst = null;
+const EMAILJS_SVC = 'service_t2ziiym';
+const EMAILJS_ALERT_TPL = 'template_stale_alert'; // create this in EmailJS dashboard
 
 /* ══════════════════════════════════════════════════════════════
    BOOT
@@ -618,18 +644,22 @@ function hideVeil(){ const v=document.getElementById('veil'); v.classList.add('h
    DATA
 ══════════════════════════════════════════════════════════════ */
 async function loadAll(){
-  const [dr,cr,tr,ar,lr] = await Promise.all([
+  const [dr,cr,tr,ar,lr,fs,ph] = await Promise.all([
     supa.from('deals').select('*, checklist_items(*), borrower:profiles(full_name,company)').order('created_at',{ascending:false}),
     supa.from('crm_contacts').select('*').order('created_at',{ascending:false}),
     supa.from('crm_tasks').select('*, contact:crm_contacts(full_name)').eq('completed',false).order('due_date',{ascending:true}),
     supa.from('crm_activities').select('*, contact:crm_contacts(full_name)').order('activity_date',{ascending:false}).limit(40),
     supa.from('capital_partners').select('*').order('created_at',{ascending:false}),
+    supa.from('fund_settings').select('*').maybeSingle(),
+    supa.from('phase_history').select('*, deal:deals(name,asset_type)').order('entered_at',{ascending:true}),
   ]);
-  deals       = (dr.data||[]);
-  crmContacts = (cr.data||[]);
-  crmTasks    = (tr.data||[]);
-  crmActivity = (ar.data||[]);
-  lenders     = (lr.data||[]);
+  deals        = (dr.data||[]);
+  crmContacts  = (cr.data||[]);
+  crmTasks     = (tr.data||[]);
+  crmActivity  = (ar.data||[]);
+  lenders      = (lr.data||[]);
+  fundSettings = (fs.data||{});
+  phaseHistory = (ph.data||[]);
   deals.forEach(d=>{ if(d.checklist_items) d.checklist_items.sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)); });
 }
 
@@ -647,6 +677,7 @@ async function doRefresh(){
 function renderAll(){
   renderAlerts();
   renderStats();
+  renderDeployment();
   renderPhase();
   renderAsset();
   renderVelocity();
@@ -654,8 +685,10 @@ function renderAll(){
   renderTasks();
   renderFollowups();
   renderDeals();
+  renderTimeline();
   renderFeed();
   renderLenders();
+  maybeAlertEmail();
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -930,28 +963,194 @@ function renderLenders(){
 /* ══════════════════════════════════════════════════════════════
    SETTINGS
 ══════════════════════════════════════════════════════════════ */
-function getSettings(){ try{ return JSON.parse(localStorage.getItem('sa_fund_v2'))||{}; }catch{ return {}; } }
 function openSettings(){
-  const s=getSettings();
-  document.getElementById('s-name').value      = s.fundName||'';
-  document.getElementById('s-aum').value       = s.targetAum||'';
-  document.getElementById('s-irr').value       = s.targetIrr||'';
-  document.getElementById('s-committed').value = s.committed||'';
-  document.getElementById('s-deployed').value  = s.deployed||'';
+  const s=fundSettings;
+  document.getElementById('s-name').value        = s.fund_name||'';
+  document.getElementById('s-aum').value         = s.target_aum||'';
+  document.getElementById('s-irr').value         = s.target_irr||'';
+  document.getElementById('s-committed').value   = s.committed||'';
+  document.getElementById('s-deployed').value    = s.deployed||'';
+  document.getElementById('s-returned').value    = s.returned||'';
+  document.getElementById('s-multiple').value    = s.target_multiple||'';
+  document.getElementById('s-alert-email').value = s.alert_email||'';
+  document.getElementById('s-strategy').value    = s.fund_strategy||'';
   document.getElementById('settings-modal').classList.add('open');
 }
-function saveSettings(){
-  localStorage.setItem('sa_fund_v2', JSON.stringify({
-    fundName:  document.getElementById('s-name').value.trim(),
-    targetAum: +document.getElementById('s-aum').value||0,
-    targetIrr: +document.getElementById('s-irr').value||0,
-    committed: +document.getElementById('s-committed').value||0,
-    deployed:  +document.getElementById('s-deployed').value||0,
-  }));
-  closeSettings(); renderAll(); toast('Settings saved.');
+async function saveSettings(){
+  const row = {
+    fund_name:       document.getElementById('s-name').value.trim()||'Steel & Aire Fund I',
+    target_aum:      +document.getElementById('s-aum').value||0,
+    target_irr:      +document.getElementById('s-irr').value||0,
+    committed:       +document.getElementById('s-committed').value||0,
+    deployed:        +document.getElementById('s-deployed').value||0,
+    returned:        +document.getElementById('s-returned').value||0,
+    target_multiple: +document.getElementById('s-multiple').value||0,
+    alert_email:     document.getElementById('s-alert-email').value.trim()||null,
+    fund_strategy:   document.getElementById('s-strategy').value.trim()||null,
+    updated_at:      new Date().toISOString(),
+    updated_by:      me?.id,
+  };
+  let err;
+  if(fundSettings.id){
+    ({error:err} = await supa.from('fund_settings').update(row).eq('id',fundSettings.id));
+  } else {
+    const r = await supa.from('fund_settings').insert(row).select().maybeSingle();
+    err=r.error; if(!err) fundSettings=r.data;
+  }
+  if(err){ console.error(err); toast('Save failed — check console.'); return; }
+  fundSettings={...fundSettings,...row};
+  closeSettings(); renderAll(); toast('Fund settings saved to database.');
 }
 function closeSettings(){ document.getElementById('settings-modal').classList.remove('open'); }
 document.getElementById('settings-modal').addEventListener('click',e=>{ if(e.target.id==='settings-modal') closeSettings(); });
+
+/* ══════════════════════════════════════════════════════════════
+   DEPLOYMENT METRICS BAR
+══════════════════════════════════════════════════════════════ */
+function renderDeployment(){
+  const bar = document.getElementById('deploy-bar');
+  const s = fundSettings;
+  if(!s || !s.target_aum){ bar.style.display='none'; return; }
+  bar.style.display='block';
+  const nameEl = document.getElementById('deploy-fund-name');
+  if(nameEl) nameEl.textContent = s.fund_name||'Fund I';
+
+  const tgt  = s.target_aum||0;
+  const comm = s.committed||0;
+  const dep  = s.deployed||0;
+  const ret  = s.returned||0;
+  const commPct = tgt?Math.min(100,Math.round(comm/tgt*100)):0;
+  const depPct  = comm?Math.min(100,Math.round(dep/comm*100)):0;
+
+  const kpiEl = document.getElementById('deploy-kpis');
+  if(kpiEl) kpiEl.innerHTML=[
+    {label:'Target AUM',   val:fmtAmt(tgt),  color:'rgba(255,255,255,0.6)'},
+    {label:'Committed',    val:fmtAmt(comm)+' ('+commPct+'%)', color:'#5a8aff'},
+    {label:'Deployed',     val:fmtAmt(dep)+' ('+depPct+'% of committed)', color:'#2ec98a'},
+    {label:'Returned',     val:fmtAmt(ret),  color:ret?'var(--gold)':'rgba(255,255,255,0.2)'},
+    {label:'Target IRR',   val:s.target_irr?s.target_irr+'%':'—', color:'rgba(255,255,255,0.5)'},
+    {label:'Target Multiple',val:s.target_multiple?s.target_multiple+'x':'—', color:'rgba(255,255,255,0.5)'},
+  ].map(k=>`<div style="text-align:right"><div style="font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:600;color:${k.color}">${k.val}</div><div style="font-size:0.54rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-top:2px">${k.label}</div></div>`).join('');
+
+  const barsEl = document.getElementById('deploy-bars');
+  if(barsEl) barsEl.innerHTML=`
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:0.64rem;color:rgba(255,255,255,0.35)">LP Commitments vs Target AUM</span>
+        <span style="font-size:0.64rem;font-weight:600;color:#5a8aff">${commPct}%</span>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden">
+        <div style="height:100%;width:${commPct}%;background:linear-gradient(90deg,#1A3DB5,#5a8aff);border-radius:3px;transition:width 1.2s ease"></div>
+      </div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:0.64rem;color:rgba(255,255,255,0.35)">Capital Deployed vs Committed</span>
+        <span style="font-size:0.64rem;font-weight:600;color:#2ec98a">${depPct}%</span>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden">
+        <div style="height:100%;width:${depPct}%;background:linear-gradient(90deg,#1f9d6b,#2ec98a);border-radius:3px;transition:width 1.2s ease"></div>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DEAL TIMELINE
+══════════════════════════════════════════════════════════════ */
+function renderTimeline(){
+  const sec  = document.getElementById('timeline-section');
+  const list = document.getElementById('timeline-list');
+  if(!sec||!list||!deals.length){ if(sec) sec.style.display='none'; return; }
+  sec.style.display='block';
+
+  const phColors=['#1A3DB5','#2952cc','#5a8aff','#1f9d6b','#2ec98a'];
+
+  list.innerHTML = deals.map(d=>{
+    const created = new Date(d.created_at);
+    const now = new Date();
+    const totalDays = Math.round((now-created)/86400000);
+    const ph = d.phase||0;
+
+    // Use phase_history if available, else divide totalDays evenly across past phases
+    const dHistory = phaseHistory.filter(h=>h.deal_id===d.id);
+    const phaseDays = PHASES.map((name,i)=>{
+      if(i > ph) return null; // not reached yet
+      const entry = dHistory.find(h=>h.phase===i);
+      if(entry){
+        const end = i<ph ? (dHistory.find(h=>h.phase===i+1)?.entered_at||now) : now;
+        return Math.max(1,Math.round((new Date(end)-new Date(entry.entered_at))/86400000));
+      }
+      // No history — show placeholder
+      return i<ph ? Math.round(totalDays/(ph+1)) : Math.round((now-created)/86400000);
+    });
+
+    return `<div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px">
+        <div>
+          <div style="font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--blue-light);margin-bottom:3px">${esc(d.asset_type||'Deal')}</div>
+          <div style="font-size:0.9rem;font-weight:600;color:var(--white)">${esc(d.name)}</div>
+        </div>
+        <div style="font-size:0.66rem;color:rgba(255,255,255,0.25)">${totalDays} days active · Score ${score(d)}%</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:3px">
+        ${PHASES.map((name,i)=>{
+          const reached = i<=ph;
+          const current = i===ph;
+          const days = phaseDays[i];
+          return `<div>
+            <div style="height:8px;background:${reached?phColors[i]:'rgba(255,255,255,0.06)'};border-radius:2px;margin-bottom:5px;${current?'box-shadow:0 0 8px '+phColors[i]+'88':''}"></div>
+            <div style="font-size:0.56rem;color:${reached?'rgba(255,255,255,0.55)':'rgba(255,255,255,0.18)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div>
+            ${days!==null?`<div style="font-size:0.56rem;color:${current?phColors[i]:'rgba(255,255,255,0.2)'};margin-top:1px">${days}d${current?' ◆':''}</div>`:'<div style="font-size:0.56rem;color:rgba(255,255,255,0.1)">—</div>'}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════
+   STALE DEAL EMAIL ALERTS
+══════════════════════════════════════════════════════════════ */
+async function maybeAlertEmail(){
+  const alertEmail = fundSettings.alert_email || me?.email;
+  if(!alertEmail) return;
+
+  // Don't re-send within 24 hours
+  if(fundSettings.last_stale_alert){
+    const hrs = (new Date()-new Date(fundSettings.last_stale_alert))/3600000;
+    if(hrs < 24) return;
+  }
+
+  const today = new Date().toISOString().slice(0,10);
+  const stale = deals.filter(d=>d.updated_at && Math.round((new Date()-new Date(d.updated_at))/86400000)>14);
+  const overdueTasks = crmTasks.filter(t=>t.due_date && t.due_date<today);
+  const expiringFollowups = crmContacts.filter(c=>c.next_followup && c.next_followup<today);
+
+  if(!stale.length && !overdueTasks.length && !expiringFollowups.length) return;
+
+  // Requires EmailJS loaded and a template named EMAILJS_ALERT_TPL
+  if(typeof emailjs === 'undefined') return;
+
+  try{
+    await emailjs.send(EMAILJS_SVC, EMAILJS_ALERT_TPL, {
+      to_email:    alertEmail,
+      fund_name:   fundSettings.fund_name||'Steel & Aire Fund I',
+      stale_deals: stale.length ? stale.map(d=>d.name).join(', ') : 'None',
+      stale_count: stale.length,
+      overdue_tasks: overdueTasks.length,
+      overdue_followups: expiringFollowups.length,
+      portal_url:  window.location.origin+'/fund-portal.html',
+    });
+    // Record that we sent the alert so we don't spam
+    if(fundSettings.id){
+      await supa.from('fund_settings').update({last_stale_alert:new Date().toISOString()}).eq('id',fundSettings.id);
+      fundSettings.last_stale_alert = new Date().toISOString();
+    }
+    console.log('Alert email sent to', alertEmail);
+  }catch(e){
+    console.warn('Alert email failed (is EmailJS configured?):', e.message||e);
+  }
+}
 
 /* ══════════════════════════════════════════════════════════════
    SCORING + HELPERS

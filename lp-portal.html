@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Investor Portal — Steel & Aire Soluciones</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1A3DB5;--blue-mid:#2952cc;--blue-light:#5a8aff;
+  --black:#08080f;--black-soft:#0d0d1a;--charcoal:#1c1c28;
+  --white:#fff;--mid-grey:#6b7a99;
+  --green:#1f9d6b;--green-bright:#2ec98a;--amber:#c98a1b;--red:#c44545;--gold:#d4a847;
+  --border:rgba(255,255,255,0.07);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);min-height:100vh}
+
+/* ── VEIL ── */
+#veil{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:999;transition:opacity 0.4s}
+#veil.hidden{opacity:0;pointer-events:none}
+.veil-logo{font-family:'Cormorant Garant',serif;font-size:1.8rem;font-weight:300;letter-spacing:0.05em}
+.veil-logo span{color:var(--blue-light)}
+.veil-sub{font-size:0.6rem;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:rgba(255,255,255,0.2)}
+.veil-bar{width:140px;height:1px;background:var(--charcoal);overflow:hidden;position:relative}
+.veil-bar::after{content:'';position:absolute;left:-40%;width:40%;height:100%;background:var(--blue-light);animation:sw 1.2s ease-in-out infinite}
+@keyframes sw{to{left:140%}}
+
+/* ── SIGN IN ── */
+#page-signin{display:none;min-height:100vh;position:relative;overflow:hidden;align-items:center;justify-content:center}
+.si-bg{position:absolute;inset:0;background:linear-gradient(135deg,#070714 0%,#0c1230 60%,#070714 100%)}
+.si-glow{position:absolute;top:-10%;left:10%;width:60vw;height:70vh;background:radial-gradient(ellipse,rgba(26,61,181,0.15) 0%,transparent 65%);pointer-events:none}
+.si-wrap{position:relative;z-index:2;width:100%;max-width:400px;padding:40px 24px}
+.si-brand{text-align:center;margin-bottom:48px}
+.si-brand-name{font-family:'Cormorant Garant',serif;font-size:1.9rem;font-weight:300;letter-spacing:0.04em}
+.si-brand-name span{color:var(--blue-light)}
+.si-brand-tag{font-size:0.58rem;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:rgba(255,255,255,0.18);margin-top:4px}
+.si-rule{width:40px;height:1px;background:rgba(26,61,181,0.6);margin:14px auto 0}
+.si-heading{font-family:'Cormorant Garant',serif;font-size:1.45rem;font-weight:300;text-align:center;margin-bottom:4px}
+.si-sub{font-size:0.72rem;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:28px;line-height:1.6}
+.si-field{margin-bottom:14px}
+.si-label{font-size:0.56rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.28);display:block;margin-bottom:7px}
+.si-input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);color:var(--white);font-family:'Inter',sans-serif;font-size:0.88rem;padding:12px 15px;outline:none;transition:border-color 0.2s;-webkit-appearance:none}
+.si-input:focus{border-color:var(--blue-light)}
+.si-input::placeholder{color:rgba(255,255,255,0.2)}
+.si-btn{width:100%;padding:13px;background:var(--blue);border:none;color:var(--white);font-family:'Inter',sans-serif;font-size:0.76rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;margin-top:6px;transition:background 0.2s}
+.si-btn:hover{background:var(--blue-mid)}
+.si-btn:disabled{opacity:0.55;cursor:not-allowed}
+.si-err{background:rgba(196,69,69,0.1);border:1px solid rgba(196,69,69,0.25);color:#e08a8a;font-size:0.74rem;padding:9px 13px;margin-top:10px;display:none;line-height:1.5}
+.si-footer{text-align:center;margin-top:36px;font-size:0.64rem;color:rgba(255,255,255,0.13);line-height:1.8}
+
+/* ── ACCESS DENIED ── */
+#page-denied{display:none;min-height:100vh;align-items:center;justify-content:center;flex-direction:column;gap:12px;text-align:center;padding:40px}
+#page-denied h2{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:300}
+#page-denied p{font-size:0.82rem;color:rgba(255,255,255,0.38);max-width:360px;line-height:1.7}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(8,8,15,0.97);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);display:none}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:0 40px;height:58px}
+.nav-brand{font-family:'Cormorant Garant',serif;font-size:1.05rem;font-weight:600;letter-spacing:0.04em;text-decoration:none;color:var(--white)}
+.nav-brand span{color:var(--blue-light)}
+.nav-badge{font-size:0.5rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;background:rgba(26,61,181,0.18);color:var(--blue-light);border:1px solid rgba(90,138,255,0.22);padding:3px 9px;margin-left:12px;vertical-align:middle}
+.nav-right{display:flex;align-items:center;gap:14px}
+.nav-user{font-size:0.66rem;color:rgba(255,255,255,0.3)}
+.nav-signout{background:none;border:none;color:rgba(255,255,255,0.22);font-family:'Inter',sans-serif;font-size:0.66rem;cursor:pointer;padding:6px;transition:color 0.2s}
+.nav-signout:hover{color:var(--white)}
+
+/* ── APP ── */
+#page-app{display:none;padding-top:58px}
+
+/* ── HERO ── */
+.lp-hero{padding:52px 40px 40px;background:linear-gradient(180deg,#0a0f1e 0%,var(--black) 100%);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.lp-hero-glow{position:absolute;top:-20%;right:-5%;width:60vw;height:80vh;background:radial-gradient(ellipse,rgba(26,61,181,0.11) 0%,transparent 65%);pointer-events:none}
+.lp-eyebrow{font-size:0.56rem;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:var(--blue-light);margin-bottom:12px}
+.lp-welcome{font-family:'Cormorant Garant',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;color:var(--white);line-height:1.08}
+.lp-welcome em{font-style:italic;color:var(--blue-light)}
+.lp-sub{font-size:0.78rem;color:rgba(255,255,255,0.28);margin-top:10px;line-height:1.7;max-width:480px}
+
+/* ── CAPITAL ACCOUNT ── */
+.lp-account{padding:32px 40px;background:var(--black-soft);border-bottom:1px solid var(--border)}
+.account-label{font-size:0.54rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.account-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.account-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--border)}
+.account-card{background:var(--black-soft);padding:22px 24px;position:relative;overflow:hidden}
+.account-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;opacity:0}
+.account-num{font-family:'Cormorant Garant',serif;font-size:2rem;font-weight:600;line-height:1;margin-bottom:5px}
+.account-lbl{font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.25)}
+.account-sub{font-size:0.66rem;color:rgba(255,255,255,0.18);margin-top:4px;line-height:1.4}
+
+/* ── PROGRESS BAR ── */
+.lp-bar-section{padding:28px 40px;background:#090914;border-bottom:1px solid var(--border)}
+.lp-bar-label{font-size:0.54rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.lp-bar-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.lp-bar-row{margin-bottom:18px}
+.lp-bar-head{display:flex;justify-content:space-between;margin-bottom:8px;font-size:0.72rem}
+.lp-bar-name{color:rgba(255,255,255,0.45)}
+.lp-bar-val{font-weight:600;color:rgba(255,255,255,0.7)}
+.lp-bar-track{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.lp-bar-fill{height:100%;border-radius:3px;transition:width 1.4s cubic-bezier(0.4,0,0.2,1)}
+
+/* ── FUND OVERVIEW ── */
+.lp-fund-section{padding:28px 40px;background:var(--black-soft);border-bottom:1px solid var(--border)}
+.lp-fund-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:16px}
+.lp-fund-cell{background:var(--black-soft);padding:18px 20px}
+.lf-num{font-family:'Cormorant Garant',serif;font-size:1.5rem;font-weight:600;color:var(--white);line-height:1;margin-bottom:4px}
+.lf-lbl{font-size:0.56rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.22)}
+
+/* ── CAPITAL CALLS TABLE ── */
+.lp-calls-section{padding:28px 40px;background:#090914;border-bottom:1px solid var(--border)}
+.lp-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:0.8rem}
+.lp-table th{font-size:0.56rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.22);padding:10px 0;border-bottom:1px solid var(--border);text-align:left}
+.lp-table td{padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.04);color:rgba(255,255,255,0.6);vertical-align:middle}
+.lp-table tr:last-child td{border-bottom:none}
+.lp-badge{font-size:0.56rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:2px;display:inline-block}
+.badge-funded{background:rgba(31,157,107,0.15);color:#2ec98a}
+.badge-pending{background:rgba(201,138,27,0.15);color:#c98a1b}
+.badge-overdue{background:rgba(196,69,69,0.15);color:#e08a8a}
+
+/* ── DOCUMENTS ── */
+.lp-docs-section{padding:28px 40px}
+.lp-doc-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
+.lp-doc-item:last-child{border-bottom:none}
+.lp-doc-icon{width:32px;height:32px;background:rgba(26,61,181,0.15);display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0}
+.lp-doc-name{font-size:0.8rem;font-weight:600;color:rgba(255,255,255,0.75);flex:1}
+.lp-doc-date{font-size:0.66rem;color:rgba(255,255,255,0.25)}
+.btn-dl{font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:none;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.4);padding:5px 12px;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+.btn-dl:hover{border-color:var(--blue-light);color:var(--white)}
+
+/* ── MISC ── */
+.section-title{font-family:'Cormorant Garant',serif;font-size:1.2rem;font-weight:300;color:var(--white);margin-bottom:4px}
+.section-title em{font-style:italic;color:var(--blue-light)}
+.empty{font-size:0.78rem;color:rgba(255,255,255,0.2);padding:20px 0;text-align:center}
+#lp-toast{position:fixed;bottom:20px;right:20px;background:var(--charcoal);border-left:3px solid var(--green);color:var(--white);font-size:0.76rem;padding:10px 16px;transform:translateY(40px);opacity:0;transition:all 0.25s;z-index:800;pointer-events:none}
+#lp-toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:768px){
+  .nav-inner,.lp-hero,.lp-account,.lp-bar-section,.lp-fund-section,.lp-calls-section,.lp-docs-section{padding-left:20px;padding-right:20px}
+  .lp-fund-grid{grid-template-columns:1fr 1fr}
+  .si-wrap{padding:32px 20px}
+}
+  </style>
+</head>
+<body>
+
+<!-- VEIL -->
+<div id="veil">
+  <div class="veil-logo">Steel <span>&</span> Aire Soluciones</div>
+  <div class="veil-sub">Investor Portal</div>
+  <div class="veil-bar"></div>
+</div>
+
+<!-- SIGN IN -->
+<div id="page-signin" style="display:flex">
+  <div class="si-bg"></div>
+  <div class="si-glow"></div>
+  <div class="si-wrap">
+    <div class="si-brand">
+      <div class="si-brand-name">Steel <span>&</span> Aire Soluciones</div>
+      <div class="si-brand-tag">Investor Portal</div>
+      <div class="si-rule"></div>
+    </div>
+    <div class="si-heading">Investor access</div>
+    <div class="si-sub">Sign in with the credentials provided by Steel & Aire to view your capital account and fund performance.</div>
+    <div class="si-field">
+      <label class="si-label" for="si-email">Email address</label>
+      <input class="si-input" id="si-email" type="email" placeholder="investor@example.com" autocomplete="email"/>
+    </div>
+    <div class="si-field">
+      <label class="si-label" for="si-pass">Password</label>
+      <input class="si-input" id="si-pass" type="password" placeholder="••••••••" autocomplete="current-password"/>
+    </div>
+    <button class="si-btn" id="si-btn" onclick="signIn()">Access My Account</button>
+    <div class="si-err" id="si-err"></div>
+    <div class="si-footer">
+      Access to this portal is restricted to authorized investors.<br>
+      Contact Steel & Aire if you need assistance.
+    </div>
+  </div>
+</div>
+
+<!-- ACCESS DENIED -->
+<div id="page-denied">
+  <h2>Access <em style="font-style:italic;color:var(--blue-light)">restricted.</em></h2>
+  <p id="denied-msg">This portal is for Steel & Aire limited partners only. Contact your investment manager for access.</p>
+  <button onclick="showSignIn()" style="margin-top:16px;background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:9px 20px;cursor:pointer;transition:all 0.2s" onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">← Back to Sign In</button>
+</div>
+
+<!-- NAV -->
+<nav id="lp-nav">
+  <div class="nav-inner">
+    <div style="display:flex;align-items:center">
+      <a href="index.html" class="nav-brand">Steel <span>&</span> Aire</a>
+      <span class="nav-badge">Investor Portal</span>
+    </div>
+    <div class="nav-right">
+      <span class="nav-user" id="nav-user"></span>
+      <button class="nav-signout" onclick="signOut()">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<!-- LP APP -->
+<div id="page-app">
+
+  <!-- HERO -->
+  <div class="lp-hero">
+    <div class="lp-hero-glow"></div>
+    <div class="lp-eyebrow">Investor Dashboard</div>
+    <div class="lp-welcome">Welcome back, <em id="lp-first-name">Investor.</em></div>
+    <p class="lp-sub">Your capital account summary and fund performance — as of <span id="lp-date"></span>.</p>
+  </div>
+
+  <!-- CAPITAL ACCOUNT -->
+  <div class="lp-account">
+    <div class="account-label">Your Capital Account</div>
+    <div class="account-grid" id="account-grid"></div>
+  </div>
+
+  <!-- DEPLOYMENT BARS -->
+  <div class="lp-bar-section">
+    <div class="lp-bar-label">Account Status</div>
+    <div class="section-title" style="margin-bottom:20px">Capital <em>deployment.</em></div>
+    <div id="lp-bars"></div>
+  </div>
+
+  <!-- FUND OVERVIEW -->
+  <div class="lp-fund-section">
+    <div class="account-label">Fund Overview</div>
+    <div class="section-title">About the <em>fund.</em></div>
+    <p style="font-size:0.76rem;color:rgba(255,255,255,0.28);margin-top:4px;line-height:1.7" id="fund-strategy-text"></p>
+    <div class="lp-fund-grid" id="fund-grid"></div>
+  </div>
+
+  <!-- CAPITAL CALLS -->
+  <div class="lp-calls-section">
+    <div class="account-label">Capital Calls</div>
+    <div class="section-title" style="margin-bottom:4px">Call <em>history.</em></div>
+    <p style="font-size:0.76rem;color:rgba(255,255,255,0.28);margin-bottom:0;line-height:1.7">All capital draw requests issued to your account.</p>
+    <table class="lp-table" id="calls-table">
+      <thead><tr><th>Call Date</th><th>Due Date</th><th>Amount</th><th>Status</th><th>Funded</th></tr></thead>
+      <tbody id="calls-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- DISTRIBUTIONS -->
+  <div class="lp-calls-section" style="background:var(--black-soft)">
+    <div class="account-label">Distributions</div>
+    <div class="section-title" style="margin-bottom:4px">Return <em>history.</em></div>
+    <p style="font-size:0.76rem;color:rgba(255,255,255,0.28);margin-bottom:0;line-height:1.7">Capital and profit distributions returned to your account.</p>
+    <table class="lp-table" id="dist-table">
+      <thead><tr><th>Date</th><th>Amount</th><th>Type</th></tr></thead>
+      <tbody id="dist-tbody"></tbody>
+    </table>
+  </div>
+
+</div><!-- /page-app -->
+
+<div id="lp-toast"></div>
+
+<script>
+const SUPABASE_URL      = 'https://plihqeruhlwclqloagjn.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_g8isUhYtzSYZhXHpKSU0Kg_qL4e_XuG';
+
+let supa, me, profile, investment = null, fundSettings = {};
+let capitalCalls = [], distributions = [];
+let booted = false;
+
+function waitForLib(){
+  return new Promise(res=>{
+    if(window.supabase?.createClient){res();return;}
+    const t=setInterval(()=>{if(window.supabase?.createClient){clearInterval(t);res();}},60);
+    setTimeout(()=>{clearInterval(t);if(!window.supabase){const s=document.createElement('script');s.src='https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js';s.onload=res;document.head.appendChild(s);}},2500);
+  });
+}
+
+window.addEventListener('DOMContentLoaded', async ()=>{
+  document.getElementById('lp-date').textContent = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  try{
+    await waitForLib();
+    supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    supa.auth.onAuthStateChange(async(event,session)=>{
+      if(session?.user){ if(!booted){booted=true;await init(session.user);} }
+      else{ booted=false; hideVeil(); showSignIn(); }
+    });
+
+    const {data:{session}} = await supa.auth.getSession();
+    if(session?.user){ if(!booted){booted=true;await init(session.user);} }
+    else if(!booted){ hideVeil(); showSignIn(); }
+  }catch(e){ console.error(e); hideVeil(); showSignIn(); }
+});
+
+async function init(user){
+  try{
+    me = user;
+    const {data:p} = await supa.from('profiles').select('*').eq('id',user.id).maybeSingle();
+    profile = p;
+
+    if(!profile){ hideVeil(); showDenied('Account not found. Contact your investment manager.'); return; }
+    // Allow both 'lp' role and 'admin' (admins can preview the LP portal)
+    if(profile.role !== 'lp' && profile.role !== 'admin'){
+      hideVeil(); showDenied('This portal is for Steel & Aire limited partners only.');
+      return;
+    }
+
+    const name = profile.full_name||user.email;
+    document.getElementById('nav-user').textContent = name;
+    document.getElementById('lp-first-name').textContent = (name.split(' ')[0]||name)+'.';
+
+    await loadData();
+    hideVeil();
+    document.getElementById('lp-nav').style.display='block';
+    document.getElementById('page-app').style.display='block';
+    renderAll();
+  }catch(e){
+    console.error('LP init error:',e);
+    hideVeil(); showSignIn();
+  }
+}
+
+async function loadData(){
+  const [inv, fs] = await Promise.all([
+    supa.from('lp_investments').select('*').eq('profile_id', me.id).maybeSingle(),
+    supa.from('fund_settings').select('*').maybeSingle(),
+  ]);
+  investment   = inv.data||null;
+  fundSettings = fs.data||{};
+
+  if(investment){
+    const [cc, dist] = await Promise.all([
+      supa.from('capital_calls').select('*').eq('lp_investment_id', investment.id).order('call_date',{ascending:false}),
+      supa.from('distributions').select('*').eq('lp_investment_id', investment.id).order('dist_date',{ascending:false}),
+    ]);
+    capitalCalls  = cc.data||[];
+    distributions = dist.data||[];
+  }
+}
+
+function renderAll(){
+  renderAccount();
+  renderBars();
+  renderFundOverview();
+  renderCalls();
+  renderDistributions();
+}
+
+function renderAccount(){
+  const el = document.getElementById('account-grid'); if(!el) return;
+  const inv = investment;
+  if(!inv){ el.innerHTML=`<div class="account-card" style="grid-column:1/-1"><div class="empty">No investment account found for your profile. Contact Steel & Aire to get set up.</div></div>`; return; }
+  const multiple = inv.equity_multiple ? inv.equity_multiple+'x' : (inv.called_capital&&inv.current_nav ? (inv.current_nav/inv.called_capital).toFixed(2)+'x' : '—');
+  const cards = [
+    {label:'Total Commitment',  num:fmtAmt(inv.commitment),     sub:'Your total pledged capital',   color:'var(--blue-light)'},
+    {label:'Capital Called',    num:fmtAmt(inv.called_capital), sub:inv.commitment?Math.round(inv.called_capital/inv.commitment*100)+'% of commitment drawn':'',    color:'rgba(255,255,255,0.85)'},
+    {label:'Distributions',     num:fmtAmt(inv.distributions),  sub:'Total capital returned to you', color:inv.distributions?'var(--green-bright)':'rgba(255,255,255,0.4)'},
+    {label:'Current NAV',       num:fmtAmt(inv.current_nav),    sub:'Estimated net asset value',     color:'var(--gold)'},
+    {label:'Equity Multiple',   num:multiple,                   sub:'Current MOIC',                  color:inv.equity_multiple>1?'#2ec98a':'rgba(255,255,255,0.6)'},
+    {label:'Projected IRR',     num:inv.irr?inv.irr+'%':'—',   sub:'As estimated by fund manager',  color:'rgba(255,255,255,0.7)'},
+  ];
+  el.innerHTML = cards.map(c=>`
+    <div class="account-card">
+      <div class="account-num" style="color:${c.color}">${c.num}</div>
+      <div class="account-lbl">${c.label}</div>
+      ${c.sub?`<div class="account-sub">${c.sub}</div>`:''}
+    </div>`).join('');
+}
+
+function renderBars(){
+  const el = document.getElementById('lp-bars'); if(!el) return;
+  const inv = investment;
+  if(!inv){ el.innerHTML=''; return; }
+  const pctCalled  = inv.commitment ? Math.min(100,Math.round(inv.called_capital/inv.commitment*100)) : 0;
+  const pctReturn  = inv.called_capital ? Math.min(100,Math.round(inv.distributions/inv.called_capital*100)) : 0;
+  const pctNav     = inv.commitment ? Math.min(100,Math.round(inv.current_nav/inv.commitment*100)) : 0;
+  el.innerHTML=[
+    {name:'Capital Called vs Commitment',  pct:pctCalled, val:fmtAmt(inv.called_capital)+' of '+fmtAmt(inv.commitment), color:'linear-gradient(90deg,#1A3DB5,#5a8aff)'},
+    {name:'Distributions vs Called Capital',pct:pctReturn, val:fmtAmt(inv.distributions)+' returned',               color:'linear-gradient(90deg,#1f9d6b,#2ec98a)'},
+    {name:'Current NAV vs Commitment',      pct:pctNav,    val:fmtAmt(inv.current_nav)+' estimated value',           color:'linear-gradient(90deg,#b07a00,#d4a847)'},
+  ].map(r=>`
+    <div class="lp-bar-row">
+      <div class="lp-bar-head">
+        <span class="lp-bar-name">${r.name}</span>
+        <span class="lp-bar-val">${r.val} <span style="color:rgba(255,255,255,0.3)">(${r.pct}%)</span></span>
+      </div>
+      <div class="lp-bar-track"><div class="lp-bar-fill" style="width:${r.pct}%;background:${r.color}"></div></div>
+    </div>`).join('');
+}
+
+function renderFundOverview(){
+  const el = document.getElementById('fund-grid');
+  const strat = document.getElementById('fund-strategy-text');
+  if(!el) return;
+  const s = fundSettings;
+  if(strat) strat.textContent = s.fund_strategy||'Steel & Aire Soluciones is a private capital placement firm focused on high-quality real estate and infrastructure transactions.';
+  const tgt=s.target_aum||0, comm=s.committed||0, dep=s.deployed||0;
+  const cells=[
+    {num:s.fund_name||'Steel & Aire Fund I', lbl:'Fund Name'},
+    {num:fmtAmt(tgt),   lbl:'Target Fund Size'},
+    {num:fmtAmt(comm),  lbl:'Total Committed'},
+    {num:fmtAmt(dep),   lbl:'Capital Deployed'},
+    {num:s.target_irr?s.target_irr+'%':'—', lbl:'Target IRR'},
+    {num:s.target_multiple?s.target_multiple+'x':'—', lbl:'Target Multiple'},
+  ];
+  el.innerHTML=cells.map(c=>`<div class="lp-fund-cell"><div class="lf-num">${c.num}</div><div class="lf-lbl">${c.lbl}</div></div>`).join('');
+}
+
+function renderCalls(){
+  const tbody = document.getElementById('calls-tbody'); if(!tbody) return;
+  const today = new Date().toISOString().slice(0,10);
+  if(!capitalCalls.length){ tbody.innerHTML=`<tr><td colspan="5" class="empty" style="text-align:left">No capital calls have been issued yet.</td></tr>`; return; }
+  tbody.innerHTML = capitalCalls.map(c=>{
+    const overdue = !c.funded && c.due_date && c.due_date < today;
+    const badge = c.funded
+      ? `<span class="lp-badge badge-funded">Funded</span>`
+      : overdue
+        ? `<span class="lp-badge badge-overdue">Overdue</span>`
+        : `<span class="lp-badge badge-pending">Pending</span>`;
+    return `<tr>
+      <td>${c.call_date}</td>
+      <td>${c.due_date||'—'}</td>
+      <td style="font-weight:600;color:var(--white)">${fmtAmt(c.amount)}</td>
+      <td>${badge}</td>
+      <td style="color:rgba(255,255,255,0.4)">${c.funded_date||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderDistributions(){
+  const tbody = document.getElementById('dist-tbody'); if(!tbody) return;
+  if(!distributions.length){ tbody.innerHTML=`<tr><td colspan="3" class="empty" style="text-align:left">No distributions have been issued yet.</td></tr>`; return; }
+  const typeLabels = {return_of_capital:'Return of Capital', profit:'Profit Distribution', preferred:'Preferred Return'};
+  tbody.innerHTML = distributions.map(d=>`<tr>
+    <td>${d.dist_date}</td>
+    <td style="font-weight:600;color:#2ec98a">${fmtAmt(d.amount)}</td>
+    <td style="color:rgba(255,255,255,0.45)">${typeLabels[d.dist_type]||d.dist_type}</td>
+  </tr>`).join('');
+}
+
+/* ── AUTH ── */
+async function signIn(){
+  const email=document.getElementById('si-email').value.trim();
+  const pass=document.getElementById('si-pass').value;
+  const btn=document.getElementById('si-btn');
+  const errEl=document.getElementById('si-err');
+  errEl.style.display='none';
+  if(!email||!pass){errEl.textContent='Please enter your email and password.';errEl.style.display='block';return;}
+  btn.disabled=true; btn.textContent='Signing in…';
+  try{
+    const {error}=await supa.auth.signInWithPassword({email,password:pass});
+    if(error) throw error;
+  }catch(e){
+    btn.disabled=false; btn.textContent='Access My Account';
+    errEl.textContent=e.message||'Sign in failed.'; errEl.style.display='block';
+  }
+}
+
+async function signOut(){
+  await supa.auth.signOut(); booted=false;
+  document.getElementById('lp-nav').style.display='none';
+  document.getElementById('page-app').style.display='none';
+  document.getElementById('si-btn').textContent='Access My Account';
+  showSignIn();
+}
+
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('page-signin').style.display!=='none')signIn();});
+
+function showSignIn(){
+  document.getElementById('page-signin').style.display='flex';
+  document.getElementById('page-denied').style.display='none';
+  document.getElementById('page-app').style.display='none';
+  setTimeout(()=>document.getElementById('si-email')?.focus(),100);
+}
+function showDenied(msg){
+  document.getElementById('page-signin').style.display='none';
+  document.getElementById('page-denied').style.display='flex';
+  if(msg) document.getElementById('denied-msg').textContent=msg;
+}
+function hideVeil(){ const v=document.getElementById('veil'); v.classList.add('hidden'); setTimeout(()=>v.style.display='none',400); }
+
+/* ── UTILS ── */
+function fmtAmt(n){ if(!n) return '—'; if(n>=1e9) return '$'+(n/1e9).toFixed(1)+'B'; if(n>=1e6) return '$'+(n/1e6).toFixed(1)+'M'; if(n>=1e3) return '$'+(n/1e3).toFixed(0)+'K'; return '$'+n; }
+function toast(msg){ const t=document.getElementById('lp-toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),3000); }
+</script>
+</body>
+</html>
