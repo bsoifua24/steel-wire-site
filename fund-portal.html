@@ -22,18 +22,8 @@
 html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;min-height:100vh}
 
-/* ── VEIL ── */
-#veil{position:fixed;inset:0;background:var(--black);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:18px;transition:opacity 0.4s}
-#veil.hidden{opacity:0;pointer-events:none}
-.veil-logo{font-family:'Cormorant Garant',serif;font-size:1.9rem;font-weight:300;color:var(--white);letter-spacing:0.06em}
-.veil-logo span{color:var(--blue-light)}
-.veil-sub{font-size:0.62rem;font-weight:600;letter-spacing:0.26em;text-transform:uppercase;color:rgba(255,255,255,0.2)}
-.veil-bar{width:180px;height:1px;background:var(--charcoal);margin-top:4px;overflow:hidden;position:relative}
-.veil-bar::after{content:'';position:absolute;left:-40%;width:40%;height:100%;background:var(--blue-light);animation:sweep 1.2s ease-in-out infinite}
-@keyframes sweep{to{left:140%}}
-
 /* ── SIGN IN PAGE ── */
-#page-signin{display:none;min-height:100vh;position:relative;overflow:hidden}
+#page-signin{display:flex;min-height:100vh;position:relative;overflow:hidden}
 .signin-bg{position:absolute;inset:0;background:linear-gradient(135deg,#070714 0%,#0c1230 50%,#070714 100%)}
 .signin-glow{position:absolute;top:-10%;left:-5%;width:70vw;height:80vh;background:radial-gradient(ellipse,rgba(26,61,181,0.18) 0%,transparent 65%);pointer-events:none}
 .signin-glow2{position:absolute;bottom:-10%;right:-5%;width:50vw;height:60vh;background:radial-gradient(ellipse,rgba(90,138,255,0.09) 0%,transparent 65%);pointer-events:none}
@@ -261,13 +251,6 @@ nav#fp-nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(8,8,1
   </style>
 </head>
 <body class="palette">
-
-<!-- LOADING VEIL -->
-<div id="veil">
-  <div class="veil-logo">Steel <span>&</span> Aire Soluciones</div>
-  <div class="veil-sub">Fund Intelligence Portal</div>
-  <div class="veil-bar"></div>
-</div>
 
 <!-- SIGN IN PAGE -->
 <div id="page-signin">
@@ -529,46 +512,29 @@ const EMAILJS_SVC = 'service_t2ziiym';
 const EMAILJS_ALERT_TPL = 'template_stale_alert'; // create this in EmailJS dashboard
 
 /* ══════════════════════════════════════════════════════════════
-   BOOT
+   BOOT — sign-in is visible by default; swap to app on auth
 ══════════════════════════════════════════════════════════════ */
-function waitForLib(){
-  return new Promise(res=>{
-    if(window.supabase?.createClient){ res(); return; }
-    const t=setInterval(()=>{ if(window.supabase?.createClient){ clearInterval(t); res(); }},60);
-    setTimeout(()=>{ clearInterval(t);
-      if(!window.supabase){
-        const s=document.createElement('script');
-        s.src='https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js';
-        s.onload=res; document.head.appendChild(s);
-      }
-    },2500);
-  });
-}
-
 window.addEventListener('DOMContentLoaded', async ()=>{
   updateDate();
   try{
-    await waitForLib();
     supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    // Restore existing session (e.g. same credentials as deal room)
+    const {data:{session}} = await supa.auth.getSession();
+    if(session?.user && !booted){ booted=true; await init(session.user); }
+
+    // Listen for sign-in / sign-out
     supa.auth.onAuthStateChange(async (event, session)=>{
       if(session?.user){
         if(!booted){ booted=true; await init(session.user); }
       } else {
         booted=false; me=null; profile=null;
-        hideVeil(); showSignIn();
+        showSignIn();
       }
     });
-
-    const {data:{session}} = await supa.auth.getSession();
-    if(session?.user){
-      if(!booted){ booted=true; await init(session.user); }
-    } else if(!booted){
-      hideVeil(); showSignIn();
-    }
   }catch(e){
     console.error('Boot error:',e);
-    hideVeil(); showSignIn();
+    showSignIn();
   }
 });
 
@@ -578,20 +544,20 @@ async function init(user){
     const {data:p} = await supa.from('profiles').select('*').eq('id',user.id).maybeSingle();
     profile = p;
     if(!profile || profile.role !== 'admin'){
-      hideVeil(); showDenied('Your account does not have fund portal access. Contact your administrator.');
+      showDenied('Your account does not have fund portal access. Contact your administrator.');
       return;
     }
     document.getElementById('nav-user').textContent = profile.full_name || user.email;
     await loadAll();
     try{ await seedFundSettingsIfEmpty(); }catch(e){ console.warn('Fund settings seed skipped (run fund-schema.sql):',e.message); }
-    hideVeil();
+    document.getElementById('page-signin').style.display='none';
     document.getElementById('fp-nav').style.display='block';
     document.getElementById('page-app').style.display='block';
     renderAll();
   }catch(e){
     console.error('Init error:',e);
-    hideVeil(); showSignIn();
-    toast('Connection error — please try signing in again.');
+    showSignIn();
+    toast('Connection error — please try again.');
   }
 }
 
@@ -642,7 +608,7 @@ function showDenied(msg){
   document.getElementById('page-denied').style.display='flex';
   if(msg) document.getElementById('denied-msg').textContent=msg;
 }
-function hideVeil(){ const v=document.getElementById('veil'); v.classList.add('hidden'); setTimeout(()=>v.style.display='none',400); }
+
 
 /* ══════════════════════════════════════════════════════════════
    DATA
