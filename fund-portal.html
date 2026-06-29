@@ -396,29 +396,76 @@ let supa = null, me = null, profile = null;
 let deals = [], crmContacts = [], crmTasks = [], crmActivity = [], lenders = [];
 
 /* ── INIT ── */
+let booted = false;
+
+function waitForSupabase(){
+  return new Promise(resolve=>{
+    if(window.supabase && window.supabase.createClient){ resolve(); return; }
+    const t = setInterval(()=>{
+      if(window.supabase && window.supabase.createClient){ clearInterval(t); resolve(); }
+    }, 50);
+    setTimeout(()=>{
+      clearInterval(t);
+      if(!window.supabase){
+        const s = document.createElement('script');
+        s.src = 'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js';
+        s.onload = resolve;
+        document.head.appendChild(s);
+      }
+    }, 2000);
+  });
+}
+
 window.addEventListener('DOMContentLoaded', async ()=>{
   document.getElementById('fp-date').textContent = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  if(SUPABASE_URL.includes('PASTE')){ veil(false); showAccessDenied('Configure Supabase keys in fund-portal.html'); return; }
-  supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  supa.auth.onAuthStateChange(async (event, session)=>{
-    if(session?.user){ await init(session.user); }
-    else if(!session){ veil(false); showAccessDenied(); }
-  });
-  const {data} = await supa.auth.getSession();
-  if(data?.session?.user){ await init(data.session.user); }
-  else { veil(false); showAccessDenied(); }
+  try {
+    await waitForSupabase();
+    supa = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    supa.auth.onAuthStateChange(async (event, session)=>{
+      if(session?.user){
+        if(!booted){ booted = true; await init(session.user); }
+      } else {
+        booted = false;
+        veil(false);
+        showAccessDenied();
+      }
+    });
+
+    const {data} = await supa.auth.getSession();
+    if(data?.session?.user){
+      if(!booted){ booted = true; await init(data.session.user); }
+    } else if(!booted){
+      veil(false);
+      showAccessDenied();
+    }
+  } catch(e) {
+    console.error('Fund portal init error:', e);
+    veil(false);
+    showAccessDenied('Failed to connect. Check your Supabase credentials and try again.');
+  }
 });
 
 async function init(user){
-  me = user;
-  const {data:p} = await supa.from('profiles').select('*').eq('id',user.id).maybeSingle();
-  profile = p;
-  if(!profile || profile.role !== 'admin'){ veil(false); showAccessDenied('This portal is for Steel & Aire team members only.'); return; }
-  document.getElementById('nav-user').textContent = profile.full_name || user.email;
-  await loadAll(false);
-  veil(false);
-  document.getElementById('app').style.display = 'block';
-  renderAll();
+  try {
+    me = user;
+    const {data:p} = await supa.from('profiles').select('*').eq('id',user.id).maybeSingle();
+    profile = p;
+    if(!profile || profile.role !== 'admin'){
+      veil(false);
+      showAccessDenied('This portal is for Steel & Aire team members only.');
+      return;
+    }
+    document.getElementById('nav-user').textContent = profile.full_name || user.email;
+    await loadAll(false);
+    veil(false);
+    document.getElementById('app').style.display = 'block';
+    renderAll();
+  } catch(e) {
+    console.error('Init error:', e);
+    veil(false);
+    showAccessDenied('Something went wrong loading the portal. Check console for details.');
+  }
 }
 
 async function loadAll(showToast=false){
@@ -429,14 +476,12 @@ async function loadAll(showToast=false){
     supa.from('crm_activities').select('*, contact:crm_contacts(full_name)').order('activity_date',{ascending:false}).limit(40),
     supa.from('capital_partners').select('*').order('created_at',{ascending:false}),
   ]);
-  deals        = dr.data  || []; const SUPABASE_URL      = https://plihqeruhlwclqloagjn.supabase.co;
-const SUPABASE_ANON_KEY = sb_publishable_g8isUhYtzSYZhXHpKSU0Kg_qL4e_XuG;
-
-  crmContacts  = cr.data  || [];
-  crmTasks     = tr.data  || [];
-  crmActivity  = ar.data  || [];
-  lenders      = lr.data  || [];
-  deals.forEach(d=>d.checklist_items.sort((a,b)=>a.sort_order-b.sort_order));
+  deals       = dr.data || [];
+  crmContacts = cr.data || [];
+  crmTasks    = tr.data || [];
+  crmActivity = ar.data || [];
+  lenders     = lr.data || [];
+  deals.forEach(d=>{ if(d.checklist_items) d.checklist_items.sort((a,b)=>a.sort_order-b.sort_order); });
   if(showToast){ renderAll(); fpToast('Data refreshed.'); }
 }
 
