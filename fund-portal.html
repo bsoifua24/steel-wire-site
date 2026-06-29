@@ -539,25 +539,44 @@ window.addEventListener('DOMContentLoaded', async ()=>{
 });
 
 async function init(user){
+  const btn = document.getElementById('si-btn');
+  // Safety net: if init takes > 12s, reset the button with a clear error
+  const timeout = setTimeout(()=>{
+    if(btn && btn.disabled){
+      btn.disabled=false; btn.textContent='Sign In to Fund Portal';
+      const e=document.getElementById('si-err');
+      e.textContent='Connection timed out. Open browser console (right-click → Inspect → Console) and share the errors with support.';
+      e.style.display='block';
+    }
+  }, 12000);
   try{
     me = user;
-    const {data:p} = await supa.from('profiles').select('*').eq('id',user.id).maybeSingle();
+    console.log('[FP] init: querying profile for', user.email);
+    const {data:p, error:pe} = await supa.from('profiles').select('*').eq('id',user.id).maybeSingle();
+    console.log('[FP] profile result:', p, pe);
     profile = p;
     if(!profile || profile.role !== 'admin'){
-      showDenied('Your account does not have fund portal access. Contact your administrator.');
+      clearTimeout(timeout);
+      showDenied(profile ? 'Your account role is "'+profile.role+'" — admin access required.' : 'Profile not found. Contact your administrator.');
       return;
     }
-    document.getElementById('nav-user').textContent = profile.full_name || user.email;
+    console.log('[FP] profile ok, loading data...');
     await loadAll();
-    try{ await seedFundSettingsIfEmpty(); }catch(e){ console.warn('Fund settings seed skipped (run fund-schema.sql):',e.message); }
+    console.log('[FP] data loaded, seeding settings...');
+    try{ await seedFundSettingsIfEmpty(); }catch(e){ console.warn('[FP] seed skipped:',e.message); }
+    clearTimeout(timeout);
     document.getElementById('page-signin').style.display='none';
     document.getElementById('fp-nav').style.display='block';
     document.getElementById('page-app').style.display='block';
+    console.log('[FP] rendering dashboard...');
     renderAll();
   }catch(e){
-    console.error('Init error:',e);
+    clearTimeout(timeout);
+    console.error('[FP] Init error:',e);
     showSignIn();
-    toast('Connection error — please try again.');
+    const errEl=document.getElementById('si-err');
+    errEl.textContent='Error: '+e.message+' — open browser console for details.';
+    errEl.style.display='block';
   }
 }
 
@@ -571,12 +590,16 @@ async function signIn(){
   const errEl = document.getElementById('si-err');
   errEl.style.display='none';
   if(!email||!pass){ errEl.textContent='Please enter your email and password.'; errEl.style.display='block'; return; }
+  if(!supa){ errEl.textContent='Connection not ready — please refresh the page and try again.'; errEl.style.display='block'; return; }
   btn.disabled=true; btn.textContent='Signing in…';
   try{
-    const {data,error} = await supa.auth.signInWithPassword({email,pass:undefined,password:pass});
+    console.log('[FP] signing in as', email);
+    const {data,error} = await supa.auth.signInWithPassword({email, password:pass});
+    console.log('[FP] signIn result:', data?.user?.email, error);
     if(error) throw error;
-    // onAuthStateChange will handle the rest
+    // onAuthStateChange fires next and calls init()
   }catch(e){
+    console.error('[FP] signIn error:',e);
     btn.disabled=false; btn.textContent='Sign In to Fund Portal';
     errEl.textContent = e.message||'Sign in failed. Check your credentials.';
     errEl.style.display='block';
