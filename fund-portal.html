@@ -750,7 +750,7 @@ function renderAlerts(){
 ══════════════════════════════════════════════════════════════ */
 function renderStats(){
   const el=document.getElementById('fp-stats'); if(!el) return;
-  const s=getSettings();
+  const s=fundSettings;
   const pipeline=deals.reduce((a,d)=>a+parseAmt(d.raise_amount),0);
   const avg=deals.length?Math.round(deals.reduce((a,d)=>a+score(d),0)/deals.length):0;
   const pending=deals.reduce((a,d)=>a+(d.checklist_items||[]).filter(i=>i.status==='uploaded').length,0);

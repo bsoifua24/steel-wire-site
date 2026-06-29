@@ -1,4 +1,4 @@
-const CACHE = 'steelaire-v1';
+const CACHE = 'steelaire-v3';
 
 const PRECACHE_URLS = [
   '/',
@@ -39,6 +39,8 @@ self.addEventListener('fetch', e => {
     url.includes('supabase.co') ||
     url.includes('emailjs.com') ||
     url.includes('googleapis.com') ||
+    url.includes('jsdelivr.net') ||
+    url.includes('unpkg.com') ||
     e.request.method !== 'GET'
   ) return;
 
